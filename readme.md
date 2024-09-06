@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/morpheusadam/playtube/blob/main/upload/screenshots/unnamed.png" alt="Screenshot 1">
+  <img src="upload/screenshots/unnamed.png" alt="Screenshot 1">
 </p>
 
 # PlayTube - The Ultimate PHP Video CMS & Video Sharing Platform
@@ -28,7 +28,7 @@ Follow the steps below to set up your site:
 2. The folder structure below should be uploaded to your website or localhost root directory:
 
    <p align="center">
-     <img src="https://github.com/morpheusadam/playtube/blob/main/upload/screenshots/folder_structure.png" alt="Folder Structure">
+     <img src="upload/screenshots/folder_structure.png" alt="Folder Structure">
    </p>
 
 3. You should upload all the files.
@@ -38,13 +38,13 @@ Follow the steps below to set up your site:
 7. Important! Before we start the installation, please make sure you have the following installed on your server:
 
    <p align="center">
-     <img src="https://github.com/morpheusadam/playtube/blob/main/upload/screenshots/server_requirements.png" alt="Server Requirements">
+     <img src="upload/screenshots/server_requirements.png" alt="Server Requirements">
    </p>
 
 8. On the second page, make sure to fill in the required data:
 
    <p align="center">
-     <img src="https://github.com/morpheusadam/playtube/blob/main/upload/screenshots/installation_form.png" alt="Installation Form">
+     <img src="upload/screenshots/installation_form.png" alt="Installation Form">
    </p>
 
    - **Purchase Code** - Envato purchase code. What is this?
@@ -94,11 +94,11 @@ v3.1.1
 Here are some screenshots of the platform:
 
 <p align="center">
-  <img src="https://github.com/morpheusadam/playtube/blob/main/upload/screenshots/Screenshot_1.png" alt="Screenshot 1">
-  <img src="https://github.com/morpheusadam/playtube/blob/main/upload/screenshots/Screenshot_2.png" alt="Screenshot 2">
-  <img src="https://github.com/morpheusadam/playtube/blob/main/upload/screenshots/Screenshot_3.png" alt="Screenshot 3">
-  <img src="https://github.com/morpheusadam/playtube/blob/main/upload/screenshots/Screenshot_4.png" alt="Screenshot 4">
-  <img src="https://github.com/morpheusadam/playtube/blob/main/upload/screenshots/Screenshot_5.png" alt="Screenshot 5">
+  <img src="upload/screenshots/Screenshot_1.png" alt="Screenshot 1">
+  <img src="upload/screenshots/Screenshot_2.png" alt="Screenshot 2">
+  <img src="upload/screenshots/Screenshot_3.png" alt="Screenshot 3">
+  <img src="upload/screenshots/Screenshot_4.png" alt="Screenshot 4">
+  <img src="upload/screenshots/Screenshot_5.png" alt="Screenshot 5">
 </p>
 
 ## Languages
