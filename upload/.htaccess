@@ -1,0 +1,5 @@
+Options -Indexes
+<Files ~ "\.(deb|phps|phtml|js|php)$">
+ Order Deny,Allow
+ Deny from all
+</Files>
