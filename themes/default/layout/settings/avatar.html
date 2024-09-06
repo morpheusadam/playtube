@@ -1,0 +1,98 @@
+<form class="form-horizontal user-setting-panel pt_forms pt_shadow" id="avatar-settings" method="POST">
+    <div class="setting-avatar-alert"></div>
+    <div class="row pt_upload_vdo">
+        <div class="progress hidden">
+            <span class="percent">0%</span>
+            <div class="progress_bar_parent">
+                <div class="bar upload-progress-bar progress-bar active"></div> 
+            </div>
+            <div class="clear"></div>
+            <div class="text-center pt_prcs_vdo"></div>
+        </div>
+        <div class="pt_cset_cover" title="{{LANG cover}}">
+            <div class="pt_cset_cover_hdr">
+                <span class="btn btn-file" id="coverimage-holder" onclick="$('#cover').trigger('click'); return false;">
+                    <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z" /></svg></span>
+                </span>
+                <input type="file" class="hidden" id="cover" accept="image/x-png, image/gif, image/jpeg, image/webp" name="cover">
+            </div>
+			<div class="avatar-read" id="cover-form"><p></p></div>
+		</div>
+		<div class="pt_cset_avtr">
+            <div class="pt_cset_avtr_hdr">
+                <span class="btn btn-file" id="avatarimage-holder" onclick="$('#avatar').trigger('click'); return false;" title="{{LANG avatar}}">
+                    <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z" /></svg></span>
+                </span>
+                <input type="file" class="hidden" id="avatar" accept="image/x-png, image/gif, image/jpeg, image/webp" name="avatar">
+            </div>
+			<div class="avatar-read" id="photo-form"><p></p></div>
+		</div>
+	</div>
+	<input type="hidden" name="hash_id" value="<?php echo PT_CreateSession()?>">
+	<input type="hidden" name="user_id" value="{{USER id}}">
+	<!-- Button (Double) -->
+	<div class="last-sett-btn modal-footer" style="margin: 0px -30px -10px -30px;">
+		<button id="submit" name="submit" class="btn btn-main setting-panel-mdbtn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> {{LANG save}}</button>
+	</div>
+</form>
+
+<script>
+    $(function() {
+        var bar         = $('.bar');
+        var percent     = $('.percent');
+        var prcsvdo      = $('.pt_prcs_vdo');
+		$("#cover").on('change', function() {
+			$("#coverimage-holder").html("<img src='" + window.URL.createObjectURL(this.files[0]) + "' alt='Picture'>");
+		});
+
+		$("#avatar").on('change', function() {
+			$("#avatarimage-holder").html("<img src='" + window.URL.createObjectURL(this.files[0]) + "' alt='Picture'>");
+		});
+
+        var form = $('form#avatar-settings');
+        form.ajaxForm({
+            url: '{{LINK aj/user/avatar}}?hash=' + $('.main_session').val(),
+            beforeSend: function() {
+                form.find('button').text("{{LANG please_wait}}");
+                $('.progress').removeClass('hidden');
+                var percentVal = '0%';
+                bar.width(percentVal);
+                percent.html(percentVal);
+                // FL_progressIconLoader(form.find('button'));
+            },
+            uploadProgress: function(event, position, total, percentComplete) {
+                 if(percentComplete > 50) {
+                    percent.addClass('white');
+                 }
+                var percentVal = percentComplete + '%';
+                bar.width(percentVal);
+                percent.html(percentVal);
+
+                if (percentComplete == 100) {
+                   prcsvdo.html('<svg width="30" height="10" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg" fill="#000"><circle cx="15" cy="15" r="15"><animate attributeName="r" from="15" to="15" begin="0s" dur="0.8s" values="15;9;15" calcMode="linear" repeatCount="indefinite" /><animate attributeName="fill-opacity" from="1" to="1" begin="0s" dur="0.8s" values="1;.5;1" calcMode="linear" repeatCount="indefinite" /></circle><circle cx="60" cy="15" r="9" fill-opacity="0.3"><animate attributeName="r" from="9" to="9" begin="0s" dur="0.8s" values="9;15;9" calcMode="linear" repeatCount="indefinite" /><animate attributeName="fill-opacity" from="0.5" to="0.5" begin="0s" dur="0.8s" values=".5;1;.5" calcMode="linear" repeatCount="indefinite" /></circle><circle cx="105" cy="15" r="15"><animate attributeName="r" from="15" to="15" begin="0s" dur="0.8s" values="15;9;15" calcMode="linear" repeatCount="indefinite" /><animate attributeName="fill-opacity" from="1" to="1" begin="0s" dur="0.8s" values="1;.5;1" calcMode="linear" repeatCount="indefinite" /></circle></svg> {{LANG porcessing_image}}');
+                   $('.progress').find('.bar').removeClass('upload-progress-bar');
+                }
+            },
+            success: function(data) {
+                percentVal = '0%';
+                bar.width(percentVal);
+                $('.progress').addClass('hidden');
+                scrollToTop();
+                if (data.status == 200) {
+                    $('.setting-avatar-alert').html('<div class="alert alert-success">' + data.message + '</div>');
+                    $('.alert-success').fadeIn('fast', function() {
+                        $(this).delay(2500).slideUp(500, function() {
+                            $(this).remove();
+                        });
+                    });
+                } else if (data.errors) {
+                    var errors = data.errors.join("<br>");
+                    $('.setting-avatar-alert').html('<div class="alert alert-danger">' + errors + '</div>');
+                    $('.alert-danger').fadeIn(300);
+                }
+                form.find('button').html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> {{LANG save}}');
+                // FL_progressIconLoader(form.find('button'));
+            }
+        });
+    });
+</script>

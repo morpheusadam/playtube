@@ -1,0 +1,257 @@
+<link href="{{CONFIG theme_url}}/js/colorpicker/css/bootstrap-colorpicker.css" rel="stylesheet">
+<script src="{{CONFIG theme_url}}/js/colorpicker/js/bootstrap-colorpicker.js"></script>
+<link href="{{CONFIG theme_url}}/js/lib/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.min.css" rel="stylesheet">
+<script src="{{CONFIG theme_url}}/js/lib/jquery-datatable/jquery.dataTables.js"></script>
+<script src="{{CONFIG theme_url}}/js/lib/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
+<div class="content pt_shadow">
+	<div class="col-md-12">
+		<div class="upload-head">
+			<h4 class="edit-video-title"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M9.243 19H21v2H3v-4.243l9.9-9.9 4.242 4.244L9.242 19zm5.07-13.556l2.122-2.122a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414l-2.122 2.121-4.242-4.242z"/></svg> {{LANG add_card}}: {{TITLE}}</h4>
+			<hr>
+		</div>
+	</div>
+	<div class="clear"></div>
+	<div class="col-md-5">
+		<div class="pt_vid_card_prvw">
+			<div class="responsive">
+				<div class="wait"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="spin spin-svg"><path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" fill="currentColor"/></svg></div>
+				<canvas id="main_canvas"></canvas>
+			</div>
+			<input id="my-input" type="range" min="0" max="72" value="0" disabled />
+		</div>
+	</div>
+	<div class="col-md-7 pt_forms_large_btns" id="edit-form">
+		<div class="video-player pt_video_player">
+			<video id="my-video" class="hidden">
+			   <?php if (!empty($pt->video->video_location)) { ?>
+			   <source src="<?php echo($pt->video->video_location) ?>">
+			   <?php } ?>
+			   Your browser does not support HTML5 video.
+			</video>
+		</div>
+		<form action="" class="form-horizontal pt_forms pt_vid_card_form" method="POST">
+			<div id="video-success"></div>
+			<div class="pp_mat_input">
+				<select class="selectpicker show-menu-arrow" name="part" id="part">
+					<option value="" disabled>{{LANG placement}}</option>
+					<option value="top_left">{{LANG top_left}}</option>
+					<option value="top_right">{{LANG top_right}}</option>
+					<option value="bottom_left">{{LANG bottom_left}}</option>
+					<option value="bottom_right">{{LANG bottom_right}}</option>
+					<option value="center">{{LANG center}}</option>
+				</select>
+			</div>
+			<div class="pp_mat_input">
+				<select class="selectpicker show-menu-arrow" name="type" id="typedd">
+					<option value="" disabled>{{LANG type}}</option>
+					<option value="text">{{LANG text}}</option>
+					<option value="video">{{LANG video}}</option>
+					<option value="subscribe">{{LANG subscribe}}</option>
+				</select>
+			</div>
+			<div class="text_card">
+				<div class="pp_mat_input">
+					<input type="text" id="url" name="url" placeholder=" " disabled>
+					<label for="url">URL</label>
+				</div>
+				<div class="pp_mat_input">
+					<input type="text" id="title" name="title" placeholder=" " disabled>
+					<label for="title">{{LANG title}}</label>
+				</div>
+				<div class="pp_mat_input">
+					<input type="text" class="colorpicker" id="color" name="color" placeholder=" " disabled>
+					<label for="color">{{LANG color}}</label>
+				</div>
+				<div class="pp_mat_input">
+					<input type="text" class="colorpicker" id="background_color" name="background_color" placeholder=" " disabled>
+					<label for="background_color">{{LANG background_color}}</label>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="video_card" style="display: none;">
+				<div class="pp_mat_input">
+					<input type="text" id="video_search" name="video_search" placeholder=" " disabled>
+					<label for="video_search">{{LANG search_keyword}}</label>
+					<div class="video_dropdown"></div>
+				</div>
+				<div class="pp_mat_input">
+					<input type="text" id="video_selected" name="video_selected" placeholder=" " readonly>
+					<label for="video_selected">{{LANG selected}}</label>
+				</div>
+			</div>
+			<div>
+				<button type="submit" id="submit-btn" class="btn btn-main setting-panel-mdbtn" disabled>{{LANG publish}}</button>
+			</div>
+			<input type="hidden" name="video_id" class="video_id" value="{{ID}}">
+			<input type="hidden" name="ref_video" class="ref_video" value="0">
+			<input type="hidden" name="duration" class="duration">
+		</form>
+	</div>
+	<div class="clear"></div>
+	<br><hr><br>
+	<div class="col-md-12">
+		<table class="table" id="video_cards_table"> 
+			<thead>
+				<th>{{LANG id}}</th>
+				<th>{{LANG type}}</th>
+				<th>{{LANG name}}</th>
+				<th>{{LANG part}}</th>
+				<th>{{LANG action}}</th>
+			</thead>
+			<tbody>
+				{{CARDS_LIST}}
+			</tbody>
+		</table>
+	</div>
+	<div class="clear"></div>
+	<div id="frames" class="hidden"></div>
+</div>
+
+<script>
+const rangeToPercent = slider => {
+  const value = slider.value;
+  const max = slider.getAttribute('max') || 10;
+  const percent = value / max * 100;
+
+  return `${parseInt(percent)}%`;
+};
+
+const sliders = document.querySelectorAll('.pt_vid_card_prvw input[type="range"]');
+
+sliders.forEach(slider => {
+  slider.style.setProperty('--track-fill', rangeToPercent(slider));
+
+  slider.addEventListener('input', e => {
+    e.target.style.setProperty('--track-fill', rangeToPercent(e.target));
+  });
+});
+
+function DeleteCard(id) {
+	$.post('{{LINK aj/cards/delete}}', {id: id}, function(data, textStatus, xhr) {
+		$("[data-card-list="+id+"]").remove();
+	});
+}
+function SelectVideo(id,self) {
+	$('.ref_video').val(id);
+	$('#video_selected').val($(self).text());
+	var search_dropdown = $('.video_dropdown');
+	search_dropdown.addClass('hidden');
+	search_dropdown.empty();
+}
+$('#video_search').keyup(function(event) {
+	var search_value = $(this).val();
+	var search_dropdown = $('.video_dropdown');
+	if (search_value == '') {
+		search_dropdown.addClass('hidden');
+		search_dropdown.empty();
+		return false;
+	} else {
+		search_dropdown.removeClass('hidden');
+	}
+    $.post('{{LINK aj/cards/search}}', {search_value: search_value}, function(data, textStatus, xhr) {
+    	if (data.status == 200) {
+    		search_dropdown.html(data.html);
+    	} else {
+	       search_dropdown.addClass('hidden');
+		   search_dropdown.empty();
+		   return false;
+    	}
+    });
+});
+$(document).on('change', '#type', function(event) {
+	event.preventDefault();
+	if ($(this).val() == 'text') {
+		$('.text_card').slideDown();
+		$('.video_card').slideUp();
+		$('#my-input').removeAttr('disabled');
+	}
+	if ($(this).val() == 'video') {
+		$('.video_card').slideDown();
+		$('.text_card').slideUp();
+		$('#my-input').attr('disabled', 'true');
+	}
+	if ($(this).val() == 'subscribe') {
+		$('.video_card').slideUp();
+		$('.text_card').slideUp();
+		$('#my-input').attr('disabled', 'true');
+	}
+});
+$('.colorpicker').colorpicker();
+
+var main_canvas = document.getElementById("main_canvas");
+
+jQuery(document).ready(function($) {
+	video = document.querySelector('video');
+	video.addEventListener('loadeddata', function() {
+		$('.wait').remove();
+    $('input').removeAttr('disabled');
+    $('select').removeAttr('disabled');
+    $('#submit-btn').removeAttr('disabled');
+		var input = document.getElementById("my-input");
+		input.min = 0;
+		input.max = parseInt(video.duration);
+		$('#video_cards_table').DataTable();
+	});
+	
+});
+	
+	
+
+$("#my-input").on("input", function(event) {
+	video.currentTime = event.target.value;
+	main_canvas.width = video.videoWidth;
+  main_canvas.height = video.videoHeight;
+  var context = main_canvas.getContext("2d");
+  context.drawImage(video, 0, 0);
+  $('.duration').val(event.target.value);
+});
+jQuery(document).ready(function($) {
+	const video = document.querySelector('video');
+	video.addEventListener('seeked', (event) => {
+		$('.duration').val(video.currentTime);
+	    var minutes = parseInt(video.duration / 60, 10);
+	    var seconds = video.duration % 60;
+	});
+
+	$('.pt_forms').ajaxForm({
+      url: '{{LINK aj/cards/create}}?hash=' + $('.main_session').val(),
+      dataType:"json",
+      beforeSend: function() {
+
+        $('#submit-btn').attr('disabled', true).find('span').text("{{LANG please_wait}}");
+        
+      },
+      uploadProgress: function(event, position, total, percentComplete) {
+          if(percentComplete > 50) {
+            percent.addClass('white');
+          }
+          var percentVal = percentComplete + '%';
+          bar.width(percentVal);
+          percent.html(percentVal);
+
+          if (percentComplete == 100) {
+            $("#video-success").empty();
+          }
+      },
+      success: function(data) {
+        scrollToTop();
+        if (data.status == 200){
+          $("#video-success").html('<div class="alert alert-success bg-success"><i class="fa fa-check"></i> '+
+            data.message
+            +'</div>');
+          PT_Delay(function(){
+            location.reload();
+          },2000);
+          
+        }
+        else {
+          $('#submit-btn').removeAttr('disabled').find('span').text('{{LANG publish}}');
+          $("#video-success").html('<div class="alert alert-danger bg-danger"><i class="fa fa-info-circle"></i> '+
+            data.message
+            +'</div>');
+        }
+      }
+    });
+
+});
+</script>

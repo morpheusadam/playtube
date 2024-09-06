@@ -1,0 +1,251 @@
+<style>
+.fixed-action-btn {display: none;}
+</style>
+
+<div class="page-margin pt_shadow">
+    <div class="row">
+        <div class="col-md-4 mobilerightpane no-padding-right">
+            {{SIDEBAR}}
+        </div>
+        <div class="col-md-8 mobileleftpane no-padding-left">
+            <ul class="pt_msg_main">
+                <div class="settings-header pt_msg_header">
+                    <h3 class="pull-left">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left mobilemsgclose"><polyline points="15 18 9 12 15 6"></polyline></svg> 
+                        <!-- <div class="chat_section">
+                            <div class="chat_left_setcion">
+                               <img src="{{CONFIG theme_url}}/img/login_line.svg">
+                            </div>
+                            <div class="chat_right_section">
+                                <?php echo (!empty($pt->chat_user->name)) ? "<a style='color: #fff;' href='" . $pt->chat_user->url . "'>" . $pt->chat_user->name . "</a>" : "<a style='color: #fff;' class='user-link'></a>";?>aaa
+                            </div>
+                        </div> -->
+
+                    </h3>
+
+                    
+                    <?php echo (!empty($pt->chat_user->name)) ? '<div class="pull-right" id="delete-conversation"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></div>' : '';?>
+                    <div class="clear"></div>
+                </div>
+                <button id="load-more-messages" title="Load more messages"><i class="fa fa-angle-up"></i></button>
+                <div class="pt_msg_joint">
+                    <div class="user-messages user-setting-panel pt_msg_area">
+                        {{HTML}}
+                    </div>
+                    <div class="user-send-message">
+                        <form action="#" method="POST" id="new-message-form">
+                            <textarea name="new-message" id="new-message" cols="30" rows="2" placeholder="{{LANG write_message}}"></textarea>
+                            <button type="button" id="send-button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
+                            <input type="hidden" id="user-id" name="id" value="<?php echo $pt->chat_id; ?>">
+                            <input type="hidden" id="user-avatar" value="<?php echo ($pt->chat_user->avatar) ? $pt->chat_user->avatar : "";?>">
+                        </form>
+                    </div>
+                </div>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<br>
+<script>
+var messagesInterval = <?php echo (!empty($pt->extra_config->nodejs_message_update_interval)) ? $pt->extra_config->nodejs_message_update_interval : 500 ?>;
+var sleep = 1;
+function fetchMessages() {
+    $last = $('.message:last').attr('data-id');
+    if ($last) {
+        if (!isNaN($last)) {
+            socket.emit('get messages', {id: $('#user-id').val(), last_id: $('.message:last').attr('data-id')});
+            sleep = 0;
+        }
+        socket.emit('check typing', {id: $('#user-id').val()});
+    }
+    if (!$(".messages-sidebar").is(":hover")) {
+        socket.emit('check user list', {keyword: $('#search-list').val()});
+    }
+    setTimeout(function () {
+        fetchMessages();
+    }, messagesInterval);
+}
+
+$(document).on('click', '#send-button', function(event) {
+    submitForm();
+    $('#new-message').focus();
+});
+
+$(document).on('click', '#delete-conversation', function(event) {
+    if (!confirm("{{LANG are_you_sure_you_want_delete_chat}}")) {
+        return false;
+    }
+    $(this).find('i').toggleClass('fa-trash fa-spinner fa-spin');
+    $.post('{{LINK aj/messages/delete_chat}}', {id: $('#user-id').val()}, function(data, textStatus, xhr) {
+        $('#delete-conversation').find('i').removeClass('fa-spinner fa-spin');
+        $('#delete-conversation').find('i').addClass('fa-trash');
+        $('.messages').empty();
+    });
+});
+
+$(document).on('click', '#load-more-messages', function(event) {
+  event.preventDefault();
+  $('#load-more-messages i').removeClass('fa-angle-up');
+  $('#load-more-messages i').addClass('fa-spinner fa-spin');
+  socket.emit('get old messages', {id: $('#user-id').val(), first_id: $('.message:first').attr('data-id')});
+});
+
+socket.on('user list result', function (data) {
+    if (data.data) {
+        $('.messages-sidebar').find('.list-group').html(data.data);
+    } else {
+        $('.messages-sidebar').find('.list-group').html("<p class='text-center'>{{LANG no_match_found}}</p>");
+    }
+});
+
+socket.on('get old messages result', function (data) {
+    if (data.status == 200) {
+        if (!$("#new-message").is(":focus")) {
+            //$('#message-sound')[0].play();
+        }
+        $('#load-more-messages i').removeClass('fa-spinner fa-spin');
+        $('#load-more-messages i').addClass('fa-angle-up');
+        if (data.message) {
+
+            $('.messages').prepend(data.message);
+        } else {
+            $('#load-more-messages').animate({
+                top: "-50",
+            }, 200, function() {
+                $('#load-more-messages').hide();
+                $('#load-more-messages').css('top', '60px');
+            });
+        }
+        $('.user-messages').scrollTop(0);
+    }
+});
+
+socket.on('get messages result', function (data) {
+    if (data.status == 200) {
+        if (!$("#new-message").is(":focus")) {
+            //$('#message-sound')[0].play();
+        }
+        $('#loading-icon').removeClass('fa-spinner fa-spin');
+        $('#loading-icon').addClass('fa-envelope-o');
+        $('.istyping').remove();
+        if ($('.messages').length == 0) {
+            $('.user-messages').html("<div class='messages'></div>");
+        }
+        
+        var search = data.message.search('data-id="' + $('.message:last').attr('data-id') + '"');
+        if (search == -1) {
+            $('.messages').append(data.message);
+       }
+        $('.user-messages').scrollTop($('.user-messages')[0].scrollHeight);
+    }
+
+});
+
+socket.on('is typing', function (data) {
+    if (data.status == 200) {
+        if ($('.istyping').length == 0) {
+            var html = '<div class="istyping to-user pull-left"><div class="user-avatar"><img src="' + $('#user-avatar').val() + '" alt="user message"></div><div class="user-message no-background"><span class="saving sidebar"><span><i class="fa fa-circle"></i></span><span><i class="fa fa-circle"></i></span><span><i class="fa fa-circle"></i></span></span></div><div class="clear"></div></div>';
+            $('.messages').append(html);
+            $('.user-messages').scrollTop($('.user-messages')[0].scrollHeight);
+        }
+    } else {
+        $('.istyping').remove();
+    }
+});
+
+
+socket.on('get new message', function (data) {
+    if (data.status == 200) {
+        $('.data_message[data-id="' + data.message_id + '"]').html(data.message);
+    }
+});
+socket.on('stop_message', function (data) {
+    $('.data_message[data-id="' + data.message_id + '"]').remove();
+    swal({
+       title: '{{LANG error}}',
+       text: "{{LANG something_wrong_send_messages}}",
+       type: 'error',
+       confirmButtonColor: '#3085d6',
+       cancelButtonColor: '#d33',
+       confirmButtonText: 'OK',
+       buttonsStyling: true,
+       confirmButtonClass: 'btn btn-success',
+    });
+});
+
+$(function() {
+    $('.user-list a').on('click', function(event) {
+        event.preventDefault();
+        clearTimeout(messagesInterval);
+        //$('.mobilerightpane').fadeOut(100);
+        $('.mobileleftpane').fadeIn(100);
+        $(this).focusout();
+        $id = $(this).attr('data-id');
+        $name = $(this).find('.user-name').text();
+        $username = $(this).find('.username').text();
+        $countunseen = $(this).find('.countunseen').text('');
+        $user_avatar = $(this).find('.user-avatar img').attr('src');
+        $('#user-avatar').val($user_avatar);
+        $('#user-id').val($id);
+        $('.user-link').text($name);
+        $('.user-link').attr('href', $(this).attr('href'));
+        $('.messages').empty();
+        $('#delete-conversation').html('<i class="fa fa-trash fa-fw"></i>');
+        socket.emit('get messages', {id: $('#user-id').val(), last_id: 0});
+        fetchMessages();
+    });
+
+    if ($('#user-id').val() > 0) {
+        setTimeout(function () {
+            fetchMessages();
+        }, messagesInterval);
+    }
+    $('.user-messages').scrollTop($('.user-messages')[0].scrollHeight);
+    var $id = makeid();
+    var form = $('form#new-message-form');
+
+     $('#search-list').on('keyup', function(event) {
+        socket.emit('check user list', {keyword: $('#search-list').val()});
+    });
+
+    $('#new-message').on('keyup', function(event) {
+        if (event.keyCode == 13 && !event.shiftKey) {
+            submitForm();
+        } else {
+            if ($('#new-message').val()) {
+                socket.emit('create typing', {id: $('#user-id').val()});
+            } else {
+                socket.emit('remove typing', {id: $('#user-id').val()});
+            }
+        } 
+    });
+});
+
+function submitForm() {
+    if ($('.messages').length == 0) {
+        $('.user-messages').html('<div class="messages"></div>');
+    }
+    if ($('#new-message').val().length > 1) {
+        $id = makeid();
+        data_to_emit = {
+            id: $('#user-id').val(),
+            message_id: $id,
+            text: $('#new-message').val()
+        };
+        $('.messages').append('<div class="data_message" data-id="' + $id + '"><div class="message to-user pull-right" data-id=""><div class="user-message">' + nl2br(escapeHTML($('#new-message').val())) + '</div><div class="clear"></div></div><div class="clear"></div></div>');
+        $('#new-message').val('');
+        $('.user-messages').scrollTop($('.user-messages')[0].scrollHeight);
+        socket.emit('send message', data_to_emit);
+        socket.emit('check user list', {keyword: $('#search-list').val()});
+    } else {
+        $('#new-message').val('');
+    }
+};
+    
+$('.mobilemsgclose').on('click',function (){
+    $('.mobileleftpane').fadeOut(100);
+    //$('.mobilerightpane').fadeIn(100);
+});
+</script>

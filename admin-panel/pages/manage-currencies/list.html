@@ -1,0 +1,20 @@
+<tr class="setting-banlist" id="currency_<?php echo $pt->currency_value?>" data_selected="<?php echo $pt->currency_value?>">
+  <td><input type="checkbox" id="check-data-<?php echo $pt->currency_value?>" class="delete-checkbox filled-in"><label for="check-data-<?php echo $pt->currency_value?>"></label></td>
+   <td><?php echo $pt->currency_key?></td>
+   <td>
+      <div>
+         <?php echo $pt->currency_value;?>
+      </div>
+   </td>
+   <td>
+     <?php echo $pt->config->currency_symbol_array[$pt->currency_value] ?>
+   </td>
+   <td>
+     <?php echo ($pt->currency_value == $pt->config->payment_currency) ? '<span class="label label-success">Default</span>': '';?>
+   </td>
+   <td>
+      <a href="javascript:void(0)" onclick="make_default('<?php echo $pt->currency_value; ?>')" class="btn bg-success admn_table_btn">Set Default</a>
+      <a href="javascript:void(0)" onclick="open_edit_currency('<?php echo $pt->currency_value; ?>','<?php echo($pt->config->currency_symbol_array[$pt->currency_value]) ?>','<?php echo $pt->currency_key?>')" class="btn bg-info admn_table_btn">Edit</a>
+      <a href="javascript:void(0)" onclick="delete_currency('<?php echo $pt->currency_value; ?>','hide')" class="btn bg-danger admn_table_btn">DELETE</a>
+   </td>
+</tr>

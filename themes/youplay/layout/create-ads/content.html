@@ -1,0 +1,235 @@
+<div class="row">
+	<div class="col-md-3">
+		<div class="settings-sidebar">
+			<ul class="list-group scrollmenu">
+				<div class="pt_ads_mini_bal">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M14 2a8 8 0 0 1 3.292 15.293A8 8 0 1 1 6.706 6.707 8.003 8.003 0 0 1 14 2zm-3 7H9v1a2.5 2.5 0 0 0-.164 4.995L9 15h2l.09.008a.5.5 0 0 1 0 .984L11 16H7v2h2v1h2v-1a2.5 2.5 0 0 0 .164-4.995L11 13H9l-.09-.008a.5.5 0 0 1 0-.984L9 12h4v-2h-2V9zm3-5a5.985 5.985 0 0 0-4.484 2.013 8 8 0 0 1 8.47 8.471A6 6 0 0 0 14 4z"/></svg>
+					<div>
+						<p>{{LANG balance}}</p>
+						<b>{{CURRENCY}}{{ME wallet}}</b>
+					</div>
+				</div>
+				<li class="list-group-item">
+					<a href="{{LINK ads}}" data-load="?link1=ads">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M13 21v2h-2v-2H3a1 1 0 0 1-1-1V6h20v14a1 1 0 0 1-1 1h-8zM8 10a3 3 0 1 0 3 3H8v-3zm5 0v2h6v-2h-6zm0 4v2h6v-2h-6zM2 3h20v2H2V3z"/></svg> {{LANG ads}}
+					</a>
+				</li>
+				<li class="list-group-item">
+					<a href="{{LINK ads}}" data-load="?link1=ads">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M22 6h-7a6 6 0 1 0 0 12h7v2a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h18a1 1 0 0 1 1 1v2zm-7 2h8v8h-8a4 4 0 1 1 0-8zm0 3v2h3v-2h-3z"/></svg> {{LANG wallet}}
+					</a>
+				</li>
+				<li class="list-group-item active">
+					<a href="{{LINK ads/create}}" data-load="?link1=create_ads">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm7 8H7v2h4v4h2v-4h4v-2h-4V7h-2v4z"/></svg> {{LANG create_ad}}
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="col-md-9">
+		<div class="create-new-ad-container">
+			<div class="pt_create_ads_hdr">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M9.243 19H21v2H3v-4.243l9.9-9.9 4.242 4.244L9.242 19zm5.07-13.556l2.122-2.122a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414l-2.122 2.121-4.242-4.242z"/></svg> {{LANG ads}}&nbsp;&nbsp;&nbsp;<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M13.172 12l-4.95-4.95 1.414-1.414L16 12l-6.364 6.364-1.414-1.414z"/></svg>&nbsp;&nbsp;{{LANG create_ad}}
+			</div>
+	
+			<?php if ($pt->user->wallet == '0.00' || $pt->user->wallet == '0') { ?>
+				<div class="alert alert-warning">{{LANG balance_is_0}} <a href="{{LINK ads}}" data-load="?link1=ads">{{LANG top_up}}</a></div>
+			<?php } ?>
+	
+			<form class="user-ads-settings-form pt_forms pt_create_ads_form" method="POST">
+				<div class="user-ads-settings-alert"></div>
+				<div class="progress hidden">
+					<div class="upload-progress-bar bar progress-bar progress-bar-striped active"></div>
+					<div class="percent">0%</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-7 col-md-7">   
+						<div class="alert alert-success ads-settings-alert"></div>
+						<div class="form-group">
+							<label class="form-label" for="name">{{LANG name}}</label>
+							<input type="text" id="name" name="name" class="form-control" <?php if ($pt->user->wallet == '0.00' || $pt->user->wallet == '0') { echo 'disabled'; }?>>   
+						</div>
+						<div class="form-group">
+							<label class="form-label" for="url">URL</label>
+							<input type="text" id="url" name="url" class="form-control" <?php if ($pt->user->wallet == '0.00' || $pt->user->wallet == '0') { echo 'disabled'; }?>>
+						</div>
+						<div class="form-group">
+							<label class="form-label" for="title">{{LANG title}}</label>
+							<input type="text" id="title" name="title" class="form-control" <?php if ($pt->user->wallet == '0.00' || $pt->user->wallet == '0') { echo 'disabled'; }?>>
+						</div>
+						<div class="form-group">
+							<label class="form-label" for="desc">{{LANG description}}</label>
+							<textarea name="desc" id="desc" rows="4" class="form-control" <?php if ($pt->user->wallet == '0.00' || $pt->user->wallet == '0') { echo 'disabled'; }?>></textarea>
+						</div>
+						<div class="form-group">
+							<label class="form-label">{{LANG select_media}}</label>
+							<div class="btn-file pt_create_ads_upload" onclick="document.getElementById('ad-media').click(); return false">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16.5,6V17.5A4,4 0 0,1 12.5,21.5A4,4 0 0,1 8.5,17.5V5A2.5,2.5 0 0,1 11,2.5A2.5,2.5 0 0,1 13.5,5V15.5A1,1 0 0,1 12.5,16.5A1,1 0 0,1 11.5,15.5V6H10V15.5A2.5,2.5 0 0,0 12.5,18A2.5,2.5 0 0,0 15,15.5V5A4,4 0 0,0 11,1A4,4 0 0,0 7,5V17.5A5.5,5.5 0 0,0 12.5,23A5.5,5.5 0 0,0 18,17.5V6H16.5Z"></path></svg>
+								<div>
+									<b id="pt-ad-file-name">{{LANG browse_to_upload}}</b>
+								</div>
+							</div>
+							<input type="file" class="media hidden" id="ad-media" name="media" accept="image/* video/*" <?php if ($pt->user->wallet == '0.00' || $pt->user->wallet == '0') { echo 'disabled'; }?>>
+						</div>
+					</div>
+					<div class="col-lg-5 col-md-5">
+						<div class="form-group" style="overflow: visible;">
+							<label class="form-label">{{LANG traget_audience}}</label>
+							<select class="form-control selectpicker show-menu-arrow show-tick" multiple name="audience-list[]" data-live-search="true" title="{{LANG traget_audience}}" data-actions-box="true" name="audience-list[]" <?php if ($pt->user->wallet == '0.00' || $pt->user->wallet == '0') { echo 'disabled'; }?>>
+								<?php foreach ($countries_name as $country_id => $country_name): ?>
+									<option value="<?php echo($country_id); ?>"><?php echo($country_name); ?></option>
+								<?php endforeach; ?>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="ad-placement">{{LANG placement}}</label>
+							<select name="placement" id="ad-placement" class="form-control col-md-12" <?php if ($pt->user->wallet == '0.00' || $pt->user->wallet == '0') { echo 'disabled'; }?>>
+								<option value="1">{{LANG video_ad}}</option>
+								<option value="2">{{LANG page_ad}}</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="cost">{{LANG pricing}}</label>
+							<select name="cost" id="cost" class="form-control col-md-12">
+								<option value="1">{{LANG cost_click}} ({{CURRENCY}} {{CONFIG ad_c_price}})</option>
+								<option value="2">{{LANG cost_view}} ({{CURRENCY}} {{CONFIG ad_v_price}})</option>
+							</select>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="form-label" for="day_limit">{{LANG ad_day_limit}}</label>
+									<input type="number" id="day_limit" name="day_limit" class="form-control" placeholder="0" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="form-label" for="lifetime_limit">{{LANG ad_lifetime_limit}}</label>
+									<input type="number" id="lifetime_limit" name="lifetime_limit" class="form-control" placeholder="0" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+				<br>
+				<div class="form-group">
+					<button type="submit" class="btn btn-main setting-panel-mdbtn" style="margin: 0;" id="submit-btn" <?php if ($pt->user->wallet == '0.00' || $pt->user->wallet == '0') { echo 'disabled'; }?>><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> {{LANG publish}}</button>
+				</div>
+			</form>     
+			<div class="clear"></div>
+		</div>
+	</div>
+</div>
+
+
+
+<br><br>
+
+<style>.create-new-ad-container .progress{border-radius: 0px;}</style>
+
+<script>
+	$("#ad-media").change(function () {
+		var filename = $(this).val().replace(/C:\\fakepath\\/i, '');
+		$("#pt-ad-file-name").text(filename);
+    });
+	
+  var bar         = $('.bar');
+  var percent     = $('.percent');
+
+	jQuery(document).ready(function($) {
+	  $('.selectpicker').selectpicker({});
+
+    $("#ad-placement").change(function(event) {
+      if ($(this).val() == 2) {
+        $("#cost").find("option[value='2']").removeAttr('selected').attr('disabled', 'disabled');
+      }
+      
+      else{
+        $("#cost").find("option").removeAttr('disabled');
+      }
+    });
+
+    $('.user-ads-settings-form').submit(function(event) {
+      if ($("#ad-placement").val() == 2 && $("#ad-media").val() != ''){  
+        var mediafile = PT_HasExtension('#ad-media', ['.jpg', '.gif', '.png', '.jpeg']);
+        if (!mediafile){
+          scrollToTop();
+          $('#ad-media').val('');
+          $(".user-ads-settings-alert").html('<div class="alert alert-danger bg-danger"><i class="fa fa-info-circle"></i> {{LANG invalid_pagead_media}}</div>');
+          return false;
+        }
+      }
+    });
+
+    $('.user-ads-settings-form').ajaxForm({
+      url: '{{LINK aj/ads/create}}?hash=' + $('.main_session').val(),
+      dataType:"json",
+      beforeSend: function() {
+
+        var mediafile = $("#ad-media").prop('files');
+        <?php if ($pt->config->max_upload > 0) { ?>
+        if (mediafile[0].size > "{{CONFIG max_upload}}") {
+           swal({
+              title: '{{LANG error}}',
+              text:  "{{LANG file_is_too_big}} <?php echo pt_size_format($pt->config->max_upload); ?>",
+              type: 'error',
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'OK',
+              buttonsStyling: true,
+              confirmButtonClass: 'btn btn-success',
+           }).then(function(){
+              swal.close();
+              $("#ad-media").val('');
+           },
+           function() {
+              swal.close();
+              $("#ad-media").val('');
+           });
+           return false;
+        }
+        <?php } ?>
+
+        if ($("#ad-media").val()) {
+          $(".user-ads-settings-alert").html($('.progress').clone(true).addClass('progress-clone').removeClass('hidden'));
+          bar     = $('.progress-clone').find('.bar');
+          percent = $('.progress-clone').find('.percent');
+        }
+
+        $('#submit-btn').attr('disabled', true).find('span').text("{{LANG please_wait}}");
+        
+      },
+      uploadProgress: function(event, position, total, percentComplete) {
+          if(percentComplete > 50) {
+            percent.addClass('white');
+          }
+          var percentVal = percentComplete + '%';
+          bar.width(percentVal);
+          percent.html(percentVal);
+
+          if (percentComplete == 100) {
+            $(".user-ads-settings-alert").empty();
+          }
+      },
+      success: function(data) {
+        scrollToTop();
+        if (data.status == 200){
+          $(".user-ads-settings-alert").html('<div class="alert alert-success bg-success"><i class="fa fa-check"></i> '+
+            data.message
+            +'</div>');
+          PT_Delay(function(){
+            window.location.href = '{{LINK ads}}';
+          },2000);
+          
+        }
+        else {
+          $('#submit-btn').removeAttr('disabled').find('span').text('{{LANG publish}}');
+          $(".user-ads-settings-alert").html('<div class="alert alert-danger bg-danger"><i class="fa fa-info-circle"></i> '+
+            data.message
+            +'</div>');
+        }
+      }
+    });
+	});
+</script> 

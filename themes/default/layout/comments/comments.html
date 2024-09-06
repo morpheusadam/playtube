@@ -1,0 +1,64 @@
+<div class="main-comment" data-id="{{ID}}" id="comment-{{ID}}">
+	<div class="main-comment-data-sp">
+		<div class="user-avatar pull-left">
+			<img src="{{USER avatar}}" alt="{{USER name}}">
+		</div>
+		<div class="user-name">
+			<div class="dropdown pull-right" id="video_dropdown">
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu dropdown-toggle"  id="dropdownMenuButton_{{ID}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+			  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton_{{ID}}">
+				<div class="dropdown-item">
+					<a href="javascript:void(0)" onclick="PT_DeleteComment({{ID}});">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg> {{LANG delete}}
+					</a>
+				</div>
+				<?php if ($pt->comment->user_id == $pt->user->id || PT_IsAdmin()) { ?>
+				<div class="dropdown-item">
+					<a href="javascript:void(0)" onclick="edit_comment({{ID}})">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit">
+						  <polygon points="16 3 21 8 8 21 3 21 3 16 16 3"></polygon>
+					   </svg> {{LANG edit}}
+					</a>
+				</div>
+				<?php } ?>
+			  </div>
+			</div>
+					
+			<span class="pin">
+				<?php if (!empty($pt->pin)): ?>
+               
+				<?php endif; ?>
+			</span>
+			<a href="{{USER url}}" data-load="?link1=timeline&id={{USER username}}">{{USER name}}</a>
+			<?php if ($pt->is_verified == true): ?>
+				<i class="fa fa-check-circle fa-fw verified"></i>
+			<?php endif; ?>
+			<small>{{TIME}}</small>
+		</div>
+		<div class="user-comment user_comment_">
+			<p class="comment-text-{{ID}}" id="comment-text-{{ID}}">{{TEXT}}</p>
+			<div class="width-100 div-vote-comment">
+				<span class="div-vote-comment-btn">
+					<span onclick="PT_LikeComments(this,'up','{{ID}}');" data-comment-likes="{{ID}}">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up {{LIKED}}"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> <span>{{LIKES}}</span>
+					</span>&nbsp;&nbsp;
+					<span onclick="PT_LikeComments(this,'down','{{ID}}');" data-comment-dislikes="{{ID}}">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down {{DIS_LIKED}}"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path></svg> <span>{{DIS_LIKES}}</span>
+					</span>&nbsp;&nbsp;
+					<span data-comment-dislikes="{{ID}}">
+					</span>
+				</span>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+</div>
+<script type="text/javascript">
+	function PT_DeleteComment(id) {
+	  if (!id) { return false; }
+	  if (!confirm('{{LANG delete_confirmation}}')) { return false; }
+	  $('#comment_info_' + id).slideUp('fast');
+	  $.post('{{LINK aj/delete-comment}}', {id: id});
+	}
+</script>

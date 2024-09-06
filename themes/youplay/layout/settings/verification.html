@@ -1,0 +1,120 @@
+<?php if ($pt->user->verified == 1): ?>
+	<div class="user-setting-panel pt_shadow">
+		<div class="empty_state"><svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/></svg> {{LANG u_are_verified}}</div>
+	</div>
+<?php elseif(pt_vrequest_exists()): ?>
+	<div class="user-setting-panel pt_shadow">
+		<div class="empty_state"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> {{LANG verif_request_received}}</div>
+	</div>
+<?php else: ?>
+	<form class="form-horizontal user-setting-panel verifiacation-request-form pt_forms pt_shadow" id="verifiacation-request-form" method="POST">
+		<div class="yp_sett_header">
+			<h4>{{LANG verification}} {{LANG settings}}</h4>
+		</div>
+	    <div class="setting-delete-alert"></div>
+	    	<div class="verifiacation-request-alert"></div>
+	    	<div class="fluid">
+		        <div class="upload-files">
+	        		<div class="col-md-4 no-padding-both">
+	        			<div class="image-renderer" id="image-renderer">
+	        				<div>
+	        					<span>
+		        					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+		        				</span>
+	        				</div>
+	        			</div>
+	        			<div class="clear"></div>
+	        		</div>
+	        		<div class="col-md-8">
+	        			<h4>{{LANG upload_id}}</h4>
+	        			<p>{{LANG select_id}}</p>
+		        		<div>
+		        			<button class="btn btn-main btn-lg" type="button" onclick="$('#identity').trigger('click');">
+			        			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-upload"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>&nbsp; {{LANG choose_file}}
+			        		</button>
+		        		</div>
+	        		</div>
+		        </div>
+	        </div>
+	       	<br>
+	        <div class="form-group">
+				<div class="col-md-6">
+					<input id="first_name" name="first_name" type="text" placeholder="{{LANG first_name}}" class="form-control input-md">
+				</div>
+				<div class="col-md-6">
+					<input id="last_name" name="last_name" type="text" placeholder="{{LANG last_name}}" class="form-control input-md">
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-12">
+					<textarea name="message" rows="10" class="form-control" placeholder="{{LANG message}}..."></textarea>
+				</div>
+			</div>
+			<div>
+				<button id="submit" name="submit" class="btn btn-main setting-panel-mdbtn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg> {{LANG submit_request}}</button>
+			</div>
+	        
+	        <input type="hidden" name="hash_id" value="<?php echo PT_CreateSession()?>">
+	        <input type="hidden" name="user_id" value="{{USER id}}">
+	        <input type="file" name="identity" id="identity" class="hidden" accept="image/*">
+	        <!-- Button (Double) -->
+	        
+	        <div class="clear"></div>
+	</form>
+<?php endif; ?>
+
+<script>
+	
+	jQuery(document).ready(function($) {
+		                                       
+		$('#identity').change(function(event) {
+			let file_size = $(this).prop('files')[0].size;
+			<?php if ($pt->config->max_upload > 0) { ?>
+		    if (file_size > "{{CONFIG max_upload}}") {
+		        swal({
+		            title: '{{LANG error}}',
+		            text:  "{{LANG file_is_too_big}} <?php echo pt_size_format($pt->config->max_upload); ?>",
+		            type: 'error',
+		            confirmButtonColor: '#3085d6',
+		            cancelButtonColor: '#d33',
+		            confirmButtonText: 'OK',
+		            buttonsStyling: true,
+		            confirmButtonClass: 'btn btn-success',
+		        }).then(function(){
+		            swal.close();
+		            $(this).val('');
+		         },
+		         function() {
+		            swal.close();
+		            $(this).val('');
+		         });
+		         return false;
+		    }
+		    <?php } ?>
+		    	$("#image-renderer").html("<img src='" + window.URL.createObjectURL(this.files[0]) + "' alt='Picture'>");
+		});
+
+		$('#verifiacation-request-form').ajaxForm({
+		    url: '{{LINK aj/verification/request}}?hash=' + $('.main_session').val(),
+	        dataType:'json',
+		    beforeSend: function() {
+		    	/* pass */
+		    },
+		    success: function(data) {   
+		    	scrollToTop();  
+	            if (data.status == 200) {
+	            	$('.verifiacation-request-alert').html('<div class="alert alert-success bg-success"><i class="fa fa-check"></i> '+data.message+'</div>');
+	            	$('#verifiacation-request-form').resetForm();
+
+	            	PT_Delay(function(){
+	            		window.location.href = "{{LINK home}}";
+	            	},1500);
+	            }
+	            else{
+	               $('.verifiacation-request-alert').html('<div class="alert alert-danger bg-danger"> <i class="fa fa-info-circle"></i> '+data.message+'</div>');  
+	            }
+		    }
+		});
+	});
+
+</script>

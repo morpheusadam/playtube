@@ -1,0 +1,40 @@
+<script type="text/javascript">
+	var cld = cloudinary.Cloudinary.new({ cloud_name: "demo"});
+	if ('{{VAST_URL}}' != '') {
+		var myAdTag = "{{VAST_URL}}";
+
+		var player = cld.videoPlayer("my-video", {
+		  ads: {
+		    adTagUrl: myAdTag, 
+		    locale:"es",
+		    adsInPlaylist: 'first-video', 
+		    adLabel:"{{LANG skip_ad}}"
+		    }
+		});
+		$('.vjs-big-play-button').css('z-index', '100');
+		$('.vjs-big-play-button').on('click', function(event) {
+			$(this).css('z-index', 'unset');
+		});
+	}
+	else{
+		var player = cld.videoPlayer("my-video", {});
+	}
+    var media = document.querySelector("video");
+    media.addEventListener('ended', function (e) {
+        if ($('#autoplay').is(":checked")) {
+           var url = $('#next-video').find('.pt_video_side_vids').find('a').attr('href');
+           if (url) {
+              window.location.href = url;
+           }
+        }
+        else if ($('[data-litsitem-id]').length > 0){
+          var url = $('#next-video').find('[data-litsitem-id="{{KEY}}"]').next().find('a').attr('href');
+          if (url) {
+            window.location.href = url;
+          }
+        }
+        else{
+          /* pass */
+        }
+    }, false);
+</script>

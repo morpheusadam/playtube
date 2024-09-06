@@ -1,0 +1,32 @@
+<div class="login_page">
+	<div class="login-page">
+		<div class="login-form">
+			<form action="{{LINK forgot_password}}" method="POST">
+				<h4>{{LANG reset_password}}</h4>
+				<p></p>
+				<div class="errors form-group">{{ERRORS}}</div>
+				<div class="errors success form-group">{{SUCCESS}}</div>
+				<div class="pp_mat_input">
+					<input type="email" name="email" id="email" placeholder="{{LANG your_email_address}}" required value="" autofocus>
+					<label for="email">{{LANG your_email_address}}</label>
+				</div>
+				<div class="login_signup_combo">
+					<input type="submit" class="btn btn-main button" value="{{LANG request_new_password}}">
+				</div>
+				<hr>
+				<div class="signup__">
+					{{LANG already_have_account}} <a class="dec" href="{{LINK login}}">{{LANG login_}}</a>
+				</div>
+			</form>
+		</div>    
+	</div>
+</div>
+<script>
+$(function() {
+	$('.button').on('click', function () {
+		if ($('#email').val()) {
+			$(this).val("{{LANG please_wait}}");
+		}
+	});
+});
+</script>

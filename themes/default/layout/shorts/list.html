@@ -1,0 +1,115 @@
+<div class="swiper-slide" data-shorts-url="{{URL}}" video-id="{{ID}}" data-title="{{TITLE}}">
+    <?php if ($pt->converted) { ?>
+		<div class="vid_bg">
+			<img src="{{THUMBNAIL}}">
+			<div></div>
+		</div>
+		<div class="videocontainer" id="videocontainer_{{ID}}">
+
+			<div class="video-staand">
+				<video style="position: relative;" class="rotated <?php if ($pt->config->player_type == 'videojs') { ?>video-js<?php } ?>" loop id="my-video<?php if ($pt->config->player_type == 'fluidPlayer' || $pt->config->player_type == 'plyr') { ?>_<?php echo $pt->get_video->id; ?><?php } ?>" <?php if ($pt->config->player_type == 'videojs') { ?> data-setup=''  <?php } ?> controls <?php if (empty($pt->ad_image)) { ?>  <?php } ?> poster="{{THUMBNAIL}}" <?php if ($pt->is_first_video) { ?>muted<?php } ?> playsinline>
+					<?php if (!empty($pt->video_4096)) { ?>
+						<source src="{{VIDEO_LOCATION_4096}}" type="{{VIDEO_TYPE}}" data-quality="4K" title='4K' label='4K' res='4096' size='4096'>
+					<?php } ?>
+					<?php if (!empty($pt->video_2048)) { ?>
+						<source src="{{VIDEO_LOCATION_2048}}" type="{{VIDEO_TYPE}}" data-quality="2K" title='2K' label='2K' res='2048' size='2048'>
+					<?php } ?>
+					<?php if (!empty($pt->video_1080)) { ?>
+						<source src="{{VIDEO_LOCATION_1080}}" type="{{VIDEO_TYPE}}" data-quality="1080p" title='1080p' label='1080p' res='1080' size='1080'>
+					<?php } ?>
+					<?php if (!empty($pt->video_720)) { ?>
+						<source src="{{VIDEO_LOCATION_720}}" type="{{VIDEO_TYPE}}" data-quality="720p" title='720p' label='720p' res='720' size='720'>
+					<?php } ?>
+					<?php if (!empty($pt->video_480)) { ?>
+						<source src="{{VIDEO_LOCATION_480}}" type="{{VIDEO_TYPE}}" data-quality="480p" title='480p' label='480p' res='480' size='480'>
+					<?php } ?>
+					<?php if (!empty($pt->video_360)) { ?>
+						<source src="{{VIDEO_LOCATION_360}}" type="{{VIDEO_TYPE}}" data-quality="360p" title='360p' label='360p' res='360' size='360'>
+					<?php } ?>
+					<?php if (!empty($pt->video_240)) { ?>
+						<source src="{{VIDEO_LOCATION_240}}" type="{{VIDEO_TYPE}}" data-quality="240p" title='240p' label='240p' res='240' size='240'>
+					<?php } ?>
+					<?php if (!empty($pt->get_video->youtube) || (!empty($pt->get_video->video_location) && empty($pt->video_240))) { ?>
+						<source src="{{VIDEO_LOCATION}}" type="{{VIDEO_TYPE}}" data-quality="HD" title='HD' label='HD' res='<?php echo(!empty($pt->video_res) ? $pt->video_res : '360') ?>'>
+					<?php } ?>
+					Your browser does not support HTML5 video.
+				</video>
+			</div>
+			<div class="shorts_events">
+				<p><?php echo $pt->get_video->markup_description ?></p>
+				<div>
+					<?php if ($pt->get_video->is_owner == true) { ?>
+						<div class="pointer">
+							<a href="{{LINK edit-video/{{ID}}}}" data-load="?link1=edit-video&id=category&id={{ID}}">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#fff" d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" /></svg>
+							</a>
+						</div>
+					<?php } ?>
+					<div class="user_avatar">
+						<a href="{{USER url}}" data-load="?link1=timeline&id=<?php echo($pt->get_video->owner->username) ?>"><img src="<?php echo($pt->get_video->owner->avatar) ?>" alt="<?php echo($pt->get_video->owner->name) ?>"></a>
+					</div>
+					<div class="like-btn-{{ID}} {{LIKE_ACTIVE_CLASS}} pointer" onclick="<?php echo(IS_LOGGED ? "ShortLikeSystem('{{ID}}', 'like', this)" : 'location.href = \''.PT_Link('login').'\'') ?>" data-likes="{{RAEL_LIKES}}" {{ISLIKED}}>
+						<svg xmlns="http://www.w3.org/2000/svg" class="feather-thumbs-up" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M23,10C23,8.89 22.1,8 21,8H14.68L15.64,3.43C15.66,3.33 15.67,3.22 15.67,3.11C15.67,2.7 15.5,2.32 15.23,2.05L14.17,1L7.59,7.58C7.22,7.95 7,8.45 7,9V19A2,2 0 0,0 9,21H18C18.83,21 19.54,20.5 19.84,19.78L22.86,12.73C22.95,12.5 23,12.26 23,12V10M1,21H5V9H1V21Z"></path></svg>
+						<p class="short_likes">{{LIKES}}</p>
+					</div>
+					<div class="dislike-btn-{{ID}} {{DIS_ACTIVE_CLASS}} pointer" onclick="<?php echo(IS_LOGGED ? "ShortLikeSystem('{{ID}}', 'dislike', this)" : 'location.href = \''.PT_Link('login').'\'') ?>" data-likes="{{RAEL_DISLIKES}}" {{ISDISLIKED}}>
+						<svg xmlns="http://www.w3.org/2000/svg" class="feather-thumbs-down" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,15H23V3H19M15,3H6C5.17,3 4.46,3.5 4.16,4.22L1.14,11.27C1.05,11.5 1,11.74 1,12V14A2,2 0 0,0 3,16H9.31L8.36,20.57C8.34,20.67 8.33,20.77 8.33,20.88C8.33,21.3 8.5,21.67 8.77,21.94L9.83,23L16.41,16.41C16.78,16.05 17,15.55 17,15V5C17,3.89 16.1,3 15,3Z"></path></svg>
+						<p class="short_dislikes">{{DISLIKES}}</p>
+					</div>
+					<div class="pointer" onclick="<?php echo(IS_LOGGED ? "OpenCommentsModal('{{ID}}')" : 'location.href = \''.PT_Link('login').'\'') ?>">
+						<svg xmlns="http://www.w3.org/2000/svg" class="feather-thumbs-down" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M9,22A1,1 0 0,1 8,21V18H4A2,2 0 0,1 2,16V4C2,2.89 2.9,2 4,2H20A2,2 0 0,1 22,4V16A2,2 0 0,1 20,18H13.9L10.2,21.71C10,21.9 9.75,22 9.5,22V22H9M5,5V7H19V5H5M5,9V11H13V9H5M5,13V15H15V13H5Z"></path></svg>
+						<p>{{COUNT_COMMENTS}}</p>
+					</div>
+					<div>
+						<svg xmlns="http://www.w3.org/2000/svg" class="feather-thumbs-down" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z"></path></svg>
+						<p id="video-views-count-{{ID}}">{{VIEWS}}</p>
+					</div>
+				</div>
+			</div>
+			<script type="text/javascript">
+				$('#videocontainer_{{ID}} video').mediaelementplayer({
+					pluginPath: 'https://cdnjs.com/libraries/mediaelement-plugins/',
+					shimScriptAccess: 'always',
+					autoplay: true,
+					features: ['volume'],
+					jumpForwardInterval: 20,
+					success: function (media) {
+						media.addEventListener('ended', function (e) {}, false);
+						media.addEventListener('playing', function (e) {});
+					},
+				});
+			</script>
+		</div>
+	<?php }else{ ?>
+		<div class="player-video">
+			<div class="video-processing">
+			   <img src="{{THUMBNAIL}}" alt="" style="width: 100%;">
+			   <div>
+				  <h5>
+						<p>
+						   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="feather feather-loader spin spin-svg">
+							  <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
+						   </svg>
+						</p>
+						<?php if (IS_LOGGED && $pt->get_video->user_id == $pt->user->id): ?>
+						{{LANG ur_video_porcessing}}
+						<?php else: ?>
+						{{LANG this_video_porcessing}}
+						<?php endif; ?>
+				  </h5>
+			   </div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			<?php if ($pt->converted !== true): ?>
+			setInterval(function () {
+			  $.get('{{LINK aj/check-video-status}}', {id: "{{ID}}"}, function(data) {
+				if (data.status == 200) {
+				  location.href = "{{URL}}";
+				}
+			  });
+			}, 5000);
+			<?php endif; ?>
+		</script>
+	<?php } ?>
+</div>

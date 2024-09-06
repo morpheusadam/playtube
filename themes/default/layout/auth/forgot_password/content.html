@@ -1,0 +1,91 @@
+<div class="new_margin_login">
+
+	<div class="new_login_page login-page">
+    <div class="login-form">
+    	<form action="{{LINK forgot_password}}" method="POST">
+    	    <h4>{{LANG reset_password}}<span>.</span></h4>
+			<div class="new-here">
+				{{LANG got_your_password}} <a class="new_link" href="{{LINK login}}">{{LANG login_}}</a>
+			</div>
+    	    <div class="errors form-group">{{ERRORS}}</div>
+    	    <div class="errors success form-group">{{SUCCESS}}</div>
+			<div class="form-group">
+				<input type="text" name="email" placeholder=" " id="email" required value="">
+				<label>{{LANG your_email_address}}</label>
+			</div>
+			<div class="" style="margin-bottom: 30px;">
+				<input type="submit" class="button main" value ="{{LANG request_new_password}}">
+			</div>
+		</form>
+    </div>    
+</div>
+</div>
+<!-- <ul class="bg-bubbles">
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+</ul> -->
+<div class="login_path">
+	<img src="{{CONFIG theme_url}}/img/login_line.svg">
+</div>
+<script>
+$(function() {
+	$('.button').on('click', function () {
+		if ($('#email').val()) {
+			$(this).val("{{LANG please_wait}}");
+		}
+	});
+});
+</script>
+<style>
+.navbar-right, .navbar-left{
+		display: none !important;
+	}
+	.navbar-fixed-top {
+		position: unset;
+	} 
+	
+/*.bg-bubbles {
+  background: -webkit-linear-gradient(top left, #{{COLOR1}} 0%, #{{COLOR2}} 100%);
+  background: linear-gradient(to bottom right, #{{COLOR1}} 0%, #{{COLOR2}} 100%);
+}*/
+	nav.navbar-findcond .logo-img {
+		margin-top: 5% !important;
+    margin-left: 6% !important;
+    max-width: none;
+	}
+	nav.navbar-findcond .logo-img img {
+    width: 100%;
+    max-width: 153px;
+    max-height: 48px;
+}
+.login-form input[type=submit] {
+	color: #{{COLOR1}} !important;
+}
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #fff;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    #fff;
+   opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    #fff;
+   opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:    #fff;
+}
+::-ms-input-placeholder { /* Microsoft Edge */
+   color:    #fff;
+}
+</style>

@@ -1,0 +1,73 @@
+<div class="new_margin_login">
+<div class="new_login_page login-page">
+    <div class="login-form">
+    	<form action="{{LINK two_factor_submit}}" method="POST">
+			<p class="text-center" style="color: #fff;">{{MESSAGE}}</p>
+    	    <div class="errors form-group">{{ERROR}}</div>
+			<div class="form-group">
+				
+				<input type="text" name="code" id="code" placeholder=" " required value="">
+				<label>{{LANG confirm_code}}</label>
+			</div>
+			<div class="form-group">
+				<input type="submit" class="button main" value ="{{LANG submit}}">
+			</div>
+		</form>
+    </div>    
+</div>
+</div>
+<div class="login_path">
+	<img src="{{CONFIG theme_url}}/img/login_line.svg">
+</div>
+<script>
+$(function() {
+	$('[type = submit]').on('click', function () {
+		if ($('#code').val()) {
+			$(this).val("{{LANG please_wait}}");
+		}
+	});
+});
+</script>
+<style>
+.navbar-right, .navbar-left{
+		display: none !important;
+	}
+	.navbar-fixed-top {
+		position: unset;
+	} 
+	
+/*.bg-bubbles {
+  background: -webkit-linear-gradient(top left, #{{COLOR1}} 0%, #{{COLOR2}} 100%);
+  background: linear-gradient(to bottom right, #{{COLOR1}} 0%, #{{COLOR2}} 100%);
+}*/
+	nav.navbar-findcond .logo-img {
+		margin-top: 5% !important;
+    margin-left: 6% !important;
+    max-width: none;
+	}
+	nav.navbar-findcond .logo-img img {
+    width: 100%;
+    max-width: 153px;
+    max-height: 48px;
+}
+.login-form input[type=submit] {
+	color: #0095D8 !important;
+}
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #fff;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    #fff;
+   opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    #fff;
+   opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:    #fff;
+}
+::-ms-input-placeholder { /* Microsoft Edge */
+   color:    #fff;
+}
+</style>

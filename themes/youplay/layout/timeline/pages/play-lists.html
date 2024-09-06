@@ -1,0 +1,12 @@
+<div class="videos-latest-list play_list">
+	<h3 class="recent-articles"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="20" width="20" fill="#04abf2"><path d="M19,9H2V11H19V9M19,5H2V7H19V5M2,15H15V13H2V15M17,13V19L22,16L17,13Z"/></svg>&nbsp;&nbsp;&nbsp;{{LANG play_lists}}</h3>
+	<div class="row pt_timeline_vids">
+		{{VIDEOS}}
+	</div>
+</div>
+<?php if (@$pt->videos_count > 1) { ?>
+<div class="watch-video-show-more desc load-more" data-type="profile_videos">
+   {{LANG show_more}}
+</div>
+<?php } ?>
+<div class="clear"></div>

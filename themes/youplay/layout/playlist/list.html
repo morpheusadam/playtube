@@ -1,0 +1,25 @@
+<div class="col-md-3 col-sm-6 play-lists" data-playlist="{{ID}}">
+	<a href="{{URL}}" data-load="?link1=watch&id={{VIDEO_ID_}}&list={{LIST_ID}}">
+		<div class="video-latest-list video-wrapper" data-id="{{ID}}" data-views="{{VIEWS}}" style="background-image: url({{THUMBNAIL}})">
+			<div class="play_list_content"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM10.622 8.415l4.879 3.252a.4.4 0 0 1 0 .666l-4.88 3.252a.4.4 0 0 1-.621-.332V8.747a.4.4 0 0 1 .622-.332z" fill="currentColor"/></svg> {{LANG play_list_item}} {{COUNT}}</div>
+		</div>
+	</a> 
+	<div class="plist_bottom">
+		<h2><a href="{{URL}}" data-load="?link1=watch&id={{VIDEO_ID_}}&list={{LIST_ID}}">{{TITLE}}</a></h2>
+		<?php if (IS_LOGGED == true && $pt->isowner == true): ?> 
+			<div class="ddown-menu">
+				<div class="dropdown">
+					<span class="dropdown-toggle pointer" data-toggle="dropdown"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"><path fill="currentColor" d="M16,12A2,2 0 0,1 18,10A2,2 0 0,1 20,12A2,2 0 0,1 18,14A2,2 0 0,1 16,12M10,12A2,2 0 0,1 12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12M4,12A2,2 0 0,1 6,10A2,2 0 0,1 8,12A2,2 0 0,1 6,14A2,2 0 0,1 4,12Z" /></svg></span>
+					<ul class="dropdown-menu pull-left">
+						<li onclick="PT_EditList('{{ID}}');">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" /></svg> {{LANG edit}}
+						</li>
+						<li onclick="PT_DeleteList('{{ID}}');">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" /></svg> {{LANG delete}}
+						</li>
+					</ul>
+				</div>
+			</div>
+		<?php endif; ?>
+	</div>
+</div>

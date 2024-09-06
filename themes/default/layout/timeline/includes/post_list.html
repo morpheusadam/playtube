@@ -1,0 +1,37 @@
+
+<style type="text/css">
+	.pt_main_chnl_content_title {margin-bottom: 0 !important}
+</style>
+<div class="" data-id="{{ID}}" id="activity-{{ID}}">
+	<div class="pt_actv_hdr">
+		<div class="avatar">
+			<a href="{{USER url}}" data-load="?link1=timeline&id={{USER username}}"><img src="{{USER avatar}}" alt="{{USER name}}"></a>
+		</div>
+		<div>
+			<h4><a href="{{USER url}}" data-load="?link1=timeline&id={{USER username}}">{{USER name}}</a></h4>
+			<time class="published">{{TIME}}</time>
+		</div>
+	</div>
+	<p>{{TITLE}} <a href="{{URL}}" data-load="?link1=post&id={{ARTICLE_URL}}" class="main">{{LANG read_more}}</a></p>
+	<div class="pt_actv_thmb">
+		<?php if ($pt->post->is_owner) { ?>
+			<div class="dropdown">
+				<span class="dropdown-toggle pointer" data-toggle="dropdown"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z" /></svg></span>
+				<ul class="dropdown-menu dropdown-menu-right">
+					<li><a href="{{LINK edit_activity/{{ID}}}}" data-load="?link1=edit_activity&id={{ID}}">{{LANG edit}}</a></li>
+					<li><a href="javascript:void(0);" onclick="PT_DeleteActivity({{ID}})">{{LANG delete}}</a></li>
+				</ul>
+			</div>
+		<?php } ?>
+		<a href="{{URL}}" data-load="?link1=post&id={{ARTICLE_URL}}" class=""><img src="{{THUMBNAIL}}" alt="{{TITLE}}"></a>
+	</div>
+	<div class="pt_act_likds">
+		<span onclick="PT_LikePost(this,'up');" data-post-likes="{{LIKES}}" data-post-id="{{ID}}">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up {{LIKED}}"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> <span>{{LIKES}}</span>
+		</span>
+		<span onclick="PT_LikePost(this,'down');" data-post-dislikes="{{DIS_LIKES}}" data-post-id="{{ID}}">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down {{DIS_LIKED}}"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path></svg> <span>{{DIS_LIKES}}</span>
+        </span>
+	</div>
+    <div class="clear"></div>
+</div>

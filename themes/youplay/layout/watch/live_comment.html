@@ -1,0 +1,18 @@
+<div class="main-comment live_comments" live_comment_id="{{ID}}">
+	<div class="main-comment-data-sp">
+		<div class="user-avatar pull-left">
+			<img src="{{USER avatar}}" alt="{{USER name}}">
+		</div>
+		<div class="user-name">
+			<a href="{{USER url}}" data-load="?link1=timeline&id={{USER username}}">{{USER name}}</a>
+			<?php if ($pt->is_verified == true): ?>
+				<i class="fa fa-check-circle fa-fw verified"></i>
+			<?php endif; ?>
+		</div>
+		<div class="user-comment">
+			<p class="comment-text">{{TEXT}}</p>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+</div>

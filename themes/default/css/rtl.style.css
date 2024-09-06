@@ -1,0 +1,673 @@
+.user-ads-list-container .user-ads-list-header span.create-ad-btn {float: left;}
+div.dataTables_wrapper div.dataTables_filter {
+    text-align: left;
+}
+.announcement-renderer {
+	left: auto;
+	right: 110px;
+}
+body.side_open .announcement-renderer {
+    left: auto;
+	right: 310px;
+}
+.pull-right {
+    float: left !important;
+}
+.pull-left {
+    float: right !important;
+}
+.article-categories div form input {
+	padding-right: 12px;
+	padding-left: 40px;
+}
+.article-categories div form div button {
+	right: auto;
+	left: 0;
+}
+.postFooter .u-floatLeft svg.feather {
+	transform: rotate(180deg);
+}
+.popular-articles-wrapper .video-thumb img {
+	margin-right: 0;
+	margin-left: 15px;
+}
+.pt_blogcomm_combo img, .user-comments .main-comment .user-avatar {
+	margin-left: 10px;
+	margin-right: 0px;
+}
+.pt_blogcomm_combo button {
+	margin-left: 0px;
+	margin-right: 10px;
+}
+.read-article-container .read-article-meta span.pull-right svg.feather {
+	margin: -3px 15px 0 0;
+}
+.user-setting-panel {
+	padding: 30px;
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+.footer-container .footer-links ul {
+	padding: 0;
+}
+.pt_foot_lang li svg.feather {
+	margin: 0 0 0 3px;
+}
+.nav.navbar-nav.navbar-right .dropdown.profile-nav ul {
+    right: auto !important;
+    left: 0;
+}
+.headtoppoint {
+	left: auto;
+    margin-left: 0;
+	right: 100%;
+    margin-right: -35px;
+}
+.dropdown-menu.ani-acc-menu svg.feather {
+	    margin: -2px 1px 0px 8px !important;
+}
+nav.navbar-findcond .search-header input:focus {
+	margin-right:0;
+}
+.navbar-default.second-header-layout .navbar-nav > li {
+	margin-right: 0px;
+	margin-left: 10px;
+}
+header .upload-button {
+	margin-right: 0px;
+	margin-left: 10px;
+}
+.pt_history .video-wrapper .video-info > div.video-actions {
+	float:left;
+}
+.pt_history .video-wrapper .video-info > div {
+    padding-right: 0px;
+	padding-left: 50px;
+}
+.pt_featured_video .thumbnail_holder img {
+	right: 50%;
+    left: auto;
+    transform: translate(50%, -50%);
+}
+.pt_featured_video .video-player .video-big-title {
+	margin-right: 0px;
+	margin-left: 30px;
+}
+.publisher-element .publisher-avatar {
+	margin-right: 0px;
+	margin-left: 8px;
+}
+.pt_featured_video .video-title .video_info .video-likes svg.feather-thumbs-down {
+	margin-left:0px !important;
+	margin-right: 10px;
+}
+.pt_featured_video h4 {
+	left: auto;
+	right: 35px;
+}
+.home-page-categories .title h4 span {
+	float: left;
+}
+.home-page-categories .title h4 span.view_more_link a svg.feather {
+	transform: rotate(180deg);
+}
+.home-page-categories .videos .video-list .video-list-by span {
+	display: inline-block;
+}
+.fixed-action-btn {
+	right: auto;
+	left: 35px;
+}
+.pt_import_vdo .col-md-9 {
+	padding-right: 15px;
+	padding-left: 0;
+}
+.pt_import_vdo .col-md-3 {
+	padding-left: 15px;
+	padding-right: 0;
+}
+.pt_import_vdo .col-md-9 input {
+	padding: 0 50px 0 10px;
+	border-radius: 0 29px 29px 0;
+}
+.pt_import_vdo .col-md-9 svg.feather {
+	left: auto;
+	right: 25px;
+}
+.pt_import_vdo .col-md-3 button {
+	border-radius: 29px 0 0 29px;
+}
+.w-100 {
+    width: 100%;
+}
+.video-actions {
+	float: left;
+}
+.no-padding-right {
+    padding-left: 0;
+}
+.no-padding-left {
+    padding-right: 0;
+}
+.pt_msg_main {
+    box-shadow: inset -6px 0 6px -3px rgba(0, 0, 0, 0.1);
+}
+#new-message-form #send-button {
+	margin-left: 0px;
+	margin-right: 10px;
+}
+#new-message-form #send-button svg{
+	transform: rotate(180deg);
+}
+.messages-sidebar ul li a .user-avatar {
+	float: right;
+	margin: 0 5px 0 15px
+}
+.messages-sidebar .search-box input {
+	padding-left: 12px;
+	padding-right: 30px;
+}
+.user-messages .messages .message .user-message {
+	margin-left: 0px;
+	margin-right: 40px;
+}
+.user-messages .messages .message .user-avatar {
+	float: right;
+}
+.dddown-menu {
+    right: auto;
+    left: 0;
+}
+.ddown-menu div.dropdown ul.dropdown-menu {
+	right: auto;
+	left: 0;
+}
+.settings-sidebar ul li a svg.feather {
+	margin: -1px 0 0 10px;
+}
+.author-list .video-wrapper .author-info .author-img {
+    margin-right: 0px;
+	margin-left: 5px;
+}
+.profile-container .pt_chnl_info .subscribe-btn-container, .publisher-element .publisher-subscribe-button {
+	margin-left: 0px;
+	margin-right: auto;
+}
+.btn-subscribe:before, .btn-subscribed:before {
+	left: auto;
+    right: 100%;
+    margin-left: 0;
+    margin-right: 4px;
+    transform: rotate(180deg);
+}
+.subs-amount {
+	margin-left: 0;
+	margin-right: 6.5px;
+}
+.profile-container .pt_chnl_info .avatar-container {
+	margin-right: 0;
+	margin-left: 15px;
+}
+.profile-container .links-container ul {
+	padding: 0;
+}
+.video-duration {
+	right: auto;
+	left: 5px;
+}
+.videos-list .pt_video_side_vids .video-thumb {
+	margin-right: 0px;
+	margin-left: 10px;
+}
+.checkbox label::before {
+	left: auto;
+	right: 0;
+}
+.pt_foot_lang .pt_language_select {
+	left: 0;
+    right: auto;
+}
+.pt_language_select:before {
+    right: auto;
+	left: 30px;
+}
+.video-latest-list .video-info span {
+	display: inline-block;
+}
+
+
+.vid_stud_links li a svg {
+	margin-right: 0;margin-left: 2px;
+}
+.vid_analts_stat > svg {
+    margin-right: 0;margin-left: 17px;
+}
+.videos-list .video-wrapper .video-thumb {
+    margin-right: 0px;margin-left: 10px;
+}
+.pull-right>.dropdown-menu {
+    right: auto;
+    left: 0;
+}
+.vid_pop_channls .video-thumb {
+    margin-right: 0px;margin-left: 10px;
+    float: right;
+}
+.vid_pop_channls .video-title {
+    margin-left: 0px;
+    margin-right: 110px;
+}
+.vid_pop_channls .video-title h6 svg {
+    margin-right: 0;
+    margin-left: 4px;
+}
+#video_dropdown .dropdown-menu .dropdown-item svg{margin-right: 0;margin-left: 11px;}
+.vid_move_filtr .last-sett-btn {
+	margin-left: 0;
+    margin-right: 20px;
+}
+.vid_mov_e_info h4 {
+	float: right;margin-right: 0px;margin-left: 10px;
+}
+nav.navbar-findcond .search-header {
+	float: right !important;
+}
+.pt_opn_sid_menu {
+    margin: 10.5px -15px 10.5px 20px;
+}
+header .upload-button, header .import-button, header .live-button {
+    margin-right: 0px;margin-left: 10px;
+}
+header .upload-button svg, header .import-button svg, header .live-button svg {
+    margin: -3px 1px 0 2px !important;
+}
+.pl_feat_vid_slider .owl-dots {
+    text-align: right !important;
+}
+body .pt_add_to_list_vid .swal2-buttonswrapper button {
+	float: left;
+}
+body .toggle-mode .slider {
+    margin-left: 0;margin-right: auto;
+}
+
+.rent_vids_side {
+    padding-left: 0;
+    padding-right: 15px;
+}
+.rent_vids_foot .rent_vid_info_name {
+    padding-left: 0;padding-right: 32px;
+}
+.rent_vids_foot .rent_vid_info_name svg {
+    left: auto;
+    right: 0;
+}
+nav.navbar-findcond .logo-img {
+    margin: -5px -15px 0 20px;
+}
+nav.navbar-findcond .search-header svg.feather {
+        left: 0px;
+    right: auto;
+}
+nav.navbar-findcond .search-header input {
+    padding-left: 12px;
+    padding-right: 15px;
+}
+nav.navbar-findcond .dropdown-menu.ani-acc-menu > li > a img, nav.navbar-findcond .dropdown-menu.ani-acc-menu > li > a svg {
+    margin: 0 0 0 12px;
+}
+.dropdown-menu.ani-acc-menu {
+    transform-origin: left top;
+}
+.pt_home_vid_content .view_more_link {
+    margin-left: 0;margin-right: auto;
+}
+.pt_home_vid_content .title h4 > svg {
+    margin: 0 0 0 7px;
+}
+.footer-container .footer-links > ul > li {
+    padding-right: 0;padding-left: 10px;
+}
+.pt_mn_wtch_rlts_prnt .pt_pt_mn_wtch_rltvids .video-publisher img {
+    margin: -2px 0 0 1px;
+}
+.profile-container .share-video {
+    right: auto;
+    left: 20px;
+}
+
+
+
+
+
+
+
+@media (min-width: 992px){
+.col-md-4 {
+   padding-right: 15px;
+}
+}
+
+@media (max-width: 1300px) {
+.yp_side_menu.has_side_menu {
+	margin: 0;
+}
+.yp_side_drawer ul.sections li a {
+    font-size: 1.4rem;justify-content: normal;padding-right: 25px;
+}
+.yp_side_drawer ul.sections li a svg {
+	margin-left: 27px;
+}
+.yp_side_drawer .subscribers_ img {
+	margin-left: 27px;
+}
+}
+.pt_language_select li a {
+   font-size: 14px !important;
+   line-height: 33px;
+   padding: 0 20px;
+   transition: background-color .1s;
+   float: left;
+}
+@media (max-width: 992px){
+.pt_import_vdo .col-md-9 {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+.pt_import_vdo .col-md-3 {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+.pt_import_vdo .col-md-9 input {
+    border-radius: 10px 10px 0 0;
+}
+.pt_import_vdo .col-md-3 button {
+    border-radius: 0 0 10px 10px;
+}
+.video-actions {float:none;margin-bottom: 5px;} 
+}
+
+@media (max-width: 990px){
+.no-padding-left {
+    padding-right: 15px !important;
+}
+.no-padding-right {
+    padding-left: 15px !important;
+}
+.mobileleftpane {
+    padding: 0 !important;
+}
+.video-player-page .no-padding-left {
+    padding-right: 0 !important;
+}
+}
+
+@media (max-width: 735px) {
+.rent_vids_side {
+    padding: 0;
+	padding-top: 15px;
+}
+}
+
+@media (max-width: 650px){
+.profile-container .pt_chnl_info .avatar-container {
+    margin: 0 auto 20px;
+    width: 90px !important;
+}
+}
+
+@media (max-width: 460px) {
+.home-page-categories .row {
+    margin-left: -10px;
+}
+}
+
+@media (max-width: 460px) {
+.read-article-container .read-article-meta span {
+	display: inline-block;
+}	
+}
+.mejs-qualities-selector input, .mejs__qualities-selector input {
+    right: -1000px !important;
+    left: auto;
+}
+
+
+.wow_liv_counter {left: auto;right: 15px;}
+.end_vdo_call, .start_vdo_call {left: 15px;right: auto;}
+.live_mic_cam_switch {right: auto;left: 15px;}
+.live_mic_cam_switch .dropdown-menu-right {
+    left: 0;
+    right: auto;
+}
+
+.sticky-container_sticky .sticky-container__video {right: auto;left: 0;}
+
+
+.movie-file-input > .button {margin-right: 0;margin-left: 8px;}
+.select_radio_btn.small_rbtn .sr_btn_img {margin: 0 0 0 10px;}
+
+.tube_faq .accordion-item > .btn {
+    margin-right: 0;margin-left: 25px;
+}
+.read-article-sidebar .ra-sidebar-head h4::after {
+    left: auto;
+    right: 0;
+}
+.related-article-wrapper .ra-thumb {
+    margin-left: 0;
+    margin-right: 15px;
+}
+.related-video-wrapper .ra-thumb {
+    margin-right: 0;margin-left: 15px;
+}
+
+
+
+
+body .swiper-button-prev, body .swiper-button-next {
+    left: 50px !important;
+    right: auto !important;
+    transform: rotate(270deg);
+}
+.shorts_badge {
+    right: auto;
+    left: 5px;
+}
+
+body .pt_sec_nav_slide_prnt .swiper-button-next {
+    left: 0 !important;
+    border-radius: 0 8px 8px 0;
+}
+body .pt_sec_nav_slide_prnt .swiper-button-prev {
+    right: 0 !important;
+    border-radius: 8px 0 0 8px;
+}
+
+.messages-sidebar ul li a .time {
+	    float: left;
+}
+
+
+.pt_vdo_cstm_radio label {padding: 5px 30px 5px 10px;}
+.pt_vdo_cstm_radio label:after, .pt_vdo_cstm_radio label:before {left: auto;right: 0;}
+.pt_vdo_cstm_radio input:checked + label:after {left: auto;right: 4px}
+
+
+@media (min-width: 910px){
+.popular_channels_list .channels_list:nth-child(1) {
+    right: 50%;left: auto;
+    transform: translateX(50%);width: 240px;
+}
+.popular_channels_list .channels_list:nth-child(2) {
+    right: calc(50% - 240px);left: auto;
+    transform: translateX(50%);width: 240px;
+}
+.popular_channels_list .channels_list:nth-child(3) {
+    left: calc(50% - 240px);
+    transform: translateX(-50%);width: 240px;right: auto;
+}
+}
+
+.user-setting-panel .user-comments .main-comment .user-name { margin-left: 0; margin-right: 60px;}
+
+
+.lang_select_modal ul{
+	padding: 20px 0 20px 20px;
+}
+
+.new_left_right .left_menu {
+    float: right;
+    left: auto;
+    right: 0;
+}
+.new_left_right .content_main_wrapper {
+    margin-left: 0 !important;
+    margin-right: 280px !important;
+}
+.content_main_wrapper .navbar-fixed-bottom, .navbar-fixed-top {
+    right: auto;left: 0;
+}
+
+@media (min-width: 1300px) {
+.yp_slide_menu {
+    left: auto;
+    right: 0;
+}
+.top_logo {
+    padding-left: 0;
+    padding-right: 70px;
+}
+}
+
+nav.navbar-findcond .search-header {
+    margin-left: 11px;
+    margin-right: auto;
+}
+.search_line {
+    right: auto;
+    left: 36px;
+}
+.profile-nav span {
+    margin-left: 0;
+    margin-right: 10px;
+}
+.icon_pro {
+    right: auto;
+    left: 93px;
+}
+ul.notfi-dropdown ul#notifications-list li div.avatar {
+    float: right;
+    margin-left: 10px;
+}
+.yp_side_drawer ul.sections li a span {
+    margin-left: 0;
+    margin-right: 8px;
+}
+.menu_static_text {
+    text-align: right;
+}
+.menu_static_text {
+    margin-left: 0;
+    margin-right: 24px;
+}
+.top_static {
+    margin-left: 0;
+    margin-right: 15px;
+}
+.feature_wrap p {
+    text-align: right;
+}
+.explore_more, .slick-arrow {
+    right: auto;
+    left: 0;transform: scale(-1);
+}
+.explore_more.prev {
+    left: auto;
+    right: 0;
+}
+.video_channel_details .image_channel {
+    margin-right: 0;
+    margin-left: 10px;
+}
+.arrow_read {
+    right: auto;
+    left: 12px;
+    transform: scale(-1);
+}
+body.side_open .new_left_right .content_main_wrapper {
+    margin-left: 0 !important;
+    margin-right: 80px !important;
+}
+
+@media (max-width: 1300px) {
+.new_left_right .content_main_wrapper {
+    margin: 0 !important;
+}
+.new_left_right .left_menu {
+    left: auto;right: -280px;
+}
+body.side_open .new_left_right .content_main_wrapper {
+    margin: 0 !important;
+}
+body.mobi_side_open .new_left_right .left_menu {
+    left: auto;
+    right: 0;
+}
+}
+
+.histor_bg .video-actions {
+    right: auto;left: 0;
+}
+.width_right_section {
+    float: left;
+}
+.popular-articles-wrapper .name_artcile, .popular-articles-wrapper .name_artcile_views, .custom_pt_about h5, .custom_pt_about h5 span, .pt_video_info .watch-video-description p, .pt_video_comments .comments-header {
+    text-align: right;
+}
+.artcile_owner_custom {
+    right: auto;
+    left: 0;
+}
+.full_text_article_custom {
+    text-align: right;
+}
+.read-article-meta_custom .count svg {
+    margin-right: 0;
+    margin-left: 7px;
+}
+.custom_pt_about h5 span {
+    float: right;
+}
+.user-comments .main-comment .user-comment .div-vote-comment {
+    float: right;
+}
+.right_count_view div span, .right_count_view a span {
+    margin-left: 0;
+    margin-right: 7px;
+}
+.sort-comments-dropdown {
+    margin-left: 0;
+    margin-right: 40px;
+}
+.button_smiles {
+    float: left;
+}
+.settings-sidebar ul li a svg {
+    margin: -1px 0 0 18px;
+}
+.setting_right_heading, .box_light_black_pad h1 {
+    text-align: right;
+}
+.pt_forms .setting-panel-mdbtn, .setting-panel-mdbtn_custom {
+    right: auto;
+    left: 35px;
+}
+.tgl + .tgl-btn:after {
+    left: auto;
+    right: -3px;
+}
+.tgl:checked + .tgl-btn:after {
+    left: auto;
+    right: 54%;
+}

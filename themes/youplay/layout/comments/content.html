@@ -1,0 +1,110 @@
+<div class="row">
+	<div class="col-md-3">
+		<div class="settings-sidebar">
+			<ul class="list-group">
+				<li class="list-group-item">
+					<a href="{{LINK dashboard}}" data-load="?link1=dashboard"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg> {{LANG dashboard}}</a>
+				</li>
+				<li class="list-group-item">
+					<a href="{{LINK video_studio}}" data-load="?link1=video_studio"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M16 4a1 1 0 0 1 1 1v4.2l5.213-3.65a.5.5 0 0 1 .787.41v12.08a.5.5 0 0 1-.787.41L17 14.8V19a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h14zM7.4 8.829a.4.4 0 0 0-.392.32L7 9.228v5.542a.4.4 0 0 0 .542.374l.073-.036 4.355-2.772a.4.4 0 0 0 .063-.624l-.063-.05L7.615 8.89A.4.4 0 0 0 7.4 8.83z"/></svg> {{LANG videos}}</a>
+				</li>
+				<li class="list-group-item active">
+					<a href="{{LINK comments}}" data-load="?link1=comments"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M6.455 19L2 22.5V4a1 1 0 0 1 1-1h18a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H6.455zM7 10v2h2v-2H7zm4 0v2h2v-2h-2zm4 0v2h2v-2h-2z"/></svg> {{LANG comments}}</a>
+				</li>
+				<?php if ($pt->config->usr_v_mon == 'on' || $pt->config->sell_videos_system == 'on' || $pt->config->payed_subscribers == 'on') { ?>
+					<li class="list-group-item">
+						<a href="{{LINK transactions}}" data-load="?link1=transactions"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"></path><path fill="currentColor" d="M14 2a8 8 0 0 1 3.292 15.293A8 8 0 1 1 6.706 6.707 8.003 8.003 0 0 1 14 2zm-3 7H9v1a2.5 2.5 0 0 0-.164 4.995L9 15h2l.09.008a.5.5 0 0 1 0 .984L11 16H7v2h2v1h2v-1a2.5 2.5 0 0 0 .164-4.995L11 13H9l-.09-.008a.5.5 0 0 1 0-.984L9 12h4v-2h-2V9zm3-5a5.985 5.985 0 0 0-4.484 2.013 8 8 0 0 1 8.47 8.471A6 6 0 0 0 14 4z"></path></svg> {{LANG earnings}}</a>
+					</li>
+				<?php } ?>
+                <?php if ($pt->config->movies_videos == 'on' && PT_IsAdmin()) { ?>
+					<li class="list-group-item <?php if (!empty($_GET['videos_type']) && $_GET['videos_type'] == 'movies') { echo 'active'; } ?> ">
+						<a href="{{LINK video_studio?videos_type=movies}}" data-load="?link1=video_studio&videos_type=movies"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M18.001 20H20v2h-8C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10a9.985 9.985 0 0 1-3.999 8zM12 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm-4 4a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm8 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm-4 4a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg> {{LANG movies}}</a>
+					</li>
+                <?php } ?>
+			</ul>
+		</div>
+	</div>
+	<div class="col-md-9">
+		<div class="user-setting-panel pt_shadow">
+			<div class="yp_sett_header">
+				<h4><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M6.455 19L2 22.5V4a1 1 0 0 1 1-1h18a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H6.455zM7 10v2h2v-2H7zm4 0v2h2v-2h-2zm4 0v2h2v-2h-2z"/></svg> {{LANG comments}}</h4>
+			</div>
+			<div class="mb_50">
+				<div class="row pt_vid_stud_row">
+					<div class="col-md-4 col-sm-6">
+						<div class="vid_analts_stat" style="background: transparent linear-gradient(309deg, #E95F8A 0%, #FE82A9 100%) 0% 0% no-repeat padding-box;">
+							<div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M8 18h10.237L20 19.385V9h1a1 1 0 0 1 1 1v13.5L17.545 20H9a1 1 0 0 1-1-1v-1zm-2.545-2L1 19.5V4a1 1 0 0 1 1-1h15a1 1 0 0 1 1 1v12H5.455z"/></svg> <h2>{{LANG total_comments_today}}</h2></div>
+							<p>{{TOTAL_COMMENTS_TODAY}}</p>
+						</div>
+					</div>
+					<div class="col-md-4 col-sm-6">
+						<div class="vid_analts_stat" style="background: transparent linear-gradient(308deg, #55479F 0%, #7569B3 100%) 0% 0% no-repeat padding-box;">
+							<div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M8 18h10.237L20 19.385V9h1a1 1 0 0 1 1 1v13.5L17.545 20H9a1 1 0 0 1-1-1v-1zm-2.545-2L1 19.5V4a1 1 0 0 1 1-1h15a1 1 0 0 1 1 1v12H5.455z"/></svg> <h2>{{LANG total_comments_month}}</h2></div>
+							<p>{{TOTAL_COMMENTS_MONTH}}</p>
+						</div>
+					</div>
+					<div class="col-md-4 col-sm-6">
+						<div class="vid_analts_stat" style="background: transparent linear-gradient(309deg, #FE513F 0%, #FE8248 100%) 0% 0% no-repeat padding-box;">
+							<div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M8 18h10.237L20 19.385V9h1a1 1 0 0 1 1 1v13.5L17.545 20H9a1 1 0 0 1-1-1v-1zm-2.545-2L1 19.5V4a1 1 0 0 1 1-1h15a1 1 0 0 1 1 1v12H5.455z"/></svg> <h2>{{LANG total_comments_year}}</h2></div>
+							<p>{{TOTAL_COMMENTS_YEAR}}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="vid_stud_divider">{{LANG latest_comments}}</div>
+			<div class="form-group" id="comments_container">
+				{{COMMENTS}}
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<?php if ($pt->comments_count > 1) { ?>
+				<br><div class="watch-video-show-more desc load-more" data-type="video_comment">{{LANG show_more}}</div>
+			<?php } ?>
+		</div>
+	</div>
+</div>
+<br>
+
+<!-- Modal -->
+<div class="modal fade matdialog" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{LANG edit_comment}}</h5>
+      </div>
+      <div class="modal-body">
+        <textarea id="text_modal" class="form-control"></textarea>
+      </div>
+      <div class="modal-footer">
+      	<input type="hidden" id="c_id_">
+        <button type="button" class="matbtn btn btn-default" data-dismiss="modal">{{LANG close}}</button>
+        <button type="button" class="matbtn btn btn-primary" onclick="update_comment()">{{LANG save}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+	function edit_comment(id) {
+		$.post('{{LINK aj/comments/get_comment}}', {id: id}, function(data, textStatus, xhr) {
+			if (data.status == 200) {
+				$('#c_id_').val(id);
+				$('#text_modal').val(data.text);
+				$('#exampleModal').modal();
+			}
+		});
+	}
+
+	function update_comment() {
+		var id = $('#c_id_').val();
+		var text = $('#text_modal').val();
+		if (id) {
+			$.post('{{LINK aj/comments/update_comment}}', {id: id,text:text}, function(data, textStatus, xhr) {
+				if (data.status == 200) {
+					$('#comment-text-'+id).html(data.text);
+				}
+				$('#exampleModal').modal('hide');
+			});
+		}
+	}
+</script>

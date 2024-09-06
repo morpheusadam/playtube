@@ -1,0 +1,20 @@
+<div class="col-md-3 col-sm-6 no-padding-right-at-all no-padding-mobile-left">
+	<div class="video-latest-list video-wrapper" data-id="{{ID}}" data-tr="{{ID}}">
+		<div class="video-thumb">
+			<a href="{{URL}}" data-load="?link1=watch&id={{VIDEO_ID_}}">
+				<img src="{{THUMBNAIL}}" alt="{{TITLE}}">
+				<div class="play_hover_btn" onmouseenter="show_gif(this,'{{GIF}}')" onmouseleave="hide_gif(this)">
+					<svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="rgba(255, 255, 255, 0.8)"><path d="M8,5.14V19.14L19,12.14L8,5.14Z"></path></svg>
+				</div>
+			</a>
+		</div>
+		<div class="video-title">
+			<a href="{{URL}}" data-load="?link1=watch&id={{VIDEO_ID_}}"><h4 title="{{TITLE}}">{{TITLE}}</h4></a>
+		</div>
+		<div class="video-info">
+			<div>
+				<a href="{{USER url}}" data-load="?link1=timeline&id={{USER username}}">{{USER name_v}}</a> <span class="bold">·</span> <span>{{TIME}}</span>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,21 @@
+<div class="user-setting-panel pt_shadow">
+    <div>
+        <table id="withdrawal-requests" class="table table-striped">
+            <thead>
+                <th>ID</th>
+                <th>{{LANG requested_at}}</th>
+                <th>{{LANG amount}}: {{CONFIG payment_currency}}</th>
+                <th>{{LANG status}}</th>
+            </thead>
+            <tbody>
+                {{WITHDRAWAL_HISTORY_LIST}}
+            </tbody>
+        </table>
+        
+    </div>
+</div>
+<script>
+    jQuery(document).ready(function($) {
+        $("#withdrawal-requests").DataTable();
+    });
+</script>

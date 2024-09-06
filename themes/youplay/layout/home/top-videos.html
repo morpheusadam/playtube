@@ -1,0 +1,35 @@
+<div class="video-wrapper top-video-wrapper" data-id="{{ID}}">
+    <div class="video-thumb pull-left">
+        <a href="{{URL}}" data-load="?link1=watch&id={{VIDEO_ID_}}"><img src="{{THUMBNAIL}}" alt="{{TITLE}}"></a>
+    </div>
+    <div class="video-info">
+    	<div class="video-title">
+	        <a href="{{URL}}" style="" data-load="?link1=watch&id={{VIDEO_ID_}}">{{TITLE}}</a>  
+	    </div>
+	    <div class="video-publisher">
+	        <a href="{{USER url}}" data-load="?link1=timeline&id={{USER username}}">{{USER name_v}}</a>
+	    </div>
+	   	<div class="video-views">
+	        {{VIEWS}} {{LANG views}}
+
+	    </div>
+	    <?php if (IS_LOGGED): ?>
+    	<div class="video-menu pull-right" >
+	       	<div class="dropdown" style="">
+			    <span class="dropdown-toggle pointer" data-toggle="dropdown" style="font-size: 13px;">
+	               <i class="fa fa-caret-down"></i>
+	            </span>
+			    <ul class="dropdown-menu pull-left">
+			      <li onclick="PT_AddToList('{{ID}}');">
+			      	<span>
+			      		{{LANG add_to_pl}}
+			      	</span>
+			      </li>
+			    </ul>
+			</div>
+	    </div>
+	    <?php endif ?>
+    </div>
+    <div class="clear"></div>
+</div>
+

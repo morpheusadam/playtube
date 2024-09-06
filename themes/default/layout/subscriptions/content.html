@@ -1,0 +1,43 @@
+<div class="container-home">
+<h3 class="recent-articles heading_all_sections_top">
+	<span>
+		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 15 14.21">
+				  <path id="Path_30538" data-name="Path 30538" d="M17.054,9.814,14.6,12.176l.58,3.332a1.439,1.439,0,0,1-.573,1.415,1.478,1.478,0,0,1-1.558.12L10,15.467,6.956,17.043a1.476,1.476,0,0,1-1.558-.12,1.44,1.44,0,0,1-.573-1.415l.58-3.332L2.947,9.814a1.435,1.435,0,0,1-.377-1.485,1.454,1.454,0,0,1,1.191-1l3.4-.487L8.684,3.809a1.477,1.477,0,0,1,2.634,0l1.521,3.036,3.4.487a1.454,1.454,0,0,1,1.19,1A1.435,1.435,0,0,1,17.054,9.814Z" transform="translate(-2.5 -3)" fill="currentColor" opacity="0.669"></path>
+				</svg>
+		<span>{{LANG subscriptions}}</span>
+	</span>
+</h3>
+
+<div class=" box_light_black pt_shadow pt_vid_lst_page">
+		<div class="subscriptions-list">
+			<div class="author-list row pt_subscription">
+      		{{SUBSCRIPTION_LIST}}
+			</div>
+			<?php if (is_array($pt->videos)) { if (count($pt->videos) > 5) { ?>
+            <div class="watch-video-show-more desc load-more" data-type="subscriptions">
+                {{LANG show_more}}
+            </div>
+			<?php }} ?>
+		</div>
+</div>
+<?php /* ?>
+<div class="content">
+	<div class="col-md-12">
+		
+		<div class="subscriptions-list">
+			<div class="author-list row pt_subscription">
+      		{{SUBSCRIPTION_LIST}}
+			</div>
+			<?php if (is_array($pt->videos)) { if (count($pt->videos) > 5) { ?>
+            <div class="watch-video-show-more desc load-more" data-type="subscriptions">
+                {{LANG show_more}}
+            </div>
+			<?php }} ?>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+</div>
+
+<?php */ ?>
+</div>

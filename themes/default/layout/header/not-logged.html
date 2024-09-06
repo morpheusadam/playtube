@@ -1,0 +1,44 @@
+<li class="dropdown hide-from-mobile top-header non-logged profile-nav">
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+		<!-- <img src="{{CONFIG theme_url}}/img/oval.png"> -->
+		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,19.2C9.5,19.2 7.29,17.92 6,16C6.03,14 10,12.9 12,12.9C14,12.9 17.97,14 18,16C16.71,17.92 14.5,19.2 12,19.2M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12C22,6.47 17.5,2 12,2Z" /></svg> 
+			<!-- <span class="caret"></span> -->
+			<span class="desktop hide_iam_from_mobile">
+				<svg width="4" height="14" viewBox="0 0 4 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M1.92603 10.25C2.86353 10.25 3.67603 11.0625 3.67603 12C3.67603 12.9688 2.86353 13.75 1.92603 13.75C0.957275 13.75 0.176025 12.9688 0.176025 12C0.176025 11.0625 0.957275 10.25 1.92603 10.25ZM1.92603 5.25C2.86353 5.25 3.67603 6.0625 3.67603 7C3.67603 7.96875 2.86353 8.75 1.92603 8.75C0.957275 8.75 0.176025 7.96875 0.176025 7C0.176025 6.0625 0.957275 5.25 1.92603 5.25ZM1.92603 3.75C0.957275 3.75 0.176025 2.96875 0.176025 2C0.176025 1.0625 0.957275 0.25 1.92603 0.25C2.86353 0.25 3.67603 1.0625 3.67603 2C3.67603 2.96875 2.86353 3.75 1.92603 3.75Z" fill="currentColor"/>
+				</svg>
+		</span>
+		</a>
+	</a>
+	<ul class="dropdown-menu ani-acc-menu custom_menu_login_usss" role="menu">
+		<li><a href="{{LINK login}}">{{LANG login}}</a></li>
+		<?php if ($pt->config->user_registration == 'on') { ?>
+		<li>
+			<a href="{{LINK register}}">{{LANG register}}</a>
+		</li>
+		<?php } ?>
+		<?php if ($pt->config->night_mode == 'both' || $pt->config->night_mode == 'night_default'): ?>
+			<li class="divider"></li>
+			<li class="hid_svg">
+				<a href="javascript:;">
+				<div class="custom_toggler_mode">
+					{{LANG mode}}
+
+					<label class="switch active">
+				      <input type="checkbox" {{MODE}} id="toggle-mode">
+				      <span class="slider round"></span>
+				    </label>
+				</div>
+				</a>
+		</li> 
+		<?php endif; ?>
+   </ul>
+</li>
+
+<script type="text/javascript">
+	$(function(){
+	   $('.switch input').on("click",function(){
+	      $(this).parent().toggleClass('active');
+	   });
+	});
+</script>

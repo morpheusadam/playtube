@@ -1,0 +1,46 @@
+<div class="container-home">
+<h3 class="recent-articles heading_all_sections_top">
+	<span>
+		<svg xmlns="http://www.w3.org/2000/svg" width="15" height="19" viewBox="0 0 15 19">
+					  <path id="Path_30541" data-name="Path 30541" d="M14.75,5.5V3.04l4.21,4.21H16.5A1.758,1.758,0,0,1,14.75,5.5ZM16.5,8.75A3.256,3.256,0,0,1,13.25,5.5v-3H9A4.507,4.507,0,0,0,4.5,7V17A4.507,4.507,0,0,0,9,21.5h6A4.507,4.507,0,0,0,19.5,17V8.75Z" transform="translate(-4.5 -2.5)" fill="currentColor"></path>
+					</svg>
+		<span>{{LANG faqs}}</span>
+	</span>
+</h3>
+<div class="page-margin termsofuse pt_shadow" style="margin-bottom: 30px;">
+	<section id="accordion" class="tube_faq">
+		<?php
+			$faqs = $db->orderBy('id', 'DESC')->get(T_FAQS);
+
+			foreach ($faqs as $faq) {
+			$faq->time   = PT_Time_Elapsed_String($faq->time);
+        ?>
+			<div class="accordion">
+				<div id="faqs-<?php echo $faq->id;?>" class="accordion-item">
+					<div class="btn btn-default">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>
+					</div>
+					<div class="card">
+						<h4>
+							<?php echo $faq->question;?>
+						</h4>
+						<div class="accordion-panel" id="faq-<?php echo $faq->id;?>">
+							<p><?php echo $faq->answer;?></p>
+						</div>
+					</div>
+				</div>
+			</div>
+        <?php } ?>
+    </section>
+</div>
+</div>
+
+
+<script>
+$(function() {
+	$(".accordion-item").click(function() {
+		// Toggle the item
+		$(this).toggleClass("is-active").find(".accordion-panel").slideToggle("ease-out");
+	});
+});
+</script>

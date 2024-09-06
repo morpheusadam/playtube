@@ -1,0 +1,233 @@
+<?php if ($pt->config->user_mon_approve == 'on' && $pt->is_mon == 0 && $pt->settings->monetization == 0) { ?>
+    <form class="form-horizontal user-setting-panel monetization-request-form pt_forms pt_shadow" id="monetization-request-form" method="POST">
+		<div class="yp_sett_header">
+			<h4>{{LANG monetization}} {{LANG settings}}</h4>
+		</div>
+        <div class="alert alert-info">Enable monetization on your account and start selling videos, get paid from ads, and more.</div>
+        <div class="setting-delete-alert"></div>
+            <div class="monetization-request-alert"></div>
+			<div class="form-group">
+                <div class="col-md-12">
+                    <input id="name" name="name" type="text" placeholder="{{LANG name}}" class="form-control input-md">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <textarea name="message" rows="10" class="form-control" placeholder="{{LANG additional_details}}"></textarea>
+                </div>
+            </div>
+            <hr>
+			<div class="fluid">
+		        <div class="upload-files">
+	        		<div class="col-md-4 no-padding-both">
+	        			<div class="image-renderer" id="user_photo" onclick="$('#personal_photo').trigger('click');">
+	        				<div>
+	        					<span>
+		        					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+		        				</span>
+	        				</div>
+	        			</div>
+	        			<div class="clear"></div>
+	        		</div>
+	        		<div class="col-md-8">
+	        			<h4>{{LANG personal_photo}}</h4>
+		        		<div>
+		        			<button class="btn btn-main btn-lg" type="button" onclick="$('#personal_photo').trigger('click');">{{LANG choose_file}}</button>
+		        		</div>
+	        		</div>
+		        </div>
+	        </div>
+			<div class="fluid">
+		        <div class="upload-files">
+	        		<div class="col-md-4 no-padding-both">
+	        			<div class="image-renderer" id="id_photo" onclick="$('#id_photo_input').trigger('click');">
+	        				<div>
+	        					<span>
+		        					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+		        				</span>
+	        				</div>
+	        			</div>
+	        			<div class="clear"></div>
+	        		</div>
+	        		<div class="col-md-8">
+	        			<h4>{{LANG passport_id}}</h4>
+		        		<div>
+		        			<button class="btn btn-main btn-lg" type="button" onclick="$('#id_photo_input').trigger('click');">{{LANG choose_file}}</button>
+		        		</div>
+	        		</div>
+		        </div>
+	        </div>
+            <div class="last-sett-btn modal-footer" style="margin: 0px -30px -10px -30px;">
+                <button id="submit" name="submit" class="btn btn-main setting-panel-mdbtn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg> <span id="btn_request">{{LANG submit_request}}</span></button>
+            </div>
+            
+            <input type="hidden" name="hash_id" value="<?php echo PT_CreateSession()?>">
+            <input type="hidden" name="user_id" value="{{USER id}}">
+            <input type="file" name="personal_photo" id="personal_photo" class="hidden" accept="image/*">
+            <input type="file" name="id_photo" id="id_photo_input" class="hidden" accept="image/*">
+            <!-- Button (Double) -->
+            
+            <div class="clear"></div>
+    </form>
+
+    <script type="text/javascript">
+        $(function () {
+           $('#personal_photo').on('change', function(event) {
+              readURL(this,'#user_photo');
+           });
+           $('#id_photo_input').on('change', function(event) {
+              readURL(this,'#id_photo');
+           });
+
+           $('#monetization-request-form').ajaxForm({
+                url: '{{LINK aj/main/monetization}}?hash=' + $('.main_session').val(),
+                dataType:'json',
+                beforeSend: function() {
+                    $('#monetization-request-form').find('#btn_request').text("{{LANG please_wait}}");
+                    $('#monetization-request-form').find('#btn_request').attr('disabled', 'true');
+                },
+                success: function(data) {   
+                    scrollToTop();  
+                    if (data.status == 200) {
+                        $('.monetization-request-alert').html('<div class="alert alert-success bg-success"><i class="fa fa-check"></i> '+data.message+'</div>');
+                        $('#monetization-request-form').resetForm();
+
+                        PT_Delay(function(){
+                            location.reload();
+                        },1500);
+                    }
+                    else{
+                       $('.monetization-request-alert').html('<div class="alert alert-danger bg-danger"> <i class="fa fa-info-circle"></i> '+data.message+'</div>');  
+                    }
+                    $('#monetization-request-form').find('#btn_request').text("{{LANG submit_request}}");
+                    $('#monetization-request-form').find('#btn_request').removeAttr('disabled')
+                }
+            });
+
+       });
+    </script>
+
+<?php }elseif ($pt->config->user_mon_approve == 'on' && $pt->is_mon > 0 && $pt->settings->monetization == 0) { ?>
+    <div class="user-setting-panel pt_shadow">
+		<div class="yp_sett_header">
+			<h4>{{LANG monetization}} {{LANG settings}}</h4>
+		</div>
+        <div class="empty_state"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> {{LANG verif_request_received}}</div>
+    </div>
+<?php } else{ ?>
+
+
+
+<form class="form-horizontal user-setting-panel pt_forms pt_shadow" id="general-settings" method="POST">
+	<div class="yp_sett_header">
+		<h4>{{LANG monetization}} {{LANG settings}}</h4>
+	</div>
+    <div class="setting-general-alert"></div>
+	
+	<div class="pt_monetize_sett">
+		<div class="row">
+			<div class="col-md-8">
+				<h4>{{LANG earn_mon}}</h4>
+				<div class="pt_mon_switch">
+					<label for="monetization">{{LANG monetization}}</label>&nbsp;&nbsp;&nbsp;
+					<input type="checkbox" <?php echo ($pt->settings->video_mon == '1') ? 'checked': '';?> data-toggle="toggle" data-onstyle="success" data-style="ios" data-height="35" id="toggle-video-monetization">
+				</div>
+			</div>
+			<div class="col-md-4">
+				<img src="{{CONFIG theme_url}}/img/money.svg">
+			</div>
+		</div>
+	</div>
+	
+	
+	
+    <div class="row">
+        <?php if ($pt->config->payed_subscribers == 'on' && canUseFeature($pt->settings->id,'who_can_payed_subscribers')) { ?>
+         <!-- Text input-->
+        <div class="form-group col-lg-12">
+            <label class="col-md-12" for="subscriber_price">{{LANG subscriber_price}}</label>
+            <div class="col-md-12">
+                <input id="subscriber_price" name="subscriber_price" type="text" placeholder="" class="form-control input-md" value="{{USER subscriber_price}}">
+            </div>
+        </div>
+        <?php } ?>
+    </div>
+	<br>
+    <input type="hidden" name="hash_id" value="<?php echo PT_CreateSession()?>">
+    <input type="hidden" name="user_id" value="{{USER id}}">
+   
+    <!-- Button (Double) -->
+    <?php if ($pt->config->payed_subscribers == 'on' && canUseFeature($pt->settings->id,'who_can_payed_subscribers')) { ?>
+    <div>
+        <button id="submit" name="submit" class="btn btn-main setting-panel-mdbtn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> {{LANG save}}</button>
+    </div>
+    <?php } ?>
+</form>
+
+<script>
+    jQuery(document).ready(function($) {
+        $('#toggle-video-monetization').bootstrapToggle();
+        //$("#withdrawal-requests").DataTable();
+
+        $("#toggle-video-monetization").change(function(event) {
+            let hash_id = $('.main_session').val();
+            let url     = "{{LINK aj/user/video-monetization}}?hash=" + hash_id;
+            $.post(url,{user_id:'<?php echo($pt->settings->id);?>'}, function(data, textStatus, xhr) { /* pass */});
+        });
+
+        var form = $('form#monetization-settings');
+        form.ajaxForm({
+            url: '{{LINK aj/user/request-withdrawal}}?hash=' + $('.main_session').val(),
+            dataType:'json',
+            beforeSend: function() {
+                form.find('button').text("{{LANG please_wait}}");
+            },
+            success: function(data) {
+                scrollToTop();
+                if (data.status == 200) {
+                    $('.monetization-settings-alert').html('<div class="alert alert-success bg-success">' + data.message + '</div>');
+                    $('.alert-success').fadeIn('fast', function() {
+                        $(this).delay(2500).slideUp(500, function() {
+                            $(this).remove();
+                        });
+                    });
+                } 
+                else if (data.status == 400) {
+                    $('.monetization-settings-alert').html('<div class="alert alert-danger bg-danger">' + data.message + '</div>');
+                    $('.alert-danger').fadeIn(300);
+                }
+                form.find('button').html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> {{LANG submit_withdrawal_request}}');
+            }
+        });
+<?php if ($pt->config->payed_subscribers == 'on' && canUseFeature($pt->settings->id,'who_can_payed_subscribers')) { ?>
+        var form = $('form#general-settings');
+
+        form.ajaxForm({
+            url: '{{LINK aj/user/change_price}}?hash=' + $('.main_session').val(),
+            beforeSend: function() {
+                form.find('button').text("{{LANG please_wait}}");
+                // FL_progressIconLoader(form.find('button'));
+            },
+            success: function(data) {
+                scrollToTop();
+                if (data.status == 200) {
+                    $('.setting-general-alert').html('<div class="alert alert-success">' + data.message + '</div>');
+                    $('.alert-success').fadeIn('fast', function() {
+                        $(this).delay(2500).slideUp(500, function() {
+                            $(this).remove();
+                        });
+                    });
+                } else if (data.errors) {
+                    var errors = data.errors.join("<br>");
+                    $('.setting-general-alert').html('<div class="alert alert-danger">' + errors + '</div>');
+                    $('.alert-danger').fadeIn(300);
+                }
+                form.find('button').html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> {{LANG save}}');
+                // FL_progressIconLoader(form.find('button'));
+            }
+        });
+        <?php } ?>
+    });
+
+</script>
+<?php } ?>

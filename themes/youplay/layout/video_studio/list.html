@@ -1,0 +1,33 @@
+<div class="col-md-12 pt_srch_vids pt_vid_stud_vids">
+	<div class="video-latest-list video-wrapper" data-id="{{ID}}" id="video-{{ID}}">
+		<div class="video-thumb">
+			<a href="{{URL}}" data-load="?link1=watch&id={{VIDEO_ID_}}">
+				<img src="{{THUMBNAIL}}" alt="{{TITLE}}">
+				<div class="play_hover_btn">
+                <svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="rgba(255, 255, 255, 0.8)"><path d="M8,5.14V19.14L19,12.14L8,5.14Z"></path></svg>
+            </div>
+			</a>
+		</div>
+		<div>
+			<div class="pt_vid_stud_vids_actions pull-right">
+				<a href="{{LINK edit-video/{{ID}}}}" data-load="?link1=edit-video&id=category&id={{ID}}" title="{{LANG edit_video}}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M9.243 19H21v2H3v-4.243l9.9-9.9 4.242 4.244L9.242 19zm5.07-13.556l2.122-2.122a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414l-2.122 2.121-4.242-4.242z"/></svg></a>
+				<a href="javascript:void(0);" onclick="PT_DeleteVideo({{ID}}, 'manage-page')" title="{{LANG delete_videos}}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm-8 5v6h2v-6H9zm4 0v6h2v-6h-2zM9 4v2h6V4H9z"/></svg></a>
+				<a href="{{LINK view_analytics/{{V_ID}}}}&type=today" data-load="?link1=view_analytics&id={{V_ID}}&type=today"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M3 12h4v9H3v-9zm14-4h4v13h-4V8zm-7-6h4v19h-4V2z"/></svg></a>
+			</div>
+			<div class="video-title">
+				<a href="{{URL}}" data-load="?link1=watch&id={{VIDEO_ID_}}"><h4 title="{{TITLE}}">{{TITLE}}</h4></a>
+			</div>
+			<div class="video-info">
+				<div class="video-views vid_stud_stats">
+					<span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M1.181 12C2.121 6.88 6.608 3 12 3c5.392 0 9.878 3.88 10.819 9-.94 5.12-5.427 9-10.819 9-5.392 0-9.878-3.88-10.819-9zM12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0-2a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg> {{VIEWS}} {{LANG views}} &nbsp;&nbsp;</span>
+					<span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M2 9h3v12H2a1 1 0 0 1-1-1V10a1 1 0 0 1 1-1zm5.293-1.293l6.4-6.4a.5.5 0 0 1 .654-.047l.853.64a1.5 1.5 0 0 1 .553 1.57L14.6 8H21a2 2 0 0 1 2 2v2.104a2 2 0 0 1-.15.762l-3.095 7.515a1 1 0 0 1-.925.619H8a1 1 0 0 1-1-1V8.414a1 1 0 0 1 .293-.707z"/></svg> {{LIKES}} {{LANG likes}} &nbsp;&nbsp;</span>
+					<span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M22 15h-3V3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1zm-5.293 1.293l-6.4 6.4a.5.5 0 0 1-.654.047L8.8 22.1a1.5 1.5 0 0 1-.553-1.57L9.4 16H3a2 2 0 0 1-2-2v-2.104a2 2 0 0 1 .15-.762L4.246 3.62A1 1 0 0 1 5.17 3H16a1 1 0 0 1 1 1v11.586a1 1 0 0 1-.293.707z"/></svg> {{DISLIKES}} {{LANG dislikes}} &nbsp;&nbsp;</span>
+					<span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M16.8 19L14 22.5 11.2 19H6a1 1 0 0 1-1-1V7.103a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1V18a1 1 0 0 1-1 1h-5.2zM2 2h17v2H3v11H1V3a1 1 0 0 1 1-1z"/></svg> {{COMMENTS}} {{LANG comments}} &nbsp;&nbsp;</span>
+					<span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm1-10V7h-2v7h6v-2h-4z"/></svg> {{TIME}}</span>
+				</div>
+				<p>{{DESC}}</p>
+			</div>
+		</div>
+	</div>
+	<hr>
+</div>

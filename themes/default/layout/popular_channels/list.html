@@ -1,0 +1,31 @@
+<div class="cahnnel_bg_svg channels_list" data-channel-id="{{ID}}" data-channel-views="{{VIEWS_COUNT}}">
+	<a href="{{USER url}}" data-load="?link1=timeline&id={{USER username}}">
+		<div class="channel_logo_abs">
+			<img src="{{USER avatar}}" alt="{{USER name}}">
+		</div>
+		<div class="right_content_chanl_bg">
+			<div class="channel_top_name">
+				<span>
+					{{USER name}} 
+				</span>
+			</div>
+			<div class="views_pop_channel">
+				{{VIEWS}} {{LANG views}}
+			</div>
+			<?php if (!empty($pt->subs)) { ?>
+			<div class="bottom_sub_view">
+				<div class="imgaes_sub_">
+					<?php foreach ($pt->subs as $key => $value) { ?>
+						<span>
+							<img src="<?php echo $value->avatar; ?>">
+						</span>
+					<?php } ?>
+				</div>
+				<div class="sub_vi_bottom_sub">
+					{{SUB}} {{LANG subscribers}}
+				</div>
+			</div>
+			<?php } ?>
+		</div>
+	</a>
+</div>

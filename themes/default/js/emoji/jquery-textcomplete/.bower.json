@@ -1,0 +1,29 @@
+{
+  "name": "jquery-textcomplete",
+  "version": "1.8.4",
+  "main": "dist/jquery.textcomplete.js",
+  "dependencies": {
+    "jquery": ">=1.7.0"
+  },
+  "authors": [
+    "Yuku TAKAHASHI <taka84u9@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "homepage": "https://github.com/yuku-t/jquery-textcomplete",
+  "_release": "1.8.4",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.8.4",
+    "commit": "384fd60826affb4e5c654adf1dfdbb44d83bef3a"
+  },
+  "_source": "https://github.com/yuku-t/jquery-textcomplete.git",
+  "_target": ">=1.3.4",
+  "_originalSource": "jquery-textcomplete"
+}

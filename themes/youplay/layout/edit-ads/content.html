@@ -1,0 +1,112 @@
+<br>
+<div class="create-new-ad-container">
+	<div class="user-ads-list-header">
+		<span class="pointer active">
+			<a href="javascript:void(0);">
+				<svg class="feather feather-edit" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="16 3 21 8 8 21 3 21 3 16 16 3"></polygon></svg> {{LANG edit_ad}} ({{NAME}})
+			</a>
+		</span>
+	</div>
+	
+	<form class="user-ads-settings-form pt_forms" method="POST">
+		<div class="user-ads-settings-alert"></div>
+		<div class="row no-margin">
+		<div class="col-lg-7 col-md-7">   
+			<div class="body">
+				<div class="alert alert-success ads-settings-alert"></div>
+				<div class="form-group">
+					<label class="form-label col-md-12" for="name">{{LANG name}}</label>
+					<div class="col-md-12">
+                      	<input type="text" id="name" name="name" class="form-control" value="{{NAME}}">
+					</div>       
+				</div>
+				<div class="form-group">
+					<label class="form-label col-md-12" for="title">{{LANG title}}</label>
+					<div class="col-md-12">
+						<input type="text" id="title" name="title" class="form-control" value="{{TITLE}}">
+					</div> 
+				</div>
+				<div class="form-group">
+					<label class="form-label col-md-12" for="desc">{{LANG description}}</label>
+					<div class="col-md-12">
+						<textarea name="desc" id="desc" rows="4" class="form-control">{{DESC}}</textarea>
+					</div> 
+				</div>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="col-lg-5 col-md-5">
+			<div class="form-group">
+				<label class="form-label col-md-12" for="url">URL</label>
+				<div class="col-md-12">
+					<input type="text" id="url" name="url" class="form-control" value="{{URL}}">
+				</div> 
+			</div>
+    		<div class="row form-group">
+				<label class="form-label col-md-12">{{LANG traget_audience}}</label>
+				<div class="col-md-12">
+					<select class="form-control selectpicker show-menu-arrow show-tick" multiple name="audience-list[]" data-live-search="true" title="{{LANG traget_audience}}" data-actions-box="true" name="audience-list[]">
+						<?php foreach ($countries_name as $country_id => $country_name): ?>
+							<?php if (in_array($country_id, $pt->audience)): ?>
+								<option value="<?php echo($country_id); ?>" selected>
+									<span><?php echo($country_name); ?></span>
+								</option> 
+							<?php else: ?>
+								<option value="<?php echo($country_id); ?>">
+									<span><?php echo($country_name); ?></span>
+								</option>
+							<?php endif ?>
+						<?php endforeach; ?>
+					</select>
+					<div class="clear"></div>
+				</div>
+			</div>
+			<div class="form-group">
+	            <label class="form-label col-md-12" for="day_limit">{{LANG ad_day_limit}}</label>
+	            <div class="col-md-12">
+	              <input type="number" id="day_limit" name="day_limit" class="form-control" placeholder="0" value="{{DAY_LIMIT}}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+	            </div> 
+	        </div>
+		</div>  
+		</div>  
+		<div class="form-group last-sett-btn modal-footer" style="margin: 0px;">
+			<button type="submit" class="btn btn-main setting-panel-mdbtn" id="submit-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-save"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg> {{LANG save}}</button>
+		</div>	  
+    </form>     
+    <div class="clear"></div>
+</div>
+<br><br>
+<script>
+	jQuery(document).ready(function($) {
+	  $('.selectpicker').selectpicker({});
+
+
+    $('.user-ads-settings-form').ajaxForm({
+      url: '{{LINK aj/ads/edit}}?hash=' + $('.main_session').val(),
+      dataType:"json",
+      data:{id:"{{ID}}"},
+      beforeSend: function() {
+        $('#submit-btn').attr('disabled', true).find('span').text("{{LANG please_wait}}");
+      },
+      success: function(data) {
+        scrollToTop();
+        
+        if (data.status == 200){
+          $(".user-ads-settings-alert").html('<div class="alert alert-success bg-success"><i class="fa fa-check"></i> '+
+            data.message
+            +'</div>');
+          PT_Delay(function(){
+            window.location.href = '{{LINK ads}}';
+          },2000);
+          
+        }
+        else {
+          $('#submit-btn').removeAttr('disabled').find('span').text('{{LANG save}}');
+          $(".user-ads-settings-alert").html('<div class="alert alert-danger bg-danger"><i class="fa fa-info-circle"></i> '+
+            data.message
+            +'</div>');
+        }
+      }
+    });
+	});
+</script>

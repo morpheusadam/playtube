@@ -1,0 +1,233 @@
+<div class="container-home">
+<div class="end_video_call">
+<a class="btn btn-danger end_vdo_call wow_end_live_btn hidden" href="{{LINK }}" onclick="DeleteLive()">{{LANG end_live}}</a>
+</div>
+
+<div class="box_light_black">
+    <div class="width-100">
+      <div class="header_live">
+          <div class="text_live">
+            {{LANG live_ettings}}
+          </div>
+          <div class="right_live_buttons">
+            <div class="live_counter">
+              <span id="live_word">{{LANG live}}</span> 
+              <span id="live_count">0</span>
+            </div>
+
+
+            
+            
+            <button class="btn button_go_live wow_go_live_btn hidden" id="publishBtn">{{LANG go_live}}</button>
+
+          </div>
+      </div>
+
+
+      <div class="text_input_live">
+        <label>
+          {{LANG video_title}}
+        </label>
+        <input type="text" id="live_video_name" placeholder="{{LANG video_title}}" class="">
+      </div>
+
+    </div>
+
+
+<style>body {padding-top: 0px !important;}footer {display: none;}</style>
+<div class="video-con wow_go_live_cont">
+	<div class="containerr custom_container_live">
+		<div id="remote-media">
+			<div class="liv_vid_cont" id="main_live_video"></div>
+			<h3><i class="fa fa-spin fa-spinner"></i> {{LANG please_wait}}</h3>
+			<!-- <div class="wow_liv_counter"><span id="live_word">{{LANG live}}</span> <span id="live_count"> 0</span></div> -->
+			<div id="live_post_comments" class="wow_liv_comments_feed user-comments"></div>
+		</div>
+		
+		
+		
+		
+		<?php if ($pt->config->live_video == 1 && !empty($pt->config->agora_app_id)) { ?>
+			<div class="live_mic_cam_switch" style="display: none;">
+				<div class="dropdown mic_drop">
+					<button class="btn btn-mat dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="{{LANG mic_source}}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,2A3,3 0 0,1 15,5V11A3,3 0 0,1 12,14A3,3 0 0,1 9,11V5A3,3 0 0,1 12,2M19,11C19,14.53 16.39,17.44 13,17.93V21H11V17.93C7.61,17.44 5,14.53 5,11H7A5,5 0 0,0 12,16A5,5 0 0,0 17,11H19Z" /></svg></button>
+					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton" id="mic-list"></div>
+				</div>
+				<div class="dropdown cam_drop">
+					<button class="btn btn-mat dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="{{LANG cam_source}}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M17,10.5V7A1,1 0 0,0 16,6H4A1,1 0 0,0 3,7V17A1,1 0 0,0 4,18H16A1,1 0 0,0 17,17V13.5L21,17.5V6.5L17,10.5Z" /></svg></button>
+					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton" id="camera-list"></div>
+				</div>
+				<?php //if ($pt->config->live_chat == 'on') { ?>
+					<div class="dropdown chat_drop">
+						<button class="btn btn-mat dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="{{LANG chating}}"><span id="chat_svg"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20,2H4A2,2 0 0,0 2,4V22L6,18H20A2,2 0 0,0 22,16V4A2,2 0 0,0 20,2M6,9H18V11H6M14,14H6V12H14M18,8H6V6H18"></path></svg></span></button>
+						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton" id="chat-list">
+							<div class="dropdown-item pointer" onclick="LiveChating('on')">{{LANG allow_chating}}</div>
+							<div class="dropdown-item pointer" onclick="LiveChating('off')">{{LANG block_chating}}</div>
+						</div>
+					</div>
+				<?php //} ?>
+			</div>
+		<?php } ?>
+	</div>
+	<input type="hidden" id="live_post_id">
+</div>
+</div>
+</div>
+<?php if ($pt->config->live_video == 1 && !empty($pt->config->agora_app_id)) {
+  echo PT_LoadPage('live/agora');
+} ?>
+<script type="text/javascript">
+  <?php if ($pt->config->live_video == 1 && $pt->config->amazone_s3_2 == 1 && $pt->config->live_video_save != 1) { ?>
+    console.error("Creating a live stream that cloud recording is not enabled.");
+  <?php } ?>
+  <?php //if ($pt->config->live_chat == 'on') { ?>
+  function LiveChating(type) {
+    post_id = $('#live_post_id').val();
+    $.post("{{LINK aj/live/live_chating}}?hash=" + $('.main_session').val(), {type: type,post_id: post_id}, function(data, textStatus, xhr) {
+      if (data.status == 200) {
+        if (data.type == 'on') {
+          $('#chat_svg').html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20,2H4A2,2 0 0,0 2,4V22L6,18H20A2,2 0 0,0 22,16V4A2,2 0 0,0 20,2M6,9H18V11H6M14,14H6V12H14M18,8H6V6H18"></path></svg>');
+        }
+        else if(data.type == 'off'){
+          $('#chat_svg').html('<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M3.439 3l-1.439-1.714 1.532-1.286 17.382 20.714-1.533 1.286-2.533-3.019h-5.848l-7 5.02v-5.02h-4v-15.981h3.439zm20.561 15.981h-2.588l-13.41-15.981h15.998v15.981z"/></svg>');
+        }
+      }
+    });
+  }
+  <?php //} ?>
+	 window.onbeforeunload = function() {
+  DeleteLive();
+ }
+var main_live = setInterval(function(){ 
+  data = {};
+  for (var i = 0; i < $('.live_comments').length; i++) {
+    if ($($('.live_comments')[i]).attr('live_comment_id')) {
+      data[i] = $($('.live_comments')[i]).attr('live_comment_id');
+    }
+  }
+  post_id = $('#live_post_id').val();
+  if ($('#live_post_id').length == 0) {
+    clearInterval(main_live);
+  }
+  $.post("{{LINK aj/live/check_comments}}?hash=" + $('.main_session').val(), {post_id: post_id,ids:data,page:'live'}, function(data, textStatus, xhr) {
+    if (data.status == 200) {
+      $('#live_post_comments').append(data.html);
+      $('#live_count').html(data.count);
+      $('#live_word').html(data.word);
+      var comments = $('#live_post_comments .live_comments');
+      if (comments.length > 4) {
+        var i;
+        for (i = 0; i < comments.length; i++) {
+          if ($('#live_post_comments .live_comments').length > 4) {
+            comments[i].remove();
+          }
+        }
+      }
+    }
+    else if(data.removed == 'yes'){
+        clearInterval(main_live);
+        return false;
+    }
+  });
+}, 3000);
+function DeleteLive() {
+  post_id = $('#live_post_id').val();
+  $.post("{{LINK aj/live/delete}}?hash=" + $('.main_session').val(), {post_id: post_id}, function(data, textStatus, xhr) {});
+}
+
+
+
+navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+if (!navigator.getUserMedia) {
+  $('#remote-media h3').text('Sorry, WebRTC is not available in your browser.');
+}
+
+
+
+
+function getMedia() {
+  return new Promise((resolve, reject) => {
+    /*
+    //getusermedia constraints
+    let constraints = {
+      audio:true,
+      video: {
+        width:  { min: 640, max: 1920, ideal: 1280 },
+        height: { min: 480, max: 1080, ideal: 720 },
+        frameRate: { min: 10, max: 60, ideal: 24 },
+        advanced: [
+          // additional constraints go here, tried in order until something succeeds
+          // can attempt high level exact constraints, slowly falling back to lower ones
+          { aspectRatio: 16/9 },
+          { aspectRatio:  4/3 },
+        ]
+      }
+    } */
+
+    let constraints = {audio: true, video: true};
+    navigator.mediaDevices.getUserMedia(constraints)
+      .then(str => {
+        resolve(str);
+		$('#remote-media h3').addClass('hidden');
+        $('#remote-media .liv_vid_cont').html('<video id="basic-stream" class="hidden videostream" autoplay="" style="width: 100%;height: 100%;vertical-align: middle;"></video>');
+      }).catch(err => {
+      $('#remote-media h3').text('Could not get Media: '+err);
+      reject(err);
+    })
+  });
+}
+
+if (navigator.getUserMedia) {
+  ready();
+}
+function base64_2_blob(dataURI) {
+    var byteString;
+    if (dataURI.split(',')[0].indexOf('base64') >= 0)
+        byteString = atob(dataURI.split(',')[1]);
+    else
+        byteString = unescape(dataURI.split(',')[1]);
+
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    var ia = new Uint8Array(byteString.length);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+
+    return new Blob([ia], { type:mimeString });
+}
+function capture_video_frame(video, format) {
+    if (typeof video === 'string') {
+        video = document.getElementById(video);
+    }
+
+    format = format || 'jpeg';
+
+    if (!video || (format !== 'png' && format !== 'jpeg')) {
+        return false;
+    }
+
+    var canvas = document.createElement("canvas");
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    canvas.getContext('2d').drawImage(video, 0, 0);
+
+
+    var dataUri = canvas.toDataURL('image/' + format);
+    var data = dataUri.split(',')[1];
+    var mimeType = dataUri.split(';')[0].slice(5)
+
+    var bytes = window.atob(data);
+    var buf = new ArrayBuffer(bytes.length);
+    var arr = new Uint8Array(buf);
+
+    for (var i = 0; i < bytes.length; i++) {
+        arr[i] = bytes.charCodeAt(i);
+    }
+
+    var blob = new Blob([ arr ], { type: mimeType });
+    return { blob: blob, dataUri: dataUri, format: format };
+}
+$.getScript("{{CONFIG theme_url}}/js/excanvas.js", function(data, textStatus) {});
+</script>

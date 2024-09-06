@@ -1,0 +1,23 @@
+<?php if($pt->mediafilelist->user){  ?>
+    <tr id="ReceiptID_<?php echo $pt->mediafilelist->id?>" data-receipt-id="<?php echo $pt->mediafilelist->id?>">
+        <td>
+            <a href="<?php echo $pt->config->site_url . '/@' . $pt->mediafilelist->user->username; ?>" target="_blank"><img src="<?php echo $pt->mediafilelist->user->avatar;?>" class="setting-avatar rounded-circle" alt="<?php echo $pt->mediafilelist->user->username;?>"><?php echo $pt->mediafilelist->user->name; ?></a>
+        </td>
+		<td><?php echo $pt->mediafilelist->description;?></td>
+		<td><?php echo $pt->config->payment_currency . $pt->mediafilelist->price;?></td>
+		<td><span class="ajax-time"><?php echo $pt->mediafilelist->created_at; ?></span></td>
+		<td>
+			<a class="image-popup btn bg-info admn_table_btn admn-mng-bnk-rct" href="<?php echo PT_GetMedia($pt->mediafilelist->receipt_file); ?>" >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M3,22L4.5,20.5L6,22L7.5,20.5L9,22L10.5,20.5L12,22L13.5,20.5L15,22L16.5,20.5L18,22L19.5,20.5L21,22V2L19.5,3.5L18,2L16.5,3.5L15,2L13.5,3.5L12,2L10.5,3.5L9,2L7.5,3.5L6,2L4.5,3.5L3,2M18,9H6V7H18M18,13H6V11H18M18,17H6V15H18V17Z" /></svg> <img src="<?php echo PT_GetMedia($pt->mediafilelist->receipt_file); ?>" class="card-img-top">Show Receipt
+            </a>
+		</td>
+		<td>
+			<?php if((int)$pt->mediafilelist->approved == 0){?>
+				<a href="javascript:void(0)" class="btn bg-success admn_table_btn" onclick="Wo_ApproveReceipt(<?php echo $pt->mediafilelist->id?>,'<?php echo $pt->mediafilelist->receipt_file?>','hide');"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z" /></svg> Approve</a>
+				<a href="javascript:void(0)" class="btn bg-danger admn_table_btn" onclick="Wo_DeleteReceipt(<?php echo $pt->mediafilelist->id?>,<?php echo $pt->mediafilelist->user_id?>,'<?php echo $pt->mediafilelist->receipt_file?>','hide');"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" /></svg> Delete</a>
+			<?php } else{ ?>
+				<b style="color:darkgreen;">Approved <?php echo PT_Time_Elapsed_String($pt->mediafilelist->approved_at); ?></b>
+			<?php } ?>
+		</td>
+    </tr>
+<?php } ?>

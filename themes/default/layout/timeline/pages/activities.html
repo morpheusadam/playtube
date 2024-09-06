@@ -1,0 +1,89 @@
+<h4 class="pt_main_chnl_content_title">
+
+  <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                      <g id="Group_281" data-name="Group 281" transform="translate(1123 2420)">
+                                        <g id="Document_Align_Left_16" data-name="Document Align Left 16" transform="translate(-1123 -2420)">
+                                          <path id="Path_48" data-name="Path 48" d="M3,13c0,3.75,0,5.625.955,6.939a5,5,0,0,0,1.106,1.106C6.375,22,8.25,22,12,22s5.625,0,6.939-.955a5,5,0,0,0,1.106-1.106C21,18.625,21,16.75,21,13V11c0-.839,0-1.584-.011-2.25h-.07A12.414,12.414,0,0,1,19.1,8.679a5.75,5.75,0,0,1-4.78-4.78,12.408,12.408,0,0,1-.071-1.819v-.07C13.584,2,12.839,2,12,2c-3.75,0-5.625,0-6.939.955A5,5,0,0,0,3.955,4.061C3,5.375,3,7.25,3,11ZM8,7.25a.75.75,0,0,0,0,1.5h3a.75.75,0,0,0,0-1.5Zm0,4a.75.75,0,0,0,0,1.5h8a.75.75,0,0,0,0-1.5Zm0,4a.75.75,0,0,0,0,1.5h3a.75.75,0,0,0,0-1.5Z" fill="currentColor" fill-rule="evenodd"></path>
+                                          <path id="Path_49" data-name="Path 49" d="M19.335,7.2a11.514,11.514,0,0,0,1.6.052,5.836,5.836,0,0,0-.89-3.189,5,5,0,0,0-1.106-1.106,5.835,5.835,0,0,0-3.189-.89,11.518,11.518,0,0,0,.052,1.6A4.25,4.25,0,0,0,19.335,7.2Z" fill="currentColor"></path>
+                                        </g>
+                                        <rect id="Rectangle_315" data-name="Rectangle 315" width="24" height="24" transform="translate(-1123 -2420)" fill="none"></rect>
+                                      </g>
+                                    </svg> {{LANG recent_activities}}</span>
+
+  <?php if (IS_LOGGED && $pt->config->post_system == 'on' && $pt->profile_user->id == $pt->user->id) { ?>
+        <a href="{{LINK create_post}}" class="btn btn-main btn-sm pull-right" data-load="?link1=create_post">{{LANG create_post}}</a>
+  <?php } ?>
+</h4>
+<div class="videos-latest-list">
+	<div class="">
+		<div class="articles-container pt_actv_prnt">
+			{{VIDEOS}}
+		</div>
+	</div>
+	<?php if ($pt->posts_count > 20) { ?>
+		<div class="watch-video-show-more desc" data-type="activity" onclick="PT_LoadActivity(this);">{{LANG show_more}}</div>
+	<?php } ?>
+</div>
+<div class="clear"></div>
+<script type="text/javascript">
+	  function PT_LikePost(self,type){
+    if (!self || (type != 'up' && type != 'down')){
+      return false;
+    }
+
+    else if (!$('#main-container').attr('data-logged') && $('#main-url').val()) {
+      window.location.href = PT_Ajax_Requests_File() + 'login?to=' + $('#main-url').val();
+      return false;
+    }
+    id = $(self).attr('data-post-id');
+
+    var self = $(self);
+    $.ajax({
+      url: '{{LINK aj/like-system/}}' + type,
+      type: 'POST',
+      dataType: 'json',
+      data: {activity_id: id}
+    })
+    .done(function(data) {
+      if (data.status == 200 && type == 'up' && data.code == 1){
+        self.find('span').text((data.up));
+        $('[data-post-dislikes]').find('span').text((data.down));
+        self.find('svg.feather').addClass('active');
+        self.siblings().find('svg.feather').removeClass('active');
+        
+      }
+
+      else if (data.status == 200 && type == 'up' && data.code == 0){
+        self.find('span').text((data.up));
+        $('[data-post-dislikes]').find('span').text((data.down));
+        self.find('svg.feather').removeClass('active');
+        self.siblings().find('svg.feather').removeClass('active');
+      }
+
+      else if (data.status == 200 && type == 'down' && data.code == 1){
+        self.find('span').text((data.down));
+        self.find('svg.feather').addClass('active');
+        $('[data-post-likes]').find('span').text((data.up));
+        self.siblings().find('svg.feather').removeClass('active');
+      }
+
+      else if (data.status == 200 && type == 'down' && data.code == 0){
+        self.find('span').text((data.down));
+        self.find('svg.feather').removeClass('active');
+        $('[data-post-likes]').find('span').text((data.up));
+        self.siblings().find('i').removeClass('active');
+      }
+
+      else{
+        swal(
+           'Error!',
+           'Something went wrong.Please try again later!',
+           'error'
+         );
+      }
+    })
+    .fail(function() {
+      console.log("error");
+    })
+  }
+</script>

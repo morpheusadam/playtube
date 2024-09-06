@@ -1,0 +1,9 @@
+<?php foreach ($pt->langs as $key => $lang) { ?>
+      <div class="form-group form-float">
+          <div class="form-line focused">
+          	<label class="form-label"><?php echo ucfirst($lang); ?></label>
+              <input type="text" class="form-control" name="<?php echo($lang) ?>" value="<?php echo($pt->edit_category->{$lang}) ?>">
+          </div>
+      </div>
+<?php } ?>
+<input type="hidden" name="lang_key" value="<?php echo($pt->edit_category->lang_key) ?>">

@@ -1,0 +1,38 @@
+{
+  "name": "emojionearea",
+  "homepage": "https://github.com/mervick/emojionearea",
+  "authors": [
+    "Andrey Izman <izmanw@gmail.com>"
+  ],
+  "main": "dist/emojionearea.js",
+  "dependencies": {
+    "emojione": ">=2.0.1",
+    "jquery": ">=1.8.3",
+    "jquery-textcomplete": ">=1.3.4"
+  },
+  "description": "WYSIWYG-like EmojiOne Converter / Picker Plugin for jQuery",
+  "keywords": [
+    "emoji",
+    "emojione",
+    "picker",
+    "emojionearea"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "tests"
+  ],
+  "version": "3.0.0",
+  "_release": "3.0.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v3.0.0",
+    "commit": "39dea4f6de2f259e54accb6b1a59dcbf97dfe94e"
+  },
+  "_source": "https://github.com/mervick/emojionearea.git",
+  "_target": "3.0.0",
+  "_originalSource": "emojionearea",
+  "_direct": true
+}

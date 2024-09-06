@@ -1,0 +1,5 @@
+{
+    "require": {
+        "james-heinrich/getid3": "~2.0.0-dev"
+    }
+}

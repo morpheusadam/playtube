@@ -1,0 +1,473 @@
+.user-ads-list-container .user-ads-list-header span, .create-new-ad-container .user-ads-list-header span {float: right;}
+.user-ads-list-container .user-ads-list-header span.create-ad-btn, .create-new-ad-container .user-ads-list-header span.create-ad-btn {float: left;}
+div.dataTables_wrapper div.dataTables_filter {text-align: left;}
+.announcement-renderer {left: auto;right: 30px;}
+.pull-right {float: left !important;}
+.pull-left {float: right !important;}
+.articles-content .pt_article_h_list .video-info .article-views {border-left: 0;border-right: 2px solid #04abf2;padding-left: 0;padding-right: 8px;}
+.articles-content .articles-container > h3 .article-categories, .articles-content .articles-container > h3 .article-categories div form div {margin-left: 0;margin-right: auto;}
+.article-categories div form input {padding-right: 12px;padding-left: 40px;}
+.article-categories div form div button {right: auto;left: 0;border-radius: 10px 0 0 10px;}
+.pt_blogcomm_combo img, .user-comments .main-comment .user-avatar {	margin-left: 10px;margin-right: 0px;}
+.pt_blogcomm_combo button {right: auto;
+    left: 0;}
+.read-article-container .read-article-meta span.pull-right svg.feather {margin: -3px 15px 0 0;}
+.pp_mat_input label {left: auto;right: 9px;}
+.pp_mat_input input:placeholder-shown:not(:focus) + label {left: auto;right: 13px;}
+.mat_header h1 svg, .page_head svg {margin-right: 0px;margin-left: 10px;}
+.text-right {text-align: left;}
+nav.navbar-findcond .logo-img {margin: 8.5px 30px 8.5px 35px !important;}
+header nav.navbar-findcond .navbar-right {margin-left: 0;}
+ul.notfi-dropdown ul#notifications-list li div.avatar {	float: right;margin-right: 0;margin-left: 15px;}
+ul.notfi-dropdown li h5 b {	margin: 0 0 0 7px;}
+ul.notfi-dropdown li h5 i.fa-circle-o-notch {float: left;}
+nav.navbar-findcond .search-header input {border-radius: 0 10px 10px 0;}
+nav.navbar-findcond .search-header .btn {border-radius: 10px 0 0 10px;}
+.user-setting-panel {padding: 30px;padding-top: 20px;padding-bottom: 10px;}
+.footer-container .footer-links ul {padding: 0;}
+.pt_foot_lang li svg.feather {margin: 0 0 0 3px;}
+.nav.navbar-nav.navbar-right .dropdown.profile-nav ul {right: auto !important;left: 0;}
+.headtoppoint {	left: auto;margin-left: 0;right: 100%;margin-right: -35px;}
+.dropdown-menu.ani-acc-menu svg.feather {margin: -2px 1px 0px 8px !important;}
+nav.navbar-findcond .search-header input:focus {margin-right:0;}
+.pt_history .video-wrapper .video-info > div.video-actions {float:left;}
+.pt_history .video-wrapper .video-info > div {padding-right: 0px;padding-left: 30px;}
+.pt_featured_video .thumbnail_holder img {right: 50%;left: auto;transform: translate(50%, -50%);}
+.pt_featured_video .thumbnail_holder:before {left: auto;margin-left: 0;	right: 100%;margin-right: 14px;transform: rotate(180deg);}
+.pt_featured_video .video-player .col-md-4 {padding-left: 15px;padding-right: 8px;}
+.pt_featured_video .video-player .publisher-element .publisher-avatar {	margin-right: 0;margin-left: 13px;}
+.home-page-categories .title h4 > div {	margin-right: 0;margin-left: 8px;}
+.view_more_link {margin-left: 0;margin-right: auto;}
+.cus_slider .slick-next {right: auto;left: -20px;}
+.cus_slider .slick-prev { left: auto;right: -20px;}
+.cus_slider .slick-prev svg.feather, .cus_slider .slick-next svg.feather {transform: rotate(180deg);}
+.yp_side_drawer {left: auto;right: 0;}
+.yp_side_menu.has_side_menu {margin-left: 0;margin-right: 80px;}
+body.side_open .yp_side_menu.has_side_menu {
+    margin-left: 0;
+    margin-right: 250px;
+}
+.custom_width_import {width: 66.66666667%;float: none;}
+.publisher-element .publisher-avatar {margin-right: 0px;margin-left: 8px;}
+.home-page-categories .title h4 span {float: left;}
+.home-page-categories .videos .video-list .video-list-by span {display: inline-block;}
+.fixed-action-btn {right: auto;	left: 16px;}
+.pt_import_vdo .col-md-9 {padding-right: 15px;padding-left: 0;}
+.pt_import_vdo .col-md-3 {padding-left: 15px;padding-right: 0;}
+.pt_import_vdo .col-md-9 input {padding: 0 50px 0 10px;	border-radius: 0 29px 29px 0;border-right: 2px solid #ccc;border-left: 0;}
+.pt_import_vdo .col-md-9 svg.feather {left: auto;right: 25px;}
+.pt_import_vdo .col-md-3 button {border-radius: 29px 0 0 29px;}
+.w-100 {width: 100%;}
+.video-actions {float: left;}
+.no-padding-right, .no-padding-right0 {padding-left: 0;}
+.no-padding-left, .no-padding-left0 {padding-right: 0;}
+.author-list .video-actions a svg {	margin-right: 0;margin-left: 4px;}
+.pt_msg_main {box-shadow: inset -6px 0 6px -3px rgba(0, 0, 0, 0.1);}
+#new-message-form #send-button {margin-left: 0px;margin-right: 10px;}
+#new-message-form #send-button svg{	transform: rotate(180deg);}
+.messages-sidebar ul li a .user-avatar {float: right;margin: 0 5px 0 15px}
+.messages-sidebar .search-box svg {left: auto;right: 2px;}
+.messages-sidebar .search-box input {padding-left: 12px;padding-right: 30px;}
+.user-messages .messages .message .user-message {margin-left: 0px;margin-right: 40px;}
+.user-messages .messages .message .user-avatar {float: right;}
+.play-lists .ddown-menu {right: auto;left: 25px;}
+.ddown-menu div.dropdown ul.dropdown-menu {	right: auto !important;	left: 0;}
+.play-lists .ddown-menu .dropdown-menu li svg {	margin: auto 0 auto 16px;}
+.user-wrapper .video-title {padding-left: 0px;padding-right: 10px;}
+.settings-sidebar ul li a svg {margin: 0 0 0 20px;}
+.profile-container .pt_chnl_info .subscribe-btn-container .btn-subscribed svg.feather-video {margin-right: 0;margin-left: 5px;}
+.author-list .video-wrapper .author-info .author-img {margin-right: 0px;margin-left: 5px;}
+.profile-container .pt_chnl_info .subscribe-btn-container, .publisher-element .publisher-subscribe-button {	margin-left: 0px;margin-right: auto;}
+.btn-subscribe:before, .btn-subscribed:before {left: auto;right: 100%;margin-left: 0;margin-right: 4px;transform: rotate(180deg);}
+.subs-amount {margin-left: 0;margin-right: 6.5px;}
+.profile-container .pt_chnl_info .subscribe-btn-container .subs-amount, .yp_pub_elemnt .subs-amount {margin-left: 0;margin-right: 9px;}
+.profile-container .pt_chnl_info .avatar-container {margin-right: 0;margin-left: 20px;}
+.profile-container .links-container {padding: 10px 130px 0 0;}
+.profile-container .links-container ul {padding: 0;}
+.profile-container .links-container ul li {float: right;}
+.video-duration, .video-latest-list .video-thumb .video-duration, .videos-list .pt_video_side_vids .video-thumb .video-duration {right: auto;left: 4px;}
+.profile-container .pt_about svg.feather.ahead {margin: -3px -2px 0px 5px;}
+.yp_pub_elemnt .publisher-element .publisher-avatar {margin-right: 8px;margin-left: 11px;}
+.pt_video_comments .yp_video_comment textarea {	padding: 12px 10px 12px 100px;}
+.pt_video_comments .yp_video_comment .btn {	right: auto;left: 0;}
+.videos-list .pt_video_side_vids .video-thumb {	margin-right: 0px;margin-left: 10px;}
+.checkbox label::before {left: auto;right: 0;}
+.pt_foot_lang .pt_language_select {left: 0;right: auto;}
+.pt_language_select:before {right: auto;left: 30px;}
+.video-latest-list .video-info span {display: inline-block;}
+.yp_side_drawer .open_side_menu_head .toggle-mode {margin-left: 0; margin-right: 15px;}
+.yp_side_drawer .open_side_menu_head > span {margin: 10px auto 10px 5px;}
+.btn-floating p {right: auto;left: 50px;}
+.video-likes .like-btn svg {margin-right: 0;margin-left: 4px;}
+.pt_vdo_plyr .embed-responsive.stuck {right: auto;left: 20px;}
+
+
+.vid_stud_links li a svg {
+	margin-right: 0;margin-left: 2px;
+}
+.vid_analts_stat > svg {
+    margin-right: 0;margin-left: 17px;
+}
+.videos-list .video-wrapper .video-thumb {
+    margin-right: 0px;margin-left: 10px;
+}
+.pull-right>.dropdown-menu {
+    right: auto;
+    left: 0;
+}
+.vid_pop_channls .video-thumb {
+    margin-right: 0px;margin-left: 15px;
+}
+.vid_pop_channls .video-title h6 svg {
+    margin-right: 0;
+    margin-left: 2px;
+}
+#video_dropdown .dropdown-menu .dropdown-item svg{margin-right: 0;margin-left: 11px;}
+.vid_move_filtr .last-sett-btn {
+	margin-left: 0;
+    margin-right: 20px;
+}
+.vid_mov_e_info h4 {
+	float: right;margin-right: 0px;margin-left: 10px;
+}
+
+
+
+.rent_vids_side {
+    padding-left: 0;
+    padding-right: 15px;
+}
+.rent_vids_foot .rent_vid_info_name {
+    padding-left: 0;padding-right: 32px;
+}
+.rent_vids_foot .rent_vid_info_name svg {
+    left: auto;
+    right: 0;
+}
+
+
+
+
+@media (min-width: 992px){
+.col-md-4 {padding-right: 15px;}
+}
+
+@media (max-width: 1360px) {
+.custom_width_import {width: 77%;}	
+}
+
+@media (max-width: 1251px){
+.yp_side_menu.has_side_menu {margin-right: 0px;}
+.yp_side_drawer {right: -300px;}
+body.mobi_side_open .yp_side_drawer {right: 0;}
+.custom_width_import {width: 66.66666667%;}
+}
+
+@media (max-width: 1127px) {
+.custom_width_import {width: 77%;}
+}
+
+@media (max-width: 992px){
+.pt_import_vdo .col-md-9 {padding-right: 15px;padding-left: 15px;}
+.pt_import_vdo .col-md-3 {padding-right: 15px;padding-left: 15px;}
+.pt_import_vdo .col-md-9 input {border-radius: 10px 10px 0 0;}
+.pt_import_vdo .col-md-3 button {border-radius: 0 0 10px 10px;}
+.video-actions {float:none;margin-bottom: 5px;} 
+.pt_import_vdo .col-md-9 input {border-left: 2px solid #ccc;border-bottom: 0;}
+}
+
+@media (max-width: 990px){
+.no-padding-left {padding-right: 15px !important;}
+.no-padding-right {padding-left: 15px !important;}
+.mobileleftpane {padding: 0 !important;}
+.video-player-page .no-padding-left {padding-right: 0 !important;}
+}
+
+@media (max-width: 910px) {
+.custom_width_import {width: 100%;}
+.profile-container .pt_chnl_info .subscribe-btn-container {margin-right: 110px;}
+}
+
+@media (max-width: 760px){
+.settings-sidebar ul li.active a {border-radius: 0;}
+}
+
+@media (max-width: 760px){
+.home-page-categories .col-md-3.keep-padding {padding-right: 2px !important;padding-left: 4px !important;}
+}
+
+@media (max-width: 705px){
+.profile-container .links-container {padding: 10px 0 0;}
+.profile-container .links-container ul li {display: inline-block;float: none;}
+.profile-container .pt_chnl_info .subscribe-btn-container {margin: 10px auto 0;}
+}
+
+@media (max-width: 735px) {
+.rent_vids_side {
+    padding: 0;
+	padding-top: 15px;
+}
+}
+
+@media (max-width: 700px){
+ul.notfi-dropdown {left: 0 !important;width: 100% !important;ight: auto;}
+}
+
+@media (max-width: 620px){
+nav.navbar-findcond .logo-img {margin: 8px 15px !important;}
+nav.navbar-findcond .yp_slide_menu span {margin: 10px 0px;}
+}
+
+@media (max-width: 460px) {
+.read-article-container .read-article-meta span {display: inline-block;}
+nav.navbar-findcond .logo-img {max-width: 105px;margin: 11.5px 10px !important;}
+}
+
+@media (max-width: 380px){
+nav.navbar-findcond .logo-img {max-width: 95px;margin: 13px 3px !important;}
+}
+.mejs-qualities-selector input, .mejs__qualities-selector input {
+    right: -1000px !important;
+    left: auto;
+}
+
+
+
+
+.wow_liv_counter {left: auto;right: 15px;}
+.end_vdo_call, .start_vdo_call {left: 15px;right: auto;}
+.live_mic_cam_switch {right: auto;left: 15px;}
+.live_mic_cam_switch .dropdown-menu-right {
+    left: 0;
+    right: auto;
+}
+
+.sticky-container_sticky .sticky-container__video {right: auto;left: 0;}
+
+
+.movie-file-input > .button {margin-right: 0;margin-left: 8px;}
+.select_radio_btn.small_rbtn .sr_btn_img {margin: 0 0 0 10px;}
+
+.ads-test {left: 30px;right: auto;}
+.pt_upload_vdo .progress .percent {margin: 0 0 0 6px !important;}
+
+.pt-create-menu li a svg {
+    margin: -3px 0 0 7px;
+}
+ul.notfi-dropdown, .dropdown-menu-right {
+    right: auto;
+    left: 0;
+}
+.pt_acc_menu_hdr img {
+    margin: 0 0 0 12px;
+}
+.dropdown-menu.ani-acc-menu svg, .dropdown-menu.ani_log_menu svg {
+    margin: -1px 0 0px 12px;
+}
+.pt_feat_vid_content .video-title+.headtoppoint {
+    transform: rotate(270deg) scaleY(-1);
+    left: auto;
+    right: -31px;
+}
+.pt_feat_vid_content .video-title .video-big-share .btn svg {
+    margin: -2px 0 0 3px;
+}
+.articles-content .pt_article_h_list .video-thumb {
+    margin: 0 0 0 24px;
+}
+.home-page-categories .videos .duration {
+    right: auto;
+    left: 4px;
+}
+.yp_side_drawer ul.sections li a:before {
+    left: auto;
+    right: 34px;
+}
+.pt_timeline_latest_vids .col-md-3:first-child .video-latest-list.video-wrapper .video-thumb, .pt_srch_vids .video-latest-list.video-wrapper .video-thumb {
+    margin-right: 0;
+    margin-left: 22px;
+}
+.popular-articles-wrapper .video-info {z-index: 1;padding: 20px 20px 0 0;}
+.popular-articles-wrapper .video-info time {margin: 0 110px 20px 0;}
+.related-video-wrapper .ra-thumb {
+    margin-right: 0;
+    margin-left: 10px;
+}
+.related-video-wrapper .ra-thumb .video-duration {
+    right: auto;
+    left: 6px;
+}
+.pt_blogcomm_combo textarea {
+    padding: 13px 15px 7px 135px;
+}
+.pt_movie_margin h3.text-center span {
+    margin-right: 0;
+    margin-left: 5px;
+}
+.vid_move_filtr .pt_forms .form-group .input-group svg {
+    left: auto;
+    right: 2px;
+    border-radius: 0 8px 8px 0;
+    border: 0;
+    border-left: 2px solid #707070;
+}
+
+@media (min-width: 1200px) {
+.vid_move_filtr .col-lg-3 {
+    padding-right: 15px;
+}
+}
+
+@media (min-width: 992px) {
+.wtch_mv_main_row .col-md-9 {
+    padding-right: 15px;
+}
+}
+
+.vid_move_filtr .pt_forms .form-group input[type=text] {
+    padding-left: 12px;
+    padding-right: 60px;
+}
+.video-options .btn-share svg {
+    margin-right: 0;
+    margin-left: 10px;
+}
+.pt_num_toggle .value-button.add {
+    border-radius: 10px 0 0 10px;
+}
+.pt_num_toggle .value-button.minus {
+    border-radius: 0 10px 10px 0;
+}
+.pt_srch_vids .video-latest-list .video-info a img {
+    margin: 0 0 0 10px;
+}
+.vid_analts_stat > div > svg {
+    margin-right: 0;
+    margin-left: 15px;
+}
+.pt_vdo_cstm_radio label {
+    padding: 8px 40px 8px 10px;
+}
+.pt_vdo_cstm_radio label:after, .pt_vdo_cstm_radio label:before {
+    left: auto;
+    right: 12px;
+}
+.pt_vdo_cstm_radio input:checked + label:after {
+    left: auto;
+    right: 16px;
+}
+.ep_how_many_prnt:before {
+    left: auto;
+    right: 25px;
+}
+.log_out_session {
+    float: left;
+}
+.platform_icon {
+    margin-right: 0;
+    margin-left: 15px;
+    float: right;
+}
+
+.tube_faq .accordion-item > .btn {
+    margin-right: 0;margin-left: 25px;
+}
+
+.read-article-sidebar .ra-sidebar-head h4::after {
+    left: auto;
+    right: 0;
+}
+.related-article-wrapper .ra-thumb {
+    margin-left: 0;
+    margin-right: 15px;
+}
+
+body .pt_shorts_swipe .swiper-button-prev, body .pt_shorts_swipe .swiper-button-next {
+    left: 50px !important;
+    right: auto !important;
+    transform: rotate(270deg);
+}
+.shorts_badge {
+    right: auto;
+    left: 5px;
+}
+
+body .pt_sec_nav_slide_prnt .swiper-button-next {left: 0;right: auto;}
+body .pt_sec_nav_slide_prnt .swiper-button-prev {right: 0;left: auto;}
+
+.pt_upload_vdo .upload > .content {
+    margin: 0 0 0 60px;
+}
+
+@media (max-width: 705px) {
+.pt_upload_vdo .upload > .content {
+    margin: 0 auto 20px;
+}
+}
+
+.messages-sidebar ul li a .time {
+	 float: left;
+}
+.pt_go_pro .go-pro-head > .icon {
+    right: auto;left: 10px;
+}
+
+.pt_blogcomm_combo button svg {
+	transform: scale(-1);
+}
+.pt_blogcomm_combo button:hover svg {
+	transform: translateX(-5px) scale(-1);
+}
+
+
+
+.pt_mn_wtch_switch .tgl-btn {
+    padding-right: 45px;
+    padding-left: 0;}
+.pt_mn_wtch_switch .tgl-btn:before {left: auto;right: 0}
+.pt_mn_wtch_switch .tgl:checked + .tgl-btn:after {right: 0;left: auto;}
+
+
+
+@media (min-width: 910px){
+.popular_channels_list .channels_list:nth-child(1) {
+    right: 50%;left: auto;
+    transform: translateX(50%);width: 240px;
+}
+.popular_channels_list .channels_list:nth-child(2) {
+    right: calc(50% - 240px);left: auto;
+    transform: translateX(50%);width: 240px;
+}
+.popular_channels_list .channels_list:nth-child(3) {
+    left: calc(50% - 240px);
+    transform: translateX(-50%);width: 240px;right: auto;
+}
+}
+
+.user-setting-panel .user-comments .main-comment .user-name { margin-left: 0; margin-right: 60px;}
+
+.user-comments .main-comment .user-comment:not(.pt-comment-replies) {
+    margin-left: 0;
+    margin-right: 50px;
+}
+.user-comments .main-comment .user-comment.pt-comment-replies {
+	padding: 0 60px 0 0 !important
+}
+
+.view_more_link a svg {transform: scale(-1)}
+.view_more_link a:hover svg {
+	transform: scale(-1) translateX(3px);
+}
+
+.pt_stock_vid_setts .pt_forms .form-group .input-group-btn {
+	padding-left: 0;padding-right: 18px;
+}
+
+.lang_select_modal ul{
+	padding: 20px 0 20px 20px;
+}
+
+.pt_blogcomm_combo .add-emoticons {
+	right: auto;
+    left: 105px;
+}

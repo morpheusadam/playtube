@@ -1,0 +1,77 @@
+<div class="main-comment article-comments" data-id="{{ID}}" id="comment-{{ID}}">
+	<div class="main-comment-data-sp">
+		<!-- <div class="user-avatar pull-left">
+			<img src="{{USER avatar}}" alt="{{USER name}}">
+		</div> -->
+		<?php if ($pt->is_comment_owner == true) { ?>
+		<div class="pull-right delete-comment" onclick="PT_DeleteComment({{ID}});">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+		</div>
+		<?php } ?>
+		<?php if (!empty($pt->video_owner)): ?>
+        <div class="pull-right pin-comment" onclick="PT_PinComment({{ID}},true);">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-paperclip" id="pin-comment"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
+        </div>
+		<?php endif; ?>
+		<div class="">
+			<div class="user-avatar pull-left">
+				<img src="{{USER avatar}}" alt="{{USER name}}">
+			</div>
+			<div class="comments_flex">
+				<div class="user-name">
+					<span class="pin">
+						<?php if (!empty($pt->pin)): ?>
+		               
+						<?php endif; ?>
+					</span>
+					<a href="{{USER url}}" data-load="?link1=timeline&id={{USER username}}">{{USER name}}</a>
+					<?php if ($pt->is_verified == true): ?>
+						<i class="fa fa-check-circle fa-fw verified"></i>
+					<?php endif; ?>
+					<br>
+					<small>{{TIME}}</small>
+				</div>
+				<!-- MESSAGE -->
+				<div class="user-comment">
+					<p class="comment-text">{{TEXT}}</p>
+					<div class="width-100 div-vote-comment">
+						
+						<!-- <div class="div-vote-comment-btn"> -->
+							<div class="comments_taps" onclick="PT_LikeComments(this,'up','{{ID}}');" data-comment-likes="{{ID}}">
+								
+							<svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M14.5784 9.2832C14.842 8.84375 14.9885 8.375 14.9885 7.81836C14.9885 6.5293 13.8752 5.32812 12.469 5.32812H11.385C11.5315 4.94727 11.6487 4.50781 11.6487 3.95117C11.6487 1.8125 10.5354 0.875 8.86548 0.875C7.04907 0.875 7.16626 3.6582 6.7561 4.06836C6.08228 4.74219 5.29126 6.03125 4.73462 6.5H1.86353C1.33618 6.5 0.926025 6.93945 0.926025 7.4375V14.4688C0.926025 14.9961 1.33618 15.4062 1.86353 15.4062H3.73853C4.14868 15.4062 4.52954 15.1133 4.61743 14.7324C5.93579 14.7617 6.84399 15.875 9.83228 15.875C10.0667 15.875 10.301 15.875 10.5061 15.875C12.762 15.875 13.7581 14.7324 13.7874 13.0918C14.1975 12.5645 14.4026 11.832 14.3147 11.1289C14.6077 10.6016 14.6956 9.95703 14.5784 9.2832ZM12.762 10.8652C13.1428 11.4805 12.7913 12.3008 12.3518 12.5645C12.5862 13.9707 11.8245 14.4688 10.7991 14.4688H9.68579C7.60571 14.4688 6.22876 13.3848 4.67603 13.3848V7.90625H4.96899C5.8186 7.90625 6.96118 5.85547 7.7522 5.06445C8.57251 4.24414 8.30884 2.83789 8.86548 2.28125C10.2424 2.28125 10.2424 3.24805 10.2424 3.95117C10.2424 5.09375 9.42212 5.62109 9.42212 6.73438H12.469C13.0842 6.73438 13.553 7.29102 13.5823 7.84766C13.5823 8.375 13.2014 8.93164 12.9084 8.93164C13.3186 9.37109 13.4065 10.2793 12.762 10.8652ZM3.50415 13.5312C3.50415 13.9414 3.18188 14.2344 2.80103 14.2344C2.39087 14.2344 2.0979 13.9414 2.0979 13.5312C2.0979 13.1504 2.39087 12.8281 2.80103 12.8281C3.18188 12.8281 3.50415 13.1504 3.50415 13.5312Z" fill="currentColor"/>
+							</svg>
+
+								<span>{{LIKES}}</span>
+							</div>
+							<div class="comments_taps" onclick="PT_LikeComments(this,'down','{{ID}}');" data-comment-dislikes="{{ID}}">
+								
+							<svg width="15" height="17" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M13.6523 7.49609C13.7695 6.82227 13.6816 6.17773 13.3887 5.65039C13.4766 4.94727 13.2715 4.21484 12.8613 3.6875C12.832 2.04688 11.8359 0.875 9.58008 0.875C9.375 0.875 9.14062 0.904297 8.90625 0.904297C5.88867 0.904297 4.92188 2.04688 3.75 2.04688H3.42773C3.25195 1.92969 3.04688 1.8125 2.8125 1.8125H0.9375C0.410156 1.8125 0 2.25195 0 2.75V9.78125C0 10.3086 0.410156 10.7188 0.9375 10.7188H2.8125C3.13477 10.7188 3.45703 10.543 3.60352 10.25H3.80859C4.36523 10.748 5.15625 12.0371 5.83008 12.7109C6.24023 13.1211 6.12305 15.875 7.93945 15.875C9.60938 15.875 10.7227 14.9668 10.7227 12.8281C10.7227 12.2715 10.6055 11.832 10.459 11.4512H11.543C12.9492 11.4512 14.0625 10.25 14.0625 8.96094C14.0625 8.375 13.916 7.93555 13.6523 7.49609ZM1.875 9.54688C1.46484 9.54688 1.17188 9.25391 1.17188 8.84375C1.17188 8.46289 1.46484 8.14062 1.875 8.14062C2.25586 8.14062 2.57812 8.46289 2.57812 8.84375C2.57812 9.25391 2.25586 9.54688 1.875 9.54688ZM11.543 10.0449H8.49609C8.49609 11.1582 9.31641 11.6855 9.31641 12.8281C9.31641 13.5312 9.31641 14.4688 7.93945 14.4688C7.38281 13.9414 7.64648 12.5352 6.82617 11.7148C6.03516 10.9238 4.89258 8.84375 4.04297 8.84375H3.75V3.39453C5.30273 3.39453 6.67969 2.31055 8.75977 2.31055H9.87305C10.8984 2.31055 11.6602 2.80859 11.4258 4.21484C11.8652 4.47852 12.2168 5.29883 11.8359 5.91406C12.4805 6.5 12.3926 7.4082 11.9824 7.84766C12.2754 7.84766 12.6562 8.4043 12.6562 8.93164C12.627 9.48828 12.1582 10.0449 11.543 10.0449Z" fill="currentColor"/>
+							</svg>
+
+								<span>{{DIS_LIKES}}</span>
+							</div>
+							<div class="pointer comms-reply comments_taps" onclick="PT_Reply('{{ID}}');">
+							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M7 1.62598C10.123 1.62598 12.6621 3.63184 12.6621 6.09473C12.6621 8.55762 10.123 10.5635 7 10.5635C6.26367 10.5635 5.55273 10.4619 4.86719 10.2588C4.63867 10.1826 4.35938 10.208 4.15625 10.3604C3.59766 10.7666 2.68359 11.249 1.54102 11.376C1.8457 10.9951 2.30273 10.335 2.58203 9.59863C2.70898 9.31934 2.63281 9.01465 2.42969 8.76074C1.69336 7.97363 1.3125 7.05957 1.3125 6.09473C1.3125 3.63184 3.85156 1.62598 7 1.62598ZM7 0.813477C3.39453 0.813477 0.5 3.2002 0.5 6.09473C0.5 7.31348 0.982422 8.43066 1.82031 9.31934C1.46484 10.3096 0.677734 11.1729 0.652344 11.1729C0.474609 11.3506 0.449219 11.6045 0.525391 11.833C0.626953 12.0615 0.855469 12.1885 1.10938 12.1885C2.6582 12.1885 3.87695 11.5537 4.63867 11.0205C5.375 11.249 6.16211 11.376 7 11.376C10.5801 11.376 13.4746 9.01465 13.4746 6.09473C13.4746 3.2002 10.5801 0.813477 7 0.813477Z" fill="currentColor"/>
+						</svg>
+						</div>
+						<!-- </div> -->
+					</div>
+				</div>
+		</div>
+	</div>
+	<div style="width: 100%;overflow: hidden;">
+		<div class="pt-comment-replies user-comment" style="width: 100%;padding: 0 0 0 60px;">
+			<div class="pt-comment-item-replies-list" id="pt-comment-replies-cont-{{ID}}">
+				{{COMM_REPLIES}}
+			</div>
+			<div class="pt-comment-item-reply-form hidden" id="comm-reply-{{ID}}">
+				<input type="text" class="form-control" placeholder="{{LANG write_a_reply}}" onkeydown="PT_RPReply(this.value,'{{ID}}',event,'{{POST_ID}}');">
+			</div>      
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>

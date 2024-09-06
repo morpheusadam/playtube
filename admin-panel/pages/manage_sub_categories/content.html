@@ -1,0 +1,368 @@
+<?php
+$key = (!empty($_GET['key'])) ? PT_Secure($_GET['key']) : 1;
+    if (!empty($_GET['key'])) {
+        $sub_categories = $db->where('type',PT_Secure($_GET['key']))->get(T_LANGS);
+    }
+    else{
+        $sub_categories = $db->where('type',array_keys(get_object_vars($pt->categories))[0])->get(T_LANGS);
+    }
+?>
+<div class="container-fluid">
+    <div>
+        <h3>Manage sub Categories</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Admin Panel</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Category</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Manage sub Categories</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- Vertical Layout -->
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Add Sub Category</h6>
+                    <div class=" add_sub_category_form_alert"></div>
+                            <form method="POST" id="add_sub_category_form">
+                              <div class="row">
+                                <div class="col-md-2" id="normal-query-form">
+                                  <div class="form-group form-float">
+                                    <label>&nbsp;</label>
+                                        <select class="form-control show-tick" name="key">
+                                            <?php foreach($pt->categories as $key => $category) { 
+                                            if($key != 'other'){
+
+                                            ?>
+                                                <option value="<?php echo $key?>" <?php echo (!empty($_GET['key']) && $_GET['key'] == $key) ? 'selected' : '' ?>><?php echo $category ?></option>
+                                            <?php } } ?>
+                                        </select>
+                                  </div>
+                                </div>
+                                <?php foreach ($pt->langs as $key => $lang) { ?>
+                                    <div class="col-md-2" id="normal-query-form">
+                                      <div class="form-group form-float">
+                                          <div class="form-line">
+                                            <label class="form-label"><?php echo ucfirst($lang); ?></label>
+                                              <input type="text" class="form-control" name="<?php echo($lang) ?>">
+                                              
+                                          </div>
+                                      </div>
+                                    </div>
+                                <?php } ?>
+                                <div class="clearfix"></div>
+                              <div class="col-md-2">
+                                <label>&nbsp;</label>
+                                <div></div>
+                                  <button class="btn btn-info">Add</button>
+                              </div>
+                              </div>
+                              <div class="clearfix"></div>
+                           </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Manage Sub Categories</h6>
+                   <div class="row">
+                       <div class="col-md-6" style="margin-bottom:0;">
+                            <form method="get" action="<?php echo PT_LoadAdminLinkSettings('manage_sub_categories'); ?>">
+                              <div class="row">
+                                  <div class="col-lg-6 col-md-6">
+                                        <select class="form-control show-tick" name="key">
+                                            <?php foreach($pt->categories as $key => $category) { ?>
+                                                <option value="<?php echo $key?>" <?php echo (!empty($_GET['key']) && $_GET['key'] == $key) ? 'selected' : '' ?>><?php echo $category ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+	                              <div class="col-md-1">
+	                              	 <button class="btn btn-info">Show</button>
+	                              </div>
+                              </div>
+
+                              <div class="clearfix"></div>
+                           </form>
+                       </div>
+                   </div>
+                   <br>
+                   <div class="clearfix"></div>
+                   <div class="table-responsive1">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                  <th width="60"><input type="checkbox" id="check-all" class="filled-in check-all" ><label for="check-all"></label></th>
+                                  <th width="100">ID</th>
+				                  <th>Sub Category Name</th>
+				                  <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                foreach ($sub_categories as $key => $sub_category) {
+                                	echo PT_LoadAdminPage('manage_sub_categories/list', array('ID' => $sub_category->lang_key, 'CAT_ID' => $sub_category->lang_key, 'CAT_NAME' => $pt->all_lang->{$sub_category->lang_key}));
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3">
+                            <span>&nbsp;</span>
+                            <button type="button" class="btn btn-info waves-effect delete-selected d-block" disabled>Delete Selected<span></span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <!-- #END# Vertical Layout -->
+<!-- Modal -->
+<div class="modal fade" id="editSubModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content modal_content_back">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editSubModalLabel">Edit Sub Category</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <textarea id="text_modal" class="form-control"></textarea>
+      </div>
+      <div class="modal-footer">
+        <input type="hidden" id="c_id_">
+        <button type="button" class="btn btn-secondary modal_close_btn" data-dismiss="modal">{{LANG close}}</button>
+        <button type="button" class="btn btn-primary" id="save_edited_sub">{{LANG save}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="editcategoryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content modal_content_back">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editcategoryModalLabel">Edit Category</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="edit_category_form_alert"></div>
+        <form class="edit_category_lang" method="POST" id="modal-body-langs">
+        </form>
+        
+      </div>
+      <div class="modal-footer">
+        <input type="hidden" id="c_id_">
+        <button type="button" class="btn btn-secondary modal_close_btn" data-dismiss="modal">{{LANG close}}</button>
+        <button type="button" class="btn btn-primary" id="save_edited_category">{{LANG save}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal1Label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModal1Label">Delete Sub Category?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this sub Category?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="SelectedDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal1Label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModal1Label">Delete Sub Category?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure that you want to remove the selected sub Category(s)?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="DeleteSelected()" data-dismiss="modal">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+  function DeleteCategory(id,type = 'show') {
+  if (!id) {
+      return false;
+  }
+  if (type == 'hide') {
+    $('#DeleteModal').find('.btn-primary').attr('onclick', "DeleteCategory('"+id+"')");
+    $('#DeleteModal').modal('show');
+    return false;
+  }
+  $.post('{{LINK aj/ap/delete_sub_category}}', {sub_id: id}, function(data, textStatus, xhr) {
+        if (data.status == 200) {
+            $('#list-'+id).slideUp('slow');
+            setTimeout(function () {
+                $('#list-'+id).remove();
+            },2000);
+        }
+    });
+}
+$('.check-all').on('click', function(event) {
+    $('input:checkbox').not(this).prop('checked', this.checked);
+});
+$('.delete-checkbox, .check-all').change(function(event) {
+    $('.delete-selected').attr('disabled', false);
+    $('.delete-selected').find('span').text(' (' + $('.delete-checkbox:checked').length + ')');
+});
+$('.submit-selected').on('click', function(event) {
+    event.preventDefault();
+    $('#SelectedStatusModal').modal('show');
+});
+
+$('.delete-selected').on('click', function(event) {
+    event.preventDefault();
+    $('#SelectedDeleteModal').modal('show');
+});
+function DeleteSelected() {
+    data = new Array();
+    $('td input:checked').parents('tr').each(function () {
+        data.push($(this).attr('data_selected'));
+    });
+    $('.delete-selected').attr('disabled', true);
+    $('.delete-selected').text('Please wait..');
+    $.post("{{LINK aj/ap/remove_multi_sub_category}}", {ids: data}, function () {
+        $.each( data, function( index, value ){
+            $('#list-' + value).remove();
+        });
+        $('.delete-selected').text('Delete Selected');
+    });
+}
+
+var add_sub_category_form = $('form#add_sub_category_form');
+var edit_category_form = $('form.edit_category_lang');
+
+add_sub_category_form.ajaxForm({
+    url: '{{LINK aj/ap/add_sub_category}}',
+    beforeSend: function() {
+        add_sub_category_form.find('.waves-effect').text("{{LANG please_wait}}");
+    },
+    success: function(data) {
+        if (data.status == 200) {
+            add_sub_category_form.find('.waves-effect').text('Save');
+            $('.add_sub_category_form_alert').html('<div class="alert alert-success"><i class="fa fa-check"></i> Sub Category successfully added</div>');
+            setTimeout(function () {
+                $('.add_sub_category_form_alert').empty();
+            }, 2000);
+            window.location.reload();
+        }
+        else{
+          $('.add_sub_category_form_alert').html('<div class="alert alert-danger"><i class="fa fa-check"></i> '+data.message+'</div>');
+            setTimeout(function () {
+                $('.add_sub_category_form_alert').empty();
+            }, 2000);
+        }
+    }
+});
+
+edit_category_form.ajaxForm({
+    url: '{{LINK aj/ap/edit_category}}',
+    beforeSend: function() {
+        edit_category_form.find('.waves-effect').text("{{LANG please_wait}}");
+    },
+    success: function(data) {
+        if (data.status == 200) {
+            edit_category_form.find('.waves-effect').text('Save');
+            $('.edit_category_form_alert').html('<div class="alert alert-success"><i class="fa fa-check"></i> Category successfully edited</div>');
+            setTimeout(function () {
+                $('.edit_category_form_alert').empty();
+            }, 3000);
+            window.location.reload();
+        }
+        else{
+          $('.edit_category_form_alert').html('<div class="alert alert-danger"><i class="fa fa-check"></i> '+data.message+'</div>');
+            setTimeout(function () {
+                $('.edit_category_form_alert').empty();
+            }, 2000);
+        }
+    }
+});
+
+
+function edit_sub_category(id) {
+  $.post('{{LINK aj/ap/get_category_langs}}', {lang_key: id}, function(data, textStatus, xhr) {
+      if (data.status == 200) {
+        $('#modal-body-langs').html(data.html);
+        $('#editcategoryModal').modal();
+      }
+  });
+}
+
+$(document).on('click','#save_edited_category', function(event) {
+  event.preventDefault();
+  $('.edit_category_lang').submit();
+});
+
+
+
+// function edit_sub_category(text,id) {
+//     $('#c_id_').val(id);
+//     $('#text_modal').val(text);
+//     $('#editSubModal').modal();
+// }
+
+$(document).on('click', '#save_edited_sub', function(event) {
+    event.preventDefault();
+    var sub_id = $('#c_id_').val();
+    var text = $('#text_modal').val();
+    $('#editSubModal').modal('hide');
+    $.post('{{LINK aj/ap/save_edited_sub}}', {sub_id: sub_id,text:text}, function(data, textStatus, xhr) {
+        if (data.status == 200) {
+            $('#sub_name_'+sub_id).html(data.text);
+        }
+    });
+});
+
+var add_sub_category = $('form.add_sub_category');
+
+
+
+add_sub_category.ajaxForm({
+    url: '{{LINK aj/ap/add_sub_category}}',
+    beforeSend: function() {
+        add_sub_category.find('.waves-effect').text("{{LANG please_wait}}");
+    },
+    success: function(data) {
+        if (data.status == 200) {
+            add_sub_category.find('.waves-effect').text('Save');
+            $('.add_sub_category_alert').html('<i class="fa fa-check"></i> Settings updated successfully');
+            setTimeout(function () {
+                $('.add_sub_category_alert').empty();
+            }, 2000);
+            window.location.reload();
+        }
+    }
+});
+
+
+</script>

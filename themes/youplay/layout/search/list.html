@@ -1,0 +1,25 @@
+<div class="col-md-12 pt_srch_vids">
+	<div class="video-latest-list video-wrapper" data-id="{{ID}}" data-views="{{VIEWS}}">
+		<div class="video-thumb">
+			<a href="{{URL}}"  data-load="{{ajax_url}}">
+				<img src="{{THUMBNAIL}}" alt="{{TITLE}}">
+				<div class="play_hover_btn" onmouseenter="show_gif(this,'{{GIF}}')" onmouseleave="hide_gif(this)">
+					<svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="rgba(255, 255, 255, 0.8)"><path d="M8,5.14V19.14L19,12.14L8,5.14Z"></path></svg>
+				</div>
+			</a>
+			<div class="video-duration">{{DURATION}}</div>
+		</div>
+		<div>
+		<div class="video-title">
+			<a href="{{URL}}" data-load="{{ajax_url}}"><h4 title="{{TITLE}}">{{TITLE}}</h4></a>
+		</div>
+		<div class="video-info">
+			<div>
+				<span>{{VIEWS_NUM}} {{LANG views}}</span> <span class="bold">·</span> <span>{{TIME}}</span><br/>
+				<a href="{{USER url}}" data-load="?link1=timeline&id={{USER username}}"><img src="{{USER avatar}}"> {{USER name_v}}</a>
+			</div>
+			<p>{{DESC}}</p>
+		</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,48 @@
+<style>
+.movie_slider {
+	height: 500px;
+	background-repeat: no-repeat !important;
+    background-size: cover !important;
+    margin-left: -16px;
+    margin-right: -15px;
+    margin-top: -90px;
+    padding: 100px 50px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-image : url('{{USER cover}}');
+	background-position: center;
+	position: relative;
+}
+.movie_inner_content {
+	width: 100%;
+}
+</style>
+<div class="movie_slider channels_list feat_pop_chanel"  data-channel-id="{{ID}}" data-channel-views="{{VIEWS_COUNT}}">
+	<div class="movie_inner_content">
+		<div class="feature_wrap popular_channel_wrap">
+			<div class="left_popular_channel">
+				<div class="channel_of_month">{{LANG channel_of_this_month}}</div>
+				<div class="feature_text_title channel_pop_text">
+					<a href="{{USER url}}" data-load="?link1=timeline&id={{USER username}}">{{USER name_v}}</a>
+				</div>
+				<p>
+					{{USER about}}
+				</p>
+
+				<div class="popular_slider__">
+					<img src="{{USER avatar}}">
+					<div class="channel_deatils_popular">
+						<div class="pop_min_sub">{{SUB}} {{LANG subscribers}}</div>
+						<div class="pop_min_sub">{{VIEWS_COUNT}} {{LANG views}}</div>
+						<div class="subscribe_channel">{{SUBSCIBE_BUTTON}}</div>
+					</div>
+				</div>
+			</div>
+			<div class="right_popular_channel">
+				{featured_list_html}
+			</div>
+
+		</div>
+	</div>
+</div>

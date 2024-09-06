@@ -1,0 +1,65 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "856298cfb482dc5a63cce2f899588faf",
+    "packages": [
+        {
+            "name": "joshcam/mysqli-database-class",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/joshcam/PHP-MySQLi-Database-Class.git",
+                "reference": "3e33abfc8e6d689631249b403b368b91ceda5c14"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joshcam/PHP-MySQLi-Database-Class/zipball/3e33abfc8e6d689631249b403b368b91ceda5c14",
+                "reference": "3e33abfc8e6d689631249b403b368b91ceda5c14",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "MysqliDb.php",
+                    "dbObject.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Josh Campbell",
+                    "email": "josh.lee.campbell@gmail.com",
+                    "homepage": "https://github.com/joshcam",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Alexander V. Butenko",
+                    "email": "a.butenka@gmail.com",
+                    "homepage": "http://smarttechdo.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP MySQL Wrapper and object mapper which utilizes MySQLi and prepared statements",
+            "time": "2017-08-02T16:08:26+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "joshcam/mysqli-database-class": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

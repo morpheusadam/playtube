@@ -1,0 +1,20 @@
+<tr>
+    <td>
+        {{W_ID}}
+    </td>
+    <td>
+        {{W_REQUESTED}}
+    </td>
+    <td>
+        {{W_AMOUNT}}: {{W_CURRENCY}}
+    </td>
+    <td>
+        <?php if ($pt->withdrawal_stat == 1): ?>
+            <span class="success">{{LANG accepted}}</span>
+        <?php elseif($pt->withdrawal_stat == 2): ?>
+            <span class="danger">{{LANG rejected}}</span>
+        <?php else: ?>
+            <span class="warning">{{LANG pending}}</span>
+        <?php endif; ?>
+    </td>
+</tr> 

@@ -1,0 +1,156 @@
+<?php if ($pt->user->is_pro ==  0): ?>
+<?php echo PT_LoadPage('third-party/paypal-demo'); ?>
+<div class="pt_go_pro">
+	<div class="go-pro-head">
+		<div><img class="logo" src="{{CONFIG theme_url}}/img/<?php echo ($pt->mode != 'night') ? 'logo' : 'logo-light';?>.png" alt="{{CONFIG title}}"><span>PRO</span></div>
+		<h4>{{LANG buy_pro_pkg}}</h4>
+		<img class="icon" src="{{CONFIG theme_url}}/img/pro.png"/>
+	</div>
+	<div class="go-pro-body">
+		<div class="go-pro-packages">
+			<?php foreach ($pt->pro_packages as $key => $value) { ?>
+				<?php if ($value['status'] == 1) { ?>
+					<div class="content go-pro-pkg">
+						<div>
+							<div class="left-block pro-bg">
+								<?php if (!empty($value['image']) && $_COOKIE['mode'] == 'day') { ?>
+									<div>
+										<img src="<?php echo($value['image']) ?>" class="pro_packages_icon">
+									</div>
+								<?php }else if (!empty($value['night_image']) && $_COOKIE['mode'] == 'night') { ?>
+									<div>
+										<img src="<?php echo($value['night_image']) ?>" class="pro_packages_icon">
+									</div>
+								<?php }else if ($value['id'] == 1) { ?>
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star" style="background-color: <?php echo($value['color']) ?> !important;"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+								<?php } ?>
+								<span class="go-pro-pkg-price"><?php echo $value['name']; ?></span> 
+								<span class="small"><?php echo (!empty($value['time_count']) && $value['time'] != 'unlimited' ? $value['time_count'] : '').' '.$lang_array[$value['time']];?></span>
+							</div>
+							<div class="go-pro-pkg-features">
+								<div class="go-pro-features-list">
+									<?php if ($value['verified_badge']) { ?>
+										<p>{{LANG verified_badge}}</p>
+									<?php } ?>
+									<?php if ($value['featured_videos']) { ?>
+										<p>{{LANG ur_are_featured}}</p>
+									<?php } ?>
+									<?php if (!empty($value['max_upload'])) { ?>
+										<p>{{LANG upload_up}} 
+										<?php   
+										    if ($value['max_upload'] == '2000000') {
+												echo "2 MB";
+											} elseif ($value['max_upload'] == '6000000') {
+												echo "6 MB";
+											} elseif ($value['max_upload'] == '12000000') {
+												echo "12 MB";
+											} elseif ($value['max_upload'] == '24000000') {
+												echo "24 MB";
+											} elseif ($value['max_upload'] == '48000000') {
+												echo "48 MB";
+											} elseif ($value['max_upload'] == '96000000') {
+												echo "96 MB";
+											} elseif ($value['max_upload'] == '256000000') {
+												echo "256 MB";
+											} elseif ($value['max_upload'] == '512000000') {
+												echo "512 MB";
+											} elseif ($value['max_upload'] == '1000000000') {
+												echo "1 GB";
+											} elseif ($value['max_upload'] == '5000000000') {
+												echo "5 GB";
+											} elseif ($value['max_upload'] == '10000000000') {
+												echo "10 GB";
+											} elseif ($value['max_upload'] == '1000000000000') {
+												echo '{{LANG upload_up_no_limit}}';
+											} else{
+												echo '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"></path></svg>';
+											}
+										?>
+										 
+										</p>
+									<?php } ?>
+
+									<?php if (!empty($value['formatedFeatures'])) {
+										foreach ($value['formatedFeatures'] as $key2 => $value2) {
+											if ($value2 == 1 && in_array($key2, array_keys($pt->proFeaturesKeys)) && $pt->config->{$pt->proFeaturesKeys[$key2]} == 'pro') { ?>
+												<p>{{LANG <?php echo $key2; ?>}}</p>
+									<?php 	}
+										}
+									} ?>
+									<?php if ($value['description']) { ?>
+										<p><?php echo($value['description']) ?></p>
+									<?php } ?>
+									<?php if (!empty($value['discount']) && is_numeric($value['discount']) && $value['discount'] > 0) { ?>
+										<p><?php echo $value['discount']."% {{LANG discount}}"; ?></p>
+									<?php } ?>
+								</div>
+							</div>
+							<div class="right-block">
+								<h5 class="package-price"><span>{{CURRENCY}}</span><b><?php echo($value['price']); ?></b></h5>
+								<div class="go-pro-pkg-purchase">
+									<button class="btn btn-main pro-bg" style="background-color: <?php echo($value['color']) ?> !important;" onclick="PayUsingWallet('pro','show','<?php echo($value['id']); ?>','<?php echo($value['price']); ?>');">
+										{{LANG upgrade}}
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				<?php } ?>
+			<?php } ?>
+					
+			<?php if ($pt->config->require_subcription == 'off') { ?>
+			<div class="content go-pro-pkg">
+				<div>
+					<div class="left-block free-bg">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,15.39L8.24,17.66L9.23,13.38L5.91,10.5L10.29,10.13L12,6.09L13.71,10.13L18.09,10.5L14.77,13.38L15.76,17.66M22,9.24L14.81,8.63L12,2L9.19,8.63L2,9.24L7.45,13.97L5.82,21L12,17.27L18.18,21L16.54,13.97L22,9.24Z" /></svg>
+						<span class="go-pro-pkg-price">{{LANG free_mbr}}</span> 
+					</div>
+					<div class="go-pro-pkg-features">
+						<div class="go-pro-features-list">
+							<p><?php if ($pt->unlimited_free == true ) { ?>
+								{{LANG upload_up_no_limit}}
+							<?php } else{ ?>  {{LANG upload_up}} <?php echo $pt->max_upload_users_; ?> <?php } ?></p>
+							<p>{{LANG ads_will_show_up}}</p>
+							<p>{{LANG not_featured_videos}}</p>
+							<p>{{LANG no_verified_badge}}</p>
+						</div>
+					</div>
+					<div class="right-block">
+						<h5 class="package-price"><span>{{CURRENCY}}</span><b>0</b></h5>
+						<div class="go-pro-pkg-purchase">
+							<button class="btn btn-main free-bg" onclick="window.location.href= '{{LINK }}'">
+								{{LANG stay_free}}
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<?php } ?>
+		</div>
+	</div>
+</div>
+
+
+
+<?php else: ?>
+<div class="go-pro-container">
+	<div class="go-pro-head-upgraded">
+		<svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/></svg>
+		<h4>{{LANG congratulations}}</h4>
+		<p class="text-center">{{LANG uare_pro}}</p>
+	</div>
+	<div class="go-pro-body-upgraded">
+		<div class="upgraded-features">
+			<p><span><i class="fa fa-check"></i></span> {{LANG upload_1tr_limit}}</p>
+			<p><span><i class="fa fa-check"></i></span> {{LANG ads_wont_show_up}}</p>
+			<p><span><i class="fa fa-check"></i></span> {{LANG ur_are_featured}}</p>
+			<p><span><i class="fa fa-check"></i></span> {{LANG verified_badge}}</p>
+		</div>
+	</div>
+	<div class="go-pro-footer-upgraded">
+		<button class="btn-main btn">
+			<a href="{{LINK }}">{{LANG start_features}}</a>
+		</button>
+	</div>
+</div>
+<?php endif; ?>

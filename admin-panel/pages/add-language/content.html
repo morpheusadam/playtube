@@ -1,0 +1,135 @@
+<div class="container-fluid">
+    <div>
+        <h3>Add New Language & Key</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Admin Panel</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Languages</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Add New Language & Key</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- Vertical Layout -->
+    <div class="row">
+        <div class="col-lg-6 col-md-6 pull-left">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Add New Language</h6>
+                    <div class="email-settings-alert">
+                        
+                    </div>
+                    <form class="email-settings" method="POST">
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Language Name </label>
+                                <input type="text" id="lang" name="lang" class="form-control">
+                                <small class="admin-info">Use only english letters, no spaces allowed. E.g: russian</small>
+                                
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Language ISO <small></small></label>
+                                <input type="iso" id="iso" name="iso" class="form-control">
+                                <small class="admin-info">Write the language ISO code. E.g for russian: ru</small>
+                            </div>
+                        </div>
+                        <p>Note: This may take up to 5 minutes.</p>
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Add Language</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 pull-right">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Add New Key</h6>
+                    <div class="key-settings-alert"></div>
+                    <form class="key-settings" method="POST">
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Key Name </label>
+                                <input type="text" id="lang_key" name="lang_key" class="form-control">
+                                <small class="admin-info">Use only english letters, no spaces allowed, example: this_is_a_key</small>
+                                
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Add Key</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <!-- #END# Vertical Layout -->
+<script>
+
+$(function() {
+    var form_email_settings = $('form.email-settings');
+    form_email_settings.ajaxForm({
+        url: '{{LINK aj/ap/add_new_lang}}',
+        dataType:'json',
+        beforeSend: function() {
+            form_email_settings.find('button').text('Please wait..');
+        },
+        success: function(data) {
+            if (data.status == 200) {
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+
+                $('.email-settings-alert').html($("<div>",{
+                    class:'alert alert-success',
+                    html: "<i class='fa fa-check'></i> Language successfully added"
+                }));
+
+                setTimeout(function () {
+		            window.location.href = "<?php echo PT_LoadAdminLinkSettings('manage-languages'); ?>";
+		        }, 1000);
+            }
+            else{
+                $('.email-settings-alert').html($("<div>",{
+                    class: 'alert alert-danger',
+                    html: "<i class='fa fa-info'></i> This lang is already used."
+                }));    
+            }
+            form_email_settings.find('button').text('Add Language');
+        }
+    });
+
+    var form_key_settings = $('form.key-settings');
+    form_key_settings.ajaxForm({
+        url: '{{LINK aj/ap/add_new_lang_key}}',
+        data: 'json',
+        beforeSend: function() {
+            form_key_settings.find('button').text('Please wait..');
+        },
+        success: function(data) {
+            if (data.status == 200) {
+
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+
+                $('.key-settings-alert').html($("<div>",{
+                    class:'alert alert-success',
+                    html: "<i class='fa fa-check'></i> Key successfully added"
+                }));
+
+                setTimeout(function () {
+                    window.location.href = data.url;
+                }, 1000);
+            } 
+
+            else {
+                $('.key-settings-alert').html($("<div>",{
+                    class:'alert alert-warning',
+                    html: "<i class='fa fa-info'></i> This key is already used, please use other one."
+                }));
+            }
+
+            form_key_settings.find('button').text('Add Key');
+        }
+    });
+});
+</script>

@@ -1,0 +1,13 @@
+<li class="user-list user_box_search_type" data-id="{{ID}}" data-time="{{TTIME}}">
+    <a href="<?php echo ($pt->config->server == 'ajax') ? "{{LINK messages/{{USERNAME}}}}" : "{{LINK @{{USERNAME}}}}"?>" <?php if ($pt->config->server == 'ajax') { ?>  data-load="?link1=messages&id={{USERNAME}}"<?php } ?> data-id="{{ID}}">
+        <div class="user-avatar">
+            <img src="{{AVATAR}}" alt="user avatar">
+        </div>
+		<div class="time">{{TIME}}</div>
+        <div class="countunseen">{{COUNT}}</div>
+        <div class="user-name">{{NAME}}</div>
+        <div class="username hidden">{{USERNAME}}</div>
+        <div class="user-last-message">{{LAST_MESSAGE}}</div>
+        <div class="clear"></div>
+    </a>
+</li>

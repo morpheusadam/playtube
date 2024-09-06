@@ -1,0 +1,5 @@
+{
+    "require": {
+        "madcoda/php-youtube-api": "*"
+    }
+}

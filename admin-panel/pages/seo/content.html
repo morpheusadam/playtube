@@ -1,0 +1,126 @@
+<?php
+function writePage($page_name,$id){
+    global $pt;
+    $arr_seo = json_decode($pt->config->seo,true);
+    $title = '';
+    $keyword = '';
+    $description = '';
+    if(isset($arr_seo[$page_name])){
+        if(isset($arr_seo[$page_name]['title'])){
+            $title = $arr_seo[$page_name]['title'];
+        }
+        if(isset($arr_seo[$page_name]['meta_keywords'])){
+            $keyword = $arr_seo[$page_name]['meta_keywords'];
+        }
+        if(isset($arr_seo[$page_name]['meta_description'])){
+            $description = $arr_seo[$page_name]['meta_description'];
+        }
+    }else{
+        $title = $pt->config->title;
+        $keyword = $pt->config->keyword;
+        $description = $pt->config->description;
+    }
+?>
+    <div class="panel-heading" role="tab" id="headingOne_<?php echo $id;?>">
+        <h4 class="panel-title">
+            <a role="button" data-toggle="collapse" data-parent="#accordion_<?php echo $id;?>" href="javascript:void(0)" aria-expanded="true" aria-controls="collapseOne_<?php echo $id;?>" onclick="OpenTab('collapseOne_<?php echo $id;?>')">
+                <?php echo strtoupper(str_replace(['-', '_'], [' ', ' '], $page_name));?>
+            </a>
+        </h4>
+    </div>
+    <div id="collapseOne_<?php echo $id;?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne_<?php echo $id;?>" aria-expanded="false" style="">
+        <div class="panel-body">
+        <br>
+            <div id="<?php echo $page_name;?>-alert" class="alert alert-success site-settings-alert"></div>
+            <form class="site-settings" method="POST">
+                <div class="form-group form-float">
+                    <div class="form-line">
+                        <label class="form-label">Title</label>
+                        <input type="text" id="default_title" name="default_title" class="form-control" value="<?php echo $title; ?>">
+
+                    </div>
+                </div>
+                <div class="form-group form-float">
+                    <div class="form-line">
+                        <label class="form-label">Keywords</label>
+                        <input type="text" id="meta_keywords" name="meta_keywords" class="form-control" value="<?php echo $keyword; ?>">
+
+                    </div>
+                </div>
+                <div class="form-group form-float">
+                    <div class="form-line">
+                        <label class="form-label">Description</label>
+                        <textarea name="meta_description" id="meta_description" class="form-control" cols="30" rows="2"><?php echo $description; ?></textarea>
+
+                    </div>
+                </div>
+                <input type="hidden" name="page_name" value="<?php echo $page_name;?>">
+                <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+            </form>
+        </div>
+    </div>
+<?php }?>
+<div class="container-fluid">
+    <div>
+        <h3>Manage Pages SEO</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Home</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Pages</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Manage Pages SEO</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- Vertical Layout -->
+    <div class="row">
+        <div class="col-lg-6 col-md-6 float-left">
+            <div class="card">
+                <div class="card-body">
+                    <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-primary">
+                            <?php
+                            $id = 1;
+                            foreach (json_decode($pt->config->seo,true) as $key => $value) {
+                                echo writePage($key,$id);
+                                $id += 1;
+                                ?><hr><?php
+                            } ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <!-- #END# Vertical Layout -->
+<script>
+function OpenTab(id) {
+    $('#'+id).toggle();
+    setTimeout(function () {
+      $(".content").getNiceScroll().resize()
+    }, 300);
+}
+$(function() {
+    var form_site_settings = $('form.site-settings');
+    form_site_settings.ajaxForm({
+        url: '{{LINK aj/ap/update_pages_seo}}',
+        beforeSend: function() {
+            form_site_settings.find('button').text('Please wait..');
+        },
+        success: function(data) {
+            if (data.r_status == 200) {
+                form_site_settings.find('button').text('Save');
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+                $('#'+data.r_page+'-alert').html('<i class="fa fa-check"></i> '+data.r_page+' SEO Settings updated successfully');
+                setTimeout(function () {
+                    $('#'+data.r_page+'-alert').empty();
+                }, 2000);
+            }
+        }
+    });
+});
+</script>

@@ -1,0 +1,35 @@
+<div class="video-wrapper" data-id="{{ID}}" id="video-{{ID}}">
+    <div class="video-actions"><i onclick="PT_DeleteSaved({{ID}})" title="Delete video" class="fa fa-trash fa-fw"></i></div>
+    <div class="author-info">
+        <div class="author-img pull-left">
+            <img src="{{USER avatar}}" alt="{{USER name}}">
+        </div>
+        <div class="author-name">
+            <a href="{{USER url}}" data-load="?link1=timeline&id={{USER username}}">{{USER name}}</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="row">
+    	<div class="video-thumb col-md-3">
+        <a href="{{URL}}" data-load="?link1=watch&id={{VIDEO_ID_}}"><img src="{{THUMBNAIL}}" alt="{{TITLE}}"></a>
+    </div>
+    <div class="video-info col-md-5 no-padding-left">
+        <div class="video-title">
+            <a href="{{URL}}" data-load="?link1=watch&id={{VIDEO_ID_}}">{{TITLE}}</a> 
+        </div>
+        <div class="video-publisher">
+            <a href="{{USER url}}" data-load="?link1=timeline&id={{USER username}}">{{USER name}}</a>
+        </div>
+        <div class="video-views">
+            {{VIEWS}} {{LANG views}} . {{TIME}}
+        </div>
+        <div class="video-desc">
+            {{DESC}}
+        </div>
+    </div>
+    </div>
+    <div class="clear"></div>
+    <?php if ($pt->last_video != true) { ?>
+    <hr>
+    <?php } ?>
+</div>

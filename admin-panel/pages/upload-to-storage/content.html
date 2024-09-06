@@ -1,0 +1,195 @@
+<?php 
+$storages = ['amazon', 'digitalocean', 'backblaze', 'wasabi'];
+$stroageAjax = ['amazon' => 'testS3', 'digitalocean'  => 'test_spaces', 'backblaze' => 'test_backblaze', 'wasabi' => 'test_wasabi'];
+
+if(empty($_GET['storage'])) {
+	header("Location: " . PT_Link('admin-cp'));
+    exit();
+}
+if (!in_array($_GET['storage'], $storages)) {
+	header("Location: " . PT_Link('admin-cp'));
+    exit();
+}
+
+$files = filterFiles(getDirContents('upload'), $_GET["storage"]);
+
+if ($_GET['storage'] == 'amazon') {
+    if ($pt->config->s3_upload == "off") {
+        $error = "Amazon is disabled or not configured, please configure it first.";
+    }
+}
+
+if ($_GET['storage'] == 'wasabi') {
+    if ($pt->config->wasabi_storage == "off") {
+        $error = "Wasabi is disabled or not configured, please configure it first.";
+    }
+}
+
+if ($_GET['storage'] == 'backblaze') {
+    if ($pt->config->backblaze_storage == "off") {
+        $error = "Backblaze is disabled or not configured, please configure it first.";
+    }
+}
+
+if ($_GET['storage'] == 'digitalocean') {
+    if ($pt->config->spaces == "off") {
+        $error = "digitalocean is disabled or not configured, please configure it first.";
+    }
+}
+?>
+<div class="container-fluid">
+    <div>
+        <h3>Upload Files To <?php echo ucfirst($_GET["storage"]); ?></h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Admin Panel</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Upload To <?php echo ucfirst($_GET["storage"]); ?></a>
+                </li>
+            </ol>
+        </nav>
+    </div>
+    <!-- Vertical Layout -->
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Upload Files To <?php echo ucfirst($_GET["storage"]); ?></h6>
+                    
+                    <?php if (empty($error)) { ?>
+                     <div class="alert alert-warning">This feature is used to upload files from server to cloud only if you have videos and images on the server and moved to cloud storage, <strong>ignore this step if you are using a fresh installation.</strong></div>
+                    <div class="alert alert-danger"><strong>Important!</strong> Don't close this tab until the upload is finished.</div>
+                    <div class="alert alert-info">Total files found: <strong><span id="files-count"><?php echo count($files);?></span> media files</strong>.</div>
+                    <?php } ?>
+                    <?php if (!empty($error)) { ?> <div class="alert alert-danger"><?php echo $error;?></div><?php } ?>
+                    <!-- <a href="https://docs.playtubescript.com/api" target="_blank">PlayTube API Docs</a> -->
+                    <div class="clearfix"></div>
+                    <div class="email-settings-alert"></div>
+                    <?php if (empty($error)) { ?>
+                    <div class="wo_install_wiz">
+                        <ul class="wo_update_changelog"><?php if (count($files) > 0) { ?>Click Start to upload files from server to <?php echo ucfirst($_GET["storage"]); ?><?php } else { ?>No files found to upload<?php }?>.</ul>
+                    </div>
+                    <div class="clearfix"></div>
+                        <?php if (count($files) > 0) { ?>
+                        <div class="form-group">
+                            <br>
+                            <button type="button" class="btn btn-primary m-t-15 waves-effect" id="button-update">Start</button>
+                        </div>
+                        <?php } ?>
+                    <?php } ?>
+                </div>
+            </div>
+            <br>
+            <br>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+  <style>
+          .wo_update_changelog {
+          border: 1px solid #eee;
+          padding: 10px !important;
+         }
+         
+         .wo_install_wiz {position: relative;background-color: white;box-shadow: 0 1px 15px 2px rgba(0, 0, 0, 0.04);border-radius: 10px;padding: 10px;border-top: 1px solid rgba(0, 0, 0, 0.04);}
+         .wo_install_wiz h2 {margin-top: 10px;margin-bottom: 30px;display: flex;align-items: center;}
+         .wo_install_wiz h2 span {margin-left: auto;font-size: 15px;}
+         .wo_update_changelog {padding:0;list-style-type: none;max-height: 440px;overflow-y: auto; min-height: 440px; border-radius: 10px;}
+         .wo_update_changelog li {margin-bottom:7px; max-height: 20px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+         .wo_update_changelog li span {padding: 2px 7px;font-size: 12px;margin-right: 4px;border-radius: 2px;}
+         .wo_update_changelog li span.added {background-color: #4CAF50;color: white;}
+         .wo_update_changelog li span.changed {background-color: #e62117;color: white;}
+         .wo_update_changelog li span.improved {background-color: #9C27B0;color: white;}
+         .wo_update_changelog li span.compressed {background-color: #795548;color: white;}
+         .wo_update_changelog li span.fixed {background-color: #2196F3;color: white;}
+  </style>
+<script>
+
+var files = [<?php foreach ($files as $key => $fileName) {
+        echo '"' . base64_encode($fileName). '",';
+    }
+    ?>];
+var totalFiles = <?php echo count($files);?>;
+var count = 0;
+function startUpload(file) {
+    count = count + 1;
+    if (count > totalFiles) {
+        $('.wo_update_changelog').append('<li><span class="added">FINISIHED</span> ~$ Upload successfull, more than (<?php echo count($files);?>) file(s) were uploaded to <?php echo ucfirst($_GET["storage"]); ?></li>');
+        $('#button-update').hide();
+        return false;
+    }
+    $('.wo_update_changelog').append('<li><span class="fixed">COMMAND</span> ~$ Uploading...</li>');
+    $.post('{{LINK aj/ap/uploadFiles?file=<?php echo $_GET["storage"]; ?>}}', {path: file}, function (data) {
+        if (data.status == 200) {
+            $('.wo_update_changelog').append('<li><span class="added">SUCCESS</span> ~$ File Uploaded! <a target="_blank" style="color: #fff; text-decoration: underline;" href="'+data.fullPath+'">'+data.fullPath+'</a></li>');
+            $('#files-count').text(Number($('#files-count').text()) - 1);
+            startUpload(files[count]);
+        } else if (data.status == 400) {
+            $('.wo_update_changelog').append('<li><span class="changed">FAILED</span> ~$ Error! '+data.message+'.</li>');
+            $(this).attr('disabled', false);
+            startUpload(files[count]);
+        } 
+        $(".wo_update_changelog").scrollTop($(".wo_update_changelog")[0].scrollHeight);
+    });
+}
+$(document).on('click', '#button-update', function(event) {
+    $(this).attr('disabled', true);
+    $('.wo_update_changelog').html('');
+    $('.wo_update_changelog').css({
+        background: '#1e2321',
+        color: '#fff'
+    });
+    $('.wo_update_changelog').append('<li><span class="fixed">COMMAND</span> ~$ Connecting to <?php echo ucfirst($_GET["storage"]); ?>..</li>');
+    $(this).attr('disabled', true);
+    $.get('{{LINK aj/ap/<?php echo $stroageAjax[$_GET['storage']]?>}}', function (data) {
+        if (data.status == 200) {
+            $('.wo_update_changelog').append('<li><span class="added">SUCCESS</span> ~$ Connected!</li>');
+            setTimeout(function () {
+                $('.wo_update_changelog').append('<li><span class="fixed">COMMAND</span> ~$ Counting files..</li>');
+                setTimeout(function () {
+                    $('.wo_update_changelog').append('<li><span class="added">SUCCESS</span> ~$ <?php echo count($files);?> files found!</li>');
+                    startUpload(files[0]);
+                }, 1000);
+            }, 1000);
+        } else if (data.status == 300) {
+            $('.wo_update_changelog').append('<li><span class="changed">FAILED</span> ~$ Bucket doesn\'t exists! please check settings.</li>');
+            $(this).attr('disabled', false);
+        } else if (data.status == 400) {
+            $('.wo_update_changelog').append('<li><span class="changed">FAILED</span> ~$ Error! '+data.message+'.</li>');
+            $(this).attr('disabled', false);
+        } else  {
+            $('.wo_update_changelog').append('<li><span class="changed">FAILED</span> ~$ Error found, please check your <?php echo ucfirst($_GET["storage"]); ?> settings.</li>');
+            $(this).attr('disabled', false);
+        }
+    });
+
+    //RunQuery();
+});
+
+    function ResetKey() {
+        $("#reset-api-key").text('Please wait..');
+            $.get('{{LINK aj/ap/reset_apps_key}}',function (data) {
+                if (data.status == 200) {
+                    $('#server_key').val(data.app_key);
+                }
+
+                else{
+                    swal({
+                        title:"Error",
+                        text:"Erorr found while reseting, please try again later.",
+                        type:"error"
+                    })
+                }
+                $("#reset-api-key").text('RESET KEYS');
+            });
+    }
+    jQuery(document).ready(function($) {
+
+        $("#reset-api-key").click(function(event) {
+            $('#DeleteModal').find('.btn-primary').attr('onclick', "ResetKey()");
+            $('#DeleteModal').modal('show');
+
+        });
+    });
+</script>

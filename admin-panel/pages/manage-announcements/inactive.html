@@ -1,0 +1,14 @@
+<div class="alert alert-dark announcements-list" data-announcement="{{ANN_ID}}" data-status="inactive">
+  <span class="pull-right" data-toggle="tooltip" title="Delete Announcement" onclick="PT_DeleteAnnouncement('{{ANN_ID}}');">
+    <i class="material-icons">delete</i>
+  </span>
+  <span class="pull-right"  data-toggle="tooltip" title="Toogle" onclick="PT_ToggleAnnouncement('{{ANN_ID}}');">
+    <i class="material-icons">close</i>
+  </span>
+  <p>
+    {{ANN_TEXT}}
+  </p>
+  <small>
+    <i class="fa fa-clock-o"></i> {{ANN_TIME}}&nbsp;· {{ANN_VIEWS}} {{LANG views}}
+  </small>
+</div>

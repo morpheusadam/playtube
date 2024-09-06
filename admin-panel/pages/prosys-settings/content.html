@@ -1,0 +1,612 @@
+<div class="container-fluid">
+    <div>
+        <h3>Settings</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Admin Panel</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Pro System</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Settings</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- Vertical Layout -->
+    <div class="row">
+        <div class="col-lg-6 col-md-6">
+            <div class="card">
+                <div class="card-body">
+					<button class="btn btn-danger pull-right" onclick="PT_RemoveSubscriptions('expired',this);">Cancel Expired Subscriptions</button>
+                    <h6 class="card-title">Pro System Settings</h6>
+                    <div class="clearfix"></div>
+                    <div class="prosys-settings-alert"></div>
+                    <form class="prosys-settings" method="POST">
+                        <div class="float-left">
+                            <label for="go_pro" class="main-label">Pro System</label>
+                            <br><small class="admin-info">Enable extra features with Pro System & get paid.</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="go_pro" value="off" />
+                            <input type="checkbox" name="go_pro" id="chck-go_pro" value="on" <?php echo ($pt->config->go_pro == 'on') ? 'checked': '';?>>
+                            <label for="chck-go_pro" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                         <div class="float-left">
+                            <label for="require_subcription" class="main-label">Require Subscription To Access Site<small></small></label>
+                            <br><small class="admin-info">Users can't access to site without purchasing any pro package. (Note: Pro system should be enabled)</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="require_subcription" value="off" />
+                            <input type="checkbox" name="require_subcription" id="chck-require_subcription" value="on" <?php echo ($pt->config->require_subcription == 'on') ? 'checked': '';?>>
+                            <label for="chck-require_subcription" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <div class="float-left">
+                            <label for="pro_google" class="main-label">Allow Google Analytics for Pro Memebers</label>
+                            <div class="dropdown user_filter_drop">
+                                <button class="btn btn-light" data-toggle="dropdown">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M8 13C6.14 13 4.59 14.28 4.14 16H2V18H4.14C4.59 19.72 6.14 21 8 21S11.41 19.72 11.86 18H22V16H11.86C11.41 14.28 9.86 13 8 13M8 19C6.9 19 6 18.1 6 17C6 15.9 6.9 15 8 15S10 15.9 10 17C10 18.1 9.1 19 8 19M19.86 6C19.41 4.28 17.86 3 16 3S12.59 4.28 12.14 6H2V8H12.14C12.59 9.72 14.14 11 16 11S19.41 9.72 19.86 8H22V6H19.86M16 9C14.9 9 14 8.1 14 7C14 5.9 14.9 5 16 5S18 5.9 18 7C18 8.1 17.1 9 16 9Z"></path></svg>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <div class="dropdown-menu-innr">
+                                        <b>Who can use this feature?</b>
+                                        <div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_pro_google" id="who_can_pro_google-admin" onchange="SelectProModel('can_use_pro_google',this)" value="admin" <?php echo ($pt->config->who_can_pro_google == 'admin')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_pro_google-admin" data-toggle="tooltip" data-placement="bottom" title="Admin"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M17.13,17C15.92,18.85 14.11,20.24 12,20.92C9.89,20.24 8.08,18.85 6.87,17C6.53,16.5 6.24,16 6,15.47C6,13.82 8.71,12.47 12,12.47C15.29,12.47 18,13.79 18,15.47C17.76,16 17.47,16.5 17.13,17Z"></path></svg></label> 
+                                            </div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_pro_google" id="who_can_pro_google-all" onchange="SelectProModel('can_use_pro_google',this)" value="all" <?php echo ($pt->config->who_can_pro_google == 'all')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_pro_google-all" data-toggle="tooltip" data-placement="bottom" title="All Users"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16 17V19H2V17S2 13 9 13 16 17 16 17M12.5 7.5A3.5 3.5 0 1 0 9 11A3.5 3.5 0 0 0 12.5 7.5M15.94 13A5.32 5.32 0 0 1 18 17V19H22V17S22 13.37 15.94 13M15 4A3.39 3.39 0 0 0 13.07 4.59A5 5 0 0 1 13.07 10.41A3.39 3.39 0 0 0 15 11A3.5 3.5 0 0 0 15 4Z"></path></svg></label> 
+                                            </div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_pro_google" id="who_can_pro_google-pro" onchange="SelectProModel('can_use_pro_google',this)" value="pro" <?php echo ($pt->config->who_can_pro_google == 'pro')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_pro_google-pro" data-toggle="tooltip" data-placement="bottom" title="Pro Users Only"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12M5,13.28L7.45,14.77L6.8,11.96L9,10.08L6.11,9.83L5,7.19L3.87,9.83L1,10.08L3.18,11.96L2.5,14.77L5,13.28Z"></path></svg></label> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ul>
+                            </div>
+                            <br><small class="admin-info">Pro users can set google analytics and use it on their own channel.</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="pro_google" value="off" />
+                            <input type="checkbox" name="pro_google" id="chck-pro_google" value="on" <?php echo ($pt->config->pro_google == 'on') ? 'checked': '';?>>
+                            <label for="chck-pro_google" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                         <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Pro Package Price</label>
+                                <input type="text" name="pro_pkg_price" class="form-control" value="<?php echo ($pt->config->pro_pkg_price);?>">
+                                <small class="admin-info">Set the price for PRO package.</small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Free Users Import Limit</label>
+                                <input type="text" name="user_max_import" class="form-control" value="<?php echo ($pt->config->user_max_import);?>">
+                                <small class="admin-info"></small>
+                            </div>
+                        </div>
+                        <?php if($pt->config->upload_system_type == 0){ ?>
+                        <hr>
+                        <div id="p_f_users_" >
+                            <label for="max_upload_free_users">Free Users (Not PRO) Upload Limit</label>
+                            <br><small class="admin-info">Set the limit for NOT pro users.</small>
+                            <div class="form-group">
+                                <select class="form-control show-tick" id="max_upload_free_users" name="max_upload_free_users">
+                                    <option value="1" <?php if($pt->config->max_upload_free_users == '1'){ echo "selected";} ?>>0</option>
+                                    <option value="2000000" <?php if($pt->config->max_upload_free_users == '2000000'){ echo "selected";} ?>>2MB</option>
+                                    <option value="6000000" <?php if($pt->config->max_upload_free_users == '6000000'){ echo "selected";} ?>>6MB</option>
+                                    <option value="12000000" <?php if($pt->config->max_upload_free_users == '12000000'){ echo "selected";} ?>>12MB</option>
+                                    <option value="24000000" <?php if($pt->config->max_upload_free_users == '24000000'){ echo "selected";} ?>>24MB</option>
+                                    <option value="48000000" <?php if($pt->config->max_upload_free_users == '48000000'){ echo "selected";} ?>>48MB</option>
+                                    <option value="96000000" <?php if($pt->config->max_upload_free_users == '96000000'){ echo "selected";} ?>>96MB</option>
+                                    <option value="256000000" <?php if($pt->config->max_upload_free_users == '256000000'){ echo "selected";} ?>>256MB</option>
+                                    <option value="512000000" <?php if($pt->config->max_upload_free_users == '512000000'){ echo "selected";} ?>>512MB</option>
+                                    <option value="1000000000" <?php if($pt->config->max_upload_free_users == '1000000000'){ echo "selected";} ?>>1GB</option>
+                                    <option value="10000000000" <?php if($pt->config->max_upload_free_users == '10000000000'){ echo "selected";} ?>>10GB</option>
+                                    <option value="0" <?php if($pt->config->max_upload_free_users == '0'){ echo "selected";} ?>>Unlimited</option>
+                                </select>
+                            </div>
+                            <?php } ?>
+                            <hr>
+                            <label for="max_upload_pro_users">Pro Memebers Upload Limit</label>
+                            <br><small class="admin-info">Set the limit for pro memebers.</small>
+                            <div class="form-group">
+                                <select class="form-control show-tick" id="max_upload_pro_users" name="max_upload_pro_users">
+                                    <option value="2000000" <?php if($pt->config->max_upload_pro_users == '2000000'){ echo "selected";} ?>>2MB</option>
+                                    <option value="6000000" <?php if($pt->config->max_upload_pro_users == '6000000'){ echo "selected";} ?>>6MB</option>
+                                    <option value="12000000" <?php if($pt->config->max_upload_pro_users == '12000000'){ echo "selected";} ?>>12MB</option>
+                                    <option value="24000000" <?php if($pt->config->max_upload_pro_users == '24000000'){ echo "selected";} ?>>24MB</option>
+                                    <option value="48000000" <?php if($pt->config->max_upload_pro_users == '48000000'){ echo "selected";} ?>>48MB</option>
+                                    <option value="96000000" <?php if($pt->config->max_upload_pro_users == '96000000'){ echo "selected";} ?>>96MB</option>
+                                    <option value="256000000" <?php if($pt->config->max_upload_pro_users == '256000000'){ echo "selected";} ?>>256MB</option>
+                                    <option value="512000000" <?php if($pt->config->max_upload_pro_users == '512000000'){ echo "selected";} ?>>512MB</option>
+                                    <option value="1000000000" <?php if($pt->config->max_upload_pro_users == '1000000000'){ echo "selected";} ?>>1GB</option>
+                                    <option value="10000000000" <?php if($pt->config->max_upload_pro_users == '10000000000'){ echo "selected";} ?>>10GB</option>
+                                    <option value="0" <?php if($pt->config->max_upload_pro_users == '0'){ echo "selected";} ?>>Unlimited</option>
+                                </select>
+                            </div>
+                        </div>
+                       
+                    </form>
+                </div>
+            </div>
+        </div>
+		<div class="col-lg-6 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Edit Pro Packages</h6>
+                    <button type="button" class="btn btn-success m-t-15 waves-effect" onclick="AddNewPackage()">Add New Package</button>
+                    <div class="clearfix"></div>
+                    <br>
+                  <div class="table-responsive1">
+                        <table class="table table-bordered table-striped table-hover">
+                          <thead>
+                            <tr>
+                              <th>Name</th>
+                              <th width="150">Status</th>
+                              <th width="150">Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <?php foreach ($pt->pro_packages as $key => $value) { ?>
+                                <tr class="setting-userlist">
+                                    <td style="color:<?php echo (!empty($value['color']) ? $value['color'] : '') ?>">
+                                        <div class="pro-pack-name">
+                                            <?php if (!empty($value['image']) || !empty($value['night_image'])) { ?>
+                                                <img src="<?php echo(!empty($value['image']) ? $value['image'] : $value['night_image']) ?>" class="pro_packages_icon_inline">
+                                            <?php }elseif ($value['id'] == 1) { ?>
+                                               <?php echo($value['html_icon']); ?>
+                                            <?php } ?>
+                                            &nbsp;<?php echo $value['name'] ?>
+                                            <?php if ($value['time_count'] == 0 && $value["time"] != 'unlimited') { ?>
+                                                <div class="alert alert-warning m-0 mt-2 p-2 text-capitalize">Please update the package time</div>
+                                            <?php } ?>
+                                            <td><?php echo ($value['status'] == 1) ? '<span class="label label-success"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="green" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" /></svg> Enabled</span>': '<span class="label label-danger"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="red" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg> Disabled</span>';?></td>
+                                            <td>
+                                                <a class="btn bg-info admn_table_btn" href="javascript:void(0)" onclick="ShowEditPro(this)" data_pro_type="<?php echo $value['id'] ?>">Edit</a>
+                                                <a class="btn bg-danger admn_table_btn" href="javascript:void(0)" onclick="DeleteProPackage('<?php echo $value['id'] ?>','hide')">Delete</a>
+                                            </td>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                          </tbody>
+                        </table>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- #END# Vertical Layout -->
+<div class="modal fade" id="addProModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Pro Package</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body pt-2">
+                <div id="addProModalAlert"></div>
+                <form class="addProModalForm" method="POST">
+                    <div class="form-group">
+                        <label for="status" class="main-label">Status</label>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="status" value="0" />
+                            <input type="checkbox" name="status" id="status-enabled" value="1" checked>
+                            <label for="status-enabled" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                    </div>
+                    
+                    <div class="clearfix"></div>
+                    <hr>
+                    
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="form-group form-float">
+                                <div class="form-line focused">
+                                    <label class="form-label">Name</label>
+                                    <input type="text" name="name" class="form-control" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group form-float">
+                                <div class="form-line focused">
+                                    <label class="form-label">Price</label>
+                                    <input type="number" name="price" class="form-control" value="0">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <label class="form-label">Color</label>
+                                    <input type="color" name="color" class="form-control" value="#fafafa">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                    <hr>
+                    
+                    <div class="form-group">
+                        <label for="featured_videos" class="main-label">Featured videos</label>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="featured_videos" value="0" />
+                            <input type="checkbox" name="featured_videos" id="featured_videos-enabled" value="1">
+                            <label for="featured_videos-enabled" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="verified_badge" class="main-label">Verified badge</label>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="verified_badge" value="0" />
+                            <input type="checkbox" name="verified_badge" id="verified_badge-enabled" value="1">
+                            <label for="verified_badge-enabled" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                    </div>
+                    
+                    <div class="clearfix"></div>
+                    <hr>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group form-float">
+                                <div class="form-line focused">
+                                    <label class="form-label">Max Upload Size</label>
+                                    <select class="form-control show-tick" name="max_upload">
+                                        <option value="2000000">2 MB</option>
+                                        <option value="6000000">6 MB</option>
+                                        <option value="12000000">12 MB</option>
+                                        <option value="24000000">24 MB</option>
+                                        <option value="48000000">48 MB</option>
+                                        <option value="96000000">96 MB</option>
+                                        <option value="256000000">256 MB</option>
+                                        <option value="512000000">512 MB</option>
+                                        <option value="1000000000">1 GB</option>
+                                        <option value="5000000000">5 GB</option>
+                                        <option value="10000000000">10 GB</option>
+                                        <option value="1000000000000">Unlimited</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-float">
+                                <div class="form-line focused">
+                                    <label class="form-label">Discount %</label>
+                                    <input type="number" name="discount" class="form-control" value="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group form-float">
+                                <div class="form-line focused">
+                                    <label class="form-label">Paid Every</label>
+                                    <input type="number" name="count" class="form-control" value="0">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-float">
+                                <div class="form-line focused">
+                                    <label class="d-block mt-4"></label>
+                                    <select class="form-control show-tick" name="time">
+                                        <option value="day">Day</option>
+                                        <option value="week">Week</option>
+                                        <option value="month">Month</option>
+                                        <option value="year">Year</option>
+                                        <option value="unlimited">Unlimited</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="clearfix"></div>
+                    <hr>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="btn-file d-flex align-items-center mb-3">
+                                <input type="file" id="pro-icon" name="icon" class="hidden">
+                                <div class="mr-3 change-file-ico">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16.5,6V17.5A4,4 0 0,1 12.5,21.5A4,4 0 0,1 8.5,17.5V5A2.5,2.5 0 0,1 11,2.5A2.5,2.5 0 0,1 13.5,5V15.5A1,1 0 0,1 12.5,16.5A1,1 0 0,1 11.5,15.5V6H10V15.5A2.5,2.5 0 0,0 12.5,18A2.5,2.5 0 0,0 15,15.5V5A4,4 0 0,0 11,1A4,4 0 0,0 7,5V17.5A5.5,5.5 0 0,0 12.5,23A5.5,5.5 0 0,0 18,17.5V6H16.5Z"></path></svg>
+                                </div>
+                                <div>
+                                    <b>Icon</b>
+                                    <div class="mt-1 hidden" id="pro-icon-i">
+                                        <input type="text" class="change-file-input" readonly="">
+                                    </div>
+                                </div>
+                            </div>
+                            <small>The icon size (width = 32px and height: 32px and .png)</small>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="btn-file d-flex align-items-center mb-3">
+                                <input type="file" id="pro-night-icon" name="night_icon" class="hidden">
+                                <div class="mr-3 change-file-ico">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16.5,6V17.5A4,4 0 0,1 12.5,21.5A4,4 0 0,1 8.5,17.5V5A2.5,2.5 0 0,1 11,2.5A2.5,2.5 0 0,1 13.5,5V15.5A1,1 0 0,1 12.5,16.5A1,1 0 0,1 11.5,15.5V6H10V15.5A2.5,2.5 0 0,0 12.5,18A2.5,2.5 0 0,0 15,15.5V5A4,4 0 0,0 11,1A4,4 0 0,0 7,5V17.5A5.5,5.5 0 0,0 12.5,23A5.5,5.5 0 0,0 18,17.5V6H16.5Z"></path></svg>
+                                </div>
+                                <div>
+                                    <b>Night Icon</b>
+                                    <div class="mt-1 hidden" id="pro-night-icon-i">
+                                        <input type="text" class="change-file-input" readonly="">
+                                    </div>
+                                </div>
+                            </div>
+                            <small>The icon size (width = 32px and height: 32px and .png)</small>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="clearfix"></div>
+                    <hr>
+                    
+                    <div class="form-group form-float">
+                        <div class="form-line focused">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control show-tick" name="description"></textarea> 
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" onclick="SubmitAddProForm(this);" class="btn btn-primary waves-effect" id="add_pro_btn">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="proModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="proModalLabel">Edit Pro Package</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body pt-2">
+                <div id="proModalAlert"></div>
+                <form class="proModalForm" method="POST">
+                    <div id="pro_form_data"></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" onclick="SubmitProForm(this);" class="btn btn-primary waves-effect" id="save_pro_btn">SAVE CHANGES</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="DeleteProModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal1Label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModal1Label">Delete Pro Package?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this Pro Package?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+function DeleteProPackage(id,type = 'show') {
+    if (type == 'hide') {
+        $('#DeleteProModal').find('.btn-primary').attr('onclick', "DeleteProPackage('"+id+"')");
+        $('#DeleteProModal').modal('show');
+        return false;
+    }
+    $.get('{{LINK aj/ap/delete_pro_package}}',{ id: id},function(data) {
+        if (data.status == 200) {
+            location.reload();
+        }
+    });
+}
+function SubmitProForm(self) {
+    $('#save_pro_btn').text('Please wait..');
+    $('.proModalForm').submit();
+}
+function ShowEditPro(self) {
+    $(self).text('Please wait ..');
+    type = $(self).attr('data_pro_type');
+    $.post('{{LINK aj/ap/get_pro}}', {type: type}, function(data, textStatus, xhr) {
+        $(self).text('EDIT');
+        if (data.status == 200) {
+            $('#pro_form_data').html(data.html);
+            $('#proModal').modal('show');
+        }
+    });
+}
+function SubmitAddProForm(self) {
+    $(self).text('Please wait..');
+    $('.addProModalForm').submit();
+}
+function AddNewPackage() {
+    $('#addProModal').modal('show');
+}
+
+function PT_RemoveSubscriptions(type,self){
+    if (!type || type != 'expired' || !self){
+        return false;
+    }
+
+    else if(type == 'expired'){
+        $(self).text("{{LANG please_wait}}").attr('disabled', 'true');
+        $.ajax({
+            url: '{{LINK aj/ap/remove_expired}}',
+            type: 'GET',
+            dataType: 'json'
+        })
+        .done(function() {
+            $('.payment-settings-alert').html('<i class="fa fa-check"></i> Expired Subscriptions was deleted successfully!');
+            setTimeout(function () {
+                $('.payment-settings-alert').empty();
+            }, 2000);
+            $(self).text('Cancel Expired Subscriptions').removeAttr('disabled');
+        })
+        .fail(function() {
+            console.log("error");
+        })
+    }
+}
+
+$(function() {
+    var form_pro = $('form.proModalForm');
+    form_pro.ajaxForm({
+        url: '{{LINK aj/ap/update_pro_member}}',
+        beforeSend: function() {
+            form_pro.find('.waves-effect').text('Please wait..');
+        },
+        success: function(data) {
+            $('#proModal').animate({
+                scrollTop : 0                       // Scroll to top of body
+            }, 500);
+            $('#save_pro_btn').text('SAVE CHANGES');
+            if (data.status == 200) {
+                form_pro.find('.waves-effect').text('Save');
+                $('#proModalAlert').html('<div class="alert alert-success"><i class="fa fa-check"></i> Settings updated successfully</div>');
+                setTimeout(function () {
+                    location.reload();
+                }, 2000);
+            }
+            else{
+                $('#proModalAlert').html('<div class="alert alert-danger">'+data.message+'</div>');
+            }
+        }
+    });
+    $("#pro-icon").change(function () {
+        var filename = $(this).val().replace(/C:\\fakepath\\/i, '');
+        $("#pro-icon-i input").val(filename);
+        $("#pro-icon-i").removeClass('hidden');
+    });
+    $("#pro-night-icon").change(function () {
+        var filename = $(this).val().replace(/C:\\fakepath\\/i, '');
+        $("#pro-night-icon-i input").val(filename);
+        $("#pro-night-icon-i").removeClass('hidden');
+    });
+
+    let form_add_pro = $('.addProModalForm');
+    form_add_pro.ajaxForm({
+        url: '{{LINK aj/ap/add_pro_package}}',
+        beforeSend: function() {
+            form_add_pro.find('.waves-effect').text('Please wait..');
+        },
+        success: function(data) {
+            form_add_pro.find('.waves-effect').text('Add');
+            $('#addProModal').animate({
+                scrollTop : 0                       // Scroll to top of body
+            }, 500);
+            if (data.status == 200) {
+                $('#addProModalAlert').html('<div class="alert alert-success"><i class="fa fa-check"></i> Package added successfully</div>');
+                setTimeout(function () {
+                    location.reload();
+                }, 2000);
+            }
+            else{
+                $('#addProModalAlert').html('<div class="alert alert-danger">'+data.message+'</div>');
+            }
+        }
+    });
+
+    $('.card-body .switcher input[type=checkbox]').click(function () {
+        var configName = $(this).attr('name');
+        var hash_id = $('input[name=hash_id]').val();
+        var objData = {};
+        if ($(this).is(":checked") === true) {
+            objData[configName] = $(this).val();
+        }
+        else{
+            if ($('input[name='+configName+']')[0]) {
+                objData[configName] = $($('input[name='+configName+']')[0]).val();
+            }
+        }
+        objData['hash_id'] = hash_id;
+        $.post('{{LINK aj/ap/save-settings}}', objData);
+    });
+
+    var setTimeOutColor = setTimeout(function (){});
+    $('.card-body select').on('change', function() {
+         clearTimeout(setTimeOutColor);
+        var thisElement = $(this);
+        var configName = thisElement.attr('name');
+        var hash_id = $('input[name=hash_id]').val();
+        var objData = {};
+        objData[configName] = this.value;
+        objData['hash_id'] = hash_id;
+        thisElement.addClass('warning');
+        $.post("{{LINK aj/ap/save-settings}}", objData, function (data) {
+            if (data.status == 200) {
+                thisElement.removeClass('warning');
+                thisElement.addClass('success');
+            } else {
+                thisElement.addClass('error');
+            }
+            var setTimeOutColor = setTimeout(function () {
+                thisElement.removeClass('success');
+                thisElement.removeClass('warning');
+                thisElement.removeClass('error');
+            }, 2000);
+        });
+    });
+    $('.card-body input[type=text], .card-body input[type=number] , .card-body textarea').on('input', delay(function() {
+            clearTimeout(setTimeOutColor);
+            var thisElement = $(this);
+            var configName = thisElement.attr('name');
+            var hash_id = $('input[name=hash_id]').val();
+            var objData = {};
+            objData[configName] = this.value;
+            objData['hash_id'] = hash_id;
+            thisElement.addClass('warning');
+            $.post("{{LINK aj/ap/save-settings}}", objData, function (data) {
+                if (data.status == 200) {
+                    thisElement.removeClass('warning');
+                    thisElement.addClass('success');
+                } else {
+                    thisElement.addClass('error');
+                }
+                var setTimeOutColor = setTimeout(function () {
+                    thisElement.removeClass('success');
+                    thisElement.removeClass('warning');
+                    thisElement.removeClass('error');
+                }, 2000);
+                //thisElement.focus();
+            });
+    }, 500));
+});
+</script>
+<style type="text/css">
+    .btn-file { position: relative; overflow: hidden;cursor: pointer;}
+    .btn-file input[type=file] { position: absolute; top: 0; right: 0; min-width: 100%; min-height: 100%; font-size: 100px; text-align: right; opacity: 0; outline: none; background: #fff; cursor: inherit; display: block; }
+    .change-file-ico svg {border-radius: 50%;background: rgb(168 72 73 / 15%);color: #008DD1;padding: 10px;width: 50px;height: 50px;}
+    .change-file-input {padding: 3px 6px;border: 0;line-height: 1;background: rgb(0 0 0 / 10%);border-radius: 2em;font-size: 13px;width: 100%;}
+</style>

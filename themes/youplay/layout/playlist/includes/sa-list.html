@@ -1,0 +1,36 @@
+<div class="add-topl-cont">
+	<h4>{{LANG add_to}}</h4>
+	<div class="pointer playlist-item" onclick="PT_WLToggle('<?php echo $pt->video_id; ?>',this);">
+		<span class="list-name">
+			<i class="fa fa-fw fa-lock secure-color"></i> {{LANG watch_later}}
+		</span>
+		<span class="pt-plist-tgl_btn pull-right">
+			<?php if ($pt->wlater_exists): ?>
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="green" d="M17,7H7A5,5 0 0,0 2,12A5,5 0 0,0 7,17H17A5,5 0 0,0 22,12A5,5 0 0,0 17,7M17,15A3,3 0 0,1 14,12A3,3 0 0,1 17,9A3,3 0 0,1 20,12A3,3 0 0,1 17,15Z" /></svg>
+			<?php else: ?>
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7,10A2,2 0 0,1 9,12A2,2 0 0,1 7,14A2,2 0 0,1 5,12A2,2 0 0,1 7,10M17,7A5,5 0 0,1 22,12A5,5 0 0,1 17,17H7A5,5 0 0,1 2,12A5,5 0 0,1 7,7H17M7,9A3,3 0 0,0 4,12A3,3 0 0,0 7,15H17A3,3 0 0,0 20,12A3,3 0 0,0 17,9H7Z" /></svg>
+			<?php endif;?>	
+		</span>
+	</div>
+	<?php foreach ($pt->user_list as $list): ?>
+		<div class="pointer playlist-item" id="<?php echo  $list->list_id?>" onclick="PT_PLVToggle('<?php echo $pt->video_id; ?>',this);">
+			<span class="list-name">
+				<?php if ($list->privacy  == 0): ?>
+					<i class="fa fa-fw fa-lock secure-color"></i>
+				<?php else: ?>
+					<i class="fa fa-fw fa-globe"></i>
+				<?php endif; ?>
+				<?php echo  $list->name?>
+			</span>
+			<span class="pt-plist-tgl_btn pull-right" id="<?php echo $list->list_id?>">
+				<?php if ($list->exists): ?>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="green" d="M17,7H7A5,5 0 0,0 2,12A5,5 0 0,0 7,17H17A5,5 0 0,0 22,12A5,5 0 0,0 17,7M17,15A3,3 0 0,1 14,12A3,3 0 0,1 17,9A3,3 0 0,1 20,12A3,3 0 0,1 17,15Z" /></svg>
+				<?php else: ?>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7,10A2,2 0 0,1 9,12A2,2 0 0,1 7,14A2,2 0 0,1 5,12A2,2 0 0,1 7,10M17,7A5,5 0 0,1 22,12A5,5 0 0,1 17,17H7A5,5 0 0,1 2,12A5,5 0 0,1 7,7H17M7,9A3,3 0 0,0 4,12A3,3 0 0,0 7,15H17A3,3 0 0,0 20,12A3,3 0 0,0 17,9H7Z" /></svg>
+				<?php endif;?>	
+			</span>
+		</div>
+	<?php endforeach; ?>
+</div>
+
+

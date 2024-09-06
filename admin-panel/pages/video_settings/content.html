@@ -1,0 +1,751 @@
+<div class="container-fluid">
+    <div>
+        <h3>Video Settings</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Admin Panel</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Settings</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Video Settings</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- Vertical Layout -->
+    <div class="row">
+        <div class="col-lg-6 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Videos Settings</h6>
+                    <div class="all-video-settings-alert"></div>
+                    <form class="all-video-settings" method="POST">
+                         <div class="float-left">
+                            <label for="autoplay_system" class="main-label">Autoplay System</label>
+                            <br><small class="admin-info">Autplay the next video in list. </small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="autoplay_system" value="off" />
+                            <input type="checkbox" name="autoplay_system" id="chck-autoplay_system" value="on" <?php echo ($pt->config->autoplay_system == 'on') ? 'checked': '';?>>
+                            <label for="chck-autoplay_system" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+
+                        <div class="float-left">
+                            <label for="trailer_system" class="main-label">Add Trailer With Movie</label>
+                            <div class="dropdown user_filter_drop">
+                                <button class="btn btn-light" data-toggle="dropdown">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M8 13C6.14 13 4.59 14.28 4.14 16H2V18H4.14C4.59 19.72 6.14 21 8 21S11.41 19.72 11.86 18H22V16H11.86C11.41 14.28 9.86 13 8 13M8 19C6.9 19 6 18.1 6 17C6 15.9 6.9 15 8 15S10 15.9 10 17C10 18.1 9.1 19 8 19M19.86 6C19.41 4.28 17.86 3 16 3S12.59 4.28 12.14 6H2V8H12.14C12.59 9.72 14.14 11 16 11S19.41 9.72 19.86 8H22V6H19.86M16 9C14.9 9 14 8.1 14 7C14 5.9 14.9 5 16 5S18 5.9 18 7C18 8.1 17.1 9 16 9Z"></path></svg>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <div class="dropdown-menu-innr">
+                                        <b>Who can use this feature?</b>
+                                        <div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_trailer_system" id="who_can_trailer_system-admin" onchange="SelectProModel('can_use_trailer_system',this)" value="admin" <?php echo ($pt->config->who_can_trailer_system == 'admin')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_trailer_system-admin" data-toggle="tooltip" data-placement="bottom" title="Admin"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M17.13,17C15.92,18.85 14.11,20.24 12,20.92C9.89,20.24 8.08,18.85 6.87,17C6.53,16.5 6.24,16 6,15.47C6,13.82 8.71,12.47 12,12.47C15.29,12.47 18,13.79 18,15.47C17.76,16 17.47,16.5 17.13,17Z"></path></svg></label> 
+                                            </div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_trailer_system" id="who_can_trailer_system-all" onchange="SelectProModel('can_use_trailer_system',this)" value="all" <?php echo ($pt->config->who_can_trailer_system == 'all')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_trailer_system-all" data-toggle="tooltip" data-placement="bottom" title="All Users"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16 17V19H2V17S2 13 9 13 16 17 16 17M12.5 7.5A3.5 3.5 0 1 0 9 11A3.5 3.5 0 0 0 12.5 7.5M15.94 13A5.32 5.32 0 0 1 18 17V19H22V17S22 13.37 15.94 13M15 4A3.39 3.39 0 0 0 13.07 4.59A5 5 0 0 1 13.07 10.41A3.39 3.39 0 0 0 15 11A3.5 3.5 0 0 0 15 4Z"></path></svg></label> 
+                                            </div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_trailer_system" id="who_can_trailer_system-pro" onchange="SelectProModel('can_use_trailer_system',this)" value="pro" <?php echo ($pt->config->who_can_trailer_system == 'pro')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_trailer_system-pro" data-toggle="tooltip" data-placement="bottom" title="Pro Users Only"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12M5,13.28L7.45,14.77L6.8,11.96L9,10.08L6.11,9.83L5,7.19L3.87,9.83L1,10.08L3.18,11.96L2.5,14.77L5,13.28Z"></path></svg></label> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ul>
+                            </div>
+                            <br><small class="admin-info">Add trailer to Movie</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="trailer_system" value="off" />
+                            <input type="checkbox" name="trailer_system" id="chck-trailer_system" value="on" <?php echo ($pt->config->trailer_system == 'on') ? 'checked': '';?>>
+                            <label for="chck-trailer_system" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <div class="float-left">
+                            <label for="restrict_embedding_system" class="main-label">Embed Restriction</label>
+                            <div class="dropdown user_filter_drop">
+                                <button class="btn btn-light" data-toggle="dropdown">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M8 13C6.14 13 4.59 14.28 4.14 16H2V18H4.14C4.59 19.72 6.14 21 8 21S11.41 19.72 11.86 18H22V16H11.86C11.41 14.28 9.86 13 8 13M8 19C6.9 19 6 18.1 6 17C6 15.9 6.9 15 8 15S10 15.9 10 17C10 18.1 9.1 19 8 19M19.86 6C19.41 4.28 17.86 3 16 3S12.59 4.28 12.14 6H2V8H12.14C12.59 9.72 14.14 11 16 11S19.41 9.72 19.86 8H22V6H19.86M16 9C14.9 9 14 8.1 14 7C14 5.9 14.9 5 16 5S18 5.9 18 7C18 8.1 17.1 9 16 9Z"></path></svg>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <div class="dropdown-menu-innr">
+                                        <b>Who can use this feature?</b>
+                                        <div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_restrict_embedding" id="who_can_restrict_embedding-admin" onchange="SelectProModel('can_use_restrict_embedding',this)" value="admin" <?php echo ($pt->config->who_can_restrict_embedding == 'admin')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_restrict_embedding-admin" data-toggle="tooltip" data-placement="bottom" title="Admin"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M17.13,17C15.92,18.85 14.11,20.24 12,20.92C9.89,20.24 8.08,18.85 6.87,17C6.53,16.5 6.24,16 6,15.47C6,13.82 8.71,12.47 12,12.47C15.29,12.47 18,13.79 18,15.47C17.76,16 17.47,16.5 17.13,17Z"></path></svg></label> 
+                                            </div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_restrict_embedding" id="who_can_restrict_embedding-all" onchange="SelectProModel('can_use_restrict_embedding',this)" value="all" <?php echo ($pt->config->who_can_restrict_embedding == 'all')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_restrict_embedding-all" data-toggle="tooltip" data-placement="bottom" title="All Users"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16 17V19H2V17S2 13 9 13 16 17 16 17M12.5 7.5A3.5 3.5 0 1 0 9 11A3.5 3.5 0 0 0 12.5 7.5M15.94 13A5.32 5.32 0 0 1 18 17V19H22V17S22 13.37 15.94 13M15 4A3.39 3.39 0 0 0 13.07 4.59A5 5 0 0 1 13.07 10.41A3.39 3.39 0 0 0 15 11A3.5 3.5 0 0 0 15 4Z"></path></svg></label> 
+                                            </div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_restrict_embedding" id="who_can_restrict_embedding-pro" onchange="SelectProModel('can_use_restrict_embedding',this)" value="pro" <?php echo ($pt->config->who_can_restrict_embedding == 'pro')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_restrict_embedding-pro" data-toggle="tooltip" data-placement="bottom" title="Pro Users Only"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12M5,13.28L7.45,14.77L6.8,11.96L9,10.08L6.11,9.83L5,7.19L3.87,9.83L1,10.08L3.18,11.96L2.5,14.77L5,13.28Z"></path></svg></label> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ul>
+                            </div>
+                            <br><small class="admin-info">Allow users to restrict specific videos from embeding. </small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="restrict_embedding_system" value="off" />
+                            <input type="checkbox" name="restrict_embedding_system" id="chck-restrict_embedding_system" value="on" <?php echo ($pt->config->restrict_embedding_system == 'on') ? 'checked': '';?>>
+                            <label for="chck-restrict_embedding_system" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+
+                        <div class="float-left">
+                            <label for="video_text_system" class="main-label">Video Card System</label>
+                            <div class="dropdown user_filter_drop">
+                                <button class="btn btn-light" data-toggle="dropdown">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M8 13C6.14 13 4.59 14.28 4.14 16H2V18H4.14C4.59 19.72 6.14 21 8 21S11.41 19.72 11.86 18H22V16H11.86C11.41 14.28 9.86 13 8 13M8 19C6.9 19 6 18.1 6 17C6 15.9 6.9 15 8 15S10 15.9 10 17C10 18.1 9.1 19 8 19M19.86 6C19.41 4.28 17.86 3 16 3S12.59 4.28 12.14 6H2V8H12.14C12.59 9.72 14.14 11 16 11S19.41 9.72 19.86 8H22V6H19.86M16 9C14.9 9 14 8.1 14 7C14 5.9 14.9 5 16 5S18 5.9 18 7C18 8.1 17.1 9 16 9Z"></path></svg>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <div class="dropdown-menu-innr">
+                                        <b>Who can use this feature?</b>
+                                        <div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_video_text" id="who_can_video_text-admin" onchange="SelectProModel('can_use_video_text',this)" value="admin" <?php echo ($pt->config->who_can_video_text == 'admin')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_video_text-admin" data-toggle="tooltip" data-placement="bottom" title="Admin"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M17.13,17C15.92,18.85 14.11,20.24 12,20.92C9.89,20.24 8.08,18.85 6.87,17C6.53,16.5 6.24,16 6,15.47C6,13.82 8.71,12.47 12,12.47C15.29,12.47 18,13.79 18,15.47C17.76,16 17.47,16.5 17.13,17Z"></path></svg></label> 
+                                            </div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_video_text" id="who_can_video_text-all" onchange="SelectProModel('can_use_video_text',this)" value="all" <?php echo ($pt->config->who_can_video_text == 'all')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_video_text-all" data-toggle="tooltip" data-placement="bottom" title="All Users"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16 17V19H2V17S2 13 9 13 16 17 16 17M12.5 7.5A3.5 3.5 0 1 0 9 11A3.5 3.5 0 0 0 12.5 7.5M15.94 13A5.32 5.32 0 0 1 18 17V19H22V17S22 13.37 15.94 13M15 4A3.39 3.39 0 0 0 13.07 4.59A5 5 0 0 1 13.07 10.41A3.39 3.39 0 0 0 15 11A3.5 3.5 0 0 0 15 4Z"></path></svg></label> 
+                                            </div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_video_text" id="who_can_video_text-pro" onchange="SelectProModel('can_use_video_text',this)" value="pro" <?php echo ($pt->config->who_can_video_text == 'pro')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_video_text-pro" data-toggle="tooltip" data-placement="bottom" title="Pro Users Only"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12M5,13.28L7.45,14.77L6.8,11.96L9,10.08L6.11,9.83L5,7.19L3.87,9.83L1,10.08L3.18,11.96L2.5,14.77L5,13.28Z"></path></svg></label> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ul>
+                            </div>
+                            <br><small class="admin-info">Allow users to create cards in videos.</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="video_text_system" value="off" />
+                            <input type="checkbox" name="video_text_system" id="chck-video_text_system" value="on" <?php echo ($pt->config->video_text_system == 'on') ? 'checked': '';?>>
+                            <label for="chck-video_text_system" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <div class="float-left">
+                            <label for="stock_videos" class="main-label">Stock Videos</label>
+                            <div class="dropdown user_filter_drop">
+                                <button class="btn btn-light" data-toggle="dropdown">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M8 13C6.14 13 4.59 14.28 4.14 16H2V18H4.14C4.59 19.72 6.14 21 8 21S11.41 19.72 11.86 18H22V16H11.86C11.41 14.28 9.86 13 8 13M8 19C6.9 19 6 18.1 6 17C6 15.9 6.9 15 8 15S10 15.9 10 17C10 18.1 9.1 19 8 19M19.86 6C19.41 4.28 17.86 3 16 3S12.59 4.28 12.14 6H2V8H12.14C12.59 9.72 14.14 11 16 11S19.41 9.72 19.86 8H22V6H19.86M16 9C14.9 9 14 8.1 14 7C14 5.9 14.9 5 16 5S18 5.9 18 7C18 8.1 17.1 9 16 9Z"></path></svg>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <div class="dropdown-menu-innr">
+                                        <b>Who can use this feature?</b>
+                                        <div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_stock_videos" id="who_can_stock_videos-admin" onchange="SelectProModel('can_use_stock_videos',this)" value="admin" <?php echo ($pt->config->who_can_stock_videos == 'admin')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_stock_videos-admin" data-toggle="tooltip" data-placement="bottom" title="Admin"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M17.13,17C15.92,18.85 14.11,20.24 12,20.92C9.89,20.24 8.08,18.85 6.87,17C6.53,16.5 6.24,16 6,15.47C6,13.82 8.71,12.47 12,12.47C15.29,12.47 18,13.79 18,15.47C17.76,16 17.47,16.5 17.13,17Z"></path></svg></label> 
+                                            </div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_stock_videos" id="who_can_stock_videos-all" onchange="SelectProModel('can_use_stock_videos',this)" value="all" <?php echo ($pt->config->who_can_stock_videos == 'all')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_stock_videos-all" data-toggle="tooltip" data-placement="bottom" title="All Users"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16 17V19H2V17S2 13 9 13 16 17 16 17M12.5 7.5A3.5 3.5 0 1 0 9 11A3.5 3.5 0 0 0 12.5 7.5M15.94 13A5.32 5.32 0 0 1 18 17V19H22V17S22 13.37 15.94 13M15 4A3.39 3.39 0 0 0 13.07 4.59A5 5 0 0 1 13.07 10.41A3.39 3.39 0 0 0 15 11A3.5 3.5 0 0 0 15 4Z"></path></svg></label> 
+                                            </div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_stock_videos" id="who_can_stock_videos-pro" onchange="SelectProModel('can_use_stock_videos',this)" value="pro" <?php echo ($pt->config->who_can_stock_videos == 'pro')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_stock_videos-pro" data-toggle="tooltip" data-placement="bottom" title="Pro Users Only"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12M5,13.28L7.45,14.77L6.8,11.96L9,10.08L6.11,9.83L5,7.19L3.87,9.83L1,10.08L3.18,11.96L2.5,14.77L5,13.28Z"></path></svg></label> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ul>
+                            </div>
+                            <br><small class="admin-info">Allow users to sell stock videos. <br>    <span style="color: red;">Please note FFMPEG should be enabled first to use this feature.</span></small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="stock_videos" value="off" />
+                            <input type="checkbox" name="stock_videos" id="chck-stock_videos" value="on" <?php echo ($pt->config->stock_videos == 'on') ? 'checked': '';?> <?php echo ($pt->config->ffmpeg_system == 'on') ? '': 'disabled';?>>
+                            <label for="chck-stock_videos" class="check-trail <?php echo($pt->config->ffmpeg_system == 'on' ? '' : 'ch_light_color') ?>"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <div class="float-left">
+                            <label for="download_videos" class="main-label">Download Videos</label>
+                            <div class="dropdown user_filter_drop">
+                                <button class="btn btn-light" data-toggle="dropdown">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M8 13C6.14 13 4.59 14.28 4.14 16H2V18H4.14C4.59 19.72 6.14 21 8 21S11.41 19.72 11.86 18H22V16H11.86C11.41 14.28 9.86 13 8 13M8 19C6.9 19 6 18.1 6 17C6 15.9 6.9 15 8 15S10 15.9 10 17C10 18.1 9.1 19 8 19M19.86 6C19.41 4.28 17.86 3 16 3S12.59 4.28 12.14 6H2V8H12.14C12.59 9.72 14.14 11 16 11S19.41 9.72 19.86 8H22V6H19.86M16 9C14.9 9 14 8.1 14 7C14 5.9 14.9 5 16 5S18 5.9 18 7C18 8.1 17.1 9 16 9Z"></path></svg>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <div class="dropdown-menu-innr">
+                                        <b>Who can use this feature?</b>
+                                        <div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_download_videos" id="who_can_download_videos-admin" onchange="SelectProModel('can_use_download_videos',this)" value="admin" <?php echo ($pt->config->who_can_download_videos == 'admin')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_download_videos-admin" data-toggle="tooltip" data-placement="bottom" title="Admin"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M17.13,17C15.92,18.85 14.11,20.24 12,20.92C9.89,20.24 8.08,18.85 6.87,17C6.53,16.5 6.24,16 6,15.47C6,13.82 8.71,12.47 12,12.47C15.29,12.47 18,13.79 18,15.47C17.76,16 17.47,16.5 17.13,17Z"></path></svg></label> 
+                                            </div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_download_videos" id="who_can_download_videos-all" onchange="SelectProModel('can_use_download_videos',this)" value="all" <?php echo ($pt->config->who_can_download_videos == 'all')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_download_videos-all" data-toggle="tooltip" data-placement="bottom" title="All Users"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16 17V19H2V17S2 13 9 13 16 17 16 17M12.5 7.5A3.5 3.5 0 1 0 9 11A3.5 3.5 0 0 0 12.5 7.5M15.94 13A5.32 5.32 0 0 1 18 17V19H22V17S22 13.37 15.94 13M15 4A3.39 3.39 0 0 0 13.07 4.59A5 5 0 0 1 13.07 10.41A3.39 3.39 0 0 0 15 11A3.5 3.5 0 0 0 15 4Z"></path></svg></label> 
+                                            </div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_download_videos" id="who_can_download_videos-pro" onchange="SelectProModel('can_use_download_videos',this)" value="pro" <?php echo ($pt->config->who_can_download_videos == 'pro')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_download_videos-pro" data-toggle="tooltip" data-placement="bottom" title="Pro Users Only"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12M5,13.28L7.45,14.77L6.8,11.96L9,10.08L6.11,9.83L5,7.19L3.87,9.83L1,10.08L3.18,11.96L2.5,14.77L5,13.28Z"></path></svg></label> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ul>
+                            </div>
+                            <br><small class="admin-info">Allow users to download videos from your site. </small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="download_videos" value="off" />
+                            <input type="checkbox" name="download_videos" id="chck-download_videos" value="on" <?php echo ($pt->config->download_videos == 'on') ? 'checked': '';?>>
+                            <label for="chck-download_videos" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <div class="float-left">
+                            <label for="approve_videos" class="main-label">Video Approval System</label>
+                            <br><small class="admin-info">Admins should approve videos before they are being published.</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="approve_videos" value="off" />
+                            <input type="checkbox" name="approve_videos" id="chck-approve_videos" value="on" <?php echo ($pt->config->approve_videos == 'on') ? 'checked': '';?>>
+                            <label for="chck-approve_videos" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                         <div class="float-left">
+                            <label for="movies_videos" class="main-label">Movies System</label>
+                            <div class="dropdown user_filter_drop">
+                                <button class="btn btn-light" data-toggle="dropdown">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M8 13C6.14 13 4.59 14.28 4.14 16H2V18H4.14C4.59 19.72 6.14 21 8 21S11.41 19.72 11.86 18H22V16H11.86C11.41 14.28 9.86 13 8 13M8 19C6.9 19 6 18.1 6 17C6 15.9 6.9 15 8 15S10 15.9 10 17C10 18.1 9.1 19 8 19M19.86 6C19.41 4.28 17.86 3 16 3S12.59 4.28 12.14 6H2V8H12.14C12.59 9.72 14.14 11 16 11S19.41 9.72 19.86 8H22V6H19.86M16 9C14.9 9 14 8.1 14 7C14 5.9 14.9 5 16 5S18 5.9 18 7C18 8.1 17.1 9 16 9Z"></path></svg>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <div class="dropdown-menu-innr">
+                                        <b>Who can use this feature?</b>
+                                        <div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_movies_videos" id="who_can_movies_videos-admin" onchange="SelectProModel('can_use_movies_videos',this)" value="admin" <?php echo ($pt->config->who_can_movies_videos == 'admin')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_movies_videos-admin" data-toggle="tooltip" data-placement="bottom" title="Admin"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M17.13,17C15.92,18.85 14.11,20.24 12,20.92C9.89,20.24 8.08,18.85 6.87,17C6.53,16.5 6.24,16 6,15.47C6,13.82 8.71,12.47 12,12.47C15.29,12.47 18,13.79 18,15.47C17.76,16 17.47,16.5 17.13,17Z"></path></svg></label> 
+                                            </div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_movies_videos" id="who_can_movies_videos-all" onchange="SelectProModel('can_use_movies_videos',this)" value="all" <?php echo ($pt->config->who_can_movies_videos == 'all')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_movies_videos-all" data-toggle="tooltip" data-placement="bottom" title="All Users"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16 17V19H2V17S2 13 9 13 16 17 16 17M12.5 7.5A3.5 3.5 0 1 0 9 11A3.5 3.5 0 0 0 12.5 7.5M15.94 13A5.32 5.32 0 0 1 18 17V19H22V17S22 13.37 15.94 13M15 4A3.39 3.39 0 0 0 13.07 4.59A5 5 0 0 1 13.07 10.41A3.39 3.39 0 0 0 15 11A3.5 3.5 0 0 0 15 4Z"></path></svg></label> 
+                                            </div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_movies_videos" id="who_can_movies_videos-pro" onchange="SelectProModel('can_use_movies_videos',this)" value="pro" <?php echo ($pt->config->who_can_movies_videos == 'pro')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_movies_videos-pro" data-toggle="tooltip" data-placement="bottom" title="Pro Users Only"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12M5,13.28L7.45,14.77L6.8,11.96L9,10.08L6.11,9.83L5,7.19L3.87,9.83L1,10.08L3.18,11.96L2.5,14.77L5,13.28Z"></path></svg></label> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ul>
+                            </div>
+                            <br><small class="admin-info">Allow admins to upload movies to your site. </small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="movies_videos" value="off" />
+                            <input type="checkbox" name="movies_videos" id="chck-movies_videos" value="on" <?php echo ($pt->config->movies_videos == 'on') ? 'checked': '';?>>
+                            <label for="chck-movies_videos" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <div class="float-left">
+                            <label for="require_login" class="main-label">Require Login To Watch Videos</label>
+                            <br><small class="admin-info">Users should login to your site to watch videos. </small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="require_login" value="off" />
+                            <input type="checkbox" name="require_login" id="chck-require_login" value="on" <?php echo ($pt->config->require_login == 'on') ? 'checked': '';?>>
+                            <label for="chck-require_login" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                         <div class="float-left">
+                            <label for="geo_blocking" class="main-label">Geo-Blocking</label>
+                            <div class="dropdown user_filter_drop">
+                                <button class="btn btn-light" data-toggle="dropdown">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M8 13C6.14 13 4.59 14.28 4.14 16H2V18H4.14C4.59 19.72 6.14 21 8 21S11.41 19.72 11.86 18H22V16H11.86C11.41 14.28 9.86 13 8 13M8 19C6.9 19 6 18.1 6 17C6 15.9 6.9 15 8 15S10 15.9 10 17C10 18.1 9.1 19 8 19M19.86 6C19.41 4.28 17.86 3 16 3S12.59 4.28 12.14 6H2V8H12.14C12.59 9.72 14.14 11 16 11S19.41 9.72 19.86 8H22V6H19.86M16 9C14.9 9 14 8.1 14 7C14 5.9 14.9 5 16 5S18 5.9 18 7C18 8.1 17.1 9 16 9Z"></path></svg>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <div class="dropdown-menu-innr">
+                                        <b>Who can use this feature?</b>
+                                        <div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_geo_blocking" id="who_can_geo_blocking-admin" onchange="SelectProModel('can_use_geo_blocking',this)" value="admin" <?php echo ($pt->config->who_can_geo_blocking == 'admin')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_geo_blocking-admin" data-toggle="tooltip" data-placement="bottom" title="Admin"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M17.13,17C15.92,18.85 14.11,20.24 12,20.92C9.89,20.24 8.08,18.85 6.87,17C6.53,16.5 6.24,16 6,15.47C6,13.82 8.71,12.47 12,12.47C15.29,12.47 18,13.79 18,15.47C17.76,16 17.47,16.5 17.13,17Z"></path></svg></label> 
+                                            </div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_geo_blocking" id="who_can_geo_blocking-all" onchange="SelectProModel('can_use_geo_blocking',this)" value="all" <?php echo ($pt->config->who_can_geo_blocking == 'all')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_geo_blocking-all" data-toggle="tooltip" data-placement="bottom" title="All Users"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16 17V19H2V17S2 13 9 13 16 17 16 17M12.5 7.5A3.5 3.5 0 1 0 9 11A3.5 3.5 0 0 0 12.5 7.5M15.94 13A5.32 5.32 0 0 1 18 17V19H22V17S22 13.37 15.94 13M15 4A3.39 3.39 0 0 0 13.07 4.59A5 5 0 0 1 13.07 10.41A3.39 3.39 0 0 0 15 11A3.5 3.5 0 0 0 15 4Z"></path></svg></label> 
+                                            </div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_geo_blocking" id="who_can_geo_blocking-pro" onchange="SelectProModel('can_use_geo_blocking',this)" value="pro" <?php echo ($pt->config->who_can_geo_blocking == 'pro')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_geo_blocking-pro" data-toggle="tooltip" data-placement="bottom" title="Pro Users Only"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12M5,13.28L7.45,14.77L6.8,11.96L9,10.08L6.11,9.83L5,7.19L3.87,9.83L1,10.08L3.18,11.96L2.5,14.77L5,13.28Z"></path></svg></label> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ul>
+                            </div>
+                            <br><small class="admin-info">Allow users to block videos geography. </small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="geo_blocking" value="off" />
+                            <input type="checkbox" name="geo_blocking" id="chck-geo_blocking" value="on" <?php echo ($pt->config->geo_blocking == 'on') ? 'checked': '';?>>
+                            <label for="chck-geo_blocking" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                         <div class="float-left">
+                            <label for="shorts_system" class="main-label">Shorts System</label>
+                            <div class="dropdown user_filter_drop">
+                                <button class="btn btn-light" data-toggle="dropdown">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M8 13C6.14 13 4.59 14.28 4.14 16H2V18H4.14C4.59 19.72 6.14 21 8 21S11.41 19.72 11.86 18H22V16H11.86C11.41 14.28 9.86 13 8 13M8 19C6.9 19 6 18.1 6 17C6 15.9 6.9 15 8 15S10 15.9 10 17C10 18.1 9.1 19 8 19M19.86 6C19.41 4.28 17.86 3 16 3S12.59 4.28 12.14 6H2V8H12.14C12.59 9.72 14.14 11 16 11S19.41 9.72 19.86 8H22V6H19.86M16 9C14.9 9 14 8.1 14 7C14 5.9 14.9 5 16 5S18 5.9 18 7C18 8.1 17.1 9 16 9Z"></path></svg>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <div class="dropdown-menu-innr">
+                                        <b>Who can use this feature?</b>
+                                        <div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_shorts" id="who_can_shorts-admin" onchange="SelectProModel('can_use_shorts',this)" value="admin" <?php echo ($pt->config->who_can_shorts == 'admin')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_shorts-admin" data-toggle="tooltip" data-placement="bottom" title="Admin"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M17.13,17C15.92,18.85 14.11,20.24 12,20.92C9.89,20.24 8.08,18.85 6.87,17C6.53,16.5 6.24,16 6,15.47C6,13.82 8.71,12.47 12,12.47C15.29,12.47 18,13.79 18,15.47C17.76,16 17.47,16.5 17.13,17Z"></path></svg></label> 
+                                            </div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_shorts" id="who_can_shorts-all" onchange="SelectProModel('can_use_shorts',this)" value="all" <?php echo ($pt->config->who_can_shorts == 'all')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_shorts-all" data-toggle="tooltip" data-placement="bottom" title="All Users"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16 17V19H2V17S2 13 9 13 16 17 16 17M12.5 7.5A3.5 3.5 0 1 0 9 11A3.5 3.5 0 0 0 12.5 7.5M15.94 13A5.32 5.32 0 0 1 18 17V19H22V17S22 13.37 15.94 13M15 4A3.39 3.39 0 0 0 13.07 4.59A5 5 0 0 1 13.07 10.41A3.39 3.39 0 0 0 15 11A3.5 3.5 0 0 0 15 4Z"></path></svg></label> 
+                                            </div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_shorts" id="who_can_shorts-pro" onchange="SelectProModel('can_use_shorts',this)" value="pro" <?php echo ($pt->config->who_can_shorts == 'pro')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_shorts-pro" data-toggle="tooltip" data-placement="bottom" title="Pro Users Only"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12M5,13.28L7.45,14.77L6.8,11.96L9,10.08L6.11,9.83L5,7.19L3.87,9.83L1,10.08L3.18,11.96L2.5,14.77L5,13.28Z"></path></svg></label> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ul>
+                            </div>
+                            <br><small class="admin-info">Allow users to add Shorts to your site. </small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="shorts_system" value="off" />
+                            <input type="checkbox" name="shorts_system" id="chck-shorts_system" value="on" <?php echo ($pt->config->shorts_system == 'on') ? 'checked': '';?>>
+                            <label for="chck-shorts_system" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Shorts Duration</label>
+                                <input type="text" name="shorts_duration" class="form-control" value="<?php echo ($pt->config->shorts_duration);?>">
+                                <small class="admin-info">Set shorts duration in seconds.</small>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                         <div class="float-left">
+                            <label for="hashtag_system" class="main-label">Hashtag System</label>
+                            <div class="dropdown user_filter_drop">
+                                <button class="btn btn-light" data-toggle="dropdown">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M8 13C6.14 13 4.59 14.28 4.14 16H2V18H4.14C4.59 19.72 6.14 21 8 21S11.41 19.72 11.86 18H22V16H11.86C11.41 14.28 9.86 13 8 13M8 19C6.9 19 6 18.1 6 17C6 15.9 6.9 15 8 15S10 15.9 10 17C10 18.1 9.1 19 8 19M19.86 6C19.41 4.28 17.86 3 16 3S12.59 4.28 12.14 6H2V8H12.14C12.59 9.72 14.14 11 16 11S19.41 9.72 19.86 8H22V6H19.86M16 9C14.9 9 14 8.1 14 7C14 5.9 14.9 5 16 5S18 5.9 18 7C18 8.1 17.1 9 16 9Z"></path></svg>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <div class="dropdown-menu-innr">
+                                        <b>Who can use this feature?</b>
+                                        <div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_hashtag" id="who_can_hashtag-admin" onchange="SelectProModel('can_use_hashtag',this)" value="admin" <?php echo ($pt->config->who_can_hashtag == 'admin')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_hashtag-admin" data-toggle="tooltip" data-placement="bottom" title="Admin"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M17.13,17C15.92,18.85 14.11,20.24 12,20.92C9.89,20.24 8.08,18.85 6.87,17C6.53,16.5 6.24,16 6,15.47C6,13.82 8.71,12.47 12,12.47C15.29,12.47 18,13.79 18,15.47C17.76,16 17.47,16.5 17.13,17Z"></path></svg></label> 
+                                            </div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_hashtag" id="who_can_hashtag-all" onchange="SelectProModel('can_use_hashtag',this)" value="all" <?php echo ($pt->config->who_can_hashtag == 'all')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_hashtag-all" data-toggle="tooltip" data-placement="bottom" title="All Users"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16 17V19H2V17S2 13 9 13 16 17 16 17M12.5 7.5A3.5 3.5 0 1 0 9 11A3.5 3.5 0 0 0 12.5 7.5M15.94 13A5.32 5.32 0 0 1 18 17V19H22V17S22 13.37 15.94 13M15 4A3.39 3.39 0 0 0 13.07 4.59A5 5 0 0 1 13.07 10.41A3.39 3.39 0 0 0 15 11A3.5 3.5 0 0 0 15 4Z"></path></svg></label> 
+                                            </div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_hashtag" id="who_can_hashtag-pro" onchange="SelectProModel('can_use_hashtag',this)" value="pro" <?php echo ($pt->config->who_can_hashtag == 'pro')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_hashtag-pro" data-toggle="tooltip" data-placement="bottom" title="Pro Users Only"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12M5,13.28L7.45,14.77L6.8,11.96L9,10.08L6.11,9.83L5,7.19L3.87,9.83L1,10.08L3.18,11.96L2.5,14.77L5,13.28Z"></path></svg></label> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ul>
+                            </div>
+                            <br><small class="admin-info">Allow users to add hashtags in video title and description. </small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="hashtag_system" value="off" />
+                            <input type="checkbox" name="hashtag_system" id="chck-hashtag_system" value="on" <?php echo ($pt->config->hashtag_system == 'on') ? 'checked': '';?>>
+                            <label for="chck-hashtag_system" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Player Settings</h6>
+                    <div class="alert alert-warning">
+                    <i class="fa fa-fw fa-exclamation-triangle"></i> <strong>Note:</strong> For youtube videos, the default player will be always used, the options below work for self hosted videos.
+                  </div>
+                    <div class="player_settings-alert"></div>
+                    <form class="player-settings" method="POST">
+                        <label for="player_type">Default Video Player</label>
+                        <br><small class="admin-info">Select the default video player. </small>
+                        <div class="form-group">
+                            <select class="form-control show-tick" id="player_type" name="player_type">
+                                <option value="default" <?php echo ($pt->config->player_type == 'default') ? 'selected': '';?>>Default (This player support  Video Ads , Image Ads , Vast/Vpaid Ads )</option>
+                                <option value="fluidPlayer" <?php echo ($pt->config->player_type == 'fluidPlayer') ? 'selected': '';?>>Fluid Player (This player support Vast/Vpaid Ads , Image Ads)</option>
+                                <option value="videojs" <?php echo ($pt->config->player_type == 'videojs') ? 'selected': '';?>>Video js Player (This player support Video Ads , Image Ads)</option>
+                                <option value="cloudinary" <?php echo ($pt->config->player_type == 'cloudinary') ? 'selected': '';?>>Cloudinary Player (This player support Vast/Vpaid Ads , Image Ads)</option>
+                                <option value="plyr" <?php echo ($pt->config->player_type == 'plyr') ? 'selected': '';?>>plyr.io Player (This player support Vast/Vpaid Ads , Image Ads)</option>
+                            </select>
+                        </div>
+                        <hr>
+                        <div class="float-left">
+                            <label for="youtube_player" class="main-label">Youtube Player</label>
+                            <br><small class="admin-info">Use youtube player for youtube videos.</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="youtube_player" value="off" />
+                            <input type="checkbox" name="youtube_player" id="chck-youtube_player" value="on" <?php echo ($pt->config->youtube_player == 'on') ? 'checked': '';?>>
+                            <label for="chck-youtube_player" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <div class="float-left">
+                            <label for="sticky_video" class="main-label">Sticky Video Player</label>
+                            <br><small class="admin-info">On scrolldown, the video player will stick and become fixed in the screen.</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="sticky_video" value="off" />
+                            <input type="checkbox" name="sticky_video" id="chck-sticky_video" value="on" <?php echo ($pt->config->sticky_video == 'on') ? 'checked': '';?>>
+                            <label for="chck-sticky_video" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                         <div class="float-left">
+                            <label for="resize_video" class="main-label">Resize Video Player</label>
+                            <br><small class="admin-info">Allow users to resize the video player to cinema mode. </small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="resize_video" value="off" />
+                            <input type="checkbox" name="resize_video" id="chck-resize_video" value="on" <?php echo ($pt->config->resize_video == 'on') ? 'checked': '';?>>
+                            <label for="chck-resize_video" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                         <div class="clearfix"></div>
+                        <hr>
+                         <div class="float-left">
+                            <label for="embed_system" class="main-label">Embed Video Player</label>
+                            <br><small class="admin-info">Allow users to embed videos from site. </small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="embed_system" value="off" />
+                            <input type="checkbox" name="embed_system" id="chck-embed_system" value="on" <?php echo ($pt->config->embed_system == 'on') ? 'checked': '';?>>
+                            <label for="chck-embed_system" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Video Player Watermark</label>
+                                <input type="text" name="watermark" class="form-control" value="<?php echo ($pt->config->watermark);?>">
+                                <small class="admin-info">Set a URL of an image to show on your videos, jpg, png or jpeg url allowed.</small>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Paid Videos Settings</h6>
+                    <div class="paid-video-settings-alert"></div>
+                    <form class="paid-video-settings" method="POST">
+                        <div class="float-left">
+                            <label for="sell_videos_system" class="main-label">Paid Videos System</label>
+                            <div class="dropdown user_filter_drop">
+                                <button class="btn btn-light" data-toggle="dropdown">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M8 13C6.14 13 4.59 14.28 4.14 16H2V18H4.14C4.59 19.72 6.14 21 8 21S11.41 19.72 11.86 18H22V16H11.86C11.41 14.28 9.86 13 8 13M8 19C6.9 19 6 18.1 6 17C6 15.9 6.9 15 8 15S10 15.9 10 17C10 18.1 9.1 19 8 19M19.86 6C19.41 4.28 17.86 3 16 3S12.59 4.28 12.14 6H2V8H12.14C12.59 9.72 14.14 11 16 11S19.41 9.72 19.86 8H22V6H19.86M16 9C14.9 9 14 8.1 14 7C14 5.9 14.9 5 16 5S18 5.9 18 7C18 8.1 17.1 9 16 9Z"></path></svg>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <div class="dropdown-menu-innr">
+                                        <b>Who can use this feature?</b>
+                                        <div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_sell_videos" id="who_can_sell_videos-admin" onchange="SelectProModel('can_use_sell_videos',this)" value="admin" <?php echo ($pt->config->who_can_sell_videos == 'admin')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_sell_videos-admin" data-toggle="tooltip" data-placement="bottom" title="Admin"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M17.13,17C15.92,18.85 14.11,20.24 12,20.92C9.89,20.24 8.08,18.85 6.87,17C6.53,16.5 6.24,16 6,15.47C6,13.82 8.71,12.47 12,12.47C15.29,12.47 18,13.79 18,15.47C17.76,16 17.47,16.5 17.13,17Z"></path></svg></label> 
+                                            </div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_sell_videos" id="who_can_sell_videos-all" onchange="SelectProModel('can_use_sell_videos',this)" value="all" <?php echo ($pt->config->who_can_sell_videos == 'all')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_sell_videos-all" data-toggle="tooltip" data-placement="bottom" title="All Users"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16 17V19H2V17S2 13 9 13 16 17 16 17M12.5 7.5A3.5 3.5 0 1 0 9 11A3.5 3.5 0 0 0 12.5 7.5M15.94 13A5.32 5.32 0 0 1 18 17V19H22V17S22 13.37 15.94 13M15 4A3.39 3.39 0 0 0 13.07 4.59A5 5 0 0 1 13.07 10.41A3.39 3.39 0 0 0 15 11A3.5 3.5 0 0 0 15 4Z"></path></svg></label> 
+                                            </div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_sell_videos" id="who_can_sell_videos-pro" onchange="SelectProModel('can_use_sell_videos',this)" value="pro" <?php echo ($pt->config->who_can_sell_videos == 'pro')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_sell_videos-pro" data-toggle="tooltip" data-placement="bottom" title="Pro Users Only"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12M5,13.28L7.45,14.77L6.8,11.96L9,10.08L6.11,9.83L5,7.19L3.87,9.83L1,10.08L3.18,11.96L2.5,14.77L5,13.28Z"></path></svg></label> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ul>
+                            </div>
+                            <br><small class="admin-info">Users can sell their own videos & earn money. </small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="sell_videos_system" value="off" />
+                            <input type="checkbox" name="sell_videos_system" id="chck-sell_videos_system" value="on" <?php echo ($pt->config->sell_videos_system == 'on') ? 'checked': '';?>>
+                            <label for="chck-sell_videos_system" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <label for="who_sell">Video Selling Restriction</label>
+                        <br><small class="admin-info">Who can sell videos? </small>
+                        <div class="form-group">
+                            <select class="form-control show-tick" id="who_sell" name="who_sell">
+                                <option value="users" <?php echo ($pt->config->who_sell == 'users') ? 'selected': '';?>>All Users</option>
+                                <option value="pro_users" <?php echo ($pt->config->who_sell == 'pro_users') ? 'selected': '';?>>Pro Members Only</option>
+                            </select>
+                        </div>
+                        <hr>
+                        <div class="float-left">
+                            <label for="auto_approve_" class="main-label">Auto Approve Selling Videos?</label>
+                            <br><small class="admin-info">Auto approve videos wihtout reviewing.</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="auto_approve_" value="no" />
+                            <input type="checkbox" name="auto_approve_" id="chck-auto_approve_" value="yes" <?php echo ($pt->config->auto_approve_ == 'yes') ? 'checked': '';?>>
+                            <label for="chck-auto_approve_" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                          <div class="float-left">
+                            <label for="demo_video" class="main-label">Create Demo Video</label>
+                            <br><small class="admin-info">Allow users to upload a demo version of the selling video, FFMPEG is required.</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="demo_video" value="off" />
+                            <input type="checkbox" name="demo_video" id="chck-demo_video" value="on" <?php echo ($pt->config->demo_video == 'on') ? 'checked': '';?>>
+                            <label for="chck-demo_video" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <label for="com_type">Commission Type</label>
+                        <br><small class="admin-info">Choose the commission type you want to earn?</small>
+                        <div class="form-group">
+                            <select class="form-control show-tick" id="com_type" name="com_type">
+                                <option value="0" <?php echo ($pt->config->com_type == '0') ? 'selected': '';?>>Fixed Price From Each Video</option>
+                                <option value="1" <?php echo ($pt->config->com_type == '1') ? 'selected': '';?>>Percentage From Each Video</option>
+                            </select>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Commission</label>
+                                <input type="text" name="admin_com_sell_videos" class="form-control" value="<?php echo ($pt->config->admin_com_sell_videos);?>">
+                                <small class="admin-info">Your percentage/fixed cut from each sale, (Set to 0 if you don't want to get any commissions).</small>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+
+
+                        <div class="float-left">
+                            <label for="rent_videos_system" class="main-label">Rent Videos System</label>
+                            <div class="dropdown user_filter_drop">
+                                <button class="btn btn-light" data-toggle="dropdown">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M8 13C6.14 13 4.59 14.28 4.14 16H2V18H4.14C4.59 19.72 6.14 21 8 21S11.41 19.72 11.86 18H22V16H11.86C11.41 14.28 9.86 13 8 13M8 19C6.9 19 6 18.1 6 17C6 15.9 6.9 15 8 15S10 15.9 10 17C10 18.1 9.1 19 8 19M19.86 6C19.41 4.28 17.86 3 16 3S12.59 4.28 12.14 6H2V8H12.14C12.59 9.72 14.14 11 16 11S19.41 9.72 19.86 8H22V6H19.86M16 9C14.9 9 14 8.1 14 7C14 5.9 14.9 5 16 5S18 5.9 18 7C18 8.1 17.1 9 16 9Z"></path></svg>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <div class="dropdown-menu-innr">
+                                        <b>Who can use this feature?</b>
+                                        <div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_rent_videos" id="who_can_rent_videos-admin" onchange="SelectProModel('can_use_rent_videos',this)" value="admin" <?php echo ($pt->config->who_can_rent_videos == 'admin')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_rent_videos-admin" data-toggle="tooltip" data-placement="bottom" title="Admin"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M17.13,17C15.92,18.85 14.11,20.24 12,20.92C9.89,20.24 8.08,18.85 6.87,17C6.53,16.5 6.24,16 6,15.47C6,13.82 8.71,12.47 12,12.47C15.29,12.47 18,13.79 18,15.47C17.76,16 17.47,16.5 17.13,17Z"></path></svg></label> 
+                                            </div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_rent_videos" id="who_can_rent_videos-all" onchange="SelectProModel('can_use_rent_videos',this)" value="all" <?php echo ($pt->config->who_can_rent_videos == 'all')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_rent_videos-all" data-toggle="tooltip" data-placement="bottom" title="All Users"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16 17V19H2V17S2 13 9 13 16 17 16 17M12.5 7.5A3.5 3.5 0 1 0 9 11A3.5 3.5 0 0 0 12.5 7.5M15.94 13A5.32 5.32 0 0 1 18 17V19H22V17S22 13.37 15.94 13M15 4A3.39 3.39 0 0 0 13.07 4.59A5 5 0 0 1 13.07 10.41A3.39 3.39 0 0 0 15 11A3.5 3.5 0 0 0 15 4Z"></path></svg></label> 
+                                            </div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_rent_videos" id="who_can_rent_videos-pro" onchange="SelectProModel('can_use_rent_videos',this)" value="pro" <?php echo ($pt->config->who_can_rent_videos == 'pro')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_rent_videos-pro" data-toggle="tooltip" data-placement="bottom" title="Pro Users Only"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12M5,13.28L7.45,14.77L6.8,11.96L9,10.08L6.11,9.83L5,7.19L3.87,9.83L1,10.08L3.18,11.96L2.5,14.77L5,13.28Z"></path></svg></label> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ul>
+                            </div>
+                            <br><small class="admin-info">Allow users to rent out videos.</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="rent_videos_system" value="off" />
+                            <input type="checkbox" name="rent_videos_system" id="chck-rent_videos_system" value="on" <?php echo ($pt->config->rent_videos_system == 'on') ? 'checked': '';?>>
+                            <label for="chck-rent_videos_system" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Renting Commission </label>
+                                <input type="text" name="admin_com_rent_videos" class="form-control" value="<?php echo ($pt->config->admin_com_rent_videos);?>">
+                               <small class="admin-info">Your percentage/fixed cut from each rent, (Set to 0 if you don't want to get any commissions)</small>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+<script type="text/javascript">
+$(function() {
+    $('.switcher input[type=checkbox]').click(function () {
+        var configName = $(this).attr('name');
+        var hash_id = $('input[name=hash_id]').val();
+        var objData = {};
+        if ($(this).is(":checked") === true) {
+            objData[configName] = $(this).val();
+        }
+        else{
+            if ($('input[name='+configName+']')[0]) {
+                objData[configName] = $($('input[name='+configName+']')[0]).val();
+            }
+        }
+        objData['hash_id'] = hash_id;
+        $.post('{{LINK aj/ap/save-settings}}', objData);
+    });
+
+    var setTimeOutColor = setTimeout(function (){});
+    $('select').on('change', function() {
+         clearTimeout(setTimeOutColor);
+        var thisElement = $(this);
+        var configName = thisElement.attr('name');
+        var hash_id = $('input[name=hash_id]').val();
+        var objData = {};
+        objData[configName] = this.value;
+        objData['hash_id'] = hash_id;
+        thisElement.addClass('warning');
+        $.post("{{LINK aj/ap/save-settings}}", objData, function (data) {
+            if (data.status == 200) {
+                thisElement.removeClass('warning');
+                thisElement.addClass('success');
+            } else {
+                thisElement.addClass('error');
+            }
+            var setTimeOutColor = setTimeout(function () {
+                thisElement.removeClass('success');
+                thisElement.removeClass('warning');
+                thisElement.removeClass('error');
+            }, 2000);
+        });
+    });
+    $('input[type=text], input[type=number] , textarea').on('input', delay(function() {
+            clearTimeout(setTimeOutColor);
+            var thisElement = $(this);
+            var configName = thisElement.attr('name');
+            var hash_id = $('input[name=hash_id]').val();
+            var objData = {};
+            objData[configName] = this.value;
+            objData['hash_id'] = hash_id;
+            thisElement.addClass('warning');
+            $.post("{{LINK aj/ap/save-settings}}", objData, function (data) {
+                if (data.status == 200) {
+                    thisElement.removeClass('warning');
+                    thisElement.addClass('success');
+                } else {
+                    thisElement.addClass('error');
+                }
+                var setTimeOutColor = setTimeout(function () {
+                    thisElement.removeClass('success');
+                    thisElement.removeClass('warning');
+                    thisElement.removeClass('error');
+                }, 2000);
+                //thisElement.focus();
+            });
+    }, 500));
+});
+    $(function() {
+        var upload_settings = $('form.upload-settings');
+        var player_settings = $('form.player-settings');
+
+
+        upload_settings.ajaxForm({
+            url: '{{LINK aj/ap/save-settings}}',
+            beforeSend: function() {
+                upload_settings.find('.waves-effect').text("{{LANG please_wait}}");
+            },
+            success: function(data) {
+                if (data.status == 200) {
+                    upload_settings.find('.waves-effect').text('Save');
+                    $('.upload_settings-alert').html('<div class="alert alert-success"><i class="fa fa-check"></i> Settings updated successfully</div>');
+                    setTimeout(function () {
+                        $('.upload_settings-alert').empty();
+                    }, 2000);
+                }
+            }
+        });
+        player_settings.ajaxForm({
+            url: '{{LINK aj/ap/save-settings}}',
+            beforeSend: function() {
+                player_settings.find('.waves-effect').text("{{LANG please_wait}}");
+            },
+            success: function(data) {
+                if (data.status == 200) {
+                    player_settings.find('.waves-effect').text('Save');
+                    $('.player_settings-alert').html('<div class="alert alert-success"><i class="fa fa-check"></i> Settings updated successfully</div>');
+                    setTimeout(function () {
+                        $('.player_settings-alert').empty();
+                    }, 2000);
+                }
+            }
+        });
+        var stock_settings = $('form.stock-settings');
+
+        stock_settings.ajaxForm({
+            url: '{{LINK aj/ap/save-settings}}',
+            beforeSend: function() {
+                stock_settings.find('button').text("{{LANG please_wait}}");
+            },
+            success: function(data) {
+                if (data.status == 200) {
+                    stock_settings.find('button').text('Save');
+                    $('.stock-settings-alert').html('<div class="alert alert-success"><i class="fa fa-check"></i> Settings updated successfully</div>');
+                    setTimeout(function () {
+                        $('.stock-settings-alert').empty();
+                    }, 2000);
+                }
+            }
+        });
+        var form_paid_videos_settings = $('form.paid-video-settings');
+
+        form_paid_videos_settings.ajaxForm({
+            url: '{{LINK aj/ap/save-settings}}',
+            beforeSend: function() {
+                form_paid_videos_settings.find('button').text("{{LANG please_wait}}");
+            },
+            success: function(data) {
+                if (data.status == 200) {
+                    form_paid_videos_settings.find('button').text('Save');
+                    $('.paid-video-settings-alert').html('<div class="alert alert-success"><i class="fa fa-check"></i> Settings updated successfully</div>');
+                    setTimeout(function () {
+                        $('.paid-video-settings-alert').empty();
+                    }, 2000);
+                }
+            }
+        });
+        var form_all_videos_settings = $('form.all-video-settings');
+        form_all_videos_settings.ajaxForm({
+            url: '{{LINK aj/ap/save-settings}}',
+            beforeSend: function() {
+                form_all_videos_settings.find('button').text("{{LANG please_wait}}");
+            },
+            success: function(data) {
+                if (data.status == 200) {
+                    form_all_videos_settings.find('button').text('Save');
+                    $('.all-video-settings-alert').html('<div class="alert alert-success"><i class="fa fa-check"></i> Settings updated successfully</div>');
+                    setTimeout(function () {
+                        $('.all-video-settings-alert').empty();
+                    }, 2000);
+                }
+            }
+        });
+    });
+</script>

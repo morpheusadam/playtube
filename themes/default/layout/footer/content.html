@@ -1,0 +1,35 @@
+<?php if ($pt->refund_terms_page == 1) { ?>
+	<a href="{{LINK terms/refund-policy}}" data-load="?link1=terms&type=refund-policy">{{LANG refund_policy}}</a>
+<?php } ?>
+	<a href="{{LINK terms/faqs}}" data-load="?link1=terms&type=faqs">{{LANG faqs}}</a>
+<?php if ($pt->terms_of_use_page == 1) { ?>
+	<a href="{{LINK terms/terms}}" data-load="?link1=terms&type=terms">{{LANG terms_of_use}}</a>
+<?php } ?>
+<?php if ($pt->privacy_policy_page == 1) { ?>
+	<a href="{{LINK terms/privacy-policy}}" data-load="?link1=terms&type=privacy-policy">{{LANG privacy_policy}}</a>
+<?php } ?>
+<?php if ($pt->about_page == 1) { ?>
+	<a href="{{LINK terms/about-us}}" data-load="?link1=terms&type=about-us">{{LANG about_us}}</a>
+<?php } ?>
+	<a href="{{LINK contact-us}}" data-load="?link1=contact">{{LANG contact_us}}</a>
+<?php if ($pt->config->developers_page == 'on') { ?>
+	<a href="{{LINK developers}}" data-load="?link1=developers">{{LANG developers}}</a>
+<?php } ?>
+<?php if ($pt->config->affiliate_system == 1) { ?>
+	<a href="{{LINK affiliates}}" data-load="?link1=affiliates">{{LANG affiliates}}</a>
+<?php } ?>
+
+<?php if ($pt->exp_feed === true):
+	$page = (!empty($_GET['page'])) ? $_GET['page'] : '';
+	$category_id = (!empty($_GET['id']) && $page == 'category') ? $_GET['id'] . '/': '';
+?>
+	<a href="<?php echo PT_Link("videos/$page/" . $category_id . "rss"); ?>" target="_blank">RSS</a>
+<?php endif ?>
+	<?php if (!empty($pt->custom_pages)) {
+		foreach ($pt->custom_pages as $key => $value) { ?>
+	<a href="<?php echo PT_Link("site-pages/" . $value->page_name); ?>" target="_blank"><?php echo $value->page_title;?></a>
+<?php } } ?>
+	
+<a href="javascript:void(0);" data-toggle="modal" data-target="#select-language">{{LANG language}}</a>
+<div class="clear"></div>
+<p class="copyright">{{LANG copyright}}</p>

@@ -1,0 +1,474 @@
+<div class="content pt_shadow pt_forms_large_btns">
+	<div class="col-md-12">
+		<div class="upload-head">
+			<h4 class="edit-video-title"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M9.243 19H21v2H3v-4.243l9.9-9.9 4.242 4.244L9.242 19zm5.07-13.556l2.122-2.122a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414l-2.122 2.121-4.242-4.242z"/></svg> {{LANG edit_video}}: {{TITLE}}</h4>
+			<hr>
+		</div>
+	</div>
+	<div id="video-success" class="alert alert-success"></div>
+	<div class="errors alert alert-danger"></div>
+	<div class="col-md-8" id="edit-form">
+		<form action="" class="form-horizontal pt_forms pt_edt_vdo_form" method="POST">
+			<?php if (PT_IsAdmin() && $pt->video->is_movie && $pt->video->is_short != 1) { ?>
+				<div id="movie_fields">
+					<div class="pp_mat_input">
+						<input id="movie_title" name="movie_title" type="text" placeholder="{{LANG movie_title}}" value="{{TITLE}}">
+						<label for="movie_title">{{LANG movie_title}}</label>
+					</div>
+					<div class="pp_mat_input">
+						<textarea name="movie_description" id="description" cols="30" rows="5" class="move_description">{{DESC}}</textarea>
+						<label for="description">{{LANG description}}</label>
+					</div>
+					<div class="pp_mat_input">
+						<input id="stars" name="stars" type="text" placeholder="{{LANG stars}} {{LANG by_comma}}" value="<?php echo($pt->video->stars) ?>">
+						<label for="stars">{{LANG stars}}</label>
+					</div>
+					<div class="pp_mat_input">
+						<input id="producer" name="producer" type="text" placeholder="{{LANG producer}}" value="<?php echo($pt->video->producer) ?>">
+						<label for="producer">{{LANG producer}}</label>
+					</div>
+					<div class="pp_mat_input">
+						<input id="release" name="release" type="number" placeholder="{{LANG release}}" min="1910" max="<?php echo date('Y') ?>" value="<?php echo($pt->video->movie_release) ?>">
+						<label for="release">{{LANG release}}</label>
+					</div>
+					<div class="pp_mat_input">
+						<select class="selectpicker show-menu-arrow" name="country" id="country">
+							<option value="" disabled>{{LANG country}}</option>
+							<?php foreach ($countries_name as $key => $value) { $selected = ($pt->video->country == $key) ? 'selected' : '';  ?>
+								<option value="<?php echo $key; ?>" <?php echo $selected?>><?php echo $value; ?></option>
+							<?php  } ?>
+						</select>
+					</div>
+					<div class="pp_mat_input">
+						<select class="selectpicker show-menu-arrow" name="quality" id="quality">
+							<option value="" disabled>{{LANG quality}}</option>
+							<option value="CAMRip" <?php echo $pt->video->quality == 'CAMRip' ? 'selected' : ''; ?>>CAMRip</option>
+							<option value="TS" <?php echo $pt->video->quality == 'TS' ? 'selected' : ''; ?>>TS</option>
+							<option value="VHSRip" <?php echo $pt->video->quality == 'VHSRip' ? 'selected' : ''; ?>>VHSRip</option>
+							<option value="WP" <?php echo $pt->video->quality == 'WP' ? 'selected' : ''; ?>>WP</option>
+							<option value="SCR (VHSScr)" <?php echo $pt->video->quality == 'SCR (VHSScr)' ? 'selected' : ''; ?>>SCR (VHSScr)</option>
+							<option value="DVDScr" <?php echo $pt->video->quality == 'DVDScr' ? 'selected' : ''; ?>>DVDScr</option>
+							<option value="TC" <?php echo $pt->video->quality == 'TC' ? 'selected' : ''; ?>>TC</option>
+							<option value="LDRip" <?php echo $pt->video->quality == 'LDRip' ? 'selected' : ''; ?>>LDRip</option>
+							<option value="TVRip" <?php echo $pt->video->quality == 'TVRip' ? 'selected' : ''; ?>>TVRip</option>
+							<option value="SATRip" <?php echo $pt->video->quality == 'SATRip' ? 'selected' : ''; ?>>SATRip</option>
+							<option value="DVBRip" <?php echo $pt->video->quality == 'DVBRip' ? 'selected' : ''; ?>>DVBRip</option>
+							<option value="DTVRip" <?php echo $pt->video->quality == 'DTVRip' ? 'selected' : ''; ?>>DTVRip</option>
+							<option value="DVD" <?php echo $pt->video->quality == 'DVD' ? 'selected' : ''; ?>>DVD</option>
+							<option value="HDRip" <?php echo $pt->video->quality == 'HDRip' ? 'selected' : ''; ?>>HDRip</option>
+							<option value="WEB-DL" <?php echo $pt->video->quality == 'WEB-DL' ? 'selected' : ''; ?>>WEB-DL</option>
+							<option value="HD-TV" <?php echo $pt->video->quality == 'HD-TV' ? 'selected' : ''; ?>>HD-TV</option>
+							<option value="HD DVD" <?php echo $pt->video->quality == 'HD DVD' ? 'selected' : ''; ?>>HD DVD</option>
+						</select>
+					</div>
+					<div class="pp_mat_input">
+						<select class="selectpicker show-menu-arrow" name="category" id="category">
+							<option value="" disabled>{{LANG category}}</option>
+							<?php foreach($pt->movies_categories as $key => $category) { $selected = ($pt->video->category_id == $key) ? 'selected' : '';?>
+								<option value="<?php echo $key?>" <?php echo $selected?>><?php echo $category?></option>
+							<?php } ?>
+						</select>
+					</div>
+					<div class="pp_mat_input">
+						<input type="number" id="rating" name="rating" min="1" max="10" step="0.1" value="<?php echo($pt->video->rating) ?>">
+						<label for="rating">{{LANG rating}} {{LANG rating_btween}}</label>
+					</div>
+				</div>
+				<?php if ($pt->config->sell_videos_system == 'on') { ?>
+					<div class="pp_mat_input">
+						<input id="mySingleFieldTags_" name="buy_price" type="text" placeholder=" " value="<?php echo($pt->video->sell_video) ?>">
+						<label for="buy_price">{{LANG set_p_v}}</label>
+					</div>
+				<?php } ?>
+				<?php if ($pt->config->rent_videos_system == 'on') { ?>
+					<div class="pp_mat_input">
+						<input id="mySingleFieldTags_movie" name="movie_rent_price" type="text" placeholder=" " value="<?php echo $pt->video->rent_price ?>">
+						<label for="movie_rent_price">{{LANG rent_price}}</label>
+						<span class="help-block"><?php if($pt->config->admin_com_rent_videos > 0){ ?>{{LANG p_m_than_}} <?php echo($pt->config->admin_com_rent_videos) ?><?php }?></span>
+					</div>
+				<?php } ?>
+				<input type="hidden" name="is_movie" class="is_movie" value="1">
+				<?php if (PT_IsAdmin()) { ?>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>{{LANG featured}}</label>
+							<div class="pt_vdo_cstm_radio">
+								<input type="radio" id="featuredm1" name="featured_movie" value="1" <?php echo ($pt->video->featured_movie == 1) ? 'checked' : ''  ?>>
+								<label for="featuredm1">Yes</label>
+							</div>
+							<div class="pt_vdo_cstm_radio">
+								<input type="radio" id="featured0" name="featured_movie" value="0" <?php echo ($pt->video->featured_movie == 0) ? 'checked' : ''  ?>>
+								<label for="featured0">No</label>
+							</div>
+						</div>
+					</div>
+				<?php } ?>
+			<?php } else { ?>
+				<?php if ($pt->editLink) { ?>
+					<div class="pp_mat_input">
+						<input id="url" name="url" type="text" oninput="fetchVideoUrl(this)">
+						<label for="url">{{LANG video_url}}</label>
+						<span class="help-block">{{LANG url_desc}}, <?php echo ($pt->config->facebook_import == 'on') ? 'Facebook, ': '';?>mp4<?php echo ($pt->config->ok_import == 'on') ? ',ok.ru': '';?><?php echo ($pt->config->tiktok_import == 'on') ? ',TikTok': '';?><?php echo ($pt->config->youtube_short == 'on') ? ',' . $lang_array['youtube_short']: '';?><?php echo ($pt->config->instagram_import == 'on') ? ',' . $lang_array['instagram']: '';?><?php echo ($pt->config->embed_videos == 'on') ? ',' . $lang_array['can_embed_website']: '';?></span>
+					</div>
+				<?php } ?>
+				<div class="pp_mat_input">
+					<input id="title" name="title" type="text" value="{{TITLE}}" placeholder=" ">
+					<label for="title">{{LANG video_title}}</label>
+					<span class="help-block">{{LANG video_title_help}}</span>
+				</div>
+				<div class="pp_mat_input">
+					<textarea name="description" id="description" cols="30" rows="10" class="description">{{DESC}}</textarea>
+					<label for="description">{{LANG video_descritpion}}</label>
+				</div>
+				<?php if ($pt->video->is_short != 1) { ?>
+				<div class="pp_mat_input">
+					<label>{{LANG category}}</label>
+					<br>
+					<select class="selectpicker show-menu-arrow" name="category_id" id="category_id">
+						<option value="" disabled>{{LANG category}}</option>
+						<?php foreach($pt->categories as $key => $category) { $selected = ($pt->video->category_id == $key) ? 'selected' : '';?>
+							<option value="<?php echo $key?>" <?php echo $selected?>><?php echo $category?></option>
+						<?php } ?>
+					</select>
+				</div>
+				<div class="pp_mat_input" <?php if (empty($pt->sub_categories_array["'1'"])) { ?> style="display: none;"<?php } ?> id="sub_category_div">
+					<label>{{LANG sub_category}}</label>
+					<br>
+					<select class="selectpicker show-menu-arrow" name="sub_category_id" id="sub_category_id">
+						<option value="" disabled>{{LANG sub_category}}</option>
+						<?php echo $pt->sub_categories_array["'".$pt->video->category_id."'"]; ?>
+					</select>
+				</div>
+				<?php if ($pt->config->geo_blocking == 'on') { ?>
+					<div class="pp_mat_input" id="geo_blocking">
+						<label>{{LANG geo_blocking}}</label>
+					    <br>
+						<select class="selectpicker show-menu-arrow show-tick" multiple name="continents-list[]" data-live-search="true" title="{{LANG geo_blocking}}" data-actions-box="true">
+							<?php foreach ($pt->continents as $key => $name): ?>
+								<option value="<?php echo($name); ?>" <?php echo (!empty($pt->video->geo_blocking) && in_array($name, json_decode($pt->video->geo_blocking))) ? 'selected' : '' ?>><?php echo($name); ?></option>
+							<?php endforeach; ?>
+						</select>
+				    </div>
+				<?php } ?>
+				<?php if (PT_IsAdmin()) { ?>
+					<!-- <div class="pp_mat_input">
+						<select class="selectpicker show-menu-arrow" name="featured" id="featured">
+							<option value="" disabled>{{LANG featured}}</option>
+							<option value="0" <?php echo ($pt->video->featured == 0) ? 'selected' : '' ?>>No</option>
+							<option value="1" <?php echo ($pt->video->featured == 1) ? 'selected' : '' ?>>Yes</option>
+						</select>
+					</div> -->
+					<div class="pp_mat_input vid_edit_assign">
+						<input id="assign_to_user" name="assign_to_user" type="text" placeholder="{{LANG username}}">
+						<label for="assign_to_user">{{LANG assign_to_user}}</label>
+						<div class="search-dropdown_ hidden"></div>
+					</div>
+				<?php } ?>
+				<?php } ?>
+				<div class="pp_mat_input">
+					<input id="mySingleFieldTags" name="tags" type="text" value="{{TAGS}}" placeholder=" ">
+					<label for="tags">{{LANG tags}}</label>
+					<span class="help-block">{{LANG tags_help}}</span>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>{{LANG privacy}}</label>
+							<div class="pt_vdo_cstm_radio">
+								<input type="radio" id="privacy0" name="privacy" value="0" <?php echo ($pt->video->privacy == 0) ? 'checked' : '' ?>>
+								<label for="privacy0">{{LANG public}}</label>
+							</div>
+							<div class="pt_vdo_cstm_radio">
+								<input type="radio" id="privacy1" name="privacy" value="1" <?php echo ($pt->video->privacy == 1 && $pt->video->publication_date == 0) ? 'checked' : '' ?>>
+								<label for="privacy1">{{LANG private}}</label>
+							</div>
+							<div class="pt_vdo_cstm_radio">
+								<input type="radio" id="privacy2" name="privacy" value="2" <?php echo ($pt->video->privacy == 2) ? 'checked' : '' ?>>
+								<label for="privacy2">{{LANG unlisted}}</label>
+							</div>
+							<div class="pt_vdo_cstm_radio">
+								<input type="radio" id="privacy3" name="privacy" value="3" <?php echo ($pt->video->privacy == 1 && $pt->video->publication_date > 0) ? 'checked' : '' ?>>
+								<label for="privacy3">{{LANG scheduled}}</label>
+							</div>
+						</div>
+					</div>
+					<?php if ($pt->video->is_short != 1) { ?>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>{{LANG age_restriction}}</label>
+							<div class="pt_vdo_cstm_radio">
+								<input type="radio" id="age_restriction0" name="age_restriction" value="1" <?php echo ($pt->video->age_restriction == 1) ? 'checked' : '' ?>>
+								<label for="age_restriction0">{{LANG all_ages}}</label>
+							</div>
+							<div class="pt_vdo_cstm_radio">
+								<input type="radio" id="age_restriction1" name="age_restriction" value="2" <?php echo ($pt->video->age_restriction == 2) ? 'checked' : '' ?>>
+								<label for="age_restriction1">{{LANG only_18}}</label>
+							</div>
+						</div>
+					</div>
+					<?php if (PT_IsAdmin() || $pt->user->is_pro) { ?>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>{{LANG featured}}</label>
+							<div class="pt_vdo_cstm_radio">
+								<input type="radio" id="featured1" name="featured" value="1" <?php echo ($pt->video->featured == 1) ? 'checked' : ''  ?>>
+								<label for="featured1">Yes</label>
+							</div>
+							<div class="pt_vdo_cstm_radio">
+								<input type="radio" id="featured0" name="featured" value="0" <?php echo ($pt->video->featured == 0) ? 'checked' : ''  ?>>
+								<label for="featured0">No</label>
+							</div>
+						</div>
+					</div>
+					<?php } ?>
+					<?php } ?>
+
+				</div>
+				<div class="scheduled <?php echo ($pt->video->privacy == 1 && $pt->video->publication_date > 0) ? '' : 'hidden' ?>">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="pp_mat_input">
+								<input id="date" name="date" type="text" placeholder=" " value="<?php echo(date('Y-m-d',$pt->video->publication_date)) ?>">
+								<label>{{LANG publication_date}} {{LANG utc_timezone}}</label>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="pp_mat_input">
+								<select name="hour" id="hour" class="selectpicker show-menu-arrow">
+		                        	<?php foreach ($pt->config->hours as $key => $value) { ?>
+		                        		<option value="<?php echo($key) ?>" <?php echo ((date('g:iA',$pt->video->publication_date) == $key) ? 'selected' : ''); ?>><?php echo $value; ?></option>
+		                        	<?php } ?>
+		                        </select>
+							</div>
+						</div>
+					</div>
+				</div>
+				<?php if ($pt->video->is_short != 1) { ?>
+				<?php if (($pt->config->sell_videos_system == 'on' && $pt->config->who_sell == 'pro_users' && ($pt->user->is_pro || $pt->user->admin)) || ($pt->config->sell_videos_system == 'on' && $pt->config->who_sell == 'users') ) { ?>
+					<div class="pp_mat_input">
+						<input id="mySingleFieldTags" name="set_p_v" type="text" placeholder=" " value="<?php echo $pt->video->sell_video ?>">
+						<label for="set_p_v">{{LANG set_p_v}}</label>
+						<span class="help-block"><?php if($pt->config->admin_com_sell_videos > 0){ ?>{{LANG p_m_than_}} <?php echo($pt->config->admin_com_sell_videos) ?><?php }?></span>
+					</div>
+				<?php } ?>
+				<?php if ($pt->config->rent_videos_system == 'on') { ?>
+					<div class="pp_mat_input">
+						<input id="mySingleFieldTags" name="rent_price" type="text" placeholder=" " value="<?php echo $pt->video->rent_price ?>">
+						<label for="rent_price">{{LANG rent_price}}</label>
+						<span class="help-block"><?php if($pt->config->admin_com_rent_videos > 0){ ?>{{LANG p_m_than_}} <?php echo($pt->config->admin_com_rent_videos) ?><?php }?></span>
+					</div>
+				<?php } ?>
+				<?php } ?>
+			<?php } ?>
+			<?php if ($pt->video->is_short != 1) { ?>
+			<?php if ((($pt->config->usr_v_mon == 'on' && $pt->config->user_mon_approve == 'off') || ($pt->config->usr_v_mon == 'on' && $pt->config->user_mon_approve == 'on' && $pt->user->monetization == '1')) && $pt->user->video_mon == '1') { ?>
+			<div class="col-md-6">
+				<div class="form-group">
+					<label>{{LANG monetization}}</label>
+					<div class="pt_vdo_cstm_radio">
+						<input type="radio" id="monetization1" name="monetization" value="1" <?php echo ($pt->video->monetization == 1) ? 'checked' : ''  ?>>
+						<label for="monetization1">{{LANG enable}}</label>
+					</div>
+					<div class="pt_vdo_cstm_radio">
+						<input type="radio" id="monetization0" name="monetization" value="0" <?php echo ($pt->video->monetization == 0) ? 'checked' : ''  ?>>
+						<label for="monetization0">{{LANG disable}}</label>
+					</div>
+				</div>
+			</div>
+			<?php } ?>
+			<?php if ($pt->config->restrict_embedding_system == 'on') { ?>
+				<div class="form-group">
+					<label>{{LANG restrict_embedding}}</label>
+					<div class="pt_vdo_cstm_radio">
+						<input type="radio" id="embedding1" name="embedding" value="yes" <?php echo ($pt->video->embedding == 1) ? 'checked' : ''  ?>>
+						<label for="embedding1">{{LANG yes}}</label>
+					</div>
+					<div class="pt_vdo_cstm_radio">
+						<input type="radio" id="embedding0" name="embedding" value="no" <?php echo ($pt->video->embedding == 0) ? 'checked' : ''  ?>>
+						<label for="embedding0">{{LANG no}}</label>
+					</div>
+				</div>
+			<?php } ?>
+			<?php } ?>
+			<div class="form-group hidden">
+				<label class="col-md-12" for="thumbnail">{{LANG thumbnail}}</label>
+				<div class="col-md-12">
+					<input id="thumbnail" name="thumbnail" type="file" accept="image/*">
+					<span class="help-block">jpg, png, gif</span>
+				</div>
+			</div>
+			<div class="text-center">
+				<?php if ($pt->video->is_short != 1) { ?>
+				<?php if ($pt->config->video_text_system == 'on' && empty($pt->video->facebook) && empty($pt->video->vimeo) && empty($pt->video->daily) && empty($pt->video->youtube) && empty($pt->video->twitch) && empty($pt->video->ok)) { ?>
+				<a type="button" class="btn btn-success setting-panel-mdbtn" href="{{LINK video_text/{{ID}}}}" data-load="?link1=video_text&id={{ID}}" style="line-height: 2.4;">{{LANG add_card}}</a>
+				<?php } ?>
+				<?php } ?>
+				<button type="button" class="btn btn-delete setting-panel-mdbtn" onclick="PT_DeleteVideo({{ID}}, 'edit-page')">{{LANG delete_videos}}</button>
+				<button type="submit" id="submit-btn" class="btn btn-main setting-panel-mdbtn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> {{LANG publish}}</button>
+			</div>
+			<input type="hidden" name="video-id" class="video-id" value="{{ID}}">
+		</form>
+	</div>
+	<div class="col-md-4">
+		<div class="thumbnail-preview edit-thumb">
+			<img src="{{THUMBNAIL}}" alt="{{TITLE}}">
+		</div>
+		<div class="video-title">
+			<p>{{TITLE}}</p>
+		</div>
+		<div class="video-description">
+			<p>{{DESC_2}}</p>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>
+
+<script>
+	<?php if ($pt->editLink) { ?>
+	function fetchVideoUrl(self) {
+		$.post('{{CONFIG site_url}}/aj/fetch-video', {link: $(self).val(),video_id:"{{ID}}"}, function(data, textStatus, xhr) {
+			if (data.status == 200) {
+				$('.errors').addClass('hidden')
+	    		$('#video-success').html("{{LANG video_url_changed_successfully}}");
+	    		setTimeout(function () {
+	    			$('#video-success').html("");
+	    		}, 2000);
+	    	} else {
+	    		$('#submit-btn').attr('disabled', false);
+	    	    $('#submit-btn').html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> {{LANG publish}}');
+	    		$('.errors').removeClass('hidden').html(data.message);
+	    	}
+		});
+	}
+	<?php } ?>
+	$(document).on('change', '#privacy', function(event) {
+		event.preventDefault();
+		if ($(this).val() == 3) {
+			$('.scheduled').removeClass('hidden');
+		}
+		else{
+			$('.scheduled').addClass('hidden');
+		}
+	});
+	$(document).ready(function() {
+   $( "#date" ).datepicker({ dateFormat: 'yy-mm-dd', minDate: 'today',prevText: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" /></svg>',nextText: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" /></svg>'});
+   });
+	var el = $(".description").emojioneArea({
+		pickerPosition: "bottom",
+	    tonesStyle: "radio",
+	    events: {
+	     	keyup: function (editor, event) {
+		    }
+	    },
+	    filters: {
+	        flags : false,
+	        objects : false,
+	        travel_places : false,
+	        activity : false
+	    }
+	});
+	var el2 = $(".move_description").emojioneArea({
+		pickerPosition: "bottom",
+	    tonesStyle: "radio",
+	    events: {
+	     	keyup: function (editor, event) {
+		    }
+	    },
+	    filters: {
+	        flags : false,
+	        objects : false,
+	        travel_places : false,
+	        activity : false
+	    }
+	});
+$('.selectpicker').selectpicker({});
+<?php
+$js_array = json_encode($pt->sub_categories_array);
+echo "var sub_categories_array = ". $js_array . ";\n";
+?>
+$(document).on('change', '#category_id', function(event) {
+	event.preventDefault();
+	id = $(this).val();
+	if (typeof(sub_categories_array["'"+id+"'"]) == 'undefined') {
+   	$('#sub_category_div').hide();
+    $('#sub_category_id').html('');
+   }
+   else{
+   	$('#sub_category_div').show();
+    $('#sub_category_id').html(sub_categories_array["'"+id+"'"]);
+  }
+  $('.selectpicker').selectpicker('refresh');
+});
+
+
+$(function () {
+	$('.edit-thumb').on('click', function(event) {
+		$('#thumbnail').trigger('click');
+	});
+	$('#thumbnail').on('change', function(event) {
+		readURL(this);
+	});
+	$('#description').keyup(function(event) {
+      str = $(this).val().replace(/(?:\r\n|\r|\n)/g, '<br />');
+      $('.video-description p').html(str);
+   });
+   <?php if (PT_IsAdmin() && $pt->video->is_movie) { ?>
+		$('#movie_title').keyup(function(event) {
+	      $('.video-title p').html($(this).val());
+	   });
+	<?php }else{ ?>
+	   $('#title').keyup(function(event) {
+	      $('.video-title p').html($(this).val());
+	   });
+	<?php } ?>
+	$("#mySingleFieldTags").tagit({
+		allowSpaces: true
+	});
+	$('#edit-form form').ajaxForm({
+	    url: '{{LINK aj/edit-video}}' + '?hash=' + $('.main_session').val(),
+	    beforeSend: function() {
+	    	$('#submit-btn').attr('disabled', true);
+	    	$('#submit-btn').text("{{LANG please_wait}}");
+	    },
+	    success: function(data) {
+	    	if (data.status == 200) {
+	    		$('#video-success').html(data.message);
+          window.location.href = '{{URL}}';
+	    	} else {
+	    		$('#submit-btn').attr('disabled', false);
+	    	    $('#submit-btn').html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> {{LANG publish}}');
+	    		$('.errors').removeClass('hidden').html(data.message);
+	    	}
+	    }
+	});
+});
+<?php if (PT_IsAdmin()) { ?>
+$('#assign_to_user').keyup(function(event) {
+	var search_value = $(this).val();
+	var search_dropdown = $('.search-dropdown_');
+	if (search_value == '') {
+		search_dropdown.addClass('hidden');
+		search_dropdown.empty();
+		return false;
+	} else {
+		search_dropdown.removeClass('hidden');
+	}
+    $.post('{{LINK aj/search_users}}', {search_value: search_value}, function(data, textStatus, xhr) {
+    	if (data.status == 200) {
+    		search_dropdown.html(data.html);
+    	} else {
+	       search_dropdown.addClass('hidden');
+		   search_dropdown.empty();
+		   return false;
+    	}
+    });
+});
+
+function add_to_input(username) {
+	$('#assign_to_user').val(username);
+	var search_dropdown = $('.search-dropdown_');
+	search_dropdown.addClass('hidden');
+    search_dropdown.empty();
+}
+<?php } ?>
+</script>

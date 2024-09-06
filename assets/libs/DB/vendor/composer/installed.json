@@ -1,0 +1,49 @@
+[
+    {
+        "name": "joshcam/mysqli-database-class",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/joshcam/PHP-MySQLi-Database-Class.git",
+            "reference": "3e33abfc8e6d689631249b403b368b91ceda5c14"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/joshcam/PHP-MySQLi-Database-Class/zipball/3e33abfc8e6d689631249b403b368b91ceda5c14",
+            "reference": "3e33abfc8e6d689631249b403b368b91ceda5c14",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "time": "2017-08-02T16:08:26+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "MysqliDb.php",
+                "dbObject.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-3.0"
+        ],
+        "authors": [
+            {
+                "name": "Josh Campbell",
+                "email": "josh.lee.campbell@gmail.com",
+                "homepage": "https://github.com/joshcam",
+                "role": "Developer"
+            },
+            {
+                "name": "Alexander V. Butenko",
+                "email": "a.butenka@gmail.com",
+                "homepage": "http://smarttechdo.com",
+                "role": "Developer"
+            }
+        ],
+        "description": "PHP MySQL Wrapper and object mapper which utilizes MySQLi and prepared statements"
+    }
+]

@@ -1,0 +1,17 @@
+<div class="related-video-wrapper" data-sidebar-video="{{ID}}">
+	<div class="ra-thumb">
+		<a href="{{URL}}" data-load="?link1=watch&id={{V_ID}}">
+			<img src="{{THUMBNAIL}}" alt="⁣{{TITLE}}">
+			<div class="play_hover_btn" onmouseenter="show_gif(this,'{{GIF}}')" onmouseleave="hide_gif(this)">
+				<svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="rgba(255, 255, 255, 0.8)"><path d="M8,5.14V19.14L19,12.14L8,5.14Z"></path></svg>
+			</div>
+			<div class="video-duration">{{DURATION}}</div>
+		</a>
+	</div>
+	<div class="ra-title">
+		<div class="video-title"><a href="{{URL}}" data-load="?link1=watch&id={{V_ID}}"> ⁣{{TITLE}}</a></div>
+		<div class="video-publisher"><a href="{{USER url}}" data-load="?link1=timeline&id={{USER username}}">{{USER_NAME}}</a></div>
+		<div class="video-publisher">{{VIEWS}} {{LANG views}} <span class="middot">·</span> {{TIME}}</div>
+		<div class="video-category"><a href="{{CATEGORY_LINK}}">{{CATEGORY}}</a></div>
+	</div>
+</div>

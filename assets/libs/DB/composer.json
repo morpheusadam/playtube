@@ -1,0 +1,5 @@
+{
+    "require": {
+        "joshcam/mysqli-database-class": "dev-master"
+    }
+}

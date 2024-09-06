@@ -1,0 +1,84 @@
+<div class="row">
+	<div class="col-md-3">
+		<div class="settings-sidebar">
+			<ul class="list-group">
+				<li class="list-group-item">
+					<a href="{{LINK dashboard}}" data-load="?link1=dashboard"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg> {{LANG dashboard}}</a>
+				</li>
+				<li class="list-group-item <?php if (empty($_GET['videos_type']) || $_GET['videos_type'] != 'movies') { echo 'active'; } ?>">
+					<a href="{{LINK video_studio}}" data-load="?link1=video_studio"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M16 4a1 1 0 0 1 1 1v4.2l5.213-3.65a.5.5 0 0 1 .787.41v12.08a.5.5 0 0 1-.787.41L17 14.8V19a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h14zM7.4 8.829a.4.4 0 0 0-.392.32L7 9.228v5.542a.4.4 0 0 0 .542.374l.073-.036 4.355-2.772a.4.4 0 0 0 .063-.624l-.063-.05L7.615 8.89A.4.4 0 0 0 7.4 8.83z"/></svg> {{LANG videos}}</a>
+				</li>
+				<li class="list-group-item">
+					<a href="{{LINK comments}}" data-load="?link1=comments"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M6.455 19L2 22.5V4a1 1 0 0 1 1-1h18a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H6.455zM7 10v2h2v-2H7zm4 0v2h2v-2h-2zm4 0v2h2v-2h-2z"/></svg> {{LANG comments}}</a>
+				</li>
+				<?php if ($pt->config->usr_v_mon == 'on' || $pt->config->sell_videos_system == 'on' || $pt->config->payed_subscribers == 'on') { ?>
+					<li class="list-group-item">
+						<a href="{{LINK transactions}}" data-load="?link1=transactions"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"></path><path fill="currentColor" d="M14 2a8 8 0 0 1 3.292 15.293A8 8 0 1 1 6.706 6.707 8.003 8.003 0 0 1 14 2zm-3 7H9v1a2.5 2.5 0 0 0-.164 4.995L9 15h2l.09.008a.5.5 0 0 1 0 .984L11 16H7v2h2v1h2v-1a2.5 2.5 0 0 0 .164-4.995L11 13H9l-.09-.008a.5.5 0 0 1 0-.984L9 12h4v-2h-2V9zm3-5a5.985 5.985 0 0 0-4.484 2.013 8 8 0 0 1 8.47 8.471A6 6 0 0 0 14 4z"></path></svg> {{LANG earnings}}</a>
+					</li>
+				<?php } ?>
+                <?php if ($pt->config->movies_videos == 'on' && PT_IsAdmin()) { ?>
+					<li class="list-group-item <?php if (!empty($_GET['videos_type']) && $_GET['videos_type'] == 'movies') { echo 'active'; } ?> ">
+						<a href="{{LINK video_studio?videos_type=movies}}" data-load="?link1=video_studio&videos_type=movies"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M18.001 20H20v2h-8C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10a9.985 9.985 0 0 1-3.999 8zM12 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm-4 4a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm8 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm-4 4a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg> {{LANG movies}}</a>
+					</li>
+                <?php } ?>
+			</ul>
+		</div>
+	</div>
+	<div class="col-md-9">
+		<div class="user-setting-panel pt_shadow">
+			<div class="yp_sett_header">
+				<div class="pull-right dropdown">
+					<span class="dropdown-toggle" data-toggle="dropdown" role="button" title="{{LANG sort_by}}"><svg class="feather feather-filter" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></span>
+					<div class="dropdown-menu dropdown-menu-right vid_stud_filtr">
+						<form class="search_filter_form" method="POST" action="">
+							<div class="dropdown-item">
+								<label for="_views_">
+								<input type="radio" name="type" id="_views_" value="views" <?php echo (!empty($_POST['type']) && $_POST['type'] == 'views') ? 'checked': ''?>>
+								<span>{{LANG views}}</span>
+								</label>
+							</div>
+							<div class="dropdown-item">
+								<label for="_likes_">
+								<input type="radio" name="type" id="_likes_" value="likes" <?php echo (!empty($_POST['type']) && $_POST['type'] == 'likes') ? 'checked': ''?>>
+								<span>{{LANG likes}}</span>
+								</label>
+							</div>
+							<div class="dropdown-item">
+								<label for="_dislikes_">
+								<input type="radio" name="type" id="_dislikes_" value="dislikes" <?php echo (!empty($_POST['type']) && $_POST['type'] == 'dislikes') ? 'checked': ''?>>
+								<span>{{LANG dislikes}}</span>
+								</label>
+							</div>
+							<div class="dropdown-item">
+								<label for="_comments_">
+								<input type="radio" name="type" id="_comments_" value="comments" <?php echo (!empty($_POST['type']) && $_POST['type'] == 'comments') ? 'checked': ''?>>
+								<span>{{LANG comments}}</span>
+								</label>
+							</div>
+						</form>
+					</div>
+				</div>
+				<h4><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"></path><path fill="currentColor" d="M16 4a1 1 0 0 1 1 1v4.2l5.213-3.65a.5.5 0 0 1 .787.41v12.08a.5.5 0 0 1-.787.41L17 14.8V19a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h14zM7.4 8.829a.4.4 0 0 0-.392.32L7 9.228v5.542a.4.4 0 0 0 .542.374l.073-.036 4.355-2.772a.4.4 0 0 0 .063-.624l-.063-.05L7.615 8.89A.4.4 0 0 0 7.4 8.83z"></path></svg> <?php echo($pt->videos_type == 'movies' ? '{{LANG movies}}' : '{{LANG videos}}') ?></h4>
+			</div>
+			<div class="vid_stud_divider"><?php echo($pt->videos_type == 'movies' ? '{{LANG manage_my_movies}}' : '{{LANG manage_my_videos}}') ?></div>
+			<div class="subscriptions-list">
+				<div class="row author-list">
+					{{VIDEOS}}
+				</div>
+				<?php if (count($pt->videos) > 0) { ?>
+					<div class="watch-video-show-more desc load-more" data-type="video_studio" <?php if (!empty($_POST['type'])) { ?>sort-type="<?php echo($_POST['type']); ?>" <?php } ?>>
+						{{LANG show_more}}
+					</div>
+				<?php } ?>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+</div>
+<br>
+
+<script type="text/javascript">
+$(".vid_stud_filtr input[type=radio]").change(function(){
+	$('form.search_filter_form').submit();
+});
+</script>

@@ -1,0 +1,308 @@
+<div class="container-fluid">
+    <div>
+        <h3>Live Settings</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Admin Panel</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Settings</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Live Settings</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="alert alert-info">
+       <strong>Info: </strong> For more information on how to setup live streaming service, please visit our <a href="https://docs.playtubescript.com/#idocs_agora" target="_blank">documentation</a> page.
+   </div>
+    <!-- Vertical Layout -->
+    <div class="row">
+        <div class="col-lg-6 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Live Streaming Settings</h6>
+                    <div class="email-settings-alert"></div>
+                    <form class="email-settings" method="POST">
+                        <div class="float-left">
+                            <label for="live_video" class="main-label">Live Streaming</label>
+                            <div class="dropdown user_filter_drop">
+                                <button class="btn btn-light" data-toggle="dropdown">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M8 13C6.14 13 4.59 14.28 4.14 16H2V18H4.14C4.59 19.72 6.14 21 8 21S11.41 19.72 11.86 18H22V16H11.86C11.41 14.28 9.86 13 8 13M8 19C6.9 19 6 18.1 6 17C6 15.9 6.9 15 8 15S10 15.9 10 17C10 18.1 9.1 19 8 19M19.86 6C19.41 4.28 17.86 3 16 3S12.59 4.28 12.14 6H2V8H12.14C12.59 9.72 14.14 11 16 11S19.41 9.72 19.86 8H22V6H19.86M16 9C14.9 9 14 8.1 14 7C14 5.9 14.9 5 16 5S18 5.9 18 7C18 8.1 17.1 9 16 9Z"></path></svg>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <div class="dropdown-menu-innr">
+                                        <b>Who can use this feature?</b>
+                                        <div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_live_video" id="who_can_live_video-admin" onchange="SelectProModel('can_use_live_video',this)" value="admin" <?php echo ($pt->config->who_can_live_video == 'admin')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_live_video-admin" data-toggle="tooltip" data-placement="bottom" title="Admin"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M17.13,17C15.92,18.85 14.11,20.24 12,20.92C9.89,20.24 8.08,18.85 6.87,17C6.53,16.5 6.24,16 6,15.47C6,13.82 8.71,12.47 12,12.47C15.29,12.47 18,13.79 18,15.47C17.76,16 17.47,16.5 17.13,17Z"></path></svg></label> 
+                                            </div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_live_video" id="who_can_live_video-all" onchange="SelectProModel('can_use_live_video',this)" value="all" <?php echo ($pt->config->who_can_live_video == 'all')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_live_video-all" data-toggle="tooltip" data-placement="bottom" title="All Users"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16 17V19H2V17S2 13 9 13 16 17 16 17M12.5 7.5A3.5 3.5 0 1 0 9 11A3.5 3.5 0 0 0 12.5 7.5M15.94 13A5.32 5.32 0 0 1 18 17V19H22V17S22 13.37 15.94 13M15 4A3.39 3.39 0 0 0 13.07 4.59A5 5 0 0 1 13.07 10.41A3.39 3.39 0 0 0 15 11A3.5 3.5 0 0 0 15 4Z"></path></svg></label> 
+                                            </div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_live_video" id="who_can_live_video-pro" onchange="SelectProModel('can_use_live_video',this)" value="pro" <?php echo ($pt->config->who_can_live_video == 'pro')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_live_video-pro" data-toggle="tooltip" data-placement="bottom" title="Pro Users Only"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12M5,13.28L7.45,14.77L6.8,11.96L9,10.08L6.11,9.83L5,7.19L3.87,9.83L1,10.08L3.18,11.96L2.5,14.77L5,13.28Z"></path></svg></label> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ul>
+                            </div>
+                            <br><small class="admin-info">Users can go live instantly.</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="live_video" value="0" />
+                            <input type="checkbox" name="live_video" id="chck-live_video" value="1" <?php echo ($pt->config->live_video == '1') ? 'checked': '';?>>
+                            <label for="chck-live_video" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <div class="float-left">
+                            <label for="live_video_save" class="main-label">Live Streaming Strorage</label>
+                            <div class="dropdown user_filter_drop">
+                                <button class="btn btn-light" data-toggle="dropdown">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M8 13C6.14 13 4.59 14.28 4.14 16H2V18H4.14C4.59 19.72 6.14 21 8 21S11.41 19.72 11.86 18H22V16H11.86C11.41 14.28 9.86 13 8 13M8 19C6.9 19 6 18.1 6 17C6 15.9 6.9 15 8 15S10 15.9 10 17C10 18.1 9.1 19 8 19M19.86 6C19.41 4.28 17.86 3 16 3S12.59 4.28 12.14 6H2V8H12.14C12.59 9.72 14.14 11 16 11S19.41 9.72 19.86 8H22V6H19.86M16 9C14.9 9 14 8.1 14 7C14 5.9 14.9 5 16 5S18 5.9 18 7C18 8.1 17.1 9 16 9Z"></path></svg>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <div class="dropdown-menu-innr">
+                                        <b>Who can use this feature?</b>
+                                        <div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_live_save" id="who_can_live_save-admin" onchange="SelectProModel('can_use_live_save',this)" value="admin" <?php echo ($pt->config->who_can_live_save == 'admin')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_live_save-admin" data-toggle="tooltip" data-placement="bottom" title="Admin"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M17.13,17C15.92,18.85 14.11,20.24 12,20.92C9.89,20.24 8.08,18.85 6.87,17C6.53,16.5 6.24,16 6,15.47C6,13.82 8.71,12.47 12,12.47C15.29,12.47 18,13.79 18,15.47C17.76,16 17.47,16.5 17.13,17Z"></path></svg></label> 
+                                            </div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_live_save" id="who_can_live_save-all" onchange="SelectProModel('can_use_live_save',this)" value="all" <?php echo ($pt->config->who_can_live_save == 'all')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_live_save-all" data-toggle="tooltip" data-placement="bottom" title="All Users"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16 17V19H2V17S2 13 9 13 16 17 16 17M12.5 7.5A3.5 3.5 0 1 0 9 11A3.5 3.5 0 0 0 12.5 7.5M15.94 13A5.32 5.32 0 0 1 18 17V19H22V17S22 13.37 15.94 13M15 4A3.39 3.39 0 0 0 13.07 4.59A5 5 0 0 1 13.07 10.41A3.39 3.39 0 0 0 15 11A3.5 3.5 0 0 0 15 4Z"></path></svg></label> 
+                                            </div>
+                                            <div class="round_check">
+                                                <input type="radio" name="who_can_live_save" id="who_can_live_save-pro" onchange="SelectProModel('can_use_live_save',this)" value="pro" <?php echo ($pt->config->who_can_live_save == 'pro')   ? ' checked' : '';?>>
+                                                <label class="radio-inline" for="who_can_live_save-pro" data-toggle="tooltip" data-placement="bottom" title="Pro Users Only"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12M5,13.28L7.45,14.77L6.8,11.96L9,10.08L6.11,9.83L5,7.19L3.87,9.83L1,10.08L3.18,11.96L2.5,14.77L5,13.28Z"></path></svg></label> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ul>
+                            </div>
+                            <br><small class="admin-info">Allow the live stream system to save streams in Amazon.</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="live_video_save" value="0" />
+                            <input type="checkbox" name="live_video_save" id="chck-live_video_save" value="1" <?php echo ($pt->config->live_video_save == '1') ? 'checked': '';?>>
+                            <label for="chck-live_video_save" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-6 col-md-6">
+        <div class="card">
+           <div class="card-body">
+               <h6 class="card-title">Agora API Configuration</h6>
+               <div class="agora-settings-alert"></div>
+               <form class="agora-settings" method="POST">
+                   <div class="alert-info alert">To start using this feature, you'll need to create an account in <a href="https://www.agora.io/en/">Agora</a>.</div>
+                   <div class="form-group form-float">
+                       <div class="form-line">
+                           <label class="form-label">App ID</label>
+                           <input type="text" name="agora_app_id" class="form-control" value="<?php echo ($pt->config->agora_app_id);?>">
+                           <small class="admin-info"></small>
+                       </div>
+                   </div>
+                   <hr>
+                   <div class="form-group form-float">
+                       <div class="form-line">
+                           <label class="form-label">App Certificate</label>
+                           <input type="text" name="agora_app_certificate" class="form-control" value="<?php echo ($pt->config->agora_app_certificate);?>">
+                           <small class="admin-info"></small>
+                       </div>
+                   </div>
+                   <hr>
+                   <div class="form-group form-float">
+                       <div class="form-line">
+                           <label class="form-label">Customer ID</label>
+                           <input type="text" name="agora_customer_id" class="form-control" value="<?php echo ($pt->config->agora_customer_id);?>">
+                           <small class="admin-info"></small>
+                       </div>
+                   </div>
+                   <hr>
+                   <div class="form-group form-float">
+                       <div class="form-line">
+                           <label class="form-label">Customer Secret</label>
+                           <input type="text" name="agora_customer_certificate" class="form-control" value="<?php echo ($pt->config->agora_customer_certificate);?>">
+                           <small class="admin-info"></small>
+                       </div>
+                   </div>
+                   <hr>
+                   <div class="float-left">
+                       <label for="amazone_s3_2" class="main-label">Amazon S3 Live Streaming Storage</label>
+                       <br><small class="admin-info">Used to store video streams if "Live Streaming Strorage" is enabled.</small>
+                   </div>
+                   <div class="form-group float-right switcher">
+                       <input type="hidden" name="amazone_s3_2" value="0" />
+                       <input type="checkbox" name="amazone_s3_2" id="chck-amazone_s3_2" value="1" <?php echo ($pt->config->amazone_s3_2 == '1') ? 'checked': '';?>>
+                       <label for="chck-amazone_s3_2" class="check-trail"><span class="check-handler"></span></label>
+                   </div>
+                   <div class="clearfix"></div>
+                   <hr>
+                   <div class="form-group form-float">
+                       <div class="form-line">
+                           <label class="form-label">Amazon Bucket Name</label>
+                           <input type="text" name="bucket_name_2" class="form-control" value="<?php echo ($pt->config->bucket_name_2);?>">
+                           <small class="admin-info">Your Amazon S3 Bucket Name</small>
+                       </div>
+                   </div>
+                   <hr>
+                   <div class="form-group form-float">
+                       <div class="form-line">
+                           <label class="form-label">Amazon S3 Key</label>
+                           <input type="text" name="amazone_s3_key_2" class="form-control" value="<?php echo ($pt->config->amazone_s3_key_2);?>">
+                           <small class="admin-info">Your Amazon Key from AWS credentials</small>
+                       </div>
+                   </div>
+                   <hr>
+                   <div class="form-group form-float">
+                       <div class="form-line">
+                           <label class="form-label">Amazon S3 Secret Key</label>
+                           <input type="text" name="amazone_s3_s_key_2" class="form-control" value="<?php echo ($pt->config->amazone_s3_s_key_2);?>">
+                           <small class="admin-info">Your Amazon Secret from AWS credentials</small>
+                       </div>
+                   </div>
+                   <hr>
+                   <label for="region_2">Amazon S3 bucket Region</label>
+                   <br><small class="admin-info"></small>
+                   <div class="form-group">
+                       <select class="form-control show-tick" id="region_2" name="region_2">
+                         <option value="us-east-1" <?php echo ($pt->config->region_2 == 'us-east-1')   ? ' selected' : '';?> >US East (N. Virginia)</option>
+                         <option value="us-east-2" <?php echo ($pt->config->region_2 == 'us-east-2')   ? ' selected' : '';?> >US East (Ohio)</option>
+                         <option value="us-west-1" <?php echo ($pt->config->region_2 == 'us-west-1')   ? ' selected' : '';?> >US West (N. California)</option>
+                         <option value="us-west-2" <?php echo ($pt->config->region_2 == 'us-west-2')   ? ' selected' : '';?> >US West (Oregon)</option>
+                         <option value="ap-northeast-2" <?php echo ($pt->config->region_2 == 'ap-northeast-2')   ? ' selected' : '';?> >Asia Pacific (Seoul)</option>
+                         <option value="ap-south-1" <?php echo ($pt->config->region_2 == 'ap-south-1')   ? ' selected' : '';?> >Asia Pacific (Mumbai)</option>
+                         <option value="ap-southeast-1" <?php echo ($pt->config->region_2 == 'ap-southeast-1')   ? ' selected' : '';?> >Asia Pacific (Singapore)</option>
+                         <option value="ap-southeast-2" <?php echo ($pt->config->region_2 == 'ap-southeast-2')   ? ' selected' : '';?> >Asia Pacific (Sydney)</option>
+                         <option value="ap-northeast-1" <?php echo ($pt->config->region_2 == 'ap-northeast-1')   ? ' selected' : '';?> >Asia Pacific (Tokyo)</option>
+                         <option value="ca-central-1" <?php echo ($pt->config->region_2 == 'ca-central-1')   ? ' selected' : '';?> >Canada (Central)</option>
+                         <option value="eu-central-1" <?php echo ($pt->config->region_2 == 'eu-central-1')   ? ' selected' : '';?> >EU (Frankfurt)</option>
+                         <option value="eu-west-1" <?php echo ($pt->config->region_2 == 'eu-west-1')   ? ' selected' : '';?> >EU (Ireland)</option>
+                         <option value="eu-west-2" <?php echo ($pt->config->region_2 == 'eu-west-2')   ? ' selected' : '';?> >EU (London)</option>
+                         <option value="sa-east-1" <?php echo ($pt->config->region_2 == 'sa-east-1')   ? ' selected' : '';?> >South America (São Paulo)</option>
+                       </select>
+                   </div>
+                   <hr>
+                   <div class="alert alert-info">
+                      Before enabling Amazon S3, make sure you upload the whole "upload/" folder to your bucket. <br><br>
+                       Before disabling Amazon S3, make sure you download the whole "upload/" folder to your server.<br><br>
+                       We recommend to upload the folder and files via <a href="http://s3tools.org/s3cmd">S3cmd</a>.<br><br>
+                       If your site is still brand new, you can escape the upload step, but make sure to click on "Test Connection".<br>
+                   </div>
+                   <button type="button" class="btn btn-warning m-t-15" onclick="Wo_TestS3()">Test Connection</button>
+               </form>
+           </div>
+       </div>
+       </div>
+        <div class="clearfix"></div>
+    </div>
+    <!-- #END# Vertical Layout -->
+<script>
+$(function() {
+    $('.switcher input[type=checkbox]').click(function () {
+        var configName = $(this).attr('name');
+        var hash_id = $('input[name=hash_id]').val();
+        var objData = {};
+        if ($(this).is(":checked") === true) {
+            objData[configName] = $(this).val();
+        }
+        else{
+            if ($('input[name='+configName+']')[0]) {
+                objData[configName] = $($('input[name='+configName+']')[0]).val();
+            }
+        }
+        objData['hash_id'] = hash_id;
+        $.post('{{LINK aj/ap/save-settings}}', objData);
+    });
+
+    var setTimeOutColor = setTimeout(function (){});
+    $('select').on('change', function() {
+         clearTimeout(setTimeOutColor);
+        var thisElement = $(this);
+        var configName = thisElement.attr('name');
+        var hash_id = $('input[name=hash_id]').val();
+        var objData = {};
+        objData[configName] = this.value;
+        objData['hash_id'] = hash_id;
+        thisElement.addClass('warning');
+        $.post("{{LINK aj/ap/save-settings}}", objData, function (data) {
+            if (data.status == 200) {
+                thisElement.removeClass('warning');
+                thisElement.addClass('success');
+            } else {
+                thisElement.addClass('error');
+            }
+            var setTimeOutColor = setTimeout(function () {
+                thisElement.removeClass('success');
+                thisElement.removeClass('warning');
+                thisElement.removeClass('error');
+            }, 2000);
+        });
+    });
+    $('input[type=text], input[type=number] , textarea').on('input', delay(function() {
+            clearTimeout(setTimeOutColor);
+            var thisElement = $(this);
+            var configName = thisElement.attr('name');
+            var hash_id = $('input[name=hash_id]').val();
+            var objData = {};
+            objData[configName] = this.value;
+            objData['hash_id'] = hash_id;
+            thisElement.addClass('warning');
+            $.post("{{LINK aj/ap/save-settings}}", objData, function (data) {
+                if (data.status == 200) {
+                    thisElement.removeClass('warning');
+                    thisElement.addClass('success');
+                } else {
+                    thisElement.addClass('error');
+                }
+                var setTimeOutColor = setTimeout(function () {
+                    thisElement.removeClass('success');
+                    thisElement.removeClass('warning');
+                    thisElement.removeClass('error');
+                }, 2000);
+                //thisElement.focus();
+            });
+    }, 500));
+});
+function Wo_TestS3() {
+    $('form.agora-settings').find('.btn-warning').text('Please wait..');
+    $.get('{{LINK aj/ap/test_s3_2}}', function (data) {
+        if (data.status == 200) {
+            $('.agora-settings-alert').html('<div class="alert alert-success"><i class="fa fa-check"></i> Connection established!</div>');
+            setTimeout(function () {
+                $('.agora-settings-alert').empty();
+            }, 2000);
+        } else if (data.status == 300) {
+            $('.agora-settings-alert').html("<div class='alert alert-danger'>Bucket doesn\'t exists</div>");
+            setTimeout(function () {
+                $('.agora-settings-alert').empty();
+            }, 2000);
+        } else if (data.status == 500) {
+            $('.agora-settings-alert').html("<div class='alert alert-danger'>Your s3 account doesn\'t have any buckets, please create one.</div>");
+            setTimeout(function () {
+                $('.agora-settings-alert').empty();
+            }, 2000);
+        } else if (data.status == 400) {
+            $('.agora-settings-alert').html("<div class='alert alert-danger'>"+data.message+"</div>");
+            setTimeout(function () {
+                $('.agora-settings-alert').empty();
+            }, 2000);
+        } else  {
+            $('.agora-settings-alert').html("<div class='alert alert-danger'>Error while connecting to amazone, please check your details</div>");
+            setTimeout(function () {
+                $('.agora-settings-alert').empty();
+            }, 2000);
+        }
+        $('form.agora-settings').find('.btn-warning').text('Test Connection');
+    });
+}
+</script>

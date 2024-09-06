@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html id="html" lang="{{LANG_ATTR}}">
+   <head>
+      <meta charset="UTF-8">
+      <title>{{CONTAINER_TITLE}}</title>
+      <meta name="title" content="{{CONTAINER_TITLE_DE}}">
+      <meta name="description" content="{{CONTAINER_DESC_DE}}">
+      <meta name="keywords" content="{{CONTAINER_KEYWORDS}}">
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+      <?php if (!empty($pt->video_privacy)) { ?>
+      <meta name="robots" content="noindex">
+      <?php } ?>
+      <meta property="fb:app_id" content="1643990952546825" />
+      <meta name="format-detection" content="telephone=no" />
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <?php if (!empty($pt->config->dailymotion_id)) { ?>
+      <meta name="dailymotion-domain-verification" content="{{CONFIG dailymotion_id}}" />
+      <?php } ?>
+      <?php if (!empty($pt->page_url_)) { ?>
+          <link rel="canonical" href="<?php echo($pt->page_url_); ?>"/>
+      <?php } ?>
+      {{OG_METATAGS}}
+      <link rel="shortcut icon" type="image/png" href="{{CONFIG theme_url}}/img/icon.png"/>
+      <link rel="stylesheet" href="{{CONFIG theme_url}}/css/jquery-ui.min.css?version={{CONFIG version}}">
+      <link rel="stylesheet" href="{{CONFIG theme_url}}/css/jquery.tagit.css?version={{CONFIG version}}">
+      <link rel="stylesheet" href="{{CONFIG theme_url}}/css/font-awesome-4.7.0/css/font-awesome.min.css?version={{CONFIG version}}">
+      <link rel="stylesheet" href="{{CONFIG theme_url}}/css/twemoji-awesome.css?version={{CONFIG version}}">
+      <link rel="stylesheet" href="{{CONFIG theme_url}}/css/bootstrap-glyphicons.css?version={{CONFIG version}}">
+      <link rel="stylesheet" href="{{CONFIG theme_url}}/css/bootstrap.min.css?version={{CONFIG version}}">
+      <link rel="stylesheet" href="{{CONFIG theme_url}}/js/lib/sweetalert2/dist/sweetalert2.min.css?version={{CONFIG version}}">
+      <link rel="stylesheet" href="{{CONFIG theme_url}}/js/lib/notifIt/notifIt/css/notifIt.min.css?version={{CONFIG version}}">
+      <link rel="stylesheet" href="{{CONFIG theme_url}}/css/style.css?version={{CONFIG version}}" id="style-css">
+      <?php if ($pt->mode == 'night' || $pt->config->night_mode == 'night'): ?>
+      <link rel="stylesheet" href="{{CONFIG theme_url}}/css/night-mode.css?version={{CONFIG version}}" class="night-mode-css">
+      <?php endif; ?>
+      <link rel="stylesheet" href="{{CONFIG theme_url}}/css/custom.style.css?version={{CONFIG version}}">
+      <link href="{{CONFIG theme_url}}/css/material.css?version={{CONFIG version}}" rel="stylesheet" type="text/css">
+      <link href="{{CONFIG theme_url}}/css/roboto.css?version={{CONFIG version}}" rel="stylesheet">
+      <script src="{{CONFIG theme_url}}/js/jquery-3.min.js?version={{CONFIG version}}"></script>
+      <script src="{{CONFIG theme_url}}/js/jquery-ui.min.js?version={{CONFIG version}}"></script>
+      <script type="text/javascript" src="{{CONFIG theme_url}}/js/jquery.form.min.js?version={{CONFIG version}}"></script>
+      <script type="text/javascript" src="{{CONFIG theme_url}}/js/tag-it.min.js?version={{CONFIG version}}"></script>
+      <?php if ($pt->config->player_type == 'fluidPlayer') { ?>
+      <link rel="stylesheet" href="{{CONFIG theme_url}}/player/css/fluidplayer/fluidplayer.min.css?version={{CONFIG version}}" type="text/css"/>
+      <script src="{{CONFIG theme_url}}/player/js/fluidplayer/fluidplayer.min.js?version={{CONFIG version}}"></script>
+      <?php }elseif ($pt->config->player_type == 'videojs') { ?>
+      <link href="{{CONFIG theme_url}}/player/css/video_js/video-js.css?version={{CONFIG version}}" rel="stylesheet">
+      <link href="{{CONFIG theme_url}}/player/css/video_js/videojs-contrib-ads.min.css?version={{CONFIG version}}" rel="stylesheet">
+      <link href="{{CONFIG theme_url}}/player/css/video_js/videojs-resolution-switcher.css?version={{CONFIG version}}" rel="stylesheet">
+      <link href="{{CONFIG theme_url}}/player/css/video_js/videojs.ima.css?version={{CONFIG version}}" rel="stylesheet">
+      <?php }elseif ($pt->config->player_type == 'plyr') { ?>
+      <script src="{{CONFIG theme_url}}/js/plyr.polyfilled.js?version={{CONFIG version}}"></script>
+      <link rel="stylesheet" href="{{CONFIG theme_url}}/player/css/plyr.css?version={{CONFIG version}}" />
+      <?php } ?>
+      <link rel="stylesheet" href="{{CONFIG theme_url}}/player/css/mediaelementplayer.min.css?version={{CONFIG version}}" />
+      <script src="{{CONFIG theme_url}}/player/js/mediaelement-and-player.min.js?version={{CONFIG version}}"></script>
+      <script src="{{CONFIG theme_url}}/js/lib/sweetalert2/dist/sweetalert2.js?version={{CONFIG version}}"></script>
+      <script src="{{CONFIG theme_url}}/js/lib/notifIt/notifIt/js/notifIt.min.js?version={{CONFIG version}}"></script>
+      <link href="{{CONFIG theme_url}}/css/bootstrap-toggle.min.css?version={{CONFIG version}}" rel="stylesheet">
+      <link rel="stylesheet" href="{{CONFIG theme_url}}/css/bootstrap-select.min.css?version={{CONFIG version}}">
+      <script src="{{CONFIG theme_url}}/js/bootstrap-select.min.js?version={{CONFIG version}}"></script>
+      <link rel="stylesheet" href="{{CONFIG theme_url}}/css/owl.carousel.min.css?version={{CONFIG version}}">
+      <script src="{{CONFIG theme_url}}/js/owl.carousel.min.js?version={{CONFIG version}}"></script>
+      <?php if ($pt->language_type == 'rtl') { ?>
+      <link rel="stylesheet" href="{{CONFIG theme_url}}/css/bootsrap-rtl.min.css?version={{CONFIG version}}">
+      <link rel="stylesheet" href="{{CONFIG theme_url}}/css/rtl.style.css?version={{CONFIG version}}">
+      <?php } ?>
+      <script src="{{CONFIG theme_url}}/player/plugins/speed/speed.min.js?version={{CONFIG version}}"></script>
+      <link rel="stylesheet" href="{{CONFIG theme_url}}/player/plugins/speed/speed.min.css?version={{CONFIG version}}" />
+      <script src="{{CONFIG theme_url}}/player/plugins/speed/speed-i18n.js?version={{CONFIG version}}"></script>
+      <script src="{{CONFIG theme_url}}/player/plugins/jump/jump-forward.min.js?version={{CONFIG version}}"></script>
+      <link rel="stylesheet" href="{{CONFIG theme_url}}/player/plugins/jump/jump-forward.min.css?version={{CONFIG version}}" />
+      <script src="{{CONFIG theme_url}}/player/plugins/ads/ads.min.js?version={{CONFIG version}}"></script>
+      <link rel="stylesheet" href="{{CONFIG theme_url}}/player/plugins/ads/ads.min.css?version={{CONFIG version}}" />
+      <script src="{{CONFIG theme_url}}/player/plugins/ads/ads-i18n.js?version={{CONFIG version}}"></script>
+      <script src="{{CONFIG theme_url}}/player/plugins/vast/ads-vast-vpaid.js?version={{CONFIG version}}"></script>
+      <script src="{{CONFIG theme_url}}/player/plugins/quality/quality.min.js?version={{CONFIG version}}"></script>
+      <link rel="stylesheet" href="{{CONFIG theme_url}}/player/plugins/quality/quality.min.css?version={{CONFIG version}}" />
+      <script src="{{CONFIG theme_url}}/js/facebook.min.js?version={{CONFIG version}}"></script>
+      <script src="{{CONFIG theme_url}}/js/Fingerprintjs2/fingerprint2.js?version={{CONFIG version}}"></script>
+      <script src="{{CONFIG theme_url}}/js/emoji/emojionearea/dist/emojionearea.js?version={{CONFIG version}}"></script>
+      <link rel="stylesheet" type="text/css" href="{{CONFIG theme_url}}/js/emoji/emojionearea/dist/emojionearea.min.css?version={{CONFIG version}}"/>
+      <link rel="stylesheet" href="{{CONFIG theme_url}}/css/bootstrap-colorpicker.min.css?version={{CONFIG version}}" />
+      <script src="{{CONFIG theme_url}}/js/bootstrap-colorpicker.min.js?version={{CONFIG version}}"></script>
+      <script src="{{CONFIG theme_url}}/js/v1.js?version={{CONFIG version}}"></script>
+      <?php if ($pt->config->checkout_payment == 'yes') { ?>
+      <script type="text/javascript" src="https://www.2checkout.com/checkout/api/2co.min.js?version={{CONFIG version}}"></script>
+      <?php } ?>
+      <?php if ($pt->page == 'login' && $pt->config->recaptcha == 'on') { ?>
+      <script src="https://www.google.com/recaptcha/api.js?version={{CONFIG version}}" async defer></script>
+      <?php } ?>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js?version={{CONFIG version}}"></script>
+      <?php if (!empty($pt->config->google)) { echo htmlspecialchars_decode($pt->config->google); } ?>
+      <?php if (!empty($pt->config->google_vignette)) { echo htmlspecialchars_decode($pt->config->google_vignette); } ?>
+      <link rel="stylesheet" href="{{CONFIG theme_url}}/css/swiper-bundle.min.css?version={{CONFIG version}}" />
+      <script src="{{CONFIG theme_url}}/js/swiper-bundle.min.js?version={{CONFIG version}}"></script>
+      <script src="{{CONFIG theme_url}}/js/plupload.full.min.js?version={{CONFIG version}}"></script>
+        <?php if ($pt->config->braintree_payment == 'yes') { ?>
+        <script src="https://js.braintreegateway.com/web/dropin/1.36.0/js/dropin.js"></script>
+        <?php } ?>
+      <script>
+         function RunLiveAgora(channelName,DIV_ID,token) {
+           var agoraAppId = '<?php echo($pt->config->agora_app_id) ?>';
+           var token = token;
+
+           var client = AgoraRTC.createClient({mode: 'live', codec: 'vp8'});
+           client.init(agoraAppId, function () {
+
+
+               client.setClientRole('audience', function() {
+             }, function(e) {
+             });
+
+             client.join(token, channelName, 0, function(uid) {
+             }, function(err) {
+             });
+             }, function (err) {
+             });
+
+             client.on('stream-added', function (evt) {
+             var stream = evt.stream;
+             var streamId = stream.getId();
+
+             client.subscribe(stream, function (err) {
+             });
+           });
+           client.on('stream-subscribed', function (evt) {
+             var video_id = $('#video-id').val();
+            if (!video_id) {
+               return false;
+            }
+             $('#'+DIV_ID).html('<div class="wow_liv_counter"><span id="live_word_'+video_id+'">{{LANG live}}</span> <span id="live_count_'+video_id+'"> 0</span></div><div id="live_post_comments_'+video_id+'" class="wow_liv_comments_feed user-comments"></div>');
+             var remoteStream = evt.stream;
+             remoteStream.play(DIV_ID);
+             $('#player_'+remoteStream.getId()).find('video').css('position', 'relative');
+           });
+         }
+           <?php if (IS_LOGGED == true && $pt->config->server == 'nodejs') {?>
+              const socket = io('{{CONFIG hostname}}:{{CONFIG server_port}}');
+              socket.on('connect_error', function (error) {
+                 console.log(error);
+              });
+              setTimeout(function () {
+                getNotifications();
+              }, 500);
+              function getNotifications() {
+                  socket.emit('get notifications and messages');
+                  setTimeout(function () {
+                    getNotifications();
+                  }, 500);
+              }
+              socket.on('get notifications results', function (data) {
+                 if (data.status == 200) {
+                    if (data.messages > 0) {
+                       var default_messages = $('body').attr('data-messages');
+
+                       if (!default_messages) {
+                          $('body').attr('data-messages', data.messages);
+                       }
+
+                       var default_messages = $('body').attr('data-messages');
+
+                       if (default_messages != data.messages) {
+                          $('#message-sound')[0].play();
+
+                       }
+
+                       $('body').attr('data-messages', data.messages);
+                       $('#new-messages').html('<b>' + data.messages + '</b>');
+                    } else {
+                       $('#new-messages').html("");
+                    }
+                    if (data.notifications > 0) {
+                       $('#new-notifications').html('<b>' + data.notifications + '</b>');
+                    } else {
+                        $('#new-notifications').html('');
+                    }
+
+                 }
+              });
+           <?php } ?>
+           var site_url = '{{CONFIG site_url}}';
+           function PT_Ajax_Requests_File() {
+             return site_url + '/';
+           }
+           function PT_Page_Loading_File() {
+             return site_url + '/page_loading.php';
+           }
+           function OpenShareWindow(url, windowName) {
+              newwindow = window.open(url, windowName, 'height=600,width=800');
+              if (window.focus) {
+                 newwindow.focus();
+              }
+              return false;
+           }
+           function getCookie(name) {
+             var value = "; " + document.cookie;
+             var parts = value.split("; " + name + "=");
+             if (parts.length == 2) return parts.pop().split(";").shift();
+           }
+      </script>
+      <script src="{{CONFIG theme_url}}/js/header.js?version={{CONFIG version}}"></script>
+      <?php if($pt->config->player_type == 'cloudinary'){ ?>
+      <link href="{{CONFIG theme_url}}/css/cld-video-player.min.css?version={{CONFIG version}}" rel="stylesheet">
+      <script src="{{CONFIG theme_url}}/js/cloudinary/cloudinary-core-shrinkwrap.min.js?version={{CONFIG version}}" type="text/javascript"></script>
+      <script src="{{CONFIG theme_url}}/js/cloudinary/cld-video-player.min.js?version={{CONFIG version}}" type="text/javascript"></script>
+      <?php } ?>
+      <script src="https://imasdk.googleapis.com/js/sdkloader/ima3.js?version={{CONFIG version}}" type="text/javascript"></script>
+      <?php if ($pt->config->live_video == 1 && !empty($pt->config->agora_app_id)) { ?>
+      <script src="{{CONFIG theme_url}}/js/agora.js?version={{CONFIG version}}"></script>
+      <?php } ?>
+      <?php if($pt->config->plus_login == 'on'): ?>
+      <script src="https://accounts.google.com/gsi/client" async defer></script>
+      <?php endif; ?>
+   </head>
+   <script type="text/javascript">
+        window.UpdateChatU = 0;
+        $(document).on('click', 'a[data-load]', function(event) {
+            if ($('#live_post_id').length > 0) {
+                    DeleteLive();
+                    window.location = $(this).attr('href');
+                    return false;
+              }
+              $('#bar_loading').show();
+                event.preventDefault();
+                var url = $(this).attr('data-load');
+                if ($('video').length > 0) {
+                  $('video')[0].pause();
+                }
+                $.ajax({
+                  url: PT_Page_Loading_File()+url,
+                  type: 'GET',
+                  dataType: 'html'
+                })
+                .done(function(data_html) {
+                  if ($(data_html).filter('#json-data').length > 0) {
+                      if (typeof(ads_) != 'undefined') {
+                        clearInterval(ads_);
+                      }
+
+                      data = JSON.parse($(data_html).filter('#json-data').val());
+
+                      (data.page == 'register' ||
+                      data.page == 'login' ||
+                      data.page == 'shorts' ||
+                      data.page == 'latest' ||
+                      data.page == 'top' ||
+                      data.page == 'trending' ||
+                      data.page == 'stock' ||
+                      data.page == 'upload-video' ||
+                      data.page == 'import-video' ||
+                      data.page == 'messages') ? $('#header_ad_').addClass('hidden') : $('#header_ad_').removeClass('hidden');
+
+                      (data.page == 'home') ? $('#home_menu_').addClass('active') : $('#home_menu_').removeClass('active');
+                      (data.page == 'history') ? $('#history_menu_').addClass('active') : $('#history_menu_').removeClass('active');
+                      (data.page == 'articles') ? $('#articles_menu_').addClass('active') : $('#articles_menu_').removeClass('active');
+                      (data.page == 'latest') ? $('#latest_menu_').addClass('active') : $('#latest_menu_').removeClass('active');
+                      (data.page == 'trending') ? $('#trending_menu_').addClass('active') : $('#trending_menu_').removeClass('active');
+                      (data.page == 'paid-videos') ? $('#paid_videos_').addClass('active') : $('#paid_videos_').removeClass('active');
+                      (data.page == 'top') ? $('#top_menu_').addClass('active') : $('#top_menu_').removeClass('active');
+                      (data.page == 'movies') ? $('#movies_menu_').addClass('active') : $('#movies_menu_').removeClass('active');
+                      (data.page == 'popular_channels') ? $('#popular_channels_menu_').addClass('active') : $('#popular_channels_menu_').removeClass('active');
+                      (data.page == 'stock') ? $('#stock_menu_').addClass('active') : $('#stock_menu_').removeClass('active');
+                      (data.page == 'shorts') ? $('#shorts_menu_').addClass('active') : $('#shorts_menu_').removeClass('active');
+
+
+                      window.history.pushState({state:'new'},'', data.url);
+                      $('#container_content').html(data_html);
+                      $('meta[name=title]').attr('content', data.title);
+                      $('meta[name=description]').attr('content', data.description);
+                      $('meta[name=keywords]').attr('content', data.keyword);
+                      $('title').text(data.title);
+                      var main_container_class = 'main-content ';
+                      (data.page != 'login') ? main_container_class += ' container ' : main_container_class += ' welcome-page ';
+                      if (data.is_movie == true) {
+                        $('.toggle-mode').hide();
+                        $('.logo-img img').attr('src', '{{CONFIG theme_url}}/img/logo-light.png?cache=<?php echo($pt->config->logo_cache) ?>');
+                        (data.page == 'watch') ? main_container_class += ' movies-container ' : main_container_class += ' ';
+                      }
+                      else{
+                        if ($('#toggle-mode').prop( "checked" ) === true) {
+                          $('.logo-img img').attr('src', '{{CONFIG theme_url}}/img/logo-light.png?cache=<?php echo($pt->config->logo_cache) ?>');
+                        }
+                        else{
+                          $('.logo-img img').attr('src', '{{CONFIG theme_url}}/img/logo.png?cache=<?php echo($pt->config->logo_cache) ?>');
+                        }
+                        $('.toggle-mode').show();
+                        (data.page == 'watch') ? main_container_class += ' watch-container ' : main_container_class += ' ';
+                      }
+
+                      (data.page == 'movie') ? main_container_class += ' movies-container ' : main_container_class += ' ';
+                            (data.page == 'go_pro') ? main_container_class += ' p-relative ' : main_container_class += ' ';
+                      (data.page == 'home') ? main_container_class += ' home-container ' : main_container_class += ' ';
+                      $('#main-container').attr('class',main_container_class);
+
+                      (data.page == 'watch') ? $('#header_change_2').attr('class','container watch-container') : $('#header_change_2').attr('class','container');
+                      (data.page == 'watch') ? $('#header_change_3').attr('class','container watch-container') : $('#header_change_3').attr('class','container');
+                    }
+                    else{
+                      window.location.href = site_url+'/login';
+                    }
+                })
+                .fail(function() {
+                  if (typeof(getCookie('user_id')) == 'undefined') {
+                    window.location.href = site_url+'/login';
+                  }
+                  else{
+                    window.location.href = site_url+'/404';
+                  }
+                })
+                .always(function() {
+                  window.scrollTo(0,0);
+                  $('#bar_loading').delay(300).fadeOut(300);
+                  $(".video-player").hover(
+                      function(e){
+                        $('.watermark').css('display', 'block');
+                       },
+                      function(e){
+                        setTimeout(function () {
+                          if ($('.video-player:hover').length == 0) {
+                            $('.watermark').css('display', 'none');
+                          }
+                        }, 1000);
+                       }
+                  );
+                });
+
+        });
+      function load_more_sub() {
+        var id = $('.subscribers_').last().attr('data_subscriber_id');
+        var user_id = '{{ME id}}';
+        $.post(PT_Ajax_Requests_File()+'aj/user/get_more_subscribers_', {id: id,user_id:user_id}, function(data, textStatus, xhr) {
+          if (data.status == 200) {
+            if (data.html != '') {
+              $('.user_subscribers_').append(data.html);
+            }
+            else{
+              $('#user_subscribers__load').html("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='currentColor' d='M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M17,13H7V11H17V13Z' /></svg> {{LANG no_more_s_to_show}}");
+            }
+
+          }
+
+        });
+      }
+   </script>
+   <body itemscope itemtype="http://schema.org/Organization" id="pt-body" class="<?php echo(!empty($_COOKIE['open_slide']) && $_COOKIE['open_slide'] == 'yes') ? 'side_open' : '' ?> <?php if($pt->page == 'login'){?>login_pag<?php } ?>">
+      <?php echo PT_LoadPage('third-party/theme-changer'); ?>
+      <div id="pop_up_18" class="modal matdialog et_plus" data-backdrop="static" data-keyboard="false">
+         <div class="modal-dialog">
+            <div class="modal-content">
+               <div class="modal-body">
+                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 328.863 328.863" height="120" width="120" xml:space="preserve">
+                     <g id="_x34_4-18Plus_movie">
+                        <g>
+                           <path fill="currentColor" d="M104.032,220.434V131.15H83.392V108.27h49.121v112.164H104.032z"/>
+                        </g>
+                        <g>
+                           <path fill="currentColor" d="M239.552,137.23c0,9.76-5.28,18.4-14.08,23.201c12.319,5.119,20,15.84,20,28.32c0,20.16-17.921,32.961-45.921,32.961 c-28.001,0-45.921-12.641-45.921-32.48c0-12.801,8.32-23.682,21.28-28.801c-9.44-5.281-15.52-14.24-15.52-24 c0-17.922,15.681-29.281,40.001-29.281C224.031,107.15,239.552,118.83,239.552,137.23z M180.51,186.352 c0,9.441,6.721,14.721,19.041,14.721c12.32,0,19.2-5.119,19.2-14.721c0-9.279-6.88-14.561-19.2-14.561 C187.23,171.791,180.51,177.072,180.51,186.352z M183.391,138.83c0,8.002,5.76,12.48,16.16,12.48c10.4,0,16.16-4.479,16.16-12.48 c0-8.318-5.76-12.959-16.16-12.959C189.15,125.871,183.391,130.512,183.391,138.83z"/>
+                        </g>
+                        <g>
+                           <path fill="currentColor" d="M292.864,120.932c4.735,13.975,7.137,28.592,7.137,43.5c0,74.752-60.816,135.568-135.569,135.568 S28.862,239.184,28.862,164.432c0-74.754,60.816-135.568,135.569-135.568c14.91,0,29.527,2.4,43.5,7.137V5.832 C193.817,1.963,179.24,0,164.432,0C73.765,0,0.001,73.764,0.001,164.432s73.764,164.432,164.431,164.432 S328.862,255.1,328.862,164.432c0-14.807-1.962-29.385-5.831-43.5H292.864z"/>
+                        </g>
+                        <g>
+                           <polygon fill="currentColor" points="284.659,44.111 284.659,12.582 261.987,12.582 261.987,44.111 230.647,44.111 230.647,66.781 261.987,66.781 261.987,98.309 284.659,98.309 284.659,66.781 316.186,66.781 316.186,44.111 "/>
+                        </g>
+                     </g>
+                  </svg>
+                  <h4>{{LANG age_block_extra}}</h4>
+                  <p>{{LANG age_block_modal}}</p>
+               </div>
+               <div class="modal-footer">
+                  <button class="btn btn-success matbtn" id="pop_up_18_yes">{{LANG yes}}</button>
+                  <button class="btn matbtn" id="pop_up_18_no">{{LANG no}}</button>
+               </div>
+            </div>
+         </div>
+      </div>
+      <a href="" id="link_redirect_to_page"  data-load=""></a>
+      <div id="bar_loading"></div>
+      <?php if ($pt->phone_api == 'yes'): ?>
+      <style>
+         .wo_about_wrapper_parent {top: 0 !important;}
+      </style>
+      <?php endif; ?>
+      <input type="hidden" class="main_session" value="<?php echo PT_CreateMainSession();?>">
+      <?php if ($pt->phone_api != 'yes'): ?>
+      <header>
+         {{HEADER_LAYOUT}}
+         <div class="clear"></div>
+      </header>
+      <?php endif; ?>
+      <div class="yp_side_menu <?php if ($pt->page != 'login') { ?>has_side_menu<?php } ?>">
+      <div id="main-container" class="<?php echo ($pt->page != 'login') ? 'container' : 'welcome-page';?> <?php echo ($pt->page == 'watch' && empty($pt->get_video->is_movie)) ? 'watch-container' : '';?> <?php echo (!empty($pt->get_video->is_movie)) ? 'movies-container' : '';?> <?php echo ($pt->page == 'go_pro') ? 'p-relative' : '';?> <?php echo ($pt->page == 'home') ? 'home-container' : '';?> main-content" {{IS_LOGGED}}>
+      <?php if ($pt->phone_api != 'yes'): ?>
+      <div class="announcement-renderer">
+         {{ANNOUNCEMENT}}
+      </div>
+      <?php endif; ?>
+
+      <div id="" class=" <?php echo $pt->page == 'login'?'':'new_left_right';?>">
+        <?php if ($pt->page == 'login') { ?>
+            <div id="container_content">
+                 {{CONTAINER_CONTENT}}
+            </div>
+        <?php } else { ?>
+            <div class="left_menu desktop">
+                <div class="top_logo hide_iam_from_mobile">
+                    <a class="navbar-brand logo-img" href="{{LINK }}" itemprop="url">
+                        <?php if ((!empty($pt->get_video) && $pt->get_video->is_movie) || $pt->page == 'movies') { ?>
+                            <img itemprop="logo" src="{{CONFIG theme_url}}/img/logo-light.png?cache=<?php echo($pt->config->logo_cache) ?>" alt="{{CONFIG title}}">
+                        <?php } else { ?>
+                            <img itemprop="logo" src="{{CONFIG theme_url}}/img/<?php echo ($pt->mode != 'night') ? 'logo' : 'logo-light';?>.png?cache=<?php echo($pt->config->logo_cache) ?>" alt="{{CONFIG title}}">
+                        <?php } ?>
+                    </a>
+                </div>
+
+                <?php if ($pt->phone_api != 'yes' && ($pt->config->maintenance_mode != "on" || PT_IsAdmin())): ?>
+                    <?php if ($pt->page != 'login') { ?>
+                      <div class="yp_side_drawer">
+                         <span class="open_side_menu_head">
+                            <span onclick="javascript:$('body').removeClass('side_open');$('body').removeClass('mobi_side_open');">
+                               <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                                  <path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                               </svg>
+                            </span>
+                         </span>
+
+                         <ul class="sections pt-200">
+                            <div class="menu_static_text top_static">
+                                MENU
+                            </div>
+                            <li class="<?php echo ($pt->page == 'home') ? 'active': '';?>" id="home_menu_">
+                               <a href="{{LINK }}" data-load="?link1=home">
+
+                                    <svg id="Group_279" data-name="Group 279" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                      <path id="Home_1" data-name="Home 1" d="M4.783,2.966C7.45,1.028,8.784.059,10.307,0q.183-.007.367,0C12.2.059,13.529,1.028,16.2,2.966s4,2.906,4.524,4.337q.063.172.113.349c.417,1.466-.092,3.033-1.111,6.168L18,19.116a2.043,2.043,0,0,1-3.985-.631V15.736A1.917,1.917,0,0,0,12.1,13.82H8.88a1.917,1.917,0,0,0-1.917,1.917v2.749a2.043,2.043,0,0,1-3.985.631l-1.721-5.3C.238,10.685-.271,9.117.146,7.652Q.2,7.475.259,7.3C.783,5.872,2.117,4.9,4.783,2.966Z" transform="translate(2 2)" fill="currentColor"/>
+                                      <rect id="Rectangle_312" data-name="Rectangle 312" width="24" height="24" fill="none"/>
+                                    </svg>
+                                  <span>{{LANG home}}</span>
+                               </a>
+                            </li>
+                            <?php if (IS_LOGGED == true && $pt->config->history_system == 'on') { ?>
+                            <li class="<?php echo ($pt->page == 'history') ? 'active': '';?>" id="history_menu_">
+                               <a href="{{LINK history}}" data-load="?link1=history">
+                                  <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_1_57)">
+<path d="M3.08887 1.06379C3.09072 0.649583 3.428 0.315298 3.84221 0.317146C4.25642 0.318994 4.59071 0.656276 4.58886 1.07049L4.58 3.0562C4.57639 3.86562 4.5751 4.4093 4.62002 4.82065L4.62172 4.83591C5.07815 4.3341 5.58144 3.87568 6.12469 3.46752C7.92161 2.11746 10.1565 1.31714 12.5762 1.31714C18.5132 1.31714 23.3262 6.13008 23.3262 12.0671C23.3262 18.0042 18.5132 22.8171 12.5762 22.8171C6.63911 22.8171 1.82617 18.0042 1.82617 12.0671C1.82617 11.6529 2.16196 11.3171 2.57617 11.3171C2.99039 11.3171 3.32617 11.6529 3.32617 12.0671C3.32617 17.1758 7.46754 21.3171 12.5762 21.3171C17.6848 21.3171 21.8262 17.1758 21.8262 12.0671C21.8262 6.9585 17.6848 2.81714 12.5762 2.81714C10.4925 2.81714 8.57176 3.50518 7.0257 4.66676C6.52672 5.04165 6.06685 5.46585 5.65334 5.93208C5.68168 5.93587 5.71128 5.93946 5.74221 5.94284C6.15356 5.98776 6.69724 5.98647 7.50666 5.98286L9.49238 5.974C9.90658 5.97215 10.2439 6.30644 10.2457 6.72065C10.2476 7.13486 9.91328 7.47214 9.49907 7.47398L7.47003 7.48304C6.71516 7.48643 6.08556 7.48925 5.57937 7.43397C5.04844 7.37599 4.55911 7.2464 4.13403 6.91743C4.06327 6.86267 3.99531 6.80452 3.93038 6.74321C3.82749 6.64605 3.73221 6.54096 3.64543 6.42883C3.31646 6.00375 3.18687 5.51442 3.12889 4.98349C3.07361 4.4773 3.07643 3.84773 3.07982 3.09287L3.08887 1.06379Z" fill="currentColor"/>
+<path d="M12.5762 8.06714V13.1424L16.2012 15.4421" stroke="currentColor" stroke-linecap="round"/>
+</g>
+<defs>
+<clipPath id="clip0_1_57">
+<rect width="24" height="24" fill="white" transform="translate(0.576111 0.0671387)"/>
+</clipPath>
+</defs>
+</svg>
+
+                                  <span>{{LANG history}}</span>
+                               </a>
+                            </li>
+                            <?php } ?>
+                            <?php if (IS_LOGGED == true && $pt->config->sell_videos_system == 'on') {  ?>
+                            <li class="<?php echo ($pt->page == 'paid-videos') ? 'active': '';?>" id="paid_videos_">
+                               <a href="{{LINK paid-videos}}" data-load="?link1=paid-videos">
+                                  <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M11.6235 7.49343C11.6901 7.45499 11.7577 7.42044 11.8262 7.38969L11.8263 11.42C10.1992 10.7015 10.0468 8.40376 11.6235 7.49343Z" fill="currentColor"/>
+<path d="M13.3262 17.6103L13.3263 13.58C14.9534 14.2984 15.1058 16.5962 13.529 17.5066C13.4624 17.545 13.3948 17.5796 13.3262 17.6103Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12.5309 2.75H12.6214C14.458 2.74999 15.8976 2.74999 17.0397 2.87373C18.2052 3.00001 19.1496 3.26232 19.9559 3.84815C20.4441 4.20281 20.8734 4.63209 21.228 5.12024C21.8138 5.92656 22.0762 6.87094 22.2024 8.03648C22.3262 9.17859 22.3262 10.6182 22.3262 12.4547V12.5453C22.3262 14.3818 22.3262 15.8214 22.2024 16.9635C22.0762 18.1291 21.8138 19.0734 21.228 19.8798C20.8734 20.3679 20.4441 20.7972 19.9559 21.1518C19.1496 21.7377 18.2052 22 17.0397 22.1263C15.8976 22.25 14.458 22.25 12.6215 22.25H12.5309C10.6944 22.25 9.25476 22.25 8.11265 22.1263C6.94711 22 6.00273 21.7377 5.19641 21.1518C4.70826 20.7972 4.27898 20.3679 3.92432 19.8798C3.3385 19.0734 3.07618 18.1291 2.9499 16.9635C2.82616 15.8214 2.82616 14.3818 2.82617 12.5452V12.4548C2.82616 10.6182 2.82616 9.17861 2.9499 8.03648C3.07618 6.87094 3.3385 5.92656 3.92432 5.12024C4.27898 4.63209 4.70826 4.20281 5.19641 3.84815C6.00273 3.26232 6.94711 3.00001 8.11265 2.87373C9.25478 2.74999 10.6944 2.74999 12.5309 2.75ZM13.3262 5.5C13.3262 5.08579 12.9904 4.75 12.5762 4.75C12.162 4.75 11.8262 5.08579 11.8262 5.5V5.80807C11.4995 5.89005 11.1788 6.01813 10.8735 6.19439C8.15164 7.76586 8.49759 11.7989 11.4473 12.8839L11.8263 13.0233L11.8262 17.7195C11.2913 17.5686 10.8134 17.217 10.5142 16.6988L10.1387 16.0483C9.93155 15.6895 9.47286 15.5666 9.11414 15.7737C8.75542 15.9808 8.63251 16.4395 8.83962 16.7983L9.21518 17.4488C9.79365 18.4507 10.7689 19.0796 11.8262 19.2535L11.8262 19.5C11.8262 19.9142 12.162 20.25 12.5762 20.25C12.9904 20.25 13.3262 19.9142 13.3262 19.5L13.3262 19.192C13.653 19.11 13.9737 18.9819 14.279 18.8056C17.0009 17.2341 16.655 13.2011 13.7052 12.1161L13.3263 11.9767L13.3262 7.28053C13.8612 7.43138 14.3391 7.78298 14.6383 8.30125L15.0139 8.95175C15.221 9.31047 15.6797 9.43337 16.0384 9.22626C16.3971 9.01916 16.52 8.56047 16.3129 8.20175L15.9374 7.55125C15.3589 6.54928 14.3836 5.92033 13.3262 5.7465V5.5Z" fill="currentColor"/>
+</svg>
+
+                                  <span>{{LANG purchased}}</span>
+                               </a>
+                            </li>
+                            <?php } ?>
+                            <?php if ($pt->config->article_system == 'on'): ?>
+                            <li class="hide-from-mobile <?php echo ($pt->page == 'articles') ? 'active': '';?>" id="articles_menu_">
+                               <a href="{{LINK articles}}" data-load="?link1=articles">
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                      <g id="Group_281" data-name="Group 281" transform="translate(1123 2420)">
+                                        <g id="Document_Align_Left_16" data-name="Document Align Left 16" transform="translate(-1123 -2420)">
+                                          <path id="Path_48" data-name="Path 48" d="M3,13c0,3.75,0,5.625.955,6.939a5,5,0,0,0,1.106,1.106C6.375,22,8.25,22,12,22s5.625,0,6.939-.955a5,5,0,0,0,1.106-1.106C21,18.625,21,16.75,21,13V11c0-.839,0-1.584-.011-2.25h-.07A12.414,12.414,0,0,1,19.1,8.679a5.75,5.75,0,0,1-4.78-4.78,12.408,12.408,0,0,1-.071-1.819v-.07C13.584,2,12.839,2,12,2c-3.75,0-5.625,0-6.939.955A5,5,0,0,0,3.955,4.061C3,5.375,3,7.25,3,11ZM8,7.25a.75.75,0,0,0,0,1.5h3a.75.75,0,0,0,0-1.5Zm0,4a.75.75,0,0,0,0,1.5h8a.75.75,0,0,0,0-1.5Zm0,4a.75.75,0,0,0,0,1.5h3a.75.75,0,0,0,0-1.5Z" fill="currentColor" fill-rule="evenodd"/>
+                                          <path id="Path_49" data-name="Path 49" d="M19.335,7.2a11.514,11.514,0,0,0,1.6.052,5.836,5.836,0,0,0-.89-3.189,5,5,0,0,0-1.106-1.106,5.835,5.835,0,0,0-3.189-.89,11.518,11.518,0,0,0,.052,1.6A4.25,4.25,0,0,0,19.335,7.2Z" fill="currentColor"/>
+                                        </g>
+                                        <rect id="Rectangle_315" data-name="Rectangle 315" width="24" height="24" transform="translate(-1123 -2420)" fill="none"/>
+                                      </g>
+                                    </svg>
+                                  <span>{{LANG articles}}</span>
+                               </a>
+                            </li>
+                            <?php endif ?>
+                         </ul>
+
+                        <div class="menu_static_text" style="margin-top: 20px;">
+                            MORE VIDEOS
+                        </div>
+
+                         <ul class="sections">
+                            <li class="hide-from-mobile <?php echo ($pt->page == 'latest') ? 'active': '';?>" id="latest_menu_">
+                               <a href="{{LINK videos/latest}}" data-load="?link1=videos&page=latest">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                      <g id="Group_282" data-name="Group 282" transform="translate(879 2420)">
+                                        <g id="Video_1" data-name="Video 1" transform="translate(-879.25 -2420.25)">
+                                          <path id="Path_59" data-name="Path 59" d="M7.733,8.752a1.315,1.315,0,0,1,.651.2c.4.2.906.507,1.644.962s1.246.768,1.6,1.038a1.479,1.479,0,0,1,.516.535,1.332,1.332,0,0,1,0,1.019,1.479,1.479,0,0,1-.516.535c-.358.27-.866.583-1.6,1.038s-1.247.766-1.644.962a1.315,1.315,0,0,1-.651.2,1.072,1.072,0,0,1-.762-.476,1.653,1.653,0,0,1-.18-.763c-.041-.471-.041-1.1-.041-2.009s0-1.538.041-2.009a1.653,1.653,0,0,1,.18-.763A1.072,1.072,0,0,1,7.733,8.752Z" fill="currentColor"/>
+                                          <path id="Path_60" data-name="Path 60" d="M9.034,3.25H8.966c-1.372,0-2.447,0-3.312.071a5.918,5.918,0,0,0-2.265.556A5.75,5.75,0,0,0,.877,6.39,5.918,5.918,0,0,0,.321,8.655C.25,9.519.25,10.595.25,11.966v.067c0,1.372,0,2.447.071,3.312A5.918,5.918,0,0,0,.877,17.61,5.75,5.75,0,0,0,3.39,20.123a5.919,5.919,0,0,0,2.265.556c.864.071,1.94.071,3.311.071h.068c1.372,0,2.447,0,3.312-.071a5.918,5.918,0,0,0,2.265-.556,5.75,5.75,0,0,0,2.513-2.513q.075-.147.138-.3a23.414,23.414,0,0,0,2.9,1.134,2.771,2.771,0,0,0,2.347-.2,2.771,2.771,0,0,0,1.123-2.07,24.43,24.43,0,0,0,.121-3.224v-1.9a24.43,24.43,0,0,0-.121-3.224,2.771,2.771,0,0,0-1.123-2.07,2.771,2.771,0,0,0-2.347-.2,23.41,23.41,0,0,0-2.9,1.134q-.063-.152-.138-.3A5.75,5.75,0,0,0,14.61,3.877a5.918,5.918,0,0,0-2.265-.556C11.481,3.25,10.405,3.25,9.034,3.25Zm1.747,5.37c-.7-.429-1.266-.779-1.735-1.01a2.688,2.688,0,0,0-1.479-.349A2.572,2.572,0,0,0,5.732,8.383,3.032,3.032,0,0,0,5.3,9.862c-.047.543-.047,1.24-.047,2.1v.072c0,.862,0,1.559.047,2.1a3.031,3.031,0,0,0,.435,1.479,2.572,2.572,0,0,0,1.834,1.122,2.688,2.688,0,0,0,1.479-.349c.469-.231,1.038-.581,1.735-1.01l.066-.041c.7-.429,1.267-.78,1.688-1.1a2.883,2.883,0,0,0,1-1.155,2.832,2.832,0,0,0,0-2.175,2.883,2.883,0,0,0-1-1.155c-.421-.317-.99-.668-1.688-1.1Z" fill="currentColor" fill-rule="evenodd"/>
+                                        </g>
+                                        <rect id="Rectangle_323" data-name="Rectangle 323" width="24" height="24" transform="translate(-879 -2420)" fill="none"/>
+                                      </g>
+                                    </svg>
+
+                                  <span>{{LANG latest_videos}}</span>
+                               </a>
+                            </li>
+                            <li class="<?php echo ($pt->page == 'trending') ? 'active': '';?>" id="trending_menu_">
+                               <a href="{{LINK videos/trending}}" data-load="?link1=videos&page=trending">
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                      <g id="Group_283" data-name="Group 283" transform="translate(1192 2420)">
+                                        <g id="Activity_2" data-name="Activity 2" transform="translate(-1193.25 -2420)">
+                                          <path id="Path_42" data-name="Path 42" d="M20,7a3,3,0,0,1-2.608-4.484c-.293-.061-.6-.107-.929-.142-1.142-.124-2.582-.124-4.418-.124h-.09c-1.837,0-3.276,0-4.418.124a5.823,5.823,0,0,0-2.916.974A5.75,5.75,0,0,0,3.348,4.62a5.823,5.823,0,0,0-.974,2.916c-.124,1.142-.124,2.582-.124,4.418v.09c0,1.837,0,3.276.124,4.418a5.824,5.824,0,0,0,.974,2.916A5.749,5.749,0,0,0,4.62,20.652a5.823,5.823,0,0,0,2.916.975c1.142.124,2.582.124,4.418.124h.091c1.837,0,3.276,0,4.418-.124a5.823,5.823,0,0,0,2.916-.975,5.749,5.749,0,0,0,1.272-1.272,5.823,5.823,0,0,0,.975-2.916c.124-1.142.124-2.582.124-4.418v-.091c0-1.837,0-3.276-.124-4.418-.035-.326-.081-.635-.142-.929A2.986,2.986,0,0,1,20,7ZM17.33,8.469a.75.75,0,0,1,.343,1l-1.46,2.977a2.691,2.691,0,0,1-4.907-.166,1.191,1.191,0,0,0-2.172-.074l-1.46,2.977a.75.75,0,1,1-1.347-.661l1.46-2.977a2.691,2.691,0,0,1,4.907.166,1.191,1.191,0,0,0,2.172.074l1.46-2.977A.75.75,0,0,1,17.33,8.469Z" fill="currentColor" fill-rule="evenodd"/>
+                                          <path id="Path_43" data-name="Path 43" d="M18,4a2,2,0,1,0,2-2A2,2,0,0,0,18,4Z" fill="currentColor"/>
+                                        </g>
+                                        <rect id="Rectangle_313" data-name="Rectangle 313" width="24" height="24" transform="translate(-1192 -2420)" fill="none"/>
+                                      </g>
+                                    </svg>
+
+                                  
+                                  <span>{{LANG trending}}</span>
+                               </a>
+                            </li>
+                            <li class="hide-from-mobile <?php echo ($pt->page == 'top') ? 'active': '';?>" id="top_menu_">
+                               <a href="{{LINK videos/top}}" data-load="?link1=videos&page=top">
+
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                  <g id="Group_284" data-name="Group 284" transform="translate(972 2420)">
+                                    <g id="Group_266" data-name="Group 266">
+                                      <g id="Play_Octagon" data-name="Play Octagon" transform="translate(-971.724 -2420.023)">
+                                        <path id="Path_55" data-name="Path 55" d="M10.733,8.752a1.315,1.315,0,0,1,.651.2c.4.2.906.507,1.644.962s1.246.768,1.6,1.038a1.479,1.479,0,0,1,.516.535,1.332,1.332,0,0,1,0,1.019,1.478,1.478,0,0,1-.516.535c-.358.27-.866.583-1.6,1.038s-1.247.766-1.644.962a1.316,1.316,0,0,1-.651.2,1.072,1.072,0,0,1-.762-.476,1.652,1.652,0,0,1-.18-.763c-.041-.471-.041-1.1-.041-2.009s0-1.538.041-2.009a1.653,1.653,0,0,1,.18-.763A1.073,1.073,0,0,1,10.733,8.752Z" fill="currentColor"/>
+                                        <path id="Path_56" data-name="Path 56" d="M11.715,1.031q.285-.014.57,0a5.705,5.705,0,0,1,2.161.6c.733.34,1.584.832,2.661,1.454l.061.035C18.246,3.74,19.1,4.232,19.758,4.7a5.706,5.706,0,0,1,1.6,1.572q.155.24.285.494A5.706,5.706,0,0,1,22.2,8.933c.072.8.072,1.788.072,3.032v.07c0,1.244,0,2.227-.072,3.032a5.706,5.706,0,0,1-.562,2.171q-.13.254-.285.494a5.706,5.706,0,0,1-1.6,1.572c-.661.465-1.512.956-2.589,1.578l-.061.035c-1.077.622-1.929,1.113-2.661,1.453a5.707,5.707,0,0,1-2.161.6q-.285.014-.57,0a5.707,5.707,0,0,1-2.161-.6c-.733-.34-1.584-.832-2.661-1.453l-.061-.035C5.754,20.26,4.9,19.768,4.242,19.3a5.706,5.706,0,0,1-1.6-1.572q-.155-.24-.285-.494A5.706,5.706,0,0,1,1.8,15.067c-.072-.8-.072-1.788-.072-3.031v-.071c0-1.244,0-2.227.072-3.032a5.706,5.706,0,0,1,.562-2.171q.13-.254.285-.494A5.706,5.706,0,0,1,4.242,4.7C4.9,4.232,5.754,3.74,6.831,3.118l.061-.035c1.077-.622,1.929-1.113,2.661-1.454A5.706,5.706,0,0,1,11.715,1.031ZM13.781,8.62c-.7-.429-1.266-.779-1.735-1.01a2.689,2.689,0,0,0-1.479-.349A2.572,2.572,0,0,0,8.732,8.383,3.032,3.032,0,0,0,8.3,9.862c-.047.543-.047,1.239-.047,2.1v.072c0,.862,0,1.559.047,2.1a3.032,3.032,0,0,0,.435,1.479,2.572,2.572,0,0,0,1.834,1.122,2.689,2.689,0,0,0,1.479-.349c.469-.231,1.038-.581,1.735-1.01l.066-.041c.7-.429,1.267-.78,1.688-1.1a2.883,2.883,0,0,0,1-1.155,2.832,2.832,0,0,0,0-2.175,2.884,2.884,0,0,0-1-1.155c-.421-.317-.99-.668-1.688-1.1Z" fill="currentColor" fill-rule="evenodd"/>
+                                      </g>
+                                      <rect id="Rectangle_320" data-name="Rectangle 320" width="24" height="24" transform="translate(-972 -2420)" fill="none"/>
+                                    </g>
+                                  </g>
+                                </svg>
+
+                                  <span>{{LANG top_videos}}</span>
+                               </a>
+                            </li>
+                            <?php if ($pt->config->movies_videos == 'on') { ?>
+                            <li class="hide-from-mobile <?php echo ($pt->page == 'movies') ? 'active': '';?>" id="movies_menu_">
+                               <a href="{{LINK movies}}" data-load="?link1=movies">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                  <g id="Group_285" data-name="Group 285" transform="translate(910 2420)">
+                                    <path id="TV" d="M8.47.47A.75.75,0,0,1,9.53.47L12,2.939,14.47.47A.75.75,0,1,1,15.53,1.53l-1.72,1.72h.223c1.372,0,2.447,0,3.312.071a5.918,5.918,0,0,1,2.265.556A5.75,5.75,0,0,1,22.123,6.39a5.919,5.919,0,0,1,.556,2.265c.071.864.071,1.94.071,3.311v.067c0,1.372,0,2.447-.071,3.312a5.918,5.918,0,0,1-.556,2.265,5.75,5.75,0,0,1-2.513,2.513,4.618,4.618,0,0,1-1.05.377l.969.97A.75.75,0,0,1,18.47,22.53l-1.81-1.81c-.732.03-1.6.03-2.637.03H9.977c-1.038,0-1.905,0-2.637-.03L5.53,22.53A.75.75,0,0,1,4.47,21.47l.97-.97a4.619,4.619,0,0,1-1.05-.377A5.75,5.75,0,0,1,1.877,17.61a5.918,5.918,0,0,1-.556-2.265c-.071-.864-.071-1.94-.071-3.312v-.067c0-1.372,0-2.447.071-3.311A5.918,5.918,0,0,1,1.877,6.39,5.75,5.75,0,0,1,4.39,3.877a5.918,5.918,0,0,1,2.265-.556c.864-.071,1.94-.071,3.312-.071h.223L8.47,1.53A.75.75,0,0,1,8.47.47Z" transform="translate(-910.25 -2419.25)" fill="currentColor"/>
+                                    <rect id="Rectangle_322" data-name="Rectangle 322" width="24" height="24" transform="translate(-910 -2420)" fill="none"/>
+                                  </g>
+                                </svg>
+
+                                  
+                                  <span>{{LANG movies}}</span>
+                               </a>
+                            </li>
+                            <?php } ?>
+                            <?php if ($pt->config->stock_videos == 'on') { ?>
+                            <li class="hide-from-mobile <?php echo ($pt->page == 'stock') ? 'active': '';?>" id="stock_menu_">
+                               <a href="{{LINK videos/stock}}" data-load="?link1=videos&page=stock">
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                      <g id="Group_289" data-name="Group 289" transform="translate(847 2420)">
+                                        <path id="Video_2" data-name="Video 2" d="M9.034,3.25H8.966c-1.372,0-2.447,0-3.312.071a5.918,5.918,0,0,0-2.265.556A5.75,5.75,0,0,0,.877,6.39,5.918,5.918,0,0,0,.321,8.655C.25,9.519.25,10.595.25,11.966v.067c0,1.372,0,2.447.071,3.312A5.918,5.918,0,0,0,.877,17.61,5.75,5.75,0,0,0,3.39,20.123a5.919,5.919,0,0,0,2.265.556c.864.071,1.94.071,3.311.071h.068c1.372,0,2.447,0,3.312-.071a5.918,5.918,0,0,0,2.265-.556,5.75,5.75,0,0,0,2.513-2.513q.075-.147.138-.3a23.414,23.414,0,0,0,2.9,1.134,2.771,2.771,0,0,0,2.347-.2,2.771,2.771,0,0,0,1.123-2.07,24.43,24.43,0,0,0,.121-3.224v-1.9a24.43,24.43,0,0,0-.121-3.224,2.771,2.771,0,0,0-1.123-2.07,2.771,2.771,0,0,0-2.347-.2,23.41,23.41,0,0,0-2.9,1.134q-.063-.152-.138-.3A5.75,5.75,0,0,0,14.61,3.877a5.918,5.918,0,0,0-2.265-.556C11.481,3.25,10.405,3.25,9.034,3.25ZM5,8.25a.75.75,0,0,0,0,1.5H9a.75.75,0,0,0,0-1.5Z" transform="translate(-847.25 -2420.25)" fill="currentColor" fill-rule="evenodd"/>
+                                        <rect id="Rectangle_324" data-name="Rectangle 324" width="24" height="24" transform="translate(-847 -2420)" fill="none"/>
+                                      </g>
+                                    </svg>
+
+                                
+                                  <span>{{LANG stock_videos}}</span>
+                               </a>
+                            </li>
+                            <?php } ?>
+                            <?php if ( $pt->config->popular_channels == 'on') { ?>
+                            <li class="hide-from-mobile <?php echo ($pt->page == 'popular_channels') ? 'active': '';?>" id="popular_channels_menu_">
+                               <a href="{{LINK popular_channels}}" data-load="?link1=popular_channels">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                  <g id="Group_287" data-name="Group 287" transform="translate(1154 2420)">
+                                    <g id="Award_1" data-name="Award 1" transform="translate(-1153.463 -2419.25)">
+                                      <path id="Path_44" data-name="Path 44" d="M12.594,5.208a.615.615,0,0,0-1.189,0A2.132,2.132,0,0,1,9.38,6.716a.609.609,0,0,0-.595.458.674.674,0,0,0,.235.766,2.2,2.2,0,0,1,.766,2.416.673.673,0,0,0,.235.766.569.569,0,0,0,.719,0,2.092,2.092,0,0,1,2.52,0,.569.569,0,0,0,.719,0,.672.672,0,0,0,.235-.766,2.2,2.2,0,0,1,.766-2.416.674.674,0,0,0,.235-.766.609.609,0,0,0-.595-.458A2.132,2.132,0,0,1,12.594,5.208Z" fill="currentColor"/>
+                                      <path id="Path_45" data-name="Path 45" d="M3.25,9a8.75,8.75,0,1,1,17.41,1.258,9.26,9.26,0,0,1-7.113,5.863A9.251,9.251,0,0,1,3.706,11.1a9.189,9.189,0,0,1-.367-.843A8.816,8.816,0,0,1,3.25,9ZM9.975,4.758a2.114,2.114,0,0,1,4.051,0,.633.633,0,0,0,.594.458A2.18,2.18,0,0,1,15.88,9.14a.7.7,0,0,0-.235.766,2.172,2.172,0,0,1-.766,2.416,2.067,2.067,0,0,1-2.52,0,.592.592,0,0,0-.719,0,2.068,2.068,0,0,1-2.52,0,2.172,2.172,0,0,1-.766-2.416A.7.7,0,0,0,8.12,9.14,2.18,2.18,0,0,1,9.38,5.216.633.633,0,0,0,9.975,4.758Z" fill="currentColor" fill-rule="evenodd"/>
+                                      <path id="Path_46" data-name="Path 46" d="M3.264,13.265c-.089.15-.182.312-.283.486L1.155,16.914A9.28,9.28,0,0,0,.6,17.964a1.3,1.3,0,0,0,.062,1.27,1.283,1.283,0,0,0,1.18.488A8.961,8.961,0,0,0,3,19.541l.791-.156a8.288,8.288,0,0,1,.892-.149.71.71,0,0,1,.159,0l.017,0h0l0,0,.012.013a.714.714,0,0,1,.081.137,8.3,8.3,0,0,1,.317.847L5.54,21a8.977,8.977,0,0,0,.424,1.1,1.283,1.283,0,0,0,1.013.778A1.3,1.3,0,0,0,8.108,22.3a9.283,9.283,0,0,0,.632-1.005l1.789-3.1c.107-.184.2-.353.292-.508q-.462-.05-.913-.14A10.753,10.753,0,0,1,3.264,13.265Z" fill="currentColor"/>
+                                      <path id="Path_47" data-name="Path 47" d="M20.581,13.476l.141.243,1.845,3.2a9.267,9.267,0,0,1,.554,1.05,1.3,1.3,0,0,1-.062,1.27,1.283,1.283,0,0,1-1.18.488,8.96,8.96,0,0,1-1.162-.182l-.791-.156a8.285,8.285,0,0,0-.892-.149.71.71,0,0,0-.159,0l-.017,0h-.006l-.012.013a.719.719,0,0,0-.081.137,8.331,8.331,0,0,0-.317.847L18.181,21a8.974,8.974,0,0,1-.424,1.1,1.283,1.283,0,0,1-1.013.778,1.3,1.3,0,0,1-1.131-.582,9.277,9.277,0,0,1-.633-1.005l-1.789-3.1c-.1-.174-.193-.335-.277-.483q.446-.037.881-.111A10.746,10.746,0,0,0,20.581,13.476Z" fill="currentColor"/>
+                                    </g>
+                                    <rect id="Rectangle_314" data-name="Rectangle 314" width="24" height="24" transform="translate(-1154 -2420)" fill="none"/>
+                                  </g>
+                                </svg>
+
+                                  <span>{{LANG popular_channels}}</span>
+                               </a>
+                            </li>
+                            <?php } ?>
+                            <?php if ($pt->config->shorts_system == 'on') { ?>
+                            <li class="hide-from-mobile <?php echo ($pt->page == 'shorts') ? 'active': '';?>" id="shorts_menu_">
+                               <a href="{{LINK shorts}}" data-load="?link1=shorts&id=">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                      <g id="Group_290" data-name="Group 290" transform="translate(1296 2420)">
+                                        <path id="Group_261" data-name="Group 261" d="M14,1.732a6,6,0,0,0-6,0L3.608,4.267a6,6,0,0,0-3,5.2v5.072a6,6,0,0,0,3,5.2L8,22.267a6,6,0,0,0,6,0l4.392-2.536a6,6,0,0,0,3-5.2V9.464a6,6,0,0,0-3-5.2ZM10.1,16.247q.627.057,1.159.057a8.134,8.134,0,0,0,1.539-.142,4.885,4.885,0,0,0,1.339-.427,2.5,2.5,0,0,0,.931-.8,2.254,2.254,0,0,0-.01-2.432,2.574,2.574,0,0,0-1.092-.836,8.634,8.634,0,0,0-1.891-.579,7.84,7.84,0,0,1-1.938-.618,1.09,1.09,0,0,1-.665-1,.866.866,0,0,1,.323-.7,2.065,2.065,0,0,1,.865-.4,4.89,4.89,0,0,1,1.168-.133,6.971,6.971,0,0,1,1.216.095,5.879,5.879,0,0,0,.912.086,1.111,1.111,0,0,0,.37-.057.54.54,0,0,0,.266-.181.521.521,0,0,0,.1-.333q0-.209-.275-.361a2.621,2.621,0,0,0-.722-.266,8.13,8.13,0,0,0-.969-.161,9.034,9.034,0,0,0-1-.057,7.981,7.981,0,0,0-1.587.152,5.118,5.118,0,0,0-1.339.437,2.645,2.645,0,0,0-.922.741,1.646,1.646,0,0,0-.332,1.026,1.9,1.9,0,0,0,.389,1.2,3.03,3.03,0,0,0,1.14.855,8.838,8.838,0,0,0,1.843.57,11.855,11.855,0,0,1,1.653.437,1.976,1.976,0,0,1,.845.513,1.105,1.105,0,0,1,.247.751.942.942,0,0,1-.408.807,2.53,2.53,0,0,1-1.026.418,6.715,6.715,0,0,1-1.3.124,6.841,6.841,0,0,1-1.216-.1q-.57-.114-1.026-.218a3.312,3.312,0,0,0-.713-.1.77.77,0,0,0-.5.142.525.525,0,0,0-.171.428.508.508,0,0,0,.171.4,1.668,1.668,0,0,0,.475.266,5.039,5.039,0,0,0,.95.256A11.4,11.4,0,0,0,10.1,16.247Z" transform="translate(-1294.608 -2419.928)" fill="currentColor" fill-rule="evenodd"/>
+                                        <rect id="Rectangle_310" data-name="Rectangle 310" width="24" height="24" transform="translate(-1296 -2420)" fill="none"/>
+                                      </g>
+                                    </svg>
+
+                                  <span>{{LANG shorts}}</span>
+                               </a>
+                            </li>
+                            <?php } ?>
+                         </ul>
+                         <?php if (!empty($pt->subscribers_) && IS_LOGGED == true) { ?>
+                         <div class="menu_static_text" style="margin-top: 20px;">
+                                {{LANG subscriptions}}
+                            </div>
+                         <ul class="sections subs_list">
+                            
+                            <!-- <h3>{{LANG subscriptions}}</h3> -->
+                            <div class="user_subscribers_">
+                               <?php
+                                  foreach ($pt->subscribers_ as $key => $user_) {
+                                  $user_subscribers_ = PT_UserData($user_->user_id);
+                                  if (!empty($user_subscribers_)) {
+                                  ?>
+                               <li data_subscriber_id="<?php echo($user_->id) ?>" class="subscribers_"><a  href="<?php echo($user_subscribers_->url) ?>" data-load="?link1=timeline&id=<?php echo($user_subscribers_->username) ?>"><img class="header-image subscribers_img_" src="<?php echo($user_subscribers_->avatar) ?>" alt="{{ME name}} avatar" />
+
+                                <span>
+                                    <?php echo($user_subscribers_->name) ?>
+                                </span>
+                                </a></li>
+                               <?php } } ?>
+                            </div>
+                            <!--<li><a href="javascript:void(0)" onclick="load_more_sub()" id="user_subscribers__load">{{LANG show_more}}</a></li>-->
+                         </ul>
+                         <?php } ?>
+                         <div class="menu_static_text" style="margin-top: 20px;">
+                                {{LANG explore_more}}
+                            </div>
+                         <ul class="sections more_links_list">
+                            
+                            <?php if ($pt->config->go_pro == 'on' && !PT_IsUpgraded() && IS_LOGGED == true): ?>
+                            <li>
+                               <a href="{{LINK go_pro}}" data-load="?link1=go_pro">
+                                  <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_1_54)">
+<path d="M13.0945 5.20819C12.9024 4.59727 12.0976 4.59727 11.9055 5.20819C11.6268 6.09399 10.8176 6.71631 9.88004 6.71631C9.58998 6.71631 9.37351 6.89471 9.2855 7.17451C9.19695 7.45601 9.26928 7.75176 9.52062 7.9404C10.264 8.49829 10.5637 9.47391 10.2862 10.3561C10.1838 10.6818 10.3064 10.9606 10.5214 11.122C10.7328 11.2807 10.9976 11.304 11.2402 11.122C11.9897 10.5594 13.0103 10.5594 13.7598 11.122C14.0024 11.304 14.2672 11.2807 14.4786 11.122C14.6936 10.9606 14.8162 10.6818 14.7138 10.3561C14.4363 9.47391 14.736 8.49829 15.4794 7.9404C15.7307 7.75176 15.803 7.45601 15.7145 7.17451C15.6265 6.89471 15.41 6.71631 15.12 6.71631C14.1824 6.71631 13.3732 6.09399 13.0945 5.20819Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M3.74999 9C3.74999 4.16751 7.6675 0.25 12.5 0.25C17.3325 0.25 21.25 4.16751 21.25 9C21.25 9.42706 21.2193 9.84715 21.1601 10.2581C21.0335 10.5946 20.8877 10.9218 20.7243 11.2382C19.4126 13.7781 16.9595 15.6312 14.0471 16.1213C13.5445 16.2059 13.0277 16.25 12.5 16.25C11.883 16.25 11.2808 16.1897 10.6988 16.0749C7.84647 15.5122 5.46255 13.6362 4.20639 11.1011C4.07078 10.8274 3.94832 10.5461 3.83982 10.2578C3.78062 9.84693 3.74999 9.42694 3.74999 9ZM10.4746 4.75812C11.1071 2.74729 13.8929 2.74729 14.5254 4.75812C14.6156 5.0448 14.8641 5.21631 15.12 5.21631C17.229 5.21631 17.9921 7.93003 16.3798 9.1401C16.1576 9.30685 16.0533 9.61567 16.1447 9.90599C16.4545 10.8912 16.0571 11.8128 15.379 12.3217C14.6975 12.8332 13.6963 12.9498 12.8594 12.3217C12.6434 12.1595 12.3566 12.1595 12.1406 12.3217C11.3037 12.9498 10.3025 12.8332 9.62096 12.3217C8.94292 11.8128 8.54546 10.8912 8.85535 9.90599C8.94667 9.61567 8.8424 9.30685 8.62023 9.1401C7.0079 7.93003 7.77098 5.21631 9.88004 5.21631C10.1359 5.21631 10.3844 5.0448 10.4746 4.75812Z" fill="currentColor"/>
+<path d="M3.76361 13.2652C3.67496 13.4153 3.58158 13.5771 3.48101 13.7513L1.65503 16.914C1.42957 17.3044 1.22108 17.6654 1.10089 17.9642C0.983153 18.2569 0.83488 18.7645 1.16254 19.2343C1.49435 19.71 2.02698 19.7382 2.34263 19.7225C2.66223 19.7066 3.06851 19.6267 3.50494 19.5407L4.29621 19.3851C4.73487 19.2988 4.99513 19.2491 5.18823 19.2358C5.27643 19.2297 5.32378 19.2338 5.34708 19.2377C5.35779 19.2395 5.3641 19.2416 5.3641 19.2416L5.36704 19.243L5.36969 19.2449C5.36969 19.2449 5.37469 19.2493 5.3816 19.2576C5.39664 19.2759 5.42385 19.3148 5.4627 19.3942C5.54775 19.5681 5.63478 19.8184 5.77939 20.2414L6.04021 21.0044C6.18403 21.4254 6.31792 21.8172 6.46396 22.102C6.6082 22.3832 6.89894 22.8304 7.47685 22.8798C8.04752 22.9287 8.41294 22.5465 8.60756 22.2982C8.80625 22.0447 9.01464 21.6836 9.24 21.2932L11.0293 18.1941C11.1358 18.0096 11.2331 17.8409 11.3209 17.686C11.0128 17.6524 10.7084 17.6057 10.4084 17.5465C7.68111 17.0085 5.32605 15.4403 3.76361 13.2652Z" fill="currentColor"/>
+<path d="M21.0814 13.4757C21.1268 13.554 21.1735 13.635 21.2219 13.7188L23.0667 16.9141C23.2921 17.3044 23.5006 17.6654 23.6208 17.9642C23.7385 18.2569 23.8868 18.7645 23.5591 19.2343C23.2273 19.71 22.6947 19.7382 22.379 19.7225C22.0594 19.7066 21.6532 19.6267 21.2167 19.5407L20.4255 19.3851C19.9868 19.2988 19.7265 19.2491 19.5334 19.2358C19.4452 19.2297 19.3979 19.2338 19.3746 19.2377C19.3639 19.2395 19.3576 19.2416 19.3576 19.2416L19.3546 19.243L19.3532 19.2439L19.352 19.2449C19.352 19.2449 19.347 19.2493 19.3401 19.2576C19.325 19.2759 19.2978 19.3148 19.259 19.3942C19.1739 19.5681 19.0869 19.8184 18.9423 20.2414L18.6815 21.0044C18.5376 21.4254 18.4037 21.8173 18.2577 22.102C18.1135 22.3832 17.8227 22.8304 17.2448 22.8798C16.6741 22.9287 16.3087 22.5465 16.1141 22.2982C15.9154 22.0447 15.707 21.6837 15.4817 21.2932L13.6923 18.194C13.5917 18.0196 13.4992 17.8594 13.4152 17.7115C13.7123 17.6865 14.0061 17.6493 14.2961 17.6005C17.059 17.1356 19.4623 15.618 21.0814 13.4757Z" fill="currentColor"/>
+</g>
+<defs>
+<clipPath id="clip0_1_54">
+<rect width="24" height="24" fill="white" transform="translate(0.5)"/>
+</clipPath>
+</defs>
+</svg>
+
+                                  <span>{{LANG go_pro}}</span>
+                               </a>
+                            </li>
+                            <?php endif; ?>
+                            <?php if ($pt->config->live_video == 1 && ($pt->config->who_use_live == 'all' || ($pt->config->who_use_live == 'admin' && PT_IsAdmin()) || ($pt->config->who_use_live == 'pro' && $pt->user->is_pro > 0)) && IS_LOGGED == true) { ?>
+                            <li>
+                               <a href="{{LINK live}}" data-load="?link1=live">
+                                  <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M11.7148 1.53057C11.9048 1.52114 12.0951 1.52114 12.285 1.53057C13.0184 1.56698 13.6936 1.78007 14.4462 2.12935C15.1789 2.46937 16.0303 2.96093 17.1075 3.58282L17.1685 3.61808C18.2457 4.23998 19.0972 4.73156 19.758 5.1961C20.4368 5.67329 20.9589 6.15145 21.3571 6.76835C21.4603 6.92816 21.5555 7.09298 21.6423 7.26221C21.9774 7.91552 22.1305 8.60678 22.2043 9.43324C22.2762 10.2378 22.2762 11.2209 22.2762 12.4647V12.5352C22.2762 13.779 22.2762 14.7622 22.2043 15.5668C22.1305 16.3932 21.9774 17.0845 21.6423 17.7378C21.5555 17.907 21.4603 18.0718 21.3571 18.2316C20.9589 18.8485 20.4368 19.3267 19.758 19.8039C19.0972 20.2684 18.2457 20.76 17.1685 21.3819L17.1076 21.4171C16.0304 22.039 15.179 22.5306 14.4462 22.8706C13.6936 23.2199 13.0184 23.433 12.285 23.4694C12.0951 23.4789 11.9048 23.4789 11.7148 23.4694C10.9814 23.433 10.3063 23.2199 9.5536 22.8706C8.82089 22.5306 7.96947 22.0391 6.89233 21.4172L6.83121 21.3819C5.75413 20.76 4.90262 20.2684 4.24182 19.8039C3.56301 19.3267 3.04089 18.8485 2.64268 18.2316C2.53953 18.0718 2.44437 17.907 2.35755 17.7378C2.0224 17.0845 1.86936 16.3932 1.79551 15.5668C1.72362 14.7622 1.72363 13.779 1.72363 12.5352V12.4648C1.72363 11.221 1.72362 10.2378 1.79551 9.43324C1.86936 8.60678 2.0224 7.91553 2.35755 7.26221C2.44436 7.09298 2.53952 6.92816 2.64268 6.76836C3.04089 6.15145 3.56301 5.67329 4.24182 5.19611C4.90266 4.73156 5.75409 4.23999 6.83127 3.61809L6.89225 3.58288C7.96943 2.96097 8.82087 2.46938 9.5536 2.12935C10.3063 1.78007 10.9814 1.56698 11.7148 1.53057ZM12.7499 8.5C12.7499 8.08579 12.4142 7.75 11.9999 7.75C11.5857 7.75 11.2499 8.08579 11.2499 8.5V16.5C11.2499 16.9142 11.5857 17.25 11.9999 17.25C12.4142 17.25 12.7499 16.9142 12.7499 16.5V8.5ZM9.74994 9.5C9.74994 9.08579 9.41415 8.75 8.99994 8.75C8.58573 8.75 8.24994 9.08579 8.24994 9.5L8.24994 15.5C8.24994 15.9142 8.58573 16.25 8.99994 16.25C9.41415 16.25 9.74994 15.9142 9.74994 15.5V9.5ZM15.7499 9.5C15.7499 9.08579 15.4142 8.75 14.9999 8.75C14.5857 8.75 14.2499 9.08579 14.2499 9.5V15.5C14.2499 15.9142 14.5857 16.25 14.9999 16.25C15.4142 16.25 15.7499 15.9142 15.7499 15.5V9.5ZM6.74994 11.5C6.74994 11.0858 6.41415 10.75 5.99994 10.75C5.58573 10.75 5.24994 11.0858 5.24994 11.5L5.24994 13.5C5.24994 13.9142 5.58573 14.25 5.99994 14.25C6.41415 14.25 6.74994 13.9142 6.74994 13.5V11.5ZM18.7499 11.5C18.7499 11.0858 18.4142 10.75 17.9999 10.75C17.5857 10.75 17.2499 11.0858 17.2499 11.5V13.5C17.2499 13.9142 17.5857 14.25 17.9999 14.25C18.4142 14.25 18.7499 13.9142 18.7499 13.5V11.5Z" fill="currentColor"/>
+</svg>
+
+                                  <span>{{LANG live}}</span>
+                               </a>
+                            </li>
+                            <?php } ?>
+                            <li>
+                               <a href="{{LINK contact-us}}" data-load="?link1=contact">
+
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.397 3.89454C11.457 3.70182 12.543 3.70182 13.603 3.89454C18.3658 4.76051 21.5798 9.25273 20.8617 14.0401L20.8535 14.0946C19.4028 14.1708 18.25 15.3711 18.25 16.8408V18.8408C18.25 20.3596 19.4812 21.5908 21 21.5908C22.5188 21.5908 23.75 20.3596 23.75 18.8408V16.8408C23.75 15.7999 23.1721 14.8952 22.3203 14.4281L22.3451 14.2626C23.1834 8.67386 19.4314 3.42967 13.8713 2.41873C12.6339 2.19376 11.3661 2.19376 10.1287 2.41873C4.56859 3.42967 0.816569 8.67386 1.65488 14.2626L1.67971 14.4281C0.827854 14.8952 0.25 15.7999 0.25 16.8408V18.8408C0.25 20.3596 1.48122 21.5908 3 21.5908C4.51878 21.5908 5.75 20.3596 5.75 18.8408V16.8408C5.75 15.3711 4.59716 14.1708 3.14647 14.0946L3.13829 14.0401C2.42018 9.25273 5.63419 4.76051 10.397 3.89454Z" fill="currentColor"/>
+<path d="M7.53033 13.3105C7.23744 13.0176 6.76256 13.0176 6.46967 13.3105C6.17678 13.6034 6.17678 14.0782 6.46967 14.3711L6.86967 14.7711C6.93136 14.8328 6.9566 14.8581 6.97686 14.8789C8.57962 16.5283 8.57962 19.1533 6.97686 20.8027C6.9566 20.8235 6.93136 20.8488 6.86967 20.9105L6.46967 21.3105C6.17678 21.6034 6.17678 22.0782 6.46967 22.3711C6.76256 22.664 7.23744 22.664 7.53033 22.3711L7.93574 21.9657C7.9904 21.9111 8.02394 21.8775 8.0526 21.848C10.221 19.6166 10.221 16.065 8.0526 13.8336C8.02388 13.804 7.99048 13.7706 7.93563 13.7158L7.53033 13.3105Z" fill="currentColor"/>
+<path d="M17.5303 14.3711C17.8232 14.0782 17.8232 13.6034 17.5303 13.3105C17.2374 13.0176 16.7626 13.0176 16.4697 13.3105L16.0644 13.7157C16.0095 13.7706 15.9761 13.804 15.9474 13.8336C13.779 16.065 13.779 19.6166 15.9474 21.848C15.9761 21.8776 16.0095 21.9109 16.0643 21.9658L16.4697 22.3711C16.7626 22.664 17.2374 22.664 17.5303 22.3711C17.8232 22.0782 17.8232 21.6034 17.5303 21.3105L17.1303 20.9105C17.0686 20.8488 17.0434 20.8235 17.0231 20.8027C15.4204 19.1533 15.4204 16.5283 17.0231 14.8789C17.0434 14.8581 17.0686 14.8328 17.1303 14.7711L17.5303 14.3711Z" fill="currentColor"/>
+</svg>
+
+
+                                 <span>{{LANG contact_help}}</span>
+                               </a>
+                            </li>
+                         </ul>
+						 <div class="hidden cats_section">
+							<div class="menu_static_text" style="margin-top: 20px;">
+                                {{LANG categories}}
+                            </div>
+							<ul class="sections">
+								<?php foreach ($pt->categories as $key => $value) { ?>
+									<li>
+										<a href="{{LINK videos/category/<?php echo $key?>}}" data-load="?link1=videos&page=category&id=<?php echo $key?>">
+											<?php echo($value); ?>
+										</a>
+									</li>
+								<?php } ?>
+							</ul>
+						 </div>
+                         <footer class="pt_footer">
+                            {{FOOTER_LAYOUT}}
+                         </footer>
+                      </div>
+                    <?php } ?>
+                <?php endif; ?>
+            </div>
+
+            <div class="content_main_wrapper">
+				<?php if ($pt->phone_api != 'yes'): ?>
+					<div class="pt_hmpg_contanr pt_hdr_adss <?php echo ($pt->page == 'messages') ? 'hidden' : 'ads-placment';?>" id="header_ad_">{{HEADER_AD}}</div>
+				<?php endif; ?>
+	  
+                <div id="container_content">
+                    {{CONTAINER_CONTENT}}
+                </div>
+            </div>
+        <?php } ?>
+
+      </div>
+
+
+
+      
+      <input type="hidden" id="main-url" value="{{MAIN_URL}}">
+      <?php if ($pt->phone_api != 'yes'): ?>
+      <?php if ($pt->page != 'login') { ?>
+      <div class="<?php echo ($pt->page == 'messages') ? 'hidden' : 'ads-placment';?>" id="footer_ad_">{{FOOTER_AD}}</div>
+      <?php } ?>
+      <?php endif; ?>
+      </div>
+   </div>
+      <?php 
+        /*
+        if ($pt->phone_api != 'yes' && ($pt->config->maintenance_mode != "on" || PT_IsAdmin())): ?>
+      <?php if ($pt->page != 'login') {  ?>
+      <div class="yp_side_drawer">
+         <span class="open_side_menu_head">
+            <span onclick="javascript:$('body').removeClass('side_open');$('body').removeClass('mobi_side_open');">
+               <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                  <path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+               </svg>
+            </span>
+         </span>
+         <ul class="sections">
+            <li class="<?php echo ($pt->page == 'home') ? 'active': '';?>" id="home_menu_">
+               <a href="{{LINK }}" data-load="?link1=home">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                     <path fill-rule="evenodd" clip-rule="evenodd" d="M9.7019 5.35876C10.3836 4.6771 10.8426 4.22033 11.2301 3.92469C11.6002 3.64226 11.8157 3.57843 12 3.57843C12.1843 3.57843 12.3998 3.64226 12.7699 3.92469C13.1574 4.22033 13.6164 4.6771 14.2981 5.35876L16.4697 7.53033L16.7123 7.77297C17.6227 8.68333 17.9207 9.00017 18.0787 9.3816C18.2367 9.76304 18.25 10.1978 18.25 11.4853V15C18.25 16.4354 18.2484 17.4365 18.1469 18.1919C18.0482 18.9257 17.8678 19.3142 17.591 19.591C17.3142 19.8678 16.9257 20.0482 16.1919 20.1469C15.4365 20.2484 14.4354 20.25 13 20.25H11C9.56458 20.25 8.56347 20.2484 7.80812 20.1469C7.07434 20.0482 6.68577 19.8678 6.40901 19.591C6.13225 19.3142 5.9518 18.9257 5.85315 18.1919C5.75159 17.4365 5.75 16.4354 5.75 15V11.4853C5.75 10.1978 5.76328 9.76304 5.92127 9.3816C6.0788 9.00129 6.37558 8.68519 7.27968 7.78098C7.28235 7.77831 7.28502 7.77564 7.28769 7.77297L7.53033 7.53033C7.53049 7.53017 7.53065 7.53001 7.53081 7.52985L9.7019 5.35876ZM6.47015 6.46919L8.64124 4.2981L8.67801 4.26133C9.31331 3.62599 9.84307 3.09619 10.3202 2.73216C10.8238 2.34793 11.3559 2.07843 12 2.07843C12.6441 2.07843 13.1762 2.34793 13.6798 2.73216C14.1569 3.09619 14.6867 3.62598 15.322 4.26132L15.3588 4.2981L17.5296 6.46897C17.5299 6.4692 17.5301 6.46944 17.5303 6.46967L17.773 6.71231L17.7745 6.71384L17.8738 6.81312C17.9389 6.87809 18.0022 6.94139 18.0639 7.00325L22.5303 11.4697C22.8232 11.7626 22.8232 12.2374 22.5303 12.5303C22.2374 12.8232 21.7626 12.8232 21.4697 12.5303L19.7488 10.8095C19.7502 10.9783 19.7501 11.1556 19.75 11.3427L19.75 11.4853V15V15.0549C19.75 16.4225 19.75 17.5248 19.6335 18.3918C19.5125 19.2919 19.2536 20.0497 18.6516 20.6517C18.0497 21.2536 17.2919 21.5125 16.3918 21.6335C15.5248 21.75 14.4225 21.75 13.0549 21.75H13H11H10.9451C9.57754 21.75 8.47522 21.75 7.60825 21.6335C6.70814 21.5125 5.95027 21.2536 5.34835 20.6517C4.74643 20.0497 4.48754 19.2919 4.36652 18.3918C4.24996 17.5248 4.24998 16.4225 4.25 15.0549L4.25 15V11.4853L4.24995 11.3427C4.24987 11.1556 4.24978 10.9783 4.25116 10.8095L2.53033 12.5303C2.23744 12.8232 1.76256 12.8232 1.46967 12.5303C1.17678 12.2374 1.17678 11.7626 1.46967 11.4697L5.93593 7.00341C5.99765 6.9415 6.06107 6.87815 6.12616 6.81312L6.12616 6.81311L6.22625 6.71309L6.22703 6.71231L6.46967 6.46967C6.46983 6.46951 6.46999 6.46935 6.47015 6.46919Z" fill="currentColor"/>
+                  </svg>
+                  <span>{{LANG home}}</span>
+               </a>
+            </li>
+            <?php if (IS_LOGGED == true && $pt->config->history_system == 'on') { ?>
+            <li class="<?php echo ($pt->page == 'history') ? 'active': '';?>" id="history_menu_">
+               <a href="{{LINK history}}" data-load="?link1=history">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                     <path fill-rule="evenodd" fill="currentColor" d="M12 2.25C8.77745 2.25 6.3634 3.5959 4.76988 4.92383C4.38296 5.24627 4.04307 5.56863 3.75002 5.87217V4C3.75002 3.58579 3.41423 3.25 3.00002 3.25C2.5858 3.25 2.25002 3.58579 2.25002 4V8C2.25002 8.41421 2.5858 8.75 3.00002 8.75H6.50002C6.91423 8.75 7.25002 8.41421 7.25002 8C7.25002 7.58579 6.91423 7.25 6.50002 7.25H4.51758C4.83636 6.89199 5.24074 6.48401 5.73015 6.07617C7.13663 4.9041 9.22258 3.75 12 3.75C16.5842 3.75 20.25 7.44205 20.25 12C20.25 16.5563 16.5564 20.25 12 20.25C7.44367 20.25 3.75002 16.5563 3.75002 12C3.75002 11.5858 3.41423 11.25 3.00002 11.25C2.5858 11.25 2.25002 11.5858 2.25002 12C2.25002 17.3848 6.61524 21.75 12 21.75C17.3848 21.75 21.75 17.3848 21.75 12C21.75 6.61682 17.4158 2.25 12 2.25ZM12.75 8C12.75 7.58579 12.4142 7.25 12 7.25C11.5858 7.25 11.25 7.58579 11.25 8V12C11.25 12.2508 11.3753 12.4849 11.584 12.624L14.584 14.624C14.9286 14.8538 15.3943 14.7607 15.6241 14.416C15.8538 14.0714 15.7607 13.6057 15.416 13.376L12.75 11.5986V8Z" />
+                  </svg>
+                  <span>{{LANG history}}</span>
+               </a>
+            </li>
+            <?php } ?>
+            <?php if (IS_LOGGED == true && $pt->config->sell_videos_system == 'on') {  ?>
+            <li class="<?php echo ($pt->page == 'paid-videos') ? 'active': '';?>" id="paid_videos_">
+               <a href="{{LINK paid-videos}}" data-load="?link1=paid-videos">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                     <path fill-rule="evenodd" fill="currentColor" d="M12 3.75006C7.44365 3.75006 3.75 7.44371 3.75 12.0001C3.75 16.5564 7.44365 20.2501 12 20.2501C16.5563 20.2501 20.25 16.5564 20.25 12.0001C20.25 7.44371 16.5563 3.75006 12 3.75006ZM2.25 12.0001C2.25 6.61528 6.61522 2.25006 12 2.25006C17.3848 2.25006 21.75 6.61528 21.75 12.0001C21.75 17.3848 17.3848 21.7501 12 21.7501C6.61522 21.7501 2.25 17.3848 2.25 12.0001ZM8.24993 9.74353C8.24993 8.36646 9.36627 7.25012 10.7433 7.25012H11.25V6.50012C11.25 6.08591 11.5858 5.75012 12 5.75012C12.4142 5.75012 12.75 6.08591 12.75 6.50012V7.25012H12.9999C14.5187 7.25012 15.7499 8.48133 15.7499 10.0001C15.7499 10.4143 15.4141 10.7501 14.9999 10.7501C14.5857 10.7501 14.2499 10.4143 14.2499 10.0001C14.2499 9.30976 13.6903 8.75012 12.9999 8.75012H12.75V11.4596L14.045 11.8912C15.0632 12.2306 15.7499 13.1835 15.7499 14.2567C15.7499 15.6338 14.6336 16.7501 13.2565 16.7501H12.75V17.5001C12.75 17.9143 12.4142 18.2501 12 18.2501C11.5858 18.2501 11.25 17.9143 11.25 17.5001V16.7501H10.9999C9.48115 16.7501 8.24993 15.5189 8.24993 14.0001C8.24993 13.5859 8.58572 13.2501 8.99993 13.2501C9.41415 13.2501 9.74993 13.5859 9.74993 14.0001C9.74993 14.6905 10.3096 15.2501 10.9999 15.2501H11.25V12.5407L9.95486 12.109C8.93669 11.7696 8.24993 10.8168 8.24993 9.74353ZM11.25 10.9596V8.75012H10.7433C10.1947 8.75012 9.74993 9.19488 9.74993 9.74353C9.74993 10.1711 10.0235 10.5508 10.4292 10.686L11.25 10.9596ZM12.75 13.0407V15.2501H13.2565C13.8052 15.2501 14.2499 14.8053 14.2499 14.2567C14.2499 13.8291 13.9763 13.4495 13.5707 13.3143L12.75 13.0407Z" />
+                  </svg>
+                  <span>{{LANG purchased}}</span>
+               </a>
+            </li>
+            <?php } ?>
+            <?php if ($pt->config->article_system == 'on'): ?>
+            <li class="hide-from-mobile <?php echo ($pt->page == 'articles') ? 'active': '';?>" id="articles_menu_">
+               <a href="{{LINK articles}}" data-load="?link1=articles">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                     <path fill-rule="evenodd" fill="currentColor" d="M2.62356 2.35132C2.85479 2.21713 3.13998 2.21617 3.3721 2.34882L6.5 4.13619L9.6279 2.34882C9.85847 2.21706 10.1415 2.21706 10.3721 2.34882L13.5 4.13619L16.6279 2.34882C16.86 2.21617 17.1452 2.21713 17.3764 2.35132C17.6077 2.48551 17.75 2.73265 17.75 3V11.25H21C21.4142 11.25 21.75 11.5858 21.75 12V19C21.75 20.5188 20.5188 21.75 19 21.75H9H8.94513C7.57754 21.75 6.47522 21.75 5.60825 21.6335C4.70814 21.5125 3.95027 21.2536 3.34835 20.6517C2.74643 20.0497 2.48754 19.2919 2.36652 18.3918C2.24996 17.5248 2.24998 16.4225 2.25 15.0549V15V3C2.25 2.73265 2.39232 2.48551 2.62356 2.35132ZM19 20.25C19.6904 20.25 20.25 19.6904 20.25 19V12.75H17.75V19C17.75 19.6904 18.3096 20.25 19 20.25ZM16.5499 20.25H9C7.56458 20.25 6.56347 20.2484 5.80812 20.1469C5.07435 20.0482 4.68577 19.8678 4.40901 19.591C4.13225 19.3142 3.9518 18.9257 3.85315 18.1919C3.75159 17.4365 3.75 16.4354 3.75 15V4.29238L6.1279 5.65118C6.35847 5.78294 6.64153 5.78294 6.8721 5.65118L10 3.86381L13.1279 5.65118C13.3585 5.78294 13.6415 5.78294 13.8721 5.65118L16.25 4.29239V12V19C16.25 19.4501 16.3581 19.875 16.5499 20.25ZM6.25 9C6.25 8.58579 6.58579 8.25 7 8.25H11C11.4142 8.25 11.75 8.58579 11.75 9C11.75 9.41421 11.4142 9.75 11 9.75H7C6.58579 9.75 6.25 9.41421 6.25 9ZM7 12.25C6.58579 12.25 6.25 12.5858 6.25 13C6.25 13.4142 6.58579 13.75 7 13.75H13C13.4142 13.75 13.75 13.4142 13.75 13C13.75 12.5858 13.4142 12.25 13 12.25H7ZM6.25 17C6.25 16.5858 6.58579 16.25 7 16.25H13C13.4142 16.25 13.75 16.5858 13.75 17C13.75 17.4142 13.4142 17.75 13 17.75H7C6.58579 17.75 6.25 17.4142 6.25 17Z" />
+                  </svg>
+                  <span>{{LANG articles}}</span>
+               </a>
+            </li>
+            <?php endif ?>
+         </ul>
+         <ul class="sections">
+            <li class="hide-from-mobile <?php echo ($pt->page == 'latest') ? 'active': '';?>" id="latest_menu_">
+               <a href="{{LINK videos/latest}}" data-load="?link1=videos&page=latest">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                     <path fill-rule="evenodd" fill="currentColor" d="M10 3.25L9.94358 3.25L9.94356 3.25C8.10581 3.24999 6.65019 3.24997 5.51098 3.40314C4.33855 3.56077 3.38961 3.89288 2.64124 4.64125C1.89288 5.38961 1.56076 6.33856 1.40313 7.51098C1.24997 8.65019 1.24998 10.1058 1.25 11.9436L1.25 11.9436L1.25 12L1.25 12.0564L1.25 12.0565C1.24998 13.8942 1.24997 15.3498 1.40313 16.489C1.56076 17.6614 1.89288 18.6104 2.64124 19.3588C3.38961 20.1071 4.33855 20.4392 5.51098 20.5969C6.65019 20.75 8.10583 20.75 9.94359 20.75L10 20.75L10.0564 20.75L10.0565 20.75C11.8942 20.75 13.3498 20.75 14.489 20.5969C15.6614 20.4392 16.6104 20.1071 17.3588 19.3588C18.1071 18.6104 18.4392 17.6614 18.5969 16.489C18.6011 16.4577 18.6052 16.4261 18.6092 16.3943C19.1758 16.8183 19.6658 17.1765 20.0818 17.4026C20.5551 17.6598 21.1632 17.875 21.7826 17.5653C22.402 17.2556 22.5947 16.64 22.673 16.107C22.7501 15.5813 22.75 14.8815 22.75 14.0604L22.75 14L22.75 9.99999L22.75 9.93961C22.75 9.11853 22.7501 8.41864 22.673 7.893C22.5947 7.35998 22.402 6.74439 21.7826 6.4347C21.1632 6.12501 20.5551 6.34019 20.0818 6.59743C19.6658 6.82352 19.1758 7.18169 18.6092 7.60572C18.6052 7.5739 18.6011 7.54232 18.5969 7.51098C18.4392 6.33856 18.1071 5.38961 17.3588 4.64125C16.6104 3.89288 15.6614 3.56077 14.489 3.40314C13.3498 3.24997 11.8942 3.24999 10.0564 3.25L10.0564 3.25L10 3.25ZM18.75 11.8488L18.75 11.8418L18.75 11.8335L18.75 11.8251L18.75 11.8168L18.75 11.8084L18.75 11.8L18.75 11.7917L18.75 11.7833L18.75 11.7749L18.75 11.7666L18.75 11.7582L18.75 11.7498L18.75 11.7414L18.75 11.733L18.75 11.7246L18.75 11.7162L18.75 11.7078L18.75 11.6994L18.75 11.691L18.75 11.6825L18.75 11.6741L18.75 11.6657L18.75 11.6573L18.75 11.6488L18.75 11.6404L18.75 11.632L18.75 11.6235L18.75 11.6151L18.75 11.6066L18.75 11.5982L18.75 11.5897L18.75 11.5813L18.75 11.5728L18.75 11.5643L18.75 11.5559L18.75 11.5474L18.75 11.5389L18.75 11.5304L18.75 11.522L18.75 11.5135L18.75 11.505L18.75 11.4965L18.75 11.488L18.75 11.4795L18.75 11.471L18.75 11.4625L18.75 11.454L18.75 11.4455L18.75 11.437L18.75 11.4285L18.75 11.4199L18.75 11.4114L18.75 11.4029L18.75 11.3944L18.75 11.3858L18.75 11.3773L18.75 11.3688L18.75 11.3602L18.75 11.3517L18.75 11.3432L18.75 11.3346L18.75 11.3261L18.75 11.3175L18.75 11.309L18.75 11.3004L18.75 11.2919L18.75 11.2833L18.75 11.2748L18.75 11.2662L18.75 11.2576L18.75 11.2491L18.75 11.2405L18.75 11.2319L18.75 11.2234L18.75 11.2148L18.75 11.2062L18.75 11.1976L18.75 11.1891L18.75 11.1805L18.75 11.1719L18.75 11.1633L18.75 11.1547L18.75 11.1461L18.75 11.1375L18.75 11.1289L18.75 11.1203L18.75 11.1117L18.75 11.1032L18.75 11.0946L18.75 11.086L18.75 11.0773L18.75 11.0687L18.75 11.0601L18.75 11.0515L18.75 11.0429L18.75 11.0343L18.75 11.0257L18.75 11.0171L18.75 11.0085L18.75 10.9999L18.75 10.9912L18.75 10.9826L18.75 10.974L18.75 10.9654L18.75 10.9568L18.75 10.9481L18.75 10.9395L18.75 10.9309L18.75 10.9223L18.75 10.9137L18.75 10.905L18.75 10.8964L18.75 10.8878L18.75 10.8791L18.75 10.8705L18.75 10.8619L18.75 10.8532L18.75 10.8446L18.75 10.836L18.75 10.8273L18.75 10.8187L18.75 10.8101L18.75 10.8014L18.75 10.7928L18.75 10.7842L18.75 10.7755L18.75 10.7669L18.75 10.7583L18.75 10.7496L18.75 10.741L18.75 10.7323L18.75 10.7237L18.75 10.7151L18.75 10.7064L18.75 10.6978L18.75 10.6891L18.75 10.6805L18.75 10.6719L18.75 10.6632L18.75 10.6546L18.75 10.6459L18.75 10.6373L18.75 10.6286L18.75 10.62L18.75 10.6114L18.75 10.6027L18.75 10.5941L18.75 10.5854L18.75 10.5768L18.75 10.5682L18.75 10.5595L18.75 10.5509L18.75 10.5422L18.75 10.5336L18.75 10.525L18.75 10.5163L18.75 10.5077L18.75 10.4991L18.75 10.4904L18.75 10.4818L18.75 10.4731L18.75 10.4645L18.75 10.4559L18.75 10.4472L18.75 10.4386L18.75 10.43L18.75 10.4213L18.75 10.4127L18.75 10.4041L18.75 10.3955L18.75 10.3868L18.75 10.3782L18.75 10.3696L18.75 10.361L18.75 10.3523L18.75 10.3437L18.75 10.3351L18.75 10.3265L18.75 10.3178L18.75 10.3092L18.75 10.3006L18.75 10.292L18.75 10.2834L18.75 10.2748L18.75 10.2661L18.75 10.2575L18.75 10.2489L18.75 10.2403L18.75 10.2317L18.75 10.2231L18.75 10.2145L18.75 10.2059L18.75 10.1973L18.75 10.1887L18.75 10.1801L18.75 10.1715L18.75 10.1629L18.75 10.1543L18.75 10.1457L18.75 10.1371L18.75 10.1285L18.75 10.12L18.75 10.1114L18.75 10.1028L18.75 10.0942L18.75 10.0856L18.75 10.0771L18.75 10.0685L18.75 10.0599L18.75 10.0513L18.75 10.0428L18.75 10.0342L18.75 10.0256L18.75 10.0171L18.75 10.0085L18.75 9.99996C18.75 9.74167 18.7507 9.59613 18.7603 9.48769C18.7646 9.43923 18.7696 9.41311 18.7728 9.39999C18.7744 9.3938 18.7754 9.39062 18.7758 9.38956L18.7764 9.3882L18.7771 9.38693C18.7778 9.38599 18.7797 9.38321 18.7837 9.37828C18.7922 9.36782 18.8101 9.34811 18.8463 9.31561C18.9273 9.24286 19.0433 9.15498 19.25 9C19.9685 8.46106 20.4399 8.11002 20.798 7.91537C20.9675 7.82328 21.0616 7.79413 21.1071 7.78583C21.1277 7.82716 21.1608 7.91996 21.1888 8.11077C21.248 8.51408 21.25 9.10178 21.25 9.99999L21.25 14C21.25 14.8982 21.248 15.4859 21.1888 15.8892C21.1608 16.08 21.1277 16.1728 21.1071 16.2141C21.0616 16.2058 20.9675 16.1767 20.798 16.0846C20.4399 15.89 19.9686 15.5389 19.25 15C19.0434 14.845 18.9273 14.7572 18.8463 14.6844C18.8101 14.6519 18.7922 14.6322 18.7837 14.6217C18.7817 14.6193 18.7803 14.6175 18.7792 14.616C18.7781 14.6145 18.7775 14.6136 18.7771 14.6131L18.7764 14.6118L18.7758 14.6104C18.7754 14.6093 18.7743 14.6061 18.7728 14.6C18.7696 14.5869 18.7646 14.5608 18.7603 14.5125C18.7507 14.4043 18.75 14.2591 18.75 14.0012L18.75 13.9954L18.75 13.9896L18.75 13.9838L18.75 13.978L18.75 13.9722L18.75 13.9664L18.75 13.9606L18.75 13.9547L18.75 13.9489L18.75 13.943L18.75 13.9371L18.75 13.9312L18.75 13.9253L18.75 13.9193L18.75 13.9134L18.75 13.9075L18.75 13.9015L18.75 13.8955L18.75 13.8895L18.75 13.8835L18.75 13.8775L18.75 13.8715L18.75 13.8654L18.75 13.8594L18.75 13.8533L18.75 13.8472L18.75 13.8411L18.75 13.835L18.75 13.8289L18.75 13.8228L18.75 13.8166L18.75 13.8105L18.75 13.8043L18.75 13.7981L18.75 13.792L18.75 13.7857L18.75 13.7795L18.75 13.7733L18.75 13.7671L18.75 13.7608L18.75 13.7546L18.75 13.7483L18.75 13.742L18.75 13.7357L18.75 13.7294L18.75 13.7231L18.75 13.7167L18.75 13.7104L18.75 13.704L18.75 13.6977L18.75 13.6913L18.75 13.6849L18.75 13.6785L18.75 13.6721L18.75 13.6656L18.75 13.6592L18.75 13.6527L18.75 13.6463L18.75 13.6398L18.75 13.6333L18.75 13.6268L18.75 13.6203L18.75 13.6138L18.75 13.6073L18.75 13.6007L18.75 13.5942L18.75 13.5876L18.75 13.581L18.75 13.5744L18.75 13.5678L18.75 13.5612L18.75 13.5546L18.75 13.548L18.75 13.5413L18.75 13.5347L18.75 13.528L18.75 13.5214L18.75 13.5147L18.75 13.508L18.75 13.5013L18.75 13.4945L18.75 13.4878L18.75 13.4811L18.75 13.4743L18.75 13.4676L18.75 13.4608L18.75 13.454L18.75 13.4472L18.75 13.4404L18.75 13.4336L18.75 13.4268L18.75 13.4199L18.75 13.4131L18.75 13.4062L18.75 13.3994L18.75 13.3925L18.75 13.3856L18.75 13.3787L18.75 13.3718L18.75 13.3649L18.75 13.358L18.75 13.351L18.75 13.3441L18.75 13.3371L18.75 13.3301L18.75 13.3232L18.75 13.3162L18.75 13.3092L18.75 13.3022L18.75 13.2952L18.75 13.2881L18.75 13.2811L18.75 13.274L18.75 13.267L18.75 13.2599L18.75 13.2528L18.75 13.2458L18.75 13.2387L18.75 13.2315L18.75 13.2244L18.75 13.2173L18.75 13.2102L18.75 13.203L18.75 13.1959L18.75 13.1887L18.75 13.1815L18.75 13.1744L18.75 13.1672L18.75 13.16L18.75 13.1528L18.75 13.1455L18.75 13.1383L18.75 13.1311L18.75 13.1238L18.75 13.1166L18.75 13.1093L18.75 13.102L18.75 13.0947L18.75 13.0874L18.75 13.0801L18.75 13.0728L18.75 13.0655L18.75 13.0582L18.75 13.0508L18.75 13.0435L18.75 13.0361L18.75 13.0288L18.75 13.0214L18.75 13.014L18.75 13.0066L18.75 12.9992L18.75 12.9918L18.75 12.9844L18.75 12.977L18.75 12.9696L18.75 12.9621L18.75 12.9547L18.75 12.9472L18.75 12.9397L18.75 12.9323L18.75 12.9248L18.75 12.9173L18.75 12.9098L18.75 12.9023L18.75 12.8948L18.75 12.8872L18.75 12.8797L18.75 12.8722L18.75 12.8646L18.75 12.857L18.75 12.8495L18.75 12.8419L18.75 12.8343L18.75 12.8267L18.75 12.8191L18.75 12.8115L18.75 12.8039L18.75 12.7963L18.75 12.7887L18.75 12.781L18.75 12.7734L18.75 12.7657L18.75 12.7581L18.75 12.7504L18.75 12.7427L18.75 12.735L18.75 12.7273L18.75 12.7196L18.75 12.7119L18.75 12.7042L18.75 12.6965L18.75 12.6888L18.75 12.681L18.75 12.6733L18.75 12.6655L18.75 12.6578L18.75 12.65L18.75 12.6422L18.75 12.6345L18.75 12.6267L18.75 12.6189L18.75 12.6111L18.75 12.6033L18.75 12.5955L18.75 12.5876L18.75 12.5798L18.75 12.572L18.75 12.5641L18.75 12.5563L18.75 12.5484L18.75 12.5405L18.75 12.5327L18.75 12.5248L18.75 12.5169L18.75 12.509L18.75 12.5011L18.75 12.4932L18.75 12.4853L18.75 12.4774L18.75 12.4695L18.75 12.4615L18.75 12.4536L18.75 12.4456L18.75 12.4377L18.75 12.4297L18.75 12.4218L18.75 12.4138L18.75 12.4058L18.75 12.3978L18.75 12.3899L18.75 12.3819L18.75 12.3739L18.75 12.3659L18.75 12.3578L18.75 12.3498L18.75 12.3418L18.75 12.3338L18.75 12.3257L18.75 12.3177L18.75 12.3096L18.75 12.3016L18.75 12.2935L18.75 12.2854L18.75 12.2774L18.75 12.2693L18.75 12.2612L18.75 12.2531L18.75 12.245L18.75 12.2369L18.75 12.2288L18.75 12.2207L18.75 12.2126L18.75 12.2044L18.75 12.1963L18.75 12.1882L18.75 12.18L18.75 12.1719L18.75 12.1637L18.75 12.1556L18.75 12.1512M17.25 12C17.25 13.9068 17.2484 15.2615 17.1102 16.2892C16.975 17.2952 16.7213 17.8749 16.2981 18.2981C15.8749 18.7213 15.2952 18.975 14.2892 19.1102C13.2615 19.2484 11.9068 19.25 10 19.25C8.09318 19.25 6.73851 19.2484 5.71085 19.1102C4.70476 18.975 4.12511 18.7213 3.7019 18.2981C3.27869 17.8749 3.02502 17.2952 2.88976 16.2892C2.75159 15.2615 2.75 13.9068 2.75 12C2.75 10.0932 2.75159 8.73852 2.88976 7.71085C3.02502 6.70476 3.27869 6.12512 3.7019 5.70191C4.12511 5.2787 4.70476 5.02503 5.71085 4.88976C6.73851 4.7516 8.09318 4.75 10 4.75C11.9068 4.75 13.2615 4.7516 14.2892 4.88976C15.2952 5.02503 15.8749 5.2787 16.2981 5.70191C16.7213 6.12512 16.975 6.70476 17.1102 7.71085C17.2484 8.73852 17.25 10.0932 17.25 12ZM21.1422 7.78417C21.1418 7.78483 21.137 7.78511 21.129 7.783C21.1387 7.78245 21.1427 7.7835 21.1422 7.78417ZM21.0962 7.76658C21.0897 7.76146 21.087 7.75743 21.0873 7.7567C21.0876 7.75596 21.0908 7.75852 21.0962 7.76658ZM21.0873 16.2433C21.087 16.2425 21.0897 16.2385 21.0962 16.2334C21.0908 16.2414 21.0876 16.244 21.0873 16.2433ZM21.129 16.217C21.137 16.2148 21.1418 16.2151 21.1422 16.2158C21.1427 16.2165 21.1387 16.2175 21.129 16.217Z" />
+                  </svg>
+                  <span>{{LANG latest_videos}}</span>
+               </a>
+            </li>
+            <li class="<?php echo ($pt->page == 'trending') ? 'active': '';?>" id="trending_menu_">
+               <a href="{{LINK videos/trending}}" data-load="?link1=videos&page=trending">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                     <path fill-rule="evenodd" fill="currentColor" d="M14.25 7.00003C14.25 6.58582 14.5858 6.25003 15 6.25003H21C21.4142 6.25003 21.75 6.58582 21.75 7.00003V13C21.75 13.4142 21.4142 13.75 21 13.75C20.5858 13.75 20.25 13.4142 20.25 13V8.81069L15.5303 13.5303C15.5013 13.5594 15.4727 13.588 15.4445 13.6163C14.9844 14.0771 14.6282 14.4339 14.221 14.6357C13.4516 15.0169 12.5484 15.0169 11.779 14.6357C11.3718 14.4339 11.0156 14.0771 10.5555 13.6163C10.5273 13.588 10.4987 13.5594 10.4697 13.5303C9.88157 12.9423 9.71099 12.7857 9.55498 12.7084C9.20526 12.5351 8.79467 12.5351 8.44496 12.7084C8.28895 12.7857 8.11837 12.9423 7.53028 13.5303L3.53033 17.5303C3.23744 17.8232 2.76256 17.8232 2.46967 17.5303C2.17678 17.2374 2.17678 16.7625 2.46967 16.4696L6.46962 12.4697C6.49865 12.4407 6.52726 12.412 6.55547 12.3837C7.01556 11.9229 7.37172 11.5662 7.77895 11.3644C8.54832 10.9831 9.45162 10.9831 10.221 11.3644C10.6282 11.5662 10.9844 11.9229 11.4445 12.3838C11.4727 12.412 11.5013 12.4407 11.5303 12.4697C12.1184 13.0578 12.289 13.2143 12.445 13.2916C12.7947 13.4649 13.2053 13.4649 13.555 13.2916C13.711 13.2143 13.8816 13.0578 14.4697 12.4697L19.1893 7.75003H15C14.5858 7.75003 14.25 7.41424 14.25 7.00003Z" />
+                  </svg>
+                  <span>{{LANG trending}}</span>
+               </a>
+            </li>
+            <li class="hide-from-mobile <?php echo ($pt->page == 'top') ? 'active': '';?>" id="top_menu_">
+               <a href="{{LINK videos/top}}" data-load="?link1=videos&page=top">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                     <path fill-rule="evenodd" fill="currentColor" d="M13 6h2v11h-2zM17 3h2v14h-2zM9 9h2v8H9zM5 12h2v5H5zM4 19h16v2H4z" />
+                  </svg>
+                  <span>{{LANG top_videos}}</span>
+               </a>
+            </li>
+            <?php if ($pt->config->movies_videos == 'on') { ?>
+            <li class="hide-from-mobile <?php echo ($pt->page == 'movies') ? 'active': '';?>" id="movies_menu_">
+               <a href="{{LINK movies}}" data-load="?link1=movies">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                     <path fill-rule="evenodd" fill="currentColor" d="M9 2.25H8.94513C8.63161 2.25 8.33204 2.24999 8.04605 2.25139C8.03082 2.25047 8.01546 2.25 8 2.25C7.98169 2.25 7.96353 2.25066 7.94555 2.25195C7.02806 2.25763 6.25306 2.27983 5.60825 2.36652C4.70814 2.48754 3.95027 2.74643 3.34835 3.34835C2.74643 3.95027 2.48754 4.70814 2.36652 5.60825C2.31805 5.9688 2.28974 6.37005 2.2732 6.81417C2.25805 6.87359 2.25 6.93586 2.25 7C2.25 7.04818 2.25454 7.0953 2.26323 7.14096C2.24998 7.68236 2.24999 8.28262 2.25 8.94513V9V12V15V15.0549C2.24999 15.7174 2.24998 16.3176 2.26323 16.859C2.25454 16.9047 2.25 16.9518 2.25 17C2.25 17.0641 2.25805 17.1264 2.2732 17.1858C2.28974 17.6299 2.31805 18.0312 2.36652 18.3918C2.48754 19.2919 2.74643 20.0497 3.34835 20.6517C3.95027 21.2536 4.70814 21.5125 5.60825 21.6335C6.25306 21.7202 7.02806 21.7424 7.94555 21.7481C7.96353 21.7493 7.98169 21.75 8 21.75C8.01546 21.75 8.03082 21.7495 8.04605 21.7486C8.33204 21.75 8.63162 21.75 8.94513 21.75H9H15H15.0549C15.3684 21.75 15.668 21.75 15.9539 21.7486C15.9692 21.7495 15.9845 21.75 16 21.75C16.0183 21.75 16.0365 21.7493 16.0544 21.7481C16.9719 21.7424 17.7469 21.7202 18.3918 21.6335C19.2919 21.5125 20.0497 21.2536 20.6517 20.6517C21.2536 20.0497 21.5125 19.2919 21.6335 18.3918C21.682 18.0312 21.7103 17.6299 21.7268 17.1858C21.7419 17.1264 21.75 17.0641 21.75 17C21.75 16.9518 21.7455 16.9047 21.7368 16.8591C21.75 16.3177 21.75 15.7175 21.75 15.055V15.0549V15V12V9V8.94513V8.945V8.94486C21.75 8.28245 21.75 7.68228 21.7368 7.14095C21.7455 7.09529 21.75 7.04818 21.75 7C21.75 6.93586 21.7419 6.87359 21.7268 6.81417C21.7103 6.37006 21.682 5.9688 21.6335 5.60825C21.5125 4.70814 21.2536 3.95027 20.6517 3.34835C20.0497 2.74643 19.2919 2.48754 18.3918 2.36652C17.7469 2.27983 16.9719 2.25763 16.0544 2.25195C16.0365 2.25066 16.0183 2.25 16 2.25C15.9845 2.25 15.9692 2.25047 15.9539 2.25139C15.668 2.24999 15.3684 2.25 15.0549 2.25H15H9ZM3.80673 17.75C3.81924 17.9063 3.83451 18.0533 3.85315 18.1919C3.9518 18.9257 4.13225 19.3142 4.40901 19.591C4.68577 19.8678 5.07435 20.0482 5.80812 20.1469C6.2098 20.2009 6.68097 20.2266 7.25 20.2389V17.75H3.80673ZM7.25 16.25H3.75371C3.75016 15.8736 3.75 15.459 3.75 15V12.75H7.25V16.25ZM8.75 17V20.25L9 20.25H15L15.25 20.25V17V12.75H8.75V17ZM20.25 15C20.25 15.459 20.2498 15.8736 20.2463 16.25H16.75V12.75H20.25V15ZM20.1933 17.75H16.75V20.2389C17.319 20.2266 17.7902 20.2009 18.1919 20.1469C18.9257 20.0482 19.3142 19.8678 19.591 19.591C19.8678 19.3142 20.0482 18.9257 20.1469 18.1919C20.1655 18.0533 20.1808 17.9063 20.1933 17.75ZM20.1933 6.25C20.1808 6.09365 20.1655 5.94675 20.1469 5.80812C20.0482 5.07435 19.8678 4.68577 19.591 4.40901C19.3142 4.13225 18.9257 3.9518 18.1919 3.85315C17.7902 3.79914 17.319 3.77341 16.75 3.76115V6.25H20.1933ZM15.25 7V3.75004L15 3.75H9L8.75 3.75004V7V11.25H15.25V7ZM16.75 7.75H20.2463C20.2498 8.12636 20.25 8.54098 20.25 9V11.25H16.75V7.75ZM3.75 9C3.75 8.54098 3.75016 8.12636 3.75371 7.75H7.25V11.25H3.75V9ZM3.80673 6.25H7.25V3.76115C6.68097 3.77341 6.2098 3.79914 5.80812 3.85315C5.07435 3.9518 4.68577 4.13225 4.40901 4.40901C4.13225 4.68577 3.9518 5.07435 3.85315 5.80812C3.83451 5.94675 3.81924 6.09365 3.80673 6.25Z" />
+                  </svg>
+                  <span>{{LANG movies}}</span>
+               </a>
+            </li>
+            <?php } ?>
+            <?php if ($pt->config->stock_videos == 'on') { ?>
+            <li class="hide-from-mobile <?php echo ($pt->page == 'stock') ? 'active': '';?>" id="stock_menu_">
+               <a href="{{LINK videos/stock}}" data-load="?link1=videos&page=stock">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                     <path fill-rule="evenodd" fill="currentColor" d="M20.75 1C20.75 0.585786 20.4142 0.25 20 0.25C19.5858 0.25 19.25 0.585786 19.25 1V3.25H17C16.5858 3.25 16.25 3.58579 16.25 4C16.25 4.41421 16.5858 4.75 17 4.75H19.25V7C19.25 7.41421 19.5858 7.75 20 7.75C20.4142 7.75 20.75 7.41421 20.75 7V4.75H23C23.4142 4.75 23.75 4.41421 23.75 4C23.75 3.58579 23.4142 3.25 23 3.25H20.75V1ZM7.94513 3.25L8 3.25H13.5C13.9142 3.25 14.25 3.58579 14.25 4C14.25 4.41421 13.9142 4.75 13.5 4.75H8C6.56458 4.75 5.56347 4.75159 4.80812 4.85315C4.07435 4.9518 3.68577 5.13225 3.40901 5.40901C3.13225 5.68577 2.9518 6.07434 2.85315 6.80812C2.75159 7.56347 2.75 8.56458 2.75 10V16C2.75 17.4354 2.75159 18.4365 2.85315 19.1919C2.9518 19.9257 3.13225 20.3142 3.40901 20.591C3.68577 20.8678 4.07435 21.0482 4.80812 21.1469C5.56347 21.2484 6.56458 21.25 8 21.25H14C15.4354 21.25 16.4365 21.2484 17.1919 21.1469C17.9257 21.0482 18.3142 20.8678 18.591 20.591C18.8678 20.3142 19.0482 19.9257 19.1469 19.1919C19.2484 18.4365 19.25 17.4354 19.25 16V10.5C19.25 10.0858 19.5858 9.75 20 9.75C20.4142 9.75 20.75 10.0858 20.75 10.5V16V16.0549C20.75 17.4225 20.75 18.5248 20.6335 19.3918C20.5125 20.2919 20.2536 21.0497 19.6517 21.6517C19.0497 22.2536 18.2919 22.5125 17.3918 22.6335C16.5248 22.75 15.4225 22.75 14.0549 22.75H14H8H7.94513C6.57754 22.75 5.47522 22.75 4.60825 22.6335C3.70814 22.5125 2.95027 22.2536 2.34835 21.6517C1.74643 21.0497 1.48754 20.2919 1.36652 19.3918C1.24996 18.5248 1.24998 17.4225 1.25 16.0549V16V10V9.94513C1.24998 8.57754 1.24996 7.47522 1.36652 6.60825C1.48754 5.70814 1.74643 4.95027 2.34835 4.34835C2.95027 3.74643 3.70814 3.48754 4.60825 3.36652C5.47522 3.24996 6.57754 3.24998 7.94513 3.25ZM12.4759 10.4159L12.5254 10.4489L12.9199 10.7119L12.966 10.7426C13.4909 11.0925 13.953 11.4005 14.2767 11.693C14.6209 12.004 14.9472 12.419 14.9472 13C14.9472 13.581 14.6209 13.996 14.2767 14.307C13.9531 14.5995 13.4909 14.9075 12.9661 15.2573L12.9661 15.2574L12.966 15.2574L12.9199 15.2881L12.5254 15.5511L12.4759 15.5841L12.4759 15.5841L12.4759 15.5842C11.8339 16.0122 11.2825 16.3799 10.8238 16.5965C10.3527 16.819 9.76113 16.9885 9.17425 16.6744C8.58737 16.3603 8.40028 15.7741 8.32408 15.2586C8.24991 14.7569 8.24995 14.0941 8.25 13.3225L8.25 13.263V12.737L8.25 12.6775C8.24995 11.9059 8.24991 11.2431 8.32408 10.7414C8.40028 10.2259 8.58737 9.63968 9.17425 9.32559C9.76113 9.0115 10.3527 9.181 10.8238 9.40354C11.2825 9.62015 11.8339 9.98785 12.4759 10.4159ZM9.85562 10.6558C9.85516 10.6551 9.85901 10.6539 9.86853 10.654C9.86084 10.6565 9.85608 10.6564 9.85562 10.6558ZM9.88579 10.6551C9.92748 10.6599 10.0171 10.6814 10.1833 10.7599C10.5293 10.9233 10.9878 11.2266 11.6934 11.697L12.0878 11.9599C12.6729 12.35 13.0397 12.5969 13.271 12.8059C13.3802 12.9046 13.4247 12.9653 13.4418 12.9948L13.4446 13L13.4418 13.0052C13.4247 13.0347 13.3802 13.0954 13.271 13.1941C13.0397 13.4031 12.6729 13.65 12.0878 14.0401L11.6934 14.303C10.9878 14.7734 10.5293 15.0767 10.1833 15.2401C10.0171 15.3186 9.92748 15.3402 9.88579 15.3449C9.86661 15.3076 9.83483 15.2211 9.80796 15.0393C9.75199 14.6607 9.75 14.111 9.75 13.263V12.737C9.75 11.889 9.75199 11.3393 9.80796 10.9607C9.83483 10.7789 9.86661 10.6924 9.88579 10.6551ZM9.85562 15.3442C9.85608 15.3436 9.86084 15.3435 9.86853 15.346C9.85901 15.3461 9.85516 15.3449 9.85562 15.3442ZM9.8944 15.3599C9.90074 15.3649 9.90336 15.3689 9.90308 15.3696C9.9028 15.3704 9.89962 15.3679 9.8944 15.3599ZM9.8944 10.6401C9.89962 10.6321 9.9028 10.6296 9.90308 10.6304C9.90336 10.6311 9.90074 10.6351 9.8944 10.6401Z" />
+                  </svg>
+                  <span>{{LANG stock_videos}}</span>
+               </a>
+            </li>
+            <?php } ?>
+            <?php if ( $pt->config->popular_channels == 'on') { ?>
+            <li class="hide-from-mobile <?php echo ($pt->page == 'popular_channels') ? 'active': '';?>" id="popular_channels_menu_">
+               <a href="{{LINK popular_channels}}" data-load="?link1=popular_channels">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                     <path fill-rule="evenodd" fill="currentColor" d="M12 1.25C12.2841 1.25 12.5438 1.4105 12.6708 1.66459L15.5 7.32299L21.1233 8.2602C21.4004 8.30639 21.6285 8.50358 21.7142 8.77112C21.8 9.03866 21.729 9.33167 21.5304 9.53033L17.3243 13.7364L18.7308 19.8314C18.7961 20.1143 18.6922 20.4096 18.464 20.5893C18.2358 20.7689 17.9244 20.8007 17.6646 20.6708L12 17.8385L6.33543 20.6708C6.07566 20.8007 5.76425 20.7689 5.53606 20.5893C5.30787 20.4096 5.20392 20.1143 5.26923 19.8314L6.67576 13.7364L2.46969 9.53033C2.27104 9.33167 2.20006 9.03866 2.2858 8.77112C2.37154 8.50358 2.5996 8.30639 2.87672 8.2602L8.5 7.32299L11.3292 1.66459C11.4563 1.4105 11.7159 1.25 12 1.25ZM12 3.67705L9.67084 8.33541C9.56353 8.55003 9.36001 8.70035 9.12332 8.7398L4.56088 9.5002L8.03035 12.9697C8.2132 13.1525 8.28896 13.4167 8.23081 13.6686L7.08887 18.617L11.6646 16.3292C11.8758 16.2236 12.1243 16.2236 12.3354 16.3292L16.9112 18.617L15.7692 13.6686C15.7111 13.4167 15.7868 13.1525 15.9697 12.9697L19.4392 9.5002L14.8767 8.7398C14.64 8.70035 14.4365 8.55003 14.3292 8.33541L12 3.67705Z" />
+                  </svg>
+                  <span>{{LANG popular_channels}}</span>
+               </a>
+            </li>
+            <?php } ?>
+            <?php if ($pt->config->shorts_system == 'on') { ?>
+            <li class="hide-from-mobile <?php echo ($pt->page == 'shorts') ? 'active': '';?>" id="shorts_menu_">
+               <a href="{{LINK shorts}}" data-load="?link1=shorts&id=">
+                  <svg version="1.1" class="feather" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 168.071 168.071" xml:space="preserve">
+                     <g>
+                        <g>
+                           <path opacity="0.5" style="fill: currentColor;" d="M154.932,91.819L42.473,27.483c-2.219-1.26-4.93-1.26-7.121-0.027 c-2.219,1.233-3.588,3.533-3.615,6.026L31.08,161.059c0,0,0,0,0,0.027c0,2.465,1.369,4.766,3.533,6.026 c1.123,0.63,2.355,0.959,3.615,0.959c1.205,0,2.438-0.301,3.533-0.931l113.116-63.214c2.219-1.26,3.588-3.533,3.588-6.053 c0,0,0,0,0-0.027C158.465,95.38,157.123,93.079,154.932,91.819z"></path>
+                           <g id="XMLID_15_">
+                              <g>
+                                 <path style="fill:currentColor;" d="M79.952,44.888L79.952,44.888c3.273-3.273,2.539-8.762-1.479-11.06l-7.288-4.171 c-2.75-1.572-6.212-1.109-8.452,1.128l0,0c-3.273,3.273-2.539,8.762,1.479,11.06l7.291,4.169 C74.25,47.589,77.712,47.126,79.952,44.888z"></path>
+                                 <path style="fill:currentColor;" d="M133.459,65.285L99.103,45.631c-2.75-1.572-6.209-1.109-8.449,1.128l0,0 c-3.273,3.273-2.539,8.759,1.479,11.057l23.497,13.44L23.931,122.5l0.52-103.393l19.172,10.964 c2.722,1.558,6.152,1.098,8.367-1.12l0.104-0.104c3.24-3.24,2.514-8.674-1.463-10.95L21,0.948 c-2.219-1.26-4.93-1.26-7.121-0.027c-2.219,1.233-3.588,3.533-3.615,6.026L9.607,134.524c0,0,0,0,0,0.027 c0,2.465,1.369,4.766,3.533,6.026c1.123,0.63,2.355,0.959,3.615,0.959c1.205,0,2.438-0.301,3.533-0.931l113.116-63.214 c2.219-1.26,3.588-3.533,3.588-6.053c0,0,0,0,0-0.027C136.992,68.845,135.65,66.545,133.459,65.285z"></path>
+                              </g>
+                           </g>
+                        </g>
+                     </g>
+                  </svg>
+                  <span>{{LANG shorts}}</span>
+               </a>
+            </li>
+            <?php } ?>
+         </ul>
+         <?php if (!empty($pt->subscribers_) && IS_LOGGED == true) { ?>
+         <ul class="sections subs_list">
+            <h3>{{LANG subscriptions}}</h3>
+            <div class="user_subscribers_">
+               <?php
+                  foreach ($pt->subscribers_ as $key => $user_) {
+                  $user_subscribers_ = PT_UserData($user_->user_id);
+                  if (!empty($user_subscribers_)) {
+                  ?>
+               <li data_subscriber_id="<?php echo($user_->id) ?>" class="subscribers_"><a  href="<?php echo($user_subscribers_->url) ?>" data-load="?link1=timeline&id=<?php echo($user_subscribers_->username) ?>"><img class="header-image subscribers_img_" src="<?php echo($user_subscribers_->avatar) ?>" alt="{{ME name}} avatar" /><?php echo($user_subscribers_->name) ?></a></li>
+               <?php } } ?>
+            </div>
+            <!--<li><a href="javascript:void(0)" onclick="load_more_sub()" id="user_subscribers__load">{{LANG show_more}}</a></li>-->
+         </ul>
+         <?php } ?>
+         <ul class="sections more_links_list">
+            <h3>{{LANG explore_more}}</h3>
+            <?php if ($pt->config->go_pro == 'on' && !PT_IsUpgraded() && IS_LOGGED == true): ?>
+            <li>
+               <a href="{{LINK go_pro}}" data-load="?link1=go_pro">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                     <path fill-rule="evenodd" clip-rule="evenodd" d="M14.2173 1.28219C14.5337 1.37796 14.75 1.6695 14.75 2V9.25H19C19.2766 9.25 19.5307 9.40224 19.6613 9.64611C19.7918 9.88998 19.7775 10.1859 19.624 10.416L11.624 22.416C11.4407 22.691 11.099 22.8136 10.7827 22.7178C10.4663 22.6221 10.25 22.3305 10.25 22V14.75H6C5.7234 14.75 5.46926 14.5978 5.33875 14.3539C5.20823 14.11 5.22254 13.8141 5.37596 13.584L13.376 1.58398C13.5593 1.30899 13.901 1.18641 14.2173 1.28219ZM7.40139 13.25H11C11.4142 13.25 11.75 13.5858 11.75 14V19.5229L17.5986 10.75H14C13.5858 10.75 13.25 10.4142 13.25 10V4.47709L7.40139 13.25Z" fill="currentColor"/>
+                  </svg>
+                  {{LANG go_pro}}
+               </a>
+            </li>
+            <?php endif; ?>
+            <?php if ($pt->config->live_video == 1 && ($pt->config->who_use_live == 'all' || ($pt->config->who_use_live == 'admin' && PT_IsAdmin()) || ($pt->config->who_use_live == 'pro' && $pt->user->is_pro > 0)) && IS_LOGGED == true) { ?>
+            <li>
+               <a href="{{LINK live}}" data-load="?link1=live">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                     <path fill-rule="evenodd" clip-rule="evenodd" d="M7.6727 3.66836C7.85585 4.03988 7.70315 4.48953 7.33163 4.67268C4.61229 6.01327 2.75 8.79333 2.75 12C2.75 15.2066 4.61229 17.9867 7.33163 19.3273C7.70315 19.5104 7.85585 19.9601 7.6727 20.3316C7.48954 20.7031 7.03989 20.8558 6.66837 20.6727C3.46083 19.0914 1.25 15.8043 1.25 12C1.25 8.19571 3.46083 4.90855 6.66837 3.32729C7.03989 3.14413 7.48954 3.29683 7.6727 3.66836ZM16.3273 3.66836C16.5105 3.29683 16.9601 3.14413 17.3316 3.32729C20.5392 4.90855 22.75 8.19571 22.75 12C22.75 15.8043 20.5392 19.0914 17.3316 20.6727C16.9601 20.8558 16.5105 20.7031 16.3273 20.3316C16.1441 19.9601 16.2969 19.5104 16.6684 19.3273C19.3877 17.9867 21.25 15.2066 21.25 12C21.25 8.79333 19.3877 6.01327 16.6684 4.67268C16.2969 4.48953 16.1441 4.03988 16.3273 3.66836ZM8.59913 7.54948C8.84794 7.88064 8.78118 8.3508 8.45002 8.5996C7.41628 9.37627 6.75 10.6102 6.75 12C6.75 13.3898 7.41628 14.6237 8.45002 15.4004C8.78118 15.6492 8.84794 16.1193 8.59913 16.4505C8.35033 16.7817 7.88017 16.8484 7.54901 16.5996C6.1544 15.5518 5.25 13.8814 5.25 12C5.25 10.1186 6.1544 8.44816 7.54901 7.40036C7.88017 7.15156 8.35033 7.21832 8.59913 7.54948ZM15.4009 7.54948C15.6497 7.21832 16.1198 7.15156 16.451 7.40036C17.8456 8.44816 18.75 10.1186 18.75 12C18.75 13.8814 17.8456 15.5518 16.451 16.5996C16.1198 16.8484 15.6497 16.7817 15.4009 16.4505C15.1521 16.1193 15.2188 15.6492 15.55 15.4004C16.5837 14.6237 17.25 13.3898 17.25 12C17.25 10.6102 16.5837 9.37627 15.55 8.5996C15.2188 8.3508 15.1521 7.88064 15.4009 7.54948ZM10.75 12C10.75 11.3096 11.3096 10.75 12 10.75C12.6904 10.75 13.25 11.3096 13.25 12C13.25 12.6903 12.6904 13.25 12 13.25C11.3096 13.25 10.75 12.6903 10.75 12ZM12 9.24998C10.4812 9.24998 9.25 10.4812 9.25 12C9.25 13.5188 10.4812 14.75 12 14.75C13.5188 14.75 14.75 13.5188 14.75 12C14.75 10.4812 13.5188 9.24998 12 9.24998Z" fill="currentColor"/>
+                  </svg>
+                  {{LANG live}}
+               </a>
+            </li>
+            <?php } ?>
+            <li>
+               <a href="{{LINK contact-us}}" data-load="?link1=contact">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                     <path fill-rule="evenodd" clip-rule="evenodd" d="M12 3.75C7.44365 3.75 3.75 7.44365 3.75 12C3.75 16.5563 7.44365 20.25 12 20.25C16.5563 20.25 20.25 16.5563 20.25 12C20.25 7.44365 16.5563 3.75 12 3.75ZM2.25 12C2.25 6.61522 6.61522 2.25 12 2.25C17.3848 2.25 21.75 6.61522 21.75 12C21.75 17.3848 17.3848 21.75 12 21.75C6.61522 21.75 2.25 17.3848 2.25 12ZM13 16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16C11 15.4477 11.4477 15 12 15C12.5523 15 13 15.4477 13 16ZM10.75 10C10.75 9.30964 11.3096 8.75 12 8.75C12.6904 8.75 13.25 9.30964 13.25 10V10.1213C13.25 10.485 13.1055 10.8338 12.8483 11.091L11.4697 12.4697C11.1768 12.7626 11.1768 13.2374 11.4697 13.5303C11.7626 13.8232 12.2374 13.8232 12.5303 13.5303L13.909 12.1517C14.4475 11.6132 14.75 10.8828 14.75 10.1213V10C14.75 8.48122 13.5188 7.25 12 7.25C10.4812 7.25 9.25 8.48122 9.25 10V10.5C9.25 10.9142 9.58579 11.25 10 11.25C10.4142 11.25 10.75 10.9142 10.75 10.5V10Z" fill="currentColor"/>
+                  </svg>
+                  {{LANG contact_help}}
+               </a>
+            </li>
+         </ul>
+         <!-- <footer class="pt_footer">
+            {{FOOTER_LAYOUT}}
+         </footer> -->
+      </div>
+      <?php } ?>
+      <?php endif;
+        */
+       ?>
+      <?php if ($pt->phone_api != 'yes'): ?>
+      <!-- <footer class="pt_footer">
+         {{FOOTER_LAYOUT}}
+      </footer> -->
+      <?php endif; ?>
+      <!-- JS FILES -->
+      <?php if ($pt->page == 'watch') {?>
+      <div id="fb-root"></div>
+      <script>(function(d, s, id) {
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) return;
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.10&appId=1755264744788554";
+         fjs.parentNode.insertBefore(js, fjs);
+         }(document, 'script', 'facebook-jssdk'));
+      </script>
+      <?php } ?>
+      {{EXTRA_JS}}
+      <script type="text/javascript" src="{{CONFIG theme_url}}/js/script.js?version={{CONFIG version}}"></script>
+      <script type="text/javascript" src="{{CONFIG theme_url}}/js/bootstrap.min.js?version={{CONFIG version}}"></script>
+      <script src="{{CONFIG theme_url}}/js/bootstrap-toggle.min.js?version={{CONFIG version}}"></script>
+      <script src="{{CONFIG theme_url}}/js/footer.js?version={{CONFIG version}}"></script>
+      <link rel="" ="">
+      <script>
+         $(window).on("popstate", function (e) {
+             location.reload();
+         });
+         $(document).ready(function(){
+           // $('.share-video a').click(function (e) {
+           //     e.preventDefault();
+           // });
+           $('.dropdown-toggle').dropdown()
+
+           $("#toggle-mode").change(function(event) {
+               var mode = 'day';
+
+               if ($(this).prop( "checked" ) === true) {
+                 mode = 'night';
+                 $('<link>',{
+                   rel:'stylesheet',
+                   href:'{{CONFIG theme_url}}/css/night-mode.css',
+                   class:'night-mode-css'
+                 }).insertAfter('link#style-css');
+                 $('.logo-img img').attr('src', '{{CONFIG theme_url}}/img/logo-light.png?cache=<?php echo($pt->config->logo_cache) ?>');
+               }
+               else{
+                 $(".night-mode-css").remove();
+                 $('.logo-img img').attr('src', '{{CONFIG theme_url}}/img/logo.png?cache=<?php echo($pt->config->logo_cache) ?>');
+               }
+
+
+               $.post('{{LINK }}', {mode: mode}, function(data, textStatus, xhr) { /* pass */ });
+           });
+
+           $("li.toggle-mobile-mode").click(function(event) {
+               var mode = $(this).attr('data-mode');
+
+               $.post('{{LINK }}', {mode: mode}, function(data, textStatus, xhr) {
+                 location.reload();
+               });
+           });
+         });
+      </script>
+      <?php if (IS_LOGGED == true) { ?>
+      <audio id="message-sound" class="sound-controls" preload="auto">
+         <source src="{{CONFIG theme_url}}/mp3/unconvinced.mp3" type="audio/mpeg">
+         <source src="{{CONFIG theme_url}}/mp3/unconvinced.ogg" type="audio/ogg">
+      </audio>
+      <?php if (!$pt->user->suspend_upload || !$pt->user->suspend_import) { ?>
+      <div class="fixed-action-btn">
+         <span id="btn-fab-main" class="btn-fab-floating">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
+               <line x1="12" y1="5" x2="12" y2="19"></line>
+               <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+         </span>
+         <ul>
+            <?php if (($pt->config->who_upload == 'admin' && PT_IsAdmin()) || $pt->config->who_upload == 'all') { ?>
+            <?php if ($pt->config->upload_system == 'on' && !$pt->user->suspend_upload) { ?>
+            <li data-toggle="tooltip" data-placement="left" title="{{LANG upload}}">
+               <a href="{{LINK upload-video}}" class="btn-floating" data-load="?link1=upload-video">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                     <path fill="#b228c9" d="M14,13V17H10V13H7L12,8L17,13M19.35,10.03C18.67,6.59 15.64,4 12,4C9.11,4 6.6,5.64 5.35,8.03C2.34,8.36 0,10.9 0,14A6,6 0 0,0 6,20H19A5,5 0 0,0 24,15C24,12.36 21.95,10.22 19.35,10.03Z"></path>
+                  </svg>
+               </a>
+            </li>
+            <?php } ?>
+            <?php } ?>
+            <?php if ($pt->config->import_system == 'on' && !$pt->user->suspend_import) { ?>
+            <li data-toggle="tooltip" data-placement="left" title="{{LANG import}}">
+               <a href="{{LINK import-video}}" class="btn-floating" data-load="?link1=import-video">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                     <path fill="#ee457e" d="M17,13L12,18L7,13H10V9H14V13M19.35,10.03C18.67,6.59 15.64,4 12,4C9.11,4 6.6,5.64 5.35,8.03C2.34,8.36 0,10.9 0,14A6,6 0 0,0 6,20H19A5,5 0 0,0 24,15C24,12.36 21.95,10.22 19.35,10.03Z"></path>
+                  </svg>
+               </a>
+            </li>
+            <?php } ?>
+            <?php if ($pt->config->live_video == 1 && ($pt->config->who_use_live == 'all' || ($pt->config->who_use_live == 'admin' && PT_IsAdmin()) || ($pt->config->who_use_live == 'pro' && $pt->user->is_pro > 0))) { ?>
+            <li data-toggle="tooltip" data-placement="left" title="{{LANG live}}">
+               <a href="{{LINK live}}" class="btn-floating" data-load="?link1=live">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                     <path fill="#4caf50" d="M17,10.5L21,6.5V17.5L17,13.5V17A1,1 0 0,1 16,18H4A1,1 0 0,1 3,17V7A1,1 0 0,1 4,6H16A1,1 0 0,1 17,7V10.5M14,16V15C14,13.67 11.33,13 10,13C8.67,13 6,13.67 6,15V16H14M10,8A2,2 0 0,0 8,10A2,2 0 0,0 10,12A2,2 0 0,0 12,10A2,2 0 0,0 10,8Z"></path>
+                  </svg>
+               </a>
+            </li>
+            <?php } ?>
+            <?php if ( $pt->config->shorts_system == 'on') { ?>
+            <li data-toggle="tooltip" data-placement="left" title="{{LANG shorts}}">
+               <a href="{{LINK upload-video}}?type=shorts" data-load="?link1=upload-video&type=shorts" class="btn-floating">
+                  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 98.94 122.88" style="enable-background:new 0 0 98.94 122.88" xml:space="preserve">
+                     <style type="text/css">
+                        <![CDATA[ .st0{fill-rule:evenodd} ]]>
+                     </style>
+                     <g>
+                        <path fill="currentColor" class="st0" d="M63.49,2.71c11.59-6.04,25.94-1.64,32.04,9.83c6.1,11.47,1.65,25.66-9.94,31.7l-9.53,5.01 c8.21,0.3,16.04,4.81,20.14,12.52c6.1,11.47,1.66,25.66-9.94,31.7l-50.82,26.7c-11.59,6.04-25.94,1.64-32.04-9.83 c-6.1-11.47-1.65-25.66,9.94-31.7l9.53-5.01c-8.21-0.3-16.04-4.81-20.14-12.52c-6.1-11.47-1.65-25.66,9.94-31.7L63.49,2.71 L63.49,2.71z M36.06,42.53l30.76,18.99l-30.76,18.9V42.53L36.06,42.53z"/>
+                     </g>
+                  </svg>
+               </a>
+            </li>
+            <?php } ?>
+         </ul>
+      </div>
+      <?php } ?>
+      <div id="pay-go-pro" class="modal matdialog">
+         <div class="modal-dialog">
+            <div class="modal-content payment_box">
+               <div class="modal-header">
+                  <h3 class="modal-title">
+                     {{LANG choose_payment_method}}
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
+                              <line x1="18" y1="6" x2="6" y2="18"></line>
+                              <line x1="6" y1="6" x2="18" y2="18"></line>
+                           </svg>
+                        </span>
+                     </button>
+                  </h3>
+                  <div class="pay-go-pro-alert"></div>
+               </div>
+               <div class="payment_method"></div>
+            </div>
+         </div>
+         <input id="wallet_amount" type="hidden">
+      </div>
+      <script>
+         $('#btn-fab-main').on('touchstart click', function() {
+          if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
+            $(this).addClass('reverse-animation');
+          } else {
+            $(this).removeClass('reverse-animation');
+            $(this).addClass('active');
+          }
+          return false;
+         });
+
+         var pxScrolled = 180;
+         $(window).scroll(function() {
+          if ($(this).scrollTop() > pxScrolled) {
+            $('.fixed-action-btn').css({'bottom': '35px', 'transition': '.3s'});
+          } else {
+            $('.fixed-action-btn').css({'bottom': '-60px'});
+          }
+         });
+
+         
+      </script>
+      <?php } ?>
+      <?php if ($pt->phone_api != 'yes'): ?>
+
+      <script src="{{CONFIG theme_url}}/js/cookieconsent.min.js?version={{CONFIG version}}"></script>
+      <script>
+         window.addEventListener("load", function(){
+         window.cookieconsent.initialise({
+           "theme": "classic",
+           "content": {
+             "message": "{{LANG cookie_message}}",
+             "dismiss": "{{LANG cookie_dismiss}}",
+             "link": "{{LANG cookie_link}}",
+             "href": "{{LINK terms/privacy-policy}}"
+           }
+         })});
+      </script>
+      <?php endif;?>
+      <script type="text/javascript">
+         $(document).on('click', '#pop_up_18_yes', function(event) {
+           event.preventDefault();
+           $.post('{{LINK aj/main/yes_18}}?hash=' + $('.main_session').val(), function(data, textStatus, xhr) {
+             $('#pop_up_18').modal('hide');
+           });
+         });
+
+         $(document).on('click', '#pop_up_18_no', function(event) {
+           event.preventDefault();
+           $.post('{{LINK aj/main/no_18}}?hash=' + $('.main_session').val(), function(data, textStatus, xhr) {
+             if (data.status == 200) {
+               $('#pop_up_18').modal('hide');
+               window.location.href = data.url
+             }
+           });
+         });
+
+         <?php if (empty($_COOKIE['pop_up_18']) && !IS_LOGGED && $pt->page != 'age_block' && $pt->page != 'login' && $pt->config->pop_up_18 == 'on') { ?>
+           $('#pop_up_18').modal('show');
+         <?php } ?>
+         function setCookie(cname, cvalue, exdays) {
+             var d = new Date();
+             d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+             var expires = "expires="+d.toUTCString();
+             document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+         }
+		 
+		 function SlideSetCookie(cname, cvalue, exdays) {
+         $('#open_slide').attr('onclick', "SlideEraseCookie('open_slide')");
+           var d = new Date();
+           d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+           var expires = "expires="+d.toUTCString();
+           document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+         }
+         function SlideEraseCookie(name) {
+         $('#open_slide').attr('onclick', "SlideSetCookie('open_slide','yes',1)");
+           document.cookie = name + '=;path=/;Max-Age=0'
+         }
+
+         function getCookie(cname) {
+             var name = cname + "=";
+             var ca = document.cookie.split(';');
+             for(var i = 0; i < ca.length; i++) {
+                 var c = ca[i];
+                 while (c.charAt(0) == ' ') {
+                     c = c.substring(1);
+                 }
+                 if (c.indexOf(name) == 0) {
+                     return c.substring(name.length, c.length);
+                 }
+             }
+             return "";
+         }
+         <?php if (empty($_COOKIE['r'])) { ?>
+           $.ajax({
+             url: 'https://extreme-ip-lookup.com/json/',
+             type: 'GET',
+             dataType: 'json'
+           })
+           .done(function(data) {
+             if (data.status == 'success') {
+               setCookie('r', window.btoa(data.continent), 1);
+               <?php if ($pt->page == 'watch') { ?>
+                 $('#redirect_to_video_page').click();
+               <?php } ?>
+             }
+             else{
+               setCookie('r', window.btoa('string'), 1);
+               <?php if ($pt->page == 'watch') { ?>
+                 $('#redirect_to_video_page').click();
+               <?php } ?>
+             }
+           })
+           .fail(function() {
+             setCookie('r', window.btoa('string'), 1);
+             <?php if ($pt->page == 'watch') { ?>
+               $('#redirect_to_video_page').click();
+             <?php } ?>
+           })
+           .always(function() {
+           });
+           // $.get('https://extreme-ip-lookup.com/json/', function(data) {
+           //   if (data.status == 'success') {
+           //     setCookie('r', window.btoa(data.continent), 1);
+           //     <?php if ($pt->page == 'watch') { ?>
+           //       $('#redirect_to_video_page').click();
+           //     <?php } ?>
+           //   }
+           //   else{
+           //     setCookie('r', window.btoa('string'), 1);
+           //     <?php if ($pt->page == 'watch') { ?>
+           //       $('#redirect_to_video_page').click();
+           //     <?php } ?>
+           //   }
+           // });
+         <?php } ?>
+      </script>
+      <?php
+         if (empty($_SESSION['finger']) && $pt->page != 'watch') {
+         ?>
+      <script>
+         var fingerprintReport = function () {
+            Fingerprint2.get(function(components) {
+              var murmur = Fingerprint2.x64hash128(components.map(function (pair) { return pair.value }).join(), 31)
+              $.post('{{LINK aj/views}}?hash=' + $('.main_session').val()+'&type_=set', {finger: murmur}, function(data, textStatus, xhr) {
+              });
+            })
+         }
+         fingerprintReport();
+      </script>
+      <?php } ?>
+      <script type="text/javascript">
+         var myTimeout;
+
+         function show_gif(self,gif) {
+           if (gif && gif != '') {
+             myTimeout = setTimeout(function() {
+                 $(self).append('<img src="'+gif+'">');
+             }, 1000);
+           }
+         }
+
+         function hide_gif(self) {
+           $(self).find('img').remove();
+           clearTimeout(myTimeout);
+         }
+
+         function block_user(user_id,self,redirect = true) {
+           $.post('{{LINK aj/user/block}}?hash=' + $('.main_session').val(), {user_id: user_id}, function(data, textStatus, xhr) {
+             if (redirect == true) {
+               location.reload();
+             }
+             else{
+               $(self).find('span').text(data.message);
+             }
+           });
+         }
+      </script>
+      
+      <div id="select-language" class="modal matdialog et_plus lang_select_modal" <?php if (empty($_COOKIE['lang_modal']) && !IS_LOGGED && $pt->page != 'login' && $pt->config->lang_modal == 'on') { ?>data-backdrop="static"<?php } ?> data-keyboard="false">
+         <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+               <div class="modal-body" id="pt_language_modal">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="language_info">
+								<h3>{{LANG language}}</h3>
+								<img src="{{CONFIG theme_url}}/img/language.svg"/>
+							</div>
+						</div>
+						<div class="col-md-8">
+							<ul class="lang_modal">
+								<?php echo $pt->langs; ?>
+							</ul>
+						</div>
+					</div>
+
+               </div>
+            </div>
+         </div>
+      </div>
+	  <?php if (empty($_COOKIE['lang_modal']) && !IS_LOGGED && $pt->page != 'login' && $pt->config->lang_modal == 'on') { ?>
+      <script type="text/javascript">
+         $('#select-language').modal('show');
+         setCookie('lang_modal','1', 10);
+      </script>
+      <?php } ?>
+      <?php if ($pt->config->paystack_payment == 'yes') { ?>
+      <div class="modal fade matdialog" id="paystack_wallet_modal" role="dialog" data-keyboard="false" style="overflow-y: auto;">
+         <div class="modal-dialog">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
+                           <line x1="18" y1="6" x2="6" y2="18"></line>
+                           <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                     </span>
+                  </button>
+                  <h4 class="modal-title">{{LANG paystack}}</h4>
+               </div>
+               <form class="form" method="post" id="paystack_wallet_form" action="#">
+                  <div class="modal-body twocheckout_modal">
+                     <div id="paystack_wallet_alert"></div>
+                     <div class="upload_video_bg_color">
+						<div class="step_2_form">
+							<div class="form-group mb-0">
+								<label for="paystack_wallet_email">{{LANG email}}</label>
+								<input id="paystack_wallet_email" type="text" class="form-control input-md" autocomplete="off" placeholder=" " value="<?php echo($pt->user->email) ?>">
+							</div>
+						</div>
+                     </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="modal-footer">
+                     <div class="ball-pulse">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                     </div>
+                     <input id="paystack_type" name="paystack_type" type="hidden" value="">
+                     <input id="paystack_video_id" name="paystack_video_id" type="hidden" value="">
+                     <input id="paystack_price" name="paystack_price" type="hidden" value="">
+                     <input id="paystack_user_id" name="paystack_user_id" type="hidden" value="">
+                     <button type="button" class="btn btn-main" id="paystack_btn" onclick="InitializeWalletPaystack()">{{LANG pay}}</button>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+      <?php } ?>
+      <?php if ($pt->config->cashfree_payment == 'yes') { ?>
+      <div class="modal fade matdialog" id="cashfree_modal_box" tabindex="-1" role="dialog" aria-hidden="true">
+         <div class="modal-dialog" role="document">
+            <div class="modal-content">
+				<div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
+                           <line x1="18" y1="6" x2="6" y2="18"></line>
+                           <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                     </span>
+                  </button>
+                  <h4 class="modal-title">{{LANG cashfree}}</h4>
+               </div>
+			   
+               <div class="modal-body">
+                  <div id="cashfree_alert"></div>
+                  <form id="cashfree_form" method="post">
+                     <div class="upload_video_bg_color">
+						<div class="step_2_form">
+					 <div class="form-group">
+                        <label for="cashfree_name">{{LANG name}}</label>
+                        <input class="form-control" type="text" placeholder=" " value="{{ME name}}" id="cashfree_name" name="name">
+                     </div>
+                     <div class="form-group">
+                        <label for="cashfree_email">{{LANG email}}</label>
+                        <input class="form-control" type="text" placeholder=" " value="{{ME email}}" id="cashfree_email" name="email">
+                     </div>
+                     <div class="form-group mb-0">
+                        <label for="cashfree_phone">{{LANG phone_number}}</label>
+                        <input class="form-control" type="text" placeholder=" " id="cashfree_phone" name="phone">
+                     </div>
+					 </div>
+					 </div>
+                     <input id="cashfree_type" name="cashfree_type" type="hidden" value="">
+                     <input id="cashfree_video_id" name="cashfree_video_id" type="hidden" value="">
+                     <input id="cashfree_price" name="cashfree_price" type="hidden" value="">
+                     <input id="cashfree_user_id" name="cashfree_user_id" type="hidden" value="">
+                     <div class="modal-footer">
+                        <button class="btn btn-main" id="cashfree_button" type="button" onclick="InitializeCashfree()">{{LANG pay}}</button>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+      <?php } ?>
+        <?php if ($pt->config->fluttewave_payment == 'yes') { ?>
+        <div class="modal fade matdialog" id="fluttewave_modal" role="dialog" data-keyboard="false" style="overflow-y: auto;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+					<div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
+                           <line x1="18" y1="6" x2="6" y2="18"></line>
+                           <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                     </span>
+                  </button>
+                  <h4 class="modal-title">{{LANG flutterwave}}</h4>
+               </div>
+			   
+                    <form class="form" method="post" id="fluttewave_form" action="#">
+                        <div class="modal-body twocheckout_modal">
+                            <div id="fluttewave_alert"></div>
+                             <div class="upload_video_bg_color">
+						<div class="step_2_form">
+                            <div class="form-group mb-0">
+								<label>{{LANG email}}</label>
+                                <input id="fluttewave_email" type="text" class="form-control input-md" autocomplete="off" placeholder=" " value="{{ME email}}">
+                            </div>
+                           </div>
+						   </div>
+                        </div>
+                        <div class="clear"></div>
+                        <div class="modal-footer">
+                            <div class="ball-pulse"><div></div><div></div><div></div></div>
+                            <button type="button" class="btn btn-main" id="fluttewave_btn" onclick="SignatureFluttewave()">{{LANG pay}}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <?php } ?>
+      <?php if ($pt->config->razorpay_payment == 'yes') { ?>
+      <div class="modal fade matdialog" id="razorpay_modal_box" tabindex="-1" role="dialog" aria-hidden="true">
+         <div class="modal-dialog" role="document">
+            <div class="modal-content">
+				<div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
+                           <line x1="18" y1="6" x2="6" y2="18"></line>
+                           <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                     </span>
+                  </button>
+                  <h4 class="modal-title">{{LANG razorpay}}</h4>
+               </div>
+			   
+               <div class="modal-body">
+                  <div id="razorpay_alert"></div>
+                  <form id="razorpay_form" method="post">
+					<div class="upload_video_bg_color">
+						<div class="step_2_form">
+                     <div class="form-group">
+                        <label for="razorpay_name">{{LANG name}}</label>
+                        <input class="form-control shop_input" type="text" placeholder=" " value="{{ME name}}" id="razorpay_name" name="name">
+                     </div>
+                     <div class="form-group">
+                        <label for="razorpay_email">{{LANG email}}</label>
+                        <input class="form-control shop_input" type="text" placeholder=" " value="{{ME email}}" id="razorpay_email" name="email">
+                     </div>
+                     <div class="form-group mb-0">
+                        <label for="razorpay_phone">{{LANG phone_number}}</label>
+                        <input class="form-control shop_input" type="text" placeholder=" " id="razorpay_phone" name="phone">
+                     </div>
+					 </div>
+					 </div>
+                     <input id="razorpay_type" name="razorpay_type" type="hidden" value="">
+                     <input id="razorpay_video_id" name="razorpay_video_id" type="hidden" value="">
+                     <input id="razorpay_price" name="razorpay_price" type="hidden" value="">
+                     <input id="razorpay_user_id" name="razorpay_user_id" type="hidden" value="">
+                     <div class="modal-footer">
+                        <button type="button" class="btn btn-main" onclick="SignatureRazorpay()" id="razorpay_button">{{LANG pay}}</button>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+      <script src="https://checkout.razorpay.com/v1/checkout.js?version={{CONFIG version}}"></script>
+      <?php } ?>
+      <?php if ($pt->config->iyzipay_payment == 'yes') { ?>
+      <div id="iyzipay_content"></div>
+      <?php }
+         echo PT_LoadPage('modals/wallet');
+         ?>
+      <script type="text/javascript">
+         function HideCard(ad_date) {
+             setTimeout(function (argument) {
+                $('.'+ad_date).remove();
+             },5000);
+          }
+      </script>
+	  
+	  <?php if($pt->page == 'login'){?>
+         <style type="text/css">
+            body.login_pag:before {
+		content: '';
+		background: url('{{CONFIG theme_url}}/img/bg_auth.png');
+                background-repeat: no-repeat;
+    background-size: contain;
+    background-attachment: fixed;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -2;
+    background-position: right;
+	}
+        </style>
+        <?php } ?>
+
+        <script type="text/javascript">
+            var pxScrolledTOP = 50;
+             $(window).scroll(function() {
+              if ($(this).scrollTop() > pxScrolledTOP) {
+                $('.navbar-fixed-top').addClass('nav_bg_solid');
+              } else {
+                $('.navbar-fixed-top').removeClass('nav_bg_solid');
+              }
+             });
+        </script>
+
+		<?php if ($pt->page != 'login') { ?>
+			<div class="sidenav-overlay" onclick="javascript:$('body').removeClass('side_open');$('body').removeClass('mobi_side_open');"></div>
+		<?php } ?>
+   </body>
+</html>

@@ -1,0 +1,554 @@
+<?php
+$pt->page_number                = (!empty($_GET['page-id'])) ? $_GET['page-id'] : 1;
+$db->pageLimit       = 20;
+$total_requests      = $db->getValue(T_VERIF_REQUESTS, 'COUNT(*)');
+$link = "";
+if (!empty($_GET['range']) && in_array($_GET['range'], array('Today','Yesterday','This Week','This Month','Last Month','This Year'))) {
+    if ($_GET['range'] == 'Today' || $_GET['range'] == 'Yesterday') {
+        $this_start = strtotime(date('M')." ".date('d').", ".date('Y')." 12:00am");
+        $this_end = strtotime(date('M')." ".date('d').", ".date('Y')." 11:59pm");
+        if ($_GET['range'] == 'Yesterday') {
+            $this_start = strtotime(date('M')." ".date('d',strtotime("-1 days")).", ".date('Y')." 12:00am");
+            $this_end = strtotime(date('M')." ".date('d',strtotime("-1 days")).", ".date('Y')." 11:59pm");
+        }
+        $main_range = 'Today';
+        $title = "Daily";
+    }
+    elseif ($_GET['range'] == 'This Week') {
+        $time = strtotime(date('l').", ".date('M')." ".date('d').", ".date('Y'));
+
+        if (date('l') == 'Saturday') {
+            $this_start = strtotime(date('M')." ".date('d').", ".date('Y')." 12:00am");
+        }
+        else{
+            $this_start = strtotime('last saturday, 12:00am', $time);
+        }
+
+        if (date('l') == 'Friday') {
+            $this_end = strtotime(date('M')." ".date('d').", ".date('Y')." 11:59pm");
+        }
+        else{
+            $this_end = strtotime('next Friday, 11:59pm', $time);
+        }
+
+        $main_range = 'This Week';
+        $title = "Weekly";
+    }
+    elseif ($_GET['range'] == 'This Month' ||$_GET['range'] == 'Last Month') {
+        $this_start = strtotime("1 ".date('M')." ".date('Y')." 12:00am");
+        $this_end = strtotime(cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y'))." ".date('M')." ".date('Y')." 11:59pm");
+        if ($_GET['range'] == 'Last Month') {
+            $this_start = strtotime("1 ".date('M',strtotime("-1 month"))." ".date('Y')." 12:00am");
+            $this_end = strtotime(cal_days_in_month(CAL_GREGORIAN, date('m',strtotime("-1 month")), date('Y'))." ".date('M',strtotime("-1 month"))." ".date('Y')." 11:59pm");
+        }
+        $main_range = 'This Month';
+        $title = "Monthly";
+    }
+    elseif ($_GET['range'] == 'This Year') {
+        $this_start = strtotime("1 January ".date('Y')." 12:00am");
+        $this_end = strtotime("31 December ".date('Y')." 11:59pm");
+        $main_range = 'This Year';
+        $title = "Yearly";
+    }
+}
+$start = '';
+$end = '';
+$first_code = '';
+$second_code = '';
+if (!empty($_GET['range']) && !in_array($_GET['range'], array('Today','Yesterday','This Week','This Month','Last Month','This Year'))) {
+    $arr = explode('-', $_GET['range']);
+    if (preg_match('~(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d~m', $arr[0]) && preg_match('~(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d~m', $arr[1])) {
+        $start = PT_Secure($arr[0]);
+        $end = PT_Secure($arr[1]);
+        $this_start = strtotime($start);
+        $this_end = strtotime($end);
+        $month_days = cal_days_in_month(CAL_GREGORIAN, date('m',strtotime($start)), date('Y',strtotime($start)));
+        $diff = abs(strtotime($end) - strtotime($start));
+        $years = floor($diff / (365*60*60*24));
+        $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+        $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+        if ($years >= 1) {
+            $array = array();
+            for ($i=date('Y',strtotime($start)); $i <= date('Y',strtotime($end)); $i++) {
+                $array["'".$i."'"] = 0;
+            }
+            $main_range = 'Custom';
+            $code = 'Y';
+            $title = "Yearly";
+        }
+        elseif ($months >= 1) {
+            $array = array('01' => 0 ,'02' => 0 ,'03' => 0 ,'04' => 0 ,'05' => 0 ,'06' => 0 ,'07' => 0 ,'08' => 0 ,'09' => 0 ,'10' => 0 ,'11' => 0 ,'12' => 0);
+            $code = 'm';
+            $main_range = 'This Year';
+            $title = "Monthly";
+            if (date('Y',strtotime($start)) == date('Y',strtotime($end))) {
+                $array = array();
+                for ($i=date('m',strtotime($start)); $i <= date('m',strtotime($end)); $i++) {
+                    $array["'".(int)$i."'"] = 0;
+                }
+                $code = 'm';
+                $main_range = 'Custom';
+            }
+            else{
+                $month = cal_days_in_month(CAL_GREGORIAN, date('m',strtotime($start)), date('Y',strtotime($start)));
+                $array = array();
+                for ($i=(int)date('m',strtotime($start)); $i <= 12; $i++) {
+                    $array["'".(int)$i.'-'.date('Y',strtotime($start))."'"] = 0;
+                }
+                for ($i=1; $i <= (int)date('m',strtotime($end)); $i++) {
+                    $array["'".(int)$i.'-'.date('Y',strtotime($end))."'"] = 0;
+                }
+                $first_code = 'm';
+                $second_code = 'Y';
+                $main_range = 'Custom';
+            }
+        }
+        elseif ($days > 7) {
+            if (date('m',strtotime($start)) == date('m',strtotime($end))) {
+                $array = array();
+                for ($i=date('d',strtotime($start)); $i <= date('d',strtotime($end)); $i++) {
+                    $array["'".(int)$i."'"] = 0;
+                }
+                $code = 'd';
+                $main_range = 'Custom';
+            }
+            else{
+                $month = cal_days_in_month(CAL_GREGORIAN, date('m',strtotime($start)), date('Y',strtotime($start)));
+                $array = array();
+                for ($i=(int)date('d',strtotime($start)); $i <= $month; $i++) {
+                    $array["'".(int)$i.'-'.date('m',strtotime($start))."'"] = 0;
+                }
+                for ($i=1; $i <= (int)date('d',strtotime($end)); $i++) {
+                    $array["'".(int)$i.'-'.date('m',strtotime($end))."'"] = 0;
+                }
+                $first_code = 'd';
+                $second_code = 'm';
+                $main_range = 'Custom';
+            }
+            $title = "Daily";
+        }
+        elseif ($days >= 1 && $days < 8) {
+            $title = "Daily";
+            $code = 'l';
+            $array = array('Saturday' => 0 , 'Sunday' => 0 , 'Monday' => 0 , 'Tuesday' => 0 , 'Wednesday' => 0 , 'Thursday' => 0 , 'Friday' => 0);
+            if (date('m',strtotime($start)) == date('m',strtotime($end))) {
+                $array = array();
+                for ($i=date('d',strtotime($start)); $i <= date('d',strtotime($end)); $i++) {
+                    $array["'".(int)$i."'"] = 0;
+                }
+                $code = 'd';
+                $main_range = 'Custom';
+            }
+            else{
+                $month = cal_days_in_month(CAL_GREGORIAN, date('m',strtotime($start)), date('Y',strtotime($start)));
+                $array = array();
+                for ($i=(int)date('d',strtotime($start)); $i <= $month; $i++) {
+                    $array["'".(int)$i.'-'.date('m',strtotime($start))."'"] = 0;
+                }
+                for ($i=1; $i <= (int)date('d',strtotime($end)); $i++) {
+                    $array["'".(int)$i.'-'.date('m',strtotime($end))."'"] = 0;
+                }
+                $first_code = 'd';
+                $second_code = 'm';
+                $main_range = 'Custom';
+            }
+        }
+    }
+}
+
+$rang_link = $link;
+if (!empty($this_start) && !empty($this_end)) {
+    $link .= "&range=".PT_Secure($_GET['range']);
+    $db->where('time',$this_start,'>=')->where('time',$this_end,'<=');
+}
+$sort_link = $link;
+$sort_array = array('DESC_i' => array('id' , 'DESC'),
+                    'ASC_i'  => array('id' , 'ASC'),
+                    'DESC_t' => array('time' , 'DESC'),
+                    'ASC_t'  => array('time' , 'ASC'));
+if (!empty($_GET['sort']) && in_array($_GET['sort'], array_keys($sort_array))) {
+    $db->orderBy($sort_array[$_GET['sort']][0],$sort_array[$_GET['sort']][1]);
+    $link .= "&sort=".PT_Secure($_GET['sort']);
+    $rang_link .= "&sort=".PT_Secure($_GET['sort']);
+}
+else{
+    $_GET['sort'] = 'DESC_i';
+    $db->orderBy('id', 'DESC');
+}
+$verif_requests      = $db->paginate(T_VERIF_REQUESTS,$pt->page_number);
+
+if (($pt->page_number > $db->totalPages) && !empty($_GET['page-id'])) {
+    header("Location: " . PT_LoadAdminLinkSettings('verification-requests'));
+    exit();
+}
+$db->where('recipient_id',0)->where('admin',1)->where('seen',0)->where('type','verify')->update(T_NOTIFICATIONS,array('seen' => time()));
+?>
+
+<div class="container-fluid">
+    <div>
+        <h3>Manage Verification Reqeusts</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Admin Panel</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Users</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page"> Manage Verification Reqeusts</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-body">
+					<div id="dashboard-daterangepicker" class="btn btn-outline-light pull-right">
+                            <?php
+                            if (!empty($_GET['range']) && in_array($_GET['range'], array('Today','Yesterday','This Week','This Month','Last Month','This Year'))) {
+                                echo $_GET['range'];
+                            }else if (!empty($start) && !empty($end)){
+                                echo $_GET['range'];
+                            }else{
+                                echo 'All';
+                            } ?>
+                        </div>
+                    <h6 class="card-title">Manage Verification Requests</h6>
+                   <div class="clearfix"></div>
+                   <br>
+                   <div class="table-responsive1">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr role="row">
+                                    <th width="60"><input type="checkbox" id="check-all" class="filled-in check-all" ><label for="check-all"></label></th>
+                                    <th width="100">ID
+                                        <?php if (!empty($_GET['sort']) && $_GET['sort'] == 'DESC_i') { ?>
+                                            <svg onclick="location.href = '<?php echo(PT_LoadAdminLinkSettings('verification-requests?page-id=1').$sort_link."&sort=ASC_i") ?>'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#000000" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up cursor-p"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+                                        <?php }else{ ?>
+                                            <svg onclick="location.href = '<?php echo(PT_LoadAdminLinkSettings('verification-requests?page-id=1').$sort_link."&sort=DESC_i") ?>'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#000000" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-down cursor-p"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                                        <?php } ?></th>
+                                    <th>Username</th>
+                                    <th>Requested
+                                        <?php if (!empty($_GET['sort']) && $_GET['sort'] == 'DESC_t') { ?>
+                                            <svg onclick="location.href = '<?php echo(PT_LoadAdminLinkSettings('verification-requests?page-id=1').$sort_link."&sort=ASC_t") ?>'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#000000" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up cursor-p"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+                                        <?php }else{ ?>
+                                            <svg onclick="location.href = '<?php echo(PT_LoadAdminLinkSettings('verification-requests?page-id=1').$sort_link."&sort=DESC_t") ?>'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#000000" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-down cursor-p"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                                        <?php } ?></th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                    foreach ($verif_requests as $key => $pt->requests) {
+                                        $user_data = PT_UserData($pt->requests->user_id);
+                                        echo PT_LoadAdminPage('verification-requests/list',array(
+                                            'ID' => $pt->requests->id,
+                                            'USERNAME' => $user_data->username,
+                                            'DATE' => date("Y-F-d",$pt->requests->time),
+                                        ));
+                                    }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="admincp-pagination">
+                        <div class="pull-left">
+                            <?php echo "Showing $pt->page_number out of " . $db->totalPages; ?>
+                        </div>
+                        <nav class="pull-right">
+                            <ul class="pagination">
+                                <li>
+                                    <a href="<?php echo PT_LoadAdminLinkSettings('verification-requests?page-id=1').$link; ?>" class="waves-effect" title='First Page'>
+                                        <i class="material-icons">first_page</i>
+                                    </a>
+                                </li>
+                                <?php if ($pt->page_number > 1) {  ?>
+                                <li>
+                                    <a href="<?php echo PT_LoadAdminLinkSettings('verification-requests?page-id=' . ($pt->page_number - 1)).$link; ?>" class="waves-effect" title='Previous Page'>
+                                        <i class="material-icons">chevron_left</i>
+                                    </a>
+                                </li>
+                                <?php  } ?>
+                                <?php
+                                $nums = 0;
+                                $nums_pages = ($pt->page_number > 4) ? ($pt->page_number - 4) : $pt->page_number;
+                                for ($i=$nums_pages; $i <= $db->totalPages; $i++) {
+                                    if ($nums < 20) {
+                                    ?>
+                                    <li class="<?php echo ($pt->page_number == $i) ? 'active' : ''; ?>"><a href="<?php echo PT_LoadAdminLinkSettings('verification-requests?page-id=' . ($i)).$link; ?>" class="waves-effect"><?php echo $i ?></a></li>
+                                    <?php
+                                    }
+                                    $nums++;
+                                }
+                                ?>
+                                <?php if ($db->totalPages > $pt->page_number) { ?>
+                                <li>
+                                    <a href="<?php echo PT_LoadAdminLinkSettings('verification-requests?page-id=' . ($pt->page_number + 1)).$link; ?>" class="waves-effect" title="Next Page">
+                                        <i class="material-icons">chevron_right</i>
+                                    </a>
+                                </li>
+                                <?php } ?>
+                                <li>
+                                    <a href="<?php echo PT_LoadAdminLinkSettings('verification-requests?page-id=' . ($db->totalPages)).$link; ?>&last_page=1" class="waves-effect" title='Last Page'>
+                                        <i class="material-icons">last_page</i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-lg-2 col-md-2">
+                            <span>Action</span>
+                            <select class="form-control show-tick" id="action_type">
+                                <option value="verify">VERIFY</option>
+                                <option value="delete">Delete</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3 col-md-3">
+                            <span>&nbsp;</span>
+                            <button type="button" class="btn btn-info waves-effect delete-selected d-block" disabled>Submit<span></span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<div class="modal fade" id="SelectedDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal1Label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModal1Label">Delete request?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure that you want to remove the selected request(s)?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="DeleteSelected()" data-dismiss="modal">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal1Label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModal1Label">Delete request?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this request?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+jQuery(document).ready(function($) {
+        var range = { "All": [moment().startOf('year') , moment().endOf('year')],
+                      "Today": [moment() , moment()],
+                      "Yesterday": [moment().subtract(1, 'days') , moment().subtract(1, 'days')],
+                      "This_Week": [moment().subtract(6, 'days') , moment()],
+                      "This_Month": [moment().startOf('month') , moment().endOf('month')],
+                      "Last_Month": [moment().subtract(1, 'month').startOf('month') , moment().subtract(1, 'month').endOf('month')],
+                      "This_Year": [moment().subtract(1, 'year').startOf('year') , moment().subtract(1, 'year').endOf('year')]};
+        <?php
+        if (!empty($_GET['range']) && in_array($_GET['range'], array('Today','Yesterday','This Week','This Month','Last Month','This Year'))) {
+            if ($_GET['range'] == 'Today') { ?>
+                var start = range.Today[0];
+                var end = range.Today[1];
+            <?php }elseif ($_GET['range'] == 'Yesterday') { ?>
+                var start = range.Yesterday[0];
+                var end = range.Yesterday[1];
+            <?php }elseif ($_GET['range'] == 'This Week') { ?>
+                var start = range.This_Week[0];
+                var end = range.This_Week[1];
+            <?php }elseif ($_GET['range'] == 'This Month') { ?>
+                var start = range.This_Month[0];
+                var end = range.This_Month[1];
+            <?php }elseif ($_GET['range'] == 'Last Month') { ?>
+                var start = range.Last_Month[0];
+                var end = range.Last_Month[1];
+            <?php }elseif ($_GET['range'] == 'This Year') { ?>
+                var start = range.This_Year[0];
+                var end = range.This_Year[1];
+            <?php } ?>
+        <?php } elseif (!empty($_GET['range']) && !empty($start) && !empty($end)) { ?>
+            var start = "<?php echo($start) ?>";
+            var end = "<?php echo($end) ?>";
+        <?php } else{ ?>
+            var start = range.All[0];
+            var end = range.All[1];
+        <?php } ?>
+
+        function cb(start, end) {
+            //$('#dashboard-daterangepicker span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        }
+        $('#dashboard-daterangepicker').daterangepicker({
+            startDate: start,
+            endDate: end,
+            opens: $('body').hasClass('rtl') ? 'right' : 'left',
+            ranges: {
+                'All': [moment().startOf('year') , moment().endOf('year')],
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'This Week': [moment().subtract(6, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                'This Year': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')],
+            }
+        }, cb);
+
+
+
+        cb(start, end);
+
+        // setTimeout(function (argument) {
+        //     $('.ranges ul li').removeClass('active');
+        // },800);
+
+        $(document).on('click', '.ranges ul li', function(event) {
+            event.preventDefault();
+            if ($(this).attr('data-range-key') != 'Custom Range') {
+                $(document).off('click', '.ranges ul li');
+                $('#redirect_link').attr('href', "<?php echo PT_LoadAdminLinkSettings('verification-requests').$rang_link; ?>&range="+$(this).attr('data-range-key'));
+                $('#redirect_link').attr('data-ajax', "?path=verification-requests<?php echo('&'.$rang_link) ?>&range="+$(this).attr('data-range-key'));
+                $('#redirect_link').click();
+            }
+        });
+        $(document).on('click', '.applyBtn', function(event) {
+            event.preventDefault();
+            $(document).off('click', '.applyBtn');
+            $('#redirect_link').attr('href', "<?php echo PT_LoadAdminLinkSettings('verification-requests').$rang_link; ?>&range="+$(this).parent('.drp-buttons').find('.drp-selected').html());
+            $('#redirect_link').attr('data-ajax', "?path=verification-requests<?php echo('&'.$rang_link) ?>&range="+$(this).parent('.drp-buttons').find('.drp-selected').html());
+            $('#redirect_link').click();
+        });
+    var rgbToHex = function (rgb) {
+        var hex = Number(rgb).toString(16);
+        if (hex.length < 2) {
+            hex = "0" + hex;
+        }
+        return hex;
+    };
+
+    var fullColorHex = function (r, g, b) {
+        var red = rgbToHex(r);
+        var green = rgbToHex(g);
+        var blue = rgbToHex(b);
+        return red + green + blue;
+    };
+
+    var colors = {
+        primary: $('.colors .bg-primary').css('background-color').replace('rgb', '').replace(')', '').replace('(', '').split(','),
+        secondary: $('.colors .bg-secondary').css('background-color').replace('rgb', '').replace(')', '').replace('(', '').split(','),
+        info: $('.colors .bg-info').css('background-color').replace('rgb', '').replace(')', '').replace('(', '').split(','),
+        success: $('.colors .bg-success').css('background-color').replace('rgb', '').replace(')', '').replace('(', '').split(','),
+        danger: $('.colors .bg-danger').css('background-color').replace('rgb', '').replace(')', '').replace('(', '').split(','),
+        warning: $('.colors .bg-warning').css('background-color').replace('rgb', '').replace(')', '').replace('(', '').split(','),
+    };
+    //console.log(colors.primary[1]);
+    colors.primary = '#' + fullColorHex(colors.primary[0], colors.primary[1], colors.primary[2]);
+    colors.secondary = '#' + fullColorHex(colors.secondary[0], colors.secondary[1], colors.secondary[2]);
+    colors.info = '#' + fullColorHex(colors.info[0], colors.info[1], colors.info[2]);
+    colors.success = '#' + fullColorHex(colors.success[0], colors.success[1], colors.success[2]);
+    colors.danger = '#' + fullColorHex(colors.danger[0], colors.danger[1], colors.danger[2]);
+    colors.warning = '#' + fullColorHex(colors.warning[0], colors.warning[1], colors.warning[2]);
+});
+
+
+
+    $('.check-all').on('click', function(event) {
+        $('input:checkbox').not(this).prop('checked', this.checked);
+    });
+    $('.delete-checkbox, .check-all').change(function(event) {
+        $('.delete-selected').attr('disabled', false);
+        $('.delete-selected').find('span').text(' (' + $('.delete-checkbox:checked').length + ')');
+    });
+    $('.delete-selected').on('click', function(event) {
+        event.preventDefault();
+        action_type = $('#action_type').val();
+        $('#SelectedDeleteModal').find('.modal-body').html('Are you sure that you want to '+action_type+' the selected request(s)?');
+        $('#SelectedDeleteModal').find('#exampleModal1Label').html(action_type+' request(s)');
+        $('#SelectedDeleteModal').modal('show');
+    });
+    function DeleteSelected() {
+        action_type = $('#action_type').val();
+        data = new Array();
+        $('td input:checked').parents('tr').each(function () {
+            data.push($(this).attr('data_selected'));
+        });
+        $('.delete-selected').attr('disabled', true);
+        $('.delete-selected').text('Please wait..');
+        $.post('{{LINK aj/ap/delete_multi_request}}', {ids: data,type: action_type}, function () {
+            if (action_type == 'delete') {
+                $.each( data, function( index, value ){
+                    $('#list-' + value).remove();
+                });
+            }
+            else{
+                location.reload();
+            }
+            $('.delete-selected').text('Submit');
+        });
+    }
+    function PT_ManageVRequests(id,action,self,type = 'show') {
+        if (!id || (action != 1 && action != 2 && action != 3)) {
+            return false;
+        }
+        if (type == 'hide') {
+            $('#DeleteModal').find('.btn-primary').attr('onclick', "PT_ManageVRequests('"+id+"','"+action+"',this)");
+            $('#DeleteModal').modal('show');
+            return false;
+          }
+
+        else if (action == 1) {
+        	$("#list-"+id).find('td.request-status').html('<span class="alert-success">Verified</span>');
+        }
+
+        else if (action == 3){
+            $("#list-"+id).slideUp(function(){
+                $(this).remove();
+            });
+        }
+
+        else if (action == 2){
+        	//$(self).text('Please wait..').attr("disabled","true");
+            $("#view_info_"+id).slideToggle( "fast", function() {
+                if ($("#view_info_"+id).is(":visible")) {
+                    $(self).html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M11.83,9L15,12.16C15,12.11 15,12.05 15,12A3,3 0 0,0 12,9C11.94,9 11.89,9 11.83,9M7.53,9.8L9.08,11.35C9.03,11.56 9,11.77 9,12A3,3 0 0,0 12,15C12.22,15 12.44,14.97 12.65,14.92L14.2,16.47C13.53,16.8 12.79,17 12,17A5,5 0 0,1 7,12C7,11.21 7.2,10.47 7.53,9.8M2,4.27L4.28,6.55L4.73,7C3.08,8.3 1.78,10 1,12C2.73,16.39 7,19.5 12,19.5C13.55,19.5 15.03,19.2 16.38,18.66L16.81,19.08L19.73,22L21,20.73L3.27,3M12,7A5,5 0 0,1 17,12C17,12.64 16.87,13.26 16.64,13.82L19.57,16.75C21.07,15.5 22.27,13.86 23,12C21.27,7.61 17,4.5 12,4.5C10.6,4.5 9.26,4.75 8,5.2L10.17,7.35C10.74,7.13 11.35,7 12,7Z" /></svg> Hide');
+                  }
+                  else{
+                    $(self).html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" /></svg> View');
+                  }
+              });
+        }
+
+        $.post('{{LINK aj/ap/verification}}', {a:action,id:id}, function(data){
+            // if (action == 2 && data.status == 200) {
+            //     swal({
+            //         html:true,
+            //         title:"",
+            //         text:data.html,
+            //         showConfirmButton:false,
+            //         allowOutsideClick:true,
+            //         customClass:"sw-review-data",
+            //         animation:false
+            //     })
+            //     $(self).text('VIEW').removeAttr('disabled');
+            // }
+         },dataType="json");
+    }
+</script>

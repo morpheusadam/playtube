@@ -1,0 +1,1280 @@
+<?php
+
+$paypal_live    = ($pt->config->paypal_mode == 'live') ? 'checked' :'';
+$paypal_sb      = ($pt->config->paypal_mode == 'sandbox') ? 'checked' :'';
+
+$paypal_cur_usd = ($pt->config->payment_currency == 'USD') ? 'checked' :'';
+$paypal_cur_eur = ($pt->config->payment_currency == 'EUR') ? 'checked' :'';
+
+
+
+?>
+
+<div class="container-fluid">
+    <div>
+        <h3>Payment Configuration</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Admin Panel</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Settings</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Payment Configuration</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="alert alert-info">
+       <strong>Info: </strong> For more information on how to setup payment gateways, please visit our <a href="https://docs.playtubescript.com/#payment_gateways" target="_blank">documentation</a> page.
+   </div>
+    <!-- Vertical Layout -->
+    <div class="row">
+        <div class="col-lg-6 col-md-6 pull-left">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Withdrawal Settings</h6>
+                    <div class="affiliates-settings-alert"></div>
+                    <form class="affiliates-settings" method="POST">
+                        <div class="alert alert-info">
+                            Users can send withdrawal requests via any of these methods
+                        </div>
+                        <div class="clearfix"></div>
+                        <br>
+                        <div class="float-left">
+                            <label for="bank" class="main-label">Bank Transfer</label>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="bank" value="0" />
+                            <input type="checkbox" name="bank" id="chck-bank" value="1" <?php echo ($pt->config->withdrawal_payment_method['bank'] == 1) ? 'checked': '';?>>
+                            <label for="chck-bank" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="float-left">
+                            <label for="p_paypal" class="main-label">Paypal</label>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="p_paypal" value="0" />
+                            <input type="checkbox" name="p_paypal" id="chck-p_paypal" value="1" <?php echo ($pt->config->withdrawal_payment_method['paypal'] == 1) ? 'checked': '';?>>
+                            <label for="chck-p_paypal" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="float-left">
+                            <label for="skrill" class="main-label">Skrill</label>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="skrill" value="0" />
+                            <input type="checkbox" name="skrill" id="chck-skrill" value="1" <?php echo ($pt->config->withdrawal_payment_method['skrill'] == 1) ? 'checked': '';?>>
+                            <label for="chck-skrill" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="float-left">
+                            <label for="custom" class="main-label">Custom Method</label>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="custom" value="0" />
+                            <input type="checkbox" name="custom" id="chck-custom" value="1" <?php echo ($pt->config->withdrawal_payment_method['custom'] == 1) ? 'checked': '';?> onclick="CustomName(this)">
+                            <label for="chck-custom" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="form-group form-float <?php echo ($pt->config->withdrawal_payment_method['custom'] == 1) ? '': 'hidden';?> custom_name_class">
+                            <div class="form-line">
+                                <label class="form-label">Custom Method Name</label>
+                                <input type="text" id="custom_name" name="custom_name" class="form-control" value="<?php echo $pt->config->custom_name?>">
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Minimum withdrawal request</label>
+                                <input type="text" id="m_withdrawal" name="m_withdrawal" class="form-control" value="<?php echo $pt->config->m_withdrawal?>">
+                                <small class="admin-info">Minimum withdrawal the users can request</small>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Payment Settings</h6>
+                    <div class="payment-settings-alert"></div>
+                    <form class="payment-settings" method="POST">
+                        <div class="float-left">
+                            <label for="paypal" class="main-label">PayPal Payment Method</label>
+                            <br><small class="admin-info">Enable PayPal to receive payments from ads and pro packages.</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="paypal" value="no" />
+                            <input type="checkbox" name="paypal" id="chck-paypal" value="yes" <?php echo ($pt->config->paypal == 'yes') ? 'checked': '';?>>
+                            <label for="chck-paypal" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <label for="paypal_currency">PayPal Currency</label>
+                        <br><small class="admin-info">Set your PayPal currency, this will be used only on PayPal.</small>
+                        <div class="form-group">
+                            <select class="form-control show-tick" id="paypal_currency" name="paypal_currency">
+                              <option value="USD" <?php echo ($pt->config->paypal_currency == 'USD')  ? ' selected': '';?>>USD</option>
+                              <option value="EUR" <?php echo ($pt->config->paypal_currency == 'EUR')  ? ' selected': '';?>>EUR</option>
+                              <option value="AUD" <?php echo ($pt->config->paypal_currency == 'AUD')  ? ' selected': '';?>>AUD</option>
+                              <option value="BRL" <?php echo ($pt->config->paypal_currency == 'BRL')  ? ' selected': '';?>>BRL</option>
+                              <option value="CAD" <?php echo ($pt->config->paypal_currency == 'CAD')  ? ' selected': '';?>>CAD</option>
+                              <option value="CZK" <?php echo ($pt->config->paypal_currency == 'CZK')  ? ' selected': '';?>>CZK</option>
+                              <option value="DKK" <?php echo ($pt->config->paypal_currency == 'DKK')  ? ' selected': '';?>>DKK</option>
+                              <option value="HKD" <?php echo ($pt->config->paypal_currency == 'HKD')  ? ' selected': '';?>>HKD</option>
+                              <option value="HUF" <?php echo ($pt->config->paypal_currency == 'HUF')  ? ' selected': '';?>>HUF</option>
+                              <option value="INR" <?php echo ($pt->config->paypal_currency == 'INR')  ? ' selected': '';?>>INR</option>
+                              <option value="ILS" <?php echo ($pt->config->paypal_currency == 'ILS')  ? ' selected': '';?>>ILS</option>
+                              <option value="JPY" <?php echo ($pt->config->paypal_currency == 'JPY')  ? ' selected': '';?>>JPY</option>
+                              <option value="MYR" <?php echo ($pt->config->paypal_currency == 'MYR')  ? ' selected': '';?>>MYR</option>
+                              <option value="MXN" <?php echo ($pt->config->paypal_currency == 'MXN')  ? ' selected': '';?>>MXN</option>
+                              <option value="TWD" <?php echo ($pt->config->paypal_currency == 'TWD')  ? ' selected': '';?>>TWD</option>
+                              <option value="NZD" <?php echo ($pt->config->paypal_currency == 'NZD')  ? ' selected': '';?>>NZD</option>
+                              <option value="NOK" <?php echo ($pt->config->paypal_currency == 'NOK')  ? ' selected': '';?>>NOK</option>
+                              <option value="PHP" <?php echo ($pt->config->paypal_currency == 'PHP')  ? ' selected': '';?>>PHP</option>
+                              <option value="PLN" <?php echo ($pt->config->paypal_currency == 'PLN')  ? ' selected': '';?>>PLN</option>
+                              <option value="GBP" <?php echo ($pt->config->paypal_currency == 'GBP')  ? ' selected': '';?>>GBP</option>
+                              <option value="RUB" <?php echo ($pt->config->paypal_currency == 'RUB')  ? ' selected': '';?>>RUB</option>
+                              <option value="SGD" <?php echo ($pt->config->paypal_currency == 'SGD')  ? ' selected': '';?>>SGD</option>
+                              <option value="SEK" <?php echo ($pt->config->paypal_currency == 'SEK')  ? ' selected': '';?>>SEK</option>
+                              <option value="CHF" <?php echo ($pt->config->paypal_currency == 'CHF')  ? ' selected': '';?>>CHF</option>
+                              <option value="THB" <?php echo ($pt->config->paypal_currency == 'THB')  ? ' selected': '';?>>THB</option>
+                            </select>
+                        </div>
+                        <hr>
+                        <label for="paypal_mode">PayPal Mode</label>
+                        <br><small class="admin-info">Choose the mode your application is using, for testing use the SandBox mode.</small>
+                        <div class="form-group">
+                            <select class="form-control show-tick" id="paypal_mode" name="paypal_mode">
+                              <option value="live" <?php echo ($pt->config->paypal_mode == 'live')  ? ' selected': '';?>>Live</option>
+                              <option value="sandbox" <?php echo ($pt->config->paypal_mode == 'sandbox')  ? ' selected': '';?>>SandBox</option>
+                            </select>
+                        </div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">PayPal Clinet ID</label>
+                                <input type="text" name="paypal_id" class="form-control" value="<?php echo ($pt->config->paypal_id);?>">
+                                <small class="admin-info">Set your PayPal application ID.</small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">PayPal Secret Key</label>
+                                <input type="text" name="paypal_secret" class="form-control" value="<?php echo ($pt->config->paypal_secret);?>">
+                                <small class="admin-info">Set your PayPal application secret key.</small>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Configure Stripe (Credit Cards) Payment Method</h6>
+                    <div class="stripe-settings-alert"></div>
+                    <form class="stripe-settings" method="POST">
+                        <div class="float-left">
+                            <label for="credit_card" class="main-label">Stripe Payment Method</label>
+                            <br><small class="admin-info">Enable Stripe to receive payments by credit cards.</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="credit_card" value="no" />
+                            <input type="checkbox" name="credit_card" id="chck-credit_card" value="yes" <?php echo ($pt->config->credit_card == 'yes') ? 'checked': '';?>>
+                            <label for="chck-credit_card" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <label for="stripe_currency">Stripe Currency</label>
+                        <br><small class="admin-info">Set your Stripe currency, this will be used only on Stripe.</small>
+                        <div class="form-group">
+                            <select class="form-control show-tick" id="stripe_currency" name="stripe_currency">
+                              <option value="USD" <?php echo ($pt->config->stripe_currency == 'USD')  ? ' selected': '';?>>USD</option>
+                              <option value="EUR" <?php echo ($pt->config->stripe_currency == 'EUR')  ? ' selected': '';?>>EUR</option>
+                              <option value="AUD" <?php echo ($pt->config->stripe_currency == 'AUD')  ? ' selected': '';?>>AUD</option>
+                              <option value="BRL" <?php echo ($pt->config->stripe_currency == 'BRL')  ? ' selected': '';?>>BRL</option>
+                              <option value="CAD" <?php echo ($pt->config->stripe_currency == 'CAD')  ? ' selected': '';?>>CAD</option>
+                              <option value="CZK" <?php echo ($pt->config->stripe_currency == 'CZK')  ? ' selected': '';?>>CZK</option>
+                              <option value="DKK" <?php echo ($pt->config->stripe_currency == 'DKK')  ? ' selected': '';?>>DKK</option>
+                              <option value="HKD" <?php echo ($pt->config->stripe_currency == 'HKD')  ? ' selected': '';?>>HKD</option>
+                              <option value="HUF" <?php echo ($pt->config->stripe_currency == 'HUF')  ? ' selected': '';?>>HUF</option>
+                              <option value="ILS" <?php echo ($pt->config->stripe_currency == 'ILS')  ? ' selected': '';?>>ILS</option>
+                              <option value="JPY" <?php echo ($pt->config->stripe_currency == 'JPY')  ? ' selected': '';?>>JPY</option>
+                              <option value="MYR" <?php echo ($pt->config->stripe_currency == 'MYR')  ? ' selected': '';?>>MYR</option>
+                              <option value="MXN" <?php echo ($pt->config->stripe_currency == 'MXN')  ? ' selected': '';?>>MXN</option>
+                              <option value="TWD" <?php echo ($pt->config->stripe_currency == 'TWD')  ? ' selected': '';?>>TWD</option>
+                              <option value="NZD" <?php echo ($pt->config->stripe_currency == 'NZD')  ? ' selected': '';?>>NZD</option>
+                              <option value="NOK" <?php echo ($pt->config->stripe_currency == 'NOK')  ? ' selected': '';?>>NOK</option>
+                              <option value="PHP" <?php echo ($pt->config->stripe_currency == 'PHP')  ? ' selected': '';?>>PHP</option>
+                              <option value="PLN" <?php echo ($pt->config->stripe_currency == 'PLN')  ? ' selected': '';?>>PLN</option>
+                              <option value="RUB" <?php echo ($pt->config->stripe_currency == 'RUB')  ? ' selected': '';?>>RUB</option>
+                              <option value="SGD" <?php echo ($pt->config->stripe_currency == 'SGD')  ? ' selected': '';?>>SGD</option>
+                              <option value="SEK" <?php echo ($pt->config->stripe_currency == 'SEK')  ? ' selected': '';?>>SEK</option>
+                              <option value="CHF" <?php echo ($pt->config->stripe_currency == 'CHF')  ? ' selected': '';?>>CHF</option>
+                              <option value="THB" <?php echo ($pt->config->stripe_currency == 'THB')  ? ' selected': '';?>>THB</option>
+                              <option value="GBP" <?php echo ($pt->config->stripe_currency == 'GBP')  ? ' selected': '';?>>GBP</option>
+                            </select>
+                        </div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Stripe API Secret Key</label>
+                                <input type="text" name="stripe_secret" class="form-control" value="<?php echo ($pt->config->stripe_secret);?>">
+                                <small class="admin-info">Your Stripe secret key that starts with sk_</small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Stripe Publishable Key</label>
+                                <input type="text" name="stripe_id" class="form-control" value="<?php echo ($pt->config->stripe_id);?>">
+                                <small class="admin-info">Your Stripe publishable key that starts with pk_</small>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Configure PayStack (Credit Cards) Payment Method</h6>
+                    <div class="paystack-settings-alert"></div>
+                    <form class="paystack-settings" method="POST">
+                        <div class="float-left">
+                            <label for="paystack_payment" class="main-label">Paystack Payment Method</label>
+                            <br><small class="admin-info">Get paid by Paystack payment provider.</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="paystack_payment" value="no" />
+                            <input type="checkbox" name="paystack_payment" id="chck-paystack_payment" value="yes" <?php echo ($pt->config->paystack_payment == 'yes') ? 'checked': '';?>>
+                            <label for="chck-paystack_payment" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Secret Key</label>
+                                <input type="text" name="paystack_secret_key" class="form-control" value="<?php echo ($pt->config->paystack_secret_key);?>">
+                                <small class="admin-info">Your paystack account secret key.</small>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Configure CashFree (Credit Cards) Payment Method</h6>
+                    <div class="cashfree-settings-alert"></div>
+                    <form class="cashfree-settings" method="POST">
+                        <div class="float-left">
+                            <label for="cashfree_payment" class="main-label">CashFree Payment Method</label>
+                            <br><small class="admin-info">Enable CashFree to receive payments by credit cards.</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="cashfree_payment" value="no" />
+                            <input type="checkbox" name="cashfree_payment" id="chck-cashfree_payment" value="yes" <?php echo ($pt->config->cashfree_payment == 'yes') ? 'checked': '';?>>
+                            <label for="chck-cashfree_payment" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <label for="cashfree_mode">CashFree Mode</label>
+                        <br><small class="admin-info">Choose the mode your application is using, for testing use the SandBox mode.</small>
+                        <div class="form-group">
+                            <select class="form-control show-tick" id="cashfree_mode" name="cashfree_mode">
+                              <option value="sandBox" <?php echo ($pt->config->cashfree_mode == 'sandBox')  ? ' selected': '';?>>SandBox</option>
+                              <option value="live" <?php echo ($pt->config->cashfree_mode == 'live')  ? ' selected': '';?>>Live</option>
+                            </select>
+                        </div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Client Id</label>
+                                <input type="text" name="cashfree_client_key" class="form-control" value="<?php echo ($pt->config->cashfree_client_key);?>">
+                                <small class="admin-info">Your application client ID.</small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Client Secret</label>
+                                <input type="text" name="cashfree_secret_key" class="form-control" value="<?php echo ($pt->config->cashfree_secret_key);?>">
+                                <small class="admin-info">Your application client ID secret key.</small>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Configure PaySera Payment Method</h6>
+                    <div class="paysera-settings-alert"></div>
+                    <form class="paysera-settings" method="POST">
+                        <div class="float-left">
+                            <label for="paysera_payment" class="main-label">Paysera Payment Method</label>
+                            <br><small class="admin-info">Get paid by PaySera payment provider.</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="paysera_payment" value="no" />
+                            <input type="checkbox" name="paysera_payment" id="chck-paysera_payment" value="yes" <?php echo ($pt->config->paysera_payment == 'yes') ? 'checked': '';?>>
+                            <label for="chck-paysera_payment" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <label for="paysera_mode">Paysera Mode</label>
+                        <br><small class="admin-info">Choose the mode your application is using, for testing use the SandBox mode.</small>
+                        <div class="form-group">
+                            <select class="form-control show-tick" id="paysera_mode" name="paysera_mode">
+                              <option value="0" <?php echo ($pt->config->paysera_mode == '0')  ? ' selected': '';?>>Live</option>
+                              <option value="1" <?php echo ($pt->config->paysera_mode == '1')  ? ' selected': '';?>>SandBox</option>
+                            </select>
+                        </div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Project Id</label>
+                                <input type="text" name="paysera_project_id" class="form-control" value="<?php echo ($pt->config->paysera_project_id);?>">
+                                <small class="admin-info">Your PaySera project ID.</small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Account Password</label>
+                                <input type="text" name="paysera_sign_password" class="form-control" value="<?php echo ($pt->config->paysera_sign_password);?>">
+                                <small class="admin-info">Your PaySera account password..</small>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Securionpay Payment Settings</h6>
+                    <div class="securionpay-settings-alert"></div>
+                    <form class="securionpay-settings" method="POST">
+                        <div>
+                            <div class="float-left">
+                                <label for="securionpay_payment" class="main-label">Securionpay Payment Method</label>
+                                <br><small class="admin-info">Enable Securionpay to receive payments by credit cards.</small>
+                            </div>
+                            <div class="form-group float-right switcher">
+                                <input type="hidden" name="securionpay_payment" value="no">
+                                <input type="checkbox" name="securionpay_payment" id="securionpay_payment-enabled" value="yes" <?php echo ($pt->config->securionpay_payment == 'yes') ? 'checked': '';?>>
+                                <label for="securionpay_payment-enabled" class="check-trail"><span class="check-handler"></span></label>
+                            </div>
+                            <div class="clearfix"></div>
+                            <hr>
+                        </div>
+                        
+                        <label for="securionpay_public_key">Securionpay Public key</label>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="securionpay_public_key" name="securionpay_public_key" class="form-control" value="<?php echo $pt->config->securionpay_public_key;?>">
+                                
+                            </div>
+                        </div>
+                        <label class="form-check-label" for="securionpay_secret_key">Securionpay Secret key</label>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="securionpay_secret_key" name="securionpay_secret_key" class="form-control" value="<?php echo $pt->config->securionpay_secret_key;?>">
+                                
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Authorize.Net Payment Settings</h6>
+                    <div class="authorize-settings-alert"></div>
+                    <form class="authorize-settings" method="POST">
+                        <div>
+                            <div class="float-left">
+                                <label for="authorize_payment" class="main-label">Authorize.Net Payment Method</label>
+                                <br><small class="admin-info">Enable Authorize.Net to receive payments by credit cards.</small>
+                            </div>
+                            <div class="form-group float-right switcher">
+                                <input type="hidden" name="authorize_payment" value="no">
+                                <input type="checkbox" name="authorize_payment" id="authorize_payment-enabled" value="yes" <?php echo ($pt->config->authorize_payment == 'yes') ? 'checked': '';?>>
+                                <label for="authorize_payment-enabled" class="check-trail"><span class="check-handler"></span></label>
+                            </div>
+                            <div class="clearfix"></div>
+                            <label for="authorize_test_mode">Test mode</label>
+                        <select class="form-control show-tick" id="authorize_test_mode" name="authorize_test_mode">
+                          <option value="PRODUCTION" <?php echo ($pt->config->authorize_test_mode == 'PRODUCTION') ? 'selected': '';?>>Live</option>
+                          <option value="SANDBOX" <?php echo ($pt->config->authorize_test_mode == 'SANDBOX') ? 'selected': '';?>>Test</option>
+                        </select>
+                        <small class="admin-info">Choose the mode your application is using, for testing use the SandBox mode.</small>
+                        <div class="clearfix"></div>
+                            <hr>
+                        </div>
+                        
+                        <label for="authorize_login_id">Authorize.Net API LOGIN ID</label>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="authorize_login_id" name="authorize_login_id" class="form-control" value="<?php echo $pt->config->authorize_login_id;?>">
+                                <small class="admin-info">Your Authorize.Net API LOGIN ID.</small>
+                            </div>
+                        </div>
+                        <label class="form-check-label" for="authorize_transaction_key">Authorize.Net TRANSACTION KEY</label>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="authorize_transaction_key" name="authorize_transaction_key" class="form-control" value="<?php echo $pt->config->authorize_transaction_key;?>">
+                                <small class="admin-info">Your Authorize.Net TRANSACTION KEY.</small>
+                            </div>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Configure Fortumo Payment Method</h6>
+                    <form class="fortumo-settings" method="POST">
+                        <div class="float-left">
+                            <label for="fortumo_payment" class="main-label">Fortumo Payment Method</label>
+                            <br><small class="admin-info">Get paid by Fortumo payment provider.</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="fortumo_payment" value="no" />
+                            <input type="checkbox" name="fortumo_payment" id="chck-fortumo_payment" value="yes" <?php echo ($pt->config->fortumo_payment == 'yes') ? 'checked': '';?>>
+                            <label for="chck-fortumo_payment" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                              <label class="form-label">Fortumo Service Id</label>
+                                <input type="text" id="fortumo_service_id" name="fortumo_service_id" class="form-control" value="<?php echo $pt->config->fortumo_service_id;?>">
+                                <small class="admin-info">Your Fortumo Service Id.</small>
+                            </div>
+                        </div>
+                        <small class="admin-info">Please add this url <?php echo(PT_Link("aj/wallet/success_fortumo")) ?> <a href="https://dashboard.fortumo.com/services" target="_blank">in Forwarded URL</a></small>
+                    </form>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Configure Aamarpay Payment Method</h6>
+                    <form class="aamarpay-settings" method="POST">
+                        <div class="float-left">
+                            <label for="aamarpay_payment" class="main-label">Aamarpay Payment Method</label>
+                            <br><small class="admin-info">Get paid by Aamarpay payment provider.</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="aamarpay_payment" value="no" />
+                            <input type="checkbox" name="aamarpay_payment" id="chck-aamarpay_payment" value="yes" <?php echo ($pt->config->aamarpay_payment == 'yes') ? 'checked': '';?>>
+                            <label for="chck-aamarpay_payment" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <label for="aamarpay_mode">Test mode</label>
+                        <select class="form-control show-tick" id="aamarpay_mode" name="aamarpay_mode">
+                          <option value="live" <?php echo ($pt->config->aamarpay_mode == 'live') ? 'selected': '';?>>Live</option>
+                          <option value="sandbox" <?php echo ($pt->config->aamarpay_mode == 'sandbox') ? 'selected': '';?>>Test</option>
+                        </select>
+                        <small class="admin-info">Choose the mode your application is using, for testing use the SandBox mode.</small>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                              <label class="form-label">Aamarpay Store Id</label>
+                                <input type="text" id="aamarpay_store_id" name="aamarpay_store_id" class="form-control" value="<?php echo $pt->config->aamarpay_store_id;?>">
+                                <small class="admin-info">Your Aamarpay Store Id.</small>
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                              <label class="form-label">Aamarpay Signature Key</label>
+                                <input type="text" id="aamarpay_signature_key" name="aamarpay_signature_key" class="form-control" value="<?php echo $pt->config->aamarpay_signature_key;?>">
+                                <small class="admin-info">Your Aamarpay Signature Key.</small>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Flutter Wave payment</h6>
+                    <div class="fluttewave-settings-alert"></div>
+                    <form class="fluttewave-settings" method="POST">
+                        <div>
+                            <div class="float-left">
+                                <label for="fluttewave_payment" class="main-label">Flutter Wave Payment Method</label>
+                                <br><small class="admin-info">Enable Flutter Wave to receive payments.</small>
+                            </div>
+                            <div class="form-group float-right switcher">
+                                <input type="hidden" name="fluttewave_payment" value="no">
+                                <input type="checkbox" name="fluttewave_payment" id="fluttewave_payment-enabled" value="yes" <?php echo ($pt->config->fluttewave_payment == 'yes') ? 'checked': '';?>>
+                                <label for="fluttewave_payment-enabled" class="check-trail"><span class="check-handler"></span></label>
+                            </div>
+                            <div class="clearfix"></div>
+                            <hr>
+                        </div>
+
+                        <label for="fluttewave_secret_key">Flutter Wave API Secret Key</label>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="fluttewave_secret_key" name="fluttewave_secret_key" class="form-control" value="<?php echo $pt->config->fluttewave_secret_key;?>">
+                                <small class="admin-info">Your Flutter Wave API Secret Key.</small>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Alipay payment</h6>
+                    <div class="alipay-settings-alert"></div>
+                    <form class="alipay-settings" method="POST">
+                        <div>
+                            <div class="float-left">
+                                <label for="alipay_payment" class="main-label">Alipay Payment Method</label>
+                                <br><small class="admin-info">Enable Alipay to receive payments.</small>
+                            </div>
+                            <div class="form-group float-right switcher">
+                                <input type="hidden" name="alipay_payment" value="no">
+                                <input type="checkbox" name="alipay_payment" id="alipay_payment-enabled" value="yes" <?php echo ($pt->config->alipay_payment == 'yes') ? 'checked': '';?>>
+                                <label for="alipay_payment-enabled" class="check-trail"><span class="check-handler"></span></label>
+                            </div>
+                            <div class="clearfix"></div>
+                            <hr>
+                        </div>
+
+                        <label for="alipay_client_id">Alipay Client ID</label>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="alipay_client_id" name="alipay_client_id" class="form-control" value="<?php echo $pt->config->alipay_client_id;?>">
+                                <small class="admin-info">Your Alipay API Client ID.</small>
+                            </div>
+                        </div>
+
+                        <label for="alipay_public_key">Alipay Public Key</label>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <textarea id="alipay_public_key" name="alipay_public_key" class="form-control"><?php echo $pt->config->alipay_public_key;?></textarea>
+                                <small class="admin-info">Your Alipay API Public Key.</small>
+                            </div>
+                        </div>
+
+                        <label for="alipay_private_key">Alipay Private Key</label>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <textarea id="alipay_private_key" name="alipay_private_key" class="form-control"><?php echo $pt->config->alipay_private_key;?></textarea>
+                                <small class="admin-info">Your Alipay API Private Key.</small>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 pull-right">
+            <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Configure 2Checkout (Credit Cards) Payment Method</h6>
+                    <div class="checkout-settings-alert"></div>
+                    <form class="checkout-settings" method="POST">
+                        <div class="float-left">
+                            <label for="checkout_payment" class="main-label">2Checkout Payment Method</label>
+                            <br><small class="admin-info">Enable 2Checkout to receive payments by credit cards.</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="checkout_payment" value="no" />
+                            <input type="checkbox" name="checkout_payment" id="chck-checkout_payment" value="yes" <?php echo ($pt->config->checkout_payment == 'yes') ? 'checked': '';?>>
+                            <label for="chck-checkout_payment" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <label for="checkout_mode">2Checkout Mode</label>
+                        <br><small class="admin-info">Choose the mode your application is using, for testing use the SandBox mode.</small>
+                        <div class="form-group">
+                            <select class="form-control show-tick" id="checkout_mode" name="checkout_mode">
+                              <option value="live" <?php echo ($pt->config->checkout_mode == 'live')  ? ' selected': '';?>>Live</option>
+                              <option value="sandbox" <?php echo ($pt->config->checkout_mode == 'sandbox')  ? ' selected': '';?>>SandBox</option>
+                            </select>
+                        </div>
+                        <hr>
+                        <label for="checkout_currency">2Checkout Currency</label>
+                        <br><small class="admin-info">Set your 2checkout currency, this will be used only on 2checkout.</small>
+                        <div class="form-group">
+                            <select class="form-control show-tick" id="checkout_currency" name="checkout_currency">
+                              <option value="USD" <?php echo ($pt->config->checkout_currency == 'USD')  ? ' selected': '';?>>USD</option>
+                              <option value="EUR" <?php echo ($pt->config->checkout_currency == 'EUR')  ? ' selected': '';?>>EUR</option>
+                              <option value="AED" <?php echo ($pt->config->checkout_currency == 'AED')  ? ' selected': '';?>>AED</option>
+                              <option value="AFN" <?php echo ($pt->config->checkout_currency == 'AFN')  ? ' selected': '';?>>AFN</option>
+                              <option value="ALL" <?php echo ($pt->config->checkout_currency == 'ALL')  ? ' selected': '';?>>ALL</option>
+                              <option value="ARS" <?php echo ($pt->config->checkout_currency == 'ARS')  ? ' selected': '';?>>ARS</option>
+                              <option value="AUD" <?php echo ($pt->config->checkout_currency == 'AUD')  ? ' selected': '';?>>AUD</option>
+                              <option value="AZN" <?php echo ($pt->config->checkout_currency == 'AZN')  ? ' selected': '';?>>AZN</option>
+                              <option value="BBD" <?php echo ($pt->config->checkout_currency == 'BBD')  ? ' selected': '';?>>BBD</option>
+                              <option value="BDT" <?php echo ($pt->config->checkout_currency == 'BDT')  ? ' selected': '';?>>BDT</option>
+                              <option value="BGN" <?php echo ($pt->config->checkout_currency == 'BGN')  ? ' selected': '';?>>BGN</option>
+                              <option value="BMD" <?php echo ($pt->config->checkout_currency == 'BMD')  ? ' selected': '';?>>BMD</option>
+                              <option value="BND" <?php echo ($pt->config->checkout_currency == 'BND')  ? ' selected': '';?>>BND</option>
+                              <option value="BOB" <?php echo ($pt->config->checkout_currency == 'BOB')  ? ' selected': '';?>>BOB</option>
+                              <option value="BRL" <?php echo ($pt->config->checkout_currency == 'BRL')  ? ' selected': '';?>>BRL</option>
+                              <option value="BSD" <?php echo ($pt->config->checkout_currency == 'BSD')  ? ' selected': '';?>>BSD</option>
+                              <option value="BWP" <?php echo ($pt->config->checkout_currency == 'BWP')  ? ' selected': '';?>>BWP</option>
+                              <option value="BYN" <?php echo ($pt->config->checkout_currency == 'BYN')  ? ' selected': '';?>>BYN</option>
+                              <option value="BZD" <?php echo ($pt->config->checkout_currency == 'BZD')  ? ' selected': '';?>>BZD</option>
+                              <option value="CAD" <?php echo ($pt->config->checkout_currency == 'CAD')  ? ' selected': '';?>>CAD</option>
+                              <option value="CHF" <?php echo ($pt->config->checkout_currency == 'CHF')  ? ' selected': '';?>>CHF</option>
+                              <option value="CLP" <?php echo ($pt->config->checkout_currency == 'CLP')  ? ' selected': '';?>>CLP</option>
+                              <option value="CNY" <?php echo ($pt->config->checkout_currency == 'CNY')  ? ' selected': '';?>>CNY</option>
+                              <option value="COP" <?php echo ($pt->config->checkout_currency == 'COP')  ? ' selected': '';?>>COP</option>
+                              <option value="CRC" <?php echo ($pt->config->checkout_currency == 'CRC')  ? ' selected': '';?>>CRC</option>
+                              <option value="CZK" <?php echo ($pt->config->checkout_currency == 'CZK')  ? ' selected': '';?>>CZK</option>
+                              <option value="DKK" <?php echo ($pt->config->checkout_currency == 'DKK')  ? ' selected': '';?>>DKK</option>
+                              <option value="DOP" <?php echo ($pt->config->checkout_currency == 'DOP')  ? ' selected': '';?>>DOP</option>
+                              <option value="DZD" <?php echo ($pt->config->checkout_currency == 'DZD')  ? ' selected': '';?>>DZD</option>
+                              <option value="EGP" <?php echo ($pt->config->checkout_currency == 'EGP')  ? ' selected': '';?>>EGP</option>
+                              <option value="FJD" <?php echo ($pt->config->checkout_currency == 'FJD')  ? ' selected': '';?>>FJD</option>
+                              <option value="GBP" <?php echo ($pt->config->checkout_currency == 'GBP')  ? ' selected': '';?>>GBP</option>
+                              <option value="GTQ" <?php echo ($pt->config->checkout_currency == 'GTQ')  ? ' selected': '';?>>GTQ</option>
+                              <option value="HKD" <?php echo ($pt->config->checkout_currency == 'HKD')  ? ' selected': '';?>>HKD</option>
+                              <option value="HNL" <?php echo ($pt->config->checkout_currency == 'HNL')  ? ' selected': '';?>>HNL</option>
+                              <option value="HRK" <?php echo ($pt->config->checkout_currency == 'HRK')  ? ' selected': '';?>>HRK</option>
+                              <option value="HUF" <?php echo ($pt->config->checkout_currency == 'HUF')  ? ' selected': '';?>>HUF</option>
+                              <option value="IDR" <?php echo ($pt->config->checkout_currency == 'IDR')  ? ' selected': '';?>>IDR</option>
+                              <option value="ILS" <?php echo ($pt->config->checkout_currency == 'ILS')  ? ' selected': '';?>>ILS</option>
+                              <option value="INR" <?php echo ($pt->config->checkout_currency == 'INR')  ? ' selected': '';?>>INR</option>
+                              <option value="JMD" <?php echo ($pt->config->checkout_currency == 'JMD')  ? ' selected': '';?>>JMD</option>
+                              <option value="JOD" <?php echo ($pt->config->checkout_currency == 'JOD')  ? ' selected': '';?>>JOD</option>
+                              <option value="JPY" <?php echo ($pt->config->checkout_currency == 'JPY')  ? ' selected': '';?>>JPY</option>
+                              <option value="KES" <?php echo ($pt->config->checkout_currency == 'KES')  ? ' selected': '';?>>KES</option>
+                              <option value="KRW" <?php echo ($pt->config->checkout_currency == 'KRW')  ? ' selected': '';?>>KRW</option>
+                              <option value="KWD" <?php echo ($pt->config->checkout_currency == 'KWD')  ? ' selected': '';?>>KWD</option>
+                              <option value="KZT" <?php echo ($pt->config->checkout_currency == 'KZT')  ? ' selected': '';?>>KZT</option>
+                              <option value="LAK" <?php echo ($pt->config->checkout_currency == 'LAK')  ? ' selected': '';?>>LAK</option>
+                              <option value="LBP" <?php echo ($pt->config->checkout_currency == 'LBP')  ? ' selected': '';?>>LBP</option>
+                              <option value="LKR" <?php echo ($pt->config->checkout_currency == 'LKR')  ? ' selected': '';?>>LKR</option>
+                              <option value="LRD" <?php echo ($pt->config->checkout_currency == 'LRD')  ? ' selected': '';?>>LRD</option>
+                              <option value="MAD" <?php echo ($pt->config->checkout_currency == 'MAD')  ? ' selected': '';?>>MAD</option>
+                              <option value="MDL" <?php echo ($pt->config->checkout_currency == 'MDL')  ? ' selected': '';?>>MDL</option>
+                              <option value="MMK" <?php echo ($pt->config->checkout_currency == 'MMK')  ? ' selected': '';?>>MMK</option>
+                              <option value="MOP" <?php echo ($pt->config->checkout_currency == 'MOP')  ? ' selected': '';?>>MOP</option>
+                              <option value="MRO" <?php echo ($pt->config->checkout_currency == 'MRO')  ? ' selected': '';?>>MRO</option>
+                              <option value="MUR" <?php echo ($pt->config->checkout_currency == 'MUR')  ? ' selected': '';?>>MUR</option>
+                              <option value="MVR" <?php echo ($pt->config->checkout_currency == 'MVR')  ? ' selected': '';?>>MVR</option>
+                              <option value="MXN" <?php echo ($pt->config->checkout_currency == 'MXN')  ? ' selected': '';?>>MXN</option>
+                              <option value="MYR" <?php echo ($pt->config->checkout_currency == 'MYR')  ? ' selected': '';?>>MYR</option>
+                              <option value="NAD" <?php echo ($pt->config->checkout_currency == 'NAD')  ? ' selected': '';?>>NAD</option>
+                              <option value="NGN" <?php echo ($pt->config->checkout_currency == 'NGN')  ? ' selected': '';?>>NGN</option>
+                              <option value="NIO" <?php echo ($pt->config->checkout_currency == 'NIO')  ? ' selected': '';?>>NIO</option>
+                              <option value="NOK" <?php echo ($pt->config->checkout_currency == 'NOK')  ? ' selected': '';?>>NOK</option>
+                              <option value="NPR" <?php echo ($pt->config->checkout_currency == 'NPR')  ? ' selected': '';?>>NPR</option>
+                              <option value="NZD" <?php echo ($pt->config->checkout_currency == 'NZD')  ? ' selected': '';?>>NZD</option>
+                              <option value="OMR" <?php echo ($pt->config->checkout_currency == 'OMR')  ? ' selected': '';?>>OMR</option>
+                              <option value="PEN" <?php echo ($pt->config->checkout_currency == 'PEN')  ? ' selected': '';?>>PEN</option>
+                              <option value="PGK" <?php echo ($pt->config->checkout_currency == 'PGK')  ? ' selected': '';?>>PGK</option>
+                              <option value="PHP" <?php echo ($pt->config->checkout_currency == 'PHP')  ? ' selected': '';?>>PHP</option>
+                              <option value="PKR" <?php echo ($pt->config->checkout_currency == 'PKR')  ? ' selected': '';?>>PKR</option>
+                              <option value="PLN" <?php echo ($pt->config->checkout_currency == 'PLN')  ? ' selected': '';?>>PLN</option>
+                              <option value="PYG" <?php echo ($pt->config->checkout_currency == 'PYG')  ? ' selected': '';?>>PYG</option>
+                              <option value="QAR" <?php echo ($pt->config->checkout_currency == 'QAR')  ? ' selected': '';?>>QAR</option>
+                              <option value="RON" <?php echo ($pt->config->checkout_currency == 'RON')  ? ' selected': '';?>>RON</option>
+                              <option value="RSD" <?php echo ($pt->config->checkout_currency == 'RSD')  ? ' selected': '';?>>RSD</option>
+                              <option value="RUB" <?php echo ($pt->config->checkout_currency == 'RUB')  ? ' selected': '';?>>RUB</option>
+                              <option value="SAR" <?php echo ($pt->config->checkout_currency == 'SAR')  ? ' selected': '';?>>SAR</option>
+                              <option value="SBD" <?php echo ($pt->config->checkout_currency == 'SBD')  ? ' selected': '';?>>SBD</option>
+                              <option value="SCR" <?php echo ($pt->config->checkout_currency == 'SCR')  ? ' selected': '';?>>SCR</option>
+                              <option value="SEK" <?php echo ($pt->config->checkout_currency == 'SEK')  ? ' selected': '';?>>SEK</option>
+                              <option value="SGD" <?php echo ($pt->config->checkout_currency == 'SGD')  ? ' selected': '';?>>SGD</option>
+                              <option value="SYP" <?php echo ($pt->config->checkout_currency == 'SYP')  ? ' selected': '';?>>SYP</option>
+                              <option value="THB" <?php echo ($pt->config->checkout_currency == 'THB')  ? ' selected': '';?>>THB</option>
+                              <option value="TND" <?php echo ($pt->config->checkout_currency == 'TND')  ? ' selected': '';?>>TND</option>
+                              <option value="TOP" <?php echo ($pt->config->checkout_currency == 'TOP')  ? ' selected': '';?>>TOP</option>
+                              <option value="TRY" <?php echo ($pt->config->checkout_currency == 'TRY')  ? ' selected': '';?>>TRY</option>
+                              <option value="TTD" <?php echo ($pt->config->checkout_currency == 'TTD')  ? ' selected': '';?>>TTD</option>
+                              <option value="TWD" <?php echo ($pt->config->checkout_currency == 'TWD')  ? ' selected': '';?>>TWD</option>
+                              <option value="UAH" <?php echo ($pt->config->checkout_currency == 'UAH')  ? ' selected': '';?>>UAH</option>
+                              <option value="UYU" <?php echo ($pt->config->checkout_currency == 'UYU')  ? ' selected': '';?>>UYU</option>
+                              <option value="VND" <?php echo ($pt->config->checkout_currency == 'VND')  ? ' selected': '';?>>VND</option>
+                              <option value="VUV" <?php echo ($pt->config->checkout_currency == 'VUV')  ? ' selected': '';?>>VUV</option>
+                              <option value="WST" <?php echo ($pt->config->checkout_currency == 'WST')  ? ' selected': '';?>>WST</option>
+                              <option value="XCD" <?php echo ($pt->config->checkout_currency == 'XCD')  ? ' selected': '';?>>XCD</option>
+                              <option value="XOF" <?php echo ($pt->config->checkout_currency == 'XOF')  ? ' selected': '';?>>XOF</option>
+                              <option value="YER" <?php echo ($pt->config->checkout_currency == 'YER')  ? ' selected': '';?>>YER</option>
+                              <option value="ZAR" <?php echo ($pt->config->checkout_currency == 'ZAR')  ? ' selected': '';?>>ZAR</option>
+                            </select>
+                        </div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Seller ID</label>
+                                <input type="text" name="checkout_seller_id" class="form-control" value="<?php echo ($pt->config->checkout_seller_id);?>">
+                                <small class="admin-info"></small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Publishable Key</label>
+                                <input type="text" name="checkout_publishable_key" class="form-control" value="<?php echo ($pt->config->checkout_publishable_key);?>">
+                                <small class="admin-info"></small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Private Key</label>
+                                <input type="text" name="checkout_private_key" class="form-control" value="<?php echo ($pt->config->checkout_private_key);?>">
+                                <small class="admin-info"></small>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Configure Local Bank Payment Method</h6>
+                    <div class="bank-settings-alert"></div>
+                    <form class="bank-settings" method="POST">
+                        <div class="float-left">
+                            <label for="bank_payment" class="main-label">Bank Payment Method</label>
+                            <br><small class="admin-info">Get paid by bank transfers.</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="bank_payment" value="no" />
+                            <input type="checkbox" name="bank_payment" id="chck-bank_payment" value="yes" <?php echo ($pt->config->bank_payment == 'yes') ? 'checked': '';?>>
+                            <label for="chck-bank_payment" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Bank Description</label>
+                                <textarea name="bank_description" id="bank_description" class="form-control" cols="30" rows="5"><?php echo $pt->config->bank_description;?>
+                                </textarea>
+                                <small class="admin-info">Set your IBAN, SWIFT code from the code above.</small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Bank transfer note</label>
+                                <textarea name="bank_transfer_note" id="bank_transfer_note" class="form-control" cols="30" rows="5"><?php echo $pt->config->bank_transfer_note;?>
+                                </textarea>
+                                <small class="admin-info">Your note to the custoemr after he submits the payment.</small>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Configure RazorPay (Credit Cards) Payment Method</h6>
+                    <div class="razorpay-settings-alert"></div>
+                    <form class="razorpay-settings" method="POST">
+                        <div class="float-left">
+                            <label for="razorpay_payment" class="main-label">RazorPay Payment Method</label>
+                            <br><small class="admin-info">Get paid by RazorPay payment provider.</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="razorpay_payment" value="no" />
+                            <input type="checkbox" name="razorpay_payment" id="chck-razorpay_payment" value="yes" <?php echo ($pt->config->razorpay_payment == 'yes') ? 'checked': '';?>>
+                            <label for="chck-razorpay_payment" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Application ID</label>
+                                <input type="text" name="razorpay_key_id" class="form-control" value="<?php echo ($pt->config->razorpay_key_id);?>">
+                                <small class="admin-info">Your application client ID.</small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Application Secret</label>
+                                <input type="text" name="razorpay_key_secret" class="form-control" value="<?php echo ($pt->config->razorpay_key_secret);?>">
+                                <small class="admin-info">Your application secret key.</small>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Configure Iyzipay Payment Method</h6>
+                    <div class="iyzipay-settings-alert"></div>
+                    <form class="iyzipay-settings" method="POST">
+                        <div class="float-left">
+                            <label for="iyzipay_payment" class="main-label">Iyzipay Payment Method</label>
+                            <br><small class="admin-info"></small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="iyzipay_payment" value="no" />
+                            <input type="checkbox" name="iyzipay_payment" id="chck-iyzipay_payment" value="yes" <?php echo ($pt->config->iyzipay_payment == 'yes') ? 'checked': '';?>>
+                            <label for="chck-iyzipay_payment" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <label for="iyzipay_mode">Iyzipay Mode</label>
+                        <br><small class="admin-info">Choose the mode your application is using, for testing use the SandBox mode.</small>
+                        <div class="form-group">
+                            <select class="form-control show-tick" id="iyzipay_mode" name="iyzipay_mode">
+                              <option value="0" <?php echo ($pt->config->iyzipay_mode == '0')  ? ' selected': '';?>>Live</option>
+                              <option value="1" <?php echo ($pt->config->iyzipay_mode == '1')  ? ' selected': '';?>>SandBox</option>
+                            </select>
+                        </div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Iyzipay Key</label>
+                                <input type="text" name="iyzipay_key" class="form-control" value="<?php echo ($pt->config->iyzipay_key);?>">
+                                <small class="admin-info"></small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Iyzipay Secret Key</label>
+                                <input type="text" name="iyzipay_secret_key" class="form-control" value="<?php echo ($pt->config->iyzipay_secret_key);?>">
+                                <small class="admin-info"></small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Iyzipay Buyer Id</label>
+                                <input type="text" name="iyzipay_buyer_id" class="form-control" value="<?php echo ($pt->config->iyzipay_buyer_id);?>">
+                                <small class="admin-info"></small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Iyzipay Buyer Name</label>
+                                <input type="text" name="iyzipay_buyer_name" class="form-control" value="<?php echo ($pt->config->iyzipay_buyer_name);?>">
+                                <small class="admin-info"></small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Iyzipay Buyer Surname</label>
+                                <input type="text" name="iyzipay_buyer_surname" class="form-control" value="<?php echo ($pt->config->iyzipay_buyer_surname);?>">
+                                <small class="admin-info"></small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Iyzipay Buyer Gsm Number (+905350000000)</label>
+                                <input type="text" name="iyzipay_buyer_gsm_number" class="form-control" value="<?php echo ($pt->config->iyzipay_buyer_gsm_number);?>">
+                                <small class="admin-info"></small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Iyzipay Buyer Email</label>
+                                <input type="text" name="iyzipay_buyer_email" class="form-control" value="<?php echo ($pt->config->iyzipay_buyer_email);?>">
+                                <small class="admin-info"></small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Iyzipay Buyer Identity Number</label>
+                                <input type="text" name="iyzipay_identity_number" class="form-control" value="<?php echo ($pt->config->iyzipay_identity_number);?>">
+                                <small class="admin-info"></small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Iyzipay Buyer Address</label>
+                                <input type="text" name="iyzipay_address" class="form-control" value="<?php echo ($pt->config->iyzipay_address);?>">
+                                <small class="admin-info"></small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Iyzipay Buyer City</label>
+                                <input type="text" name="iyzipay_city" class="form-control" value="<?php echo ($pt->config->iyzipay_city);?>">
+                                <small class="admin-info"></small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Iyzipay Buyer Country</label>
+                                <input type="text" name="iyzipay_country" class="form-control" value="<?php echo ($pt->config->iyzipay_country);?>">
+                                <small class="admin-info"></small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Iyzipay Buyer Zip</label>
+                                <input type="text" name="iyzipay_zip" class="form-control" value="<?php echo ($pt->config->iyzipay_zip);?>">
+                                <small class="admin-info"></small>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Configure Yoomoney Payment Method</h6>
+                    <form class="yoomoney-settings" method="POST">
+                        <div class="float-left">
+                            <label for="yoomoney_payment" class="main-label">Yoomoney Payment Method</label>
+                            <br><small class="admin-info">Get paid by Yoomoney payment provider.</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="yoomoney_payment" value="no" />
+                            <input type="checkbox" name="yoomoney_payment" id="chck-yoomoney_payment" value="yes" <?php echo ($pt->config->yoomoney_payment == 'yes') ? 'checked': '';?>>
+                            <label for="chck-yoomoney_payment" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                              <label class="form-label">Wallet ID</label>
+                                <input type="text" id="yoomoney_wallet_id" name="yoomoney_wallet_id" class="form-control" value="<?php echo $pt->config->yoomoney_wallet_id;?>">
+                                <small class="admin-info">Your Yoomoney Wallet ID.</small>
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                              <label class="form-label">Notifications Authentication Secret</label>
+                                <input type="text" id="yoomoney_notifications_secret" name="yoomoney_notifications_secret" class="form-control" value="<?php echo $pt->config->yoomoney_notifications_secret;?>">
+                                <small class="admin-info">Your Yoomoney Notifications Authentication Secret.</small>
+                            </div>
+                        </div>
+                        <small class="admin-info">Please add this url <?php echo(PT_Link("aj/wallet/success_yoomoney")) ?> <a href="https://yoomoney.ru/transfer/myservices/http-notification" target="_blank">in HTTP notifications</a></small>
+                    </form>
+                </div>
+            </div>  
+            <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Coinbase Payment</h6>
+                    <form class="coinbase_payment-settings" method="POST">
+                        <div class="float-left">
+                            <label for="coinbase_payment" class="main-label">Coinbase Payment Method</label>
+                            <br><small class="admin-info">Get paid by Coinbase, simple and easy.</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="coinbase_payment" value="no" />
+                            <input type="checkbox" name="coinbase_payment" id="chck-coinbase_payment" value="yes" <?php echo ($pt->config->coinbase_payment == 'yes') ? 'checked': '';?>>
+                            <label for="chck-coinbase_payment" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                              <label class="form-label">API key </label>
+                                <input type="text" id="coinbase_key" name="coinbase_key" class="form-control" value="<?php echo $pt->config->coinbase_key;?>">
+                                <small class="admin-info">Your Coinbase API key.</small>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>  
+            <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Configure Ngenius (Credit Cards) Payment Method</h6>
+                    <form class="ngenius-settings" method="POST">
+                        <div class="float-left">
+                            <label for="ngenius_payment" class="main-label">Ngenius Payment Method</label>
+                            <br><small class="admin-info">Get paid by Ngenius payment provider.</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="ngenius_payment" value="no" />
+                            <input type="checkbox" name="ngenius_payment" id="chck-ngenius_payment" value="yes" <?php echo ($pt->config->ngenius_payment == 'yes') ? 'checked': '';?>>
+                            <label for="chck-ngenius_payment" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <label for="ngenius_mode">Test mode</label>
+                        <select class="form-control show-tick" id="ngenius_mode" name="ngenius_mode">
+                          <option value="live" <?php echo ($pt->config->ngenius_mode == 'live') ? 'selected': '';?>>Live</option>
+                          <option value="sandbox" <?php echo ($pt->config->ngenius_mode == 'sandbox') ? 'selected': '';?>>Test</option>
+                        </select>
+                        <small class="admin-info">Choose the mode your application is using, for testing use the SandBox mode.</small>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                              <label class="form-label">Ngenius API Key</label>
+                                <input type="text" id="ngenius_api_key" name="ngenius_api_key" class="form-control" value="<?php echo $pt->config->ngenius_api_key;?>">
+                                <small class="admin-info">Your Ngenius API Key.</small>
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                              <label class="form-label">Ngenius Outlet Id</label>
+                                <input type="text" id="ngenius_outlet_id" name="ngenius_outlet_id" class="form-control" value="<?php echo $pt->config->ngenius_outlet_id;?>">
+                                <small class="admin-info">Your Ngenius Outlet Id.</small>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>  
+            <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Configure CoinPayments Payment Method <div class="pull-right mobile-hidden"><a href="https://www.coinpayments.net/" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/1200px-Bitcoin.svg.png" style="width: 40px; margin-top: -10px"></a></div></h6>
+                    <form class="coinpayments-settings" method="POST">
+                        <div class="float-left">
+                            <label for="coinpayments" class="main-label">CoinPayments Payment Method</label>
+                            <br><small class="admin-info">Get paid by bitcoin, simple and easy.</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="coinpayments" value="no" />
+                            <input type="checkbox" name="coinpayments" id="chck-coinpayments" value="yes" <?php echo ($pt->config->coinpayments == 'yes') ? 'checked': '';?>>
+                            <label for="chck-coinpayments" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                              <label class="form-label">Secret Key </label>
+                                <input type="text" id="coinpayments_secret" name="coinpayments_secret" class="form-control" value="<?php echo $pt->config->coinpayments_secret;?>">
+                                <small class="admin-info">Your CoinPayments Secret Key.</small>
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                              <label class="form-label">Public Key <small></small></label>
+                                <input type="text" id="coinpayments_public_key" name="coinpayments_public_key" class="form-control" value="<?php echo $pt->config->coinpayments_public_key;?>">
+                                <small class="admin-info">Your CoinPayments Public Key.</small>
+                            </div>
+                        </div>
+
+                        <?php if (!empty($pt->config->coinpayments_coins)) {
+                            $coinpayments_coins = json_decode($pt->config->coinpayments_coins,true);
+                            if (!empty($coinpayments_coins)) { ?>
+                                <label for="coinpayments_coin">Coinpayments Coins</label>
+                                <select class="form-control show-tick" id="coinpayments_coin" name="coinpayments_coin">
+                                    <?php foreach ($coinpayments_coins as $key => $value) { ?>
+                                        <option value="<?php echo($key); ?>" <?php echo ($pt->config->coinpayments_coin == $key)  ? ' selected': '';?>><?php echo($key); ?></option>
+                                    <?php } ?>
+                                </select>
+                                <small class="admin-info">Set your Coinpayments coin, this will be used only on Coinpayments.</small>
+                                <div class="clearfix"></div>
+                        <?php }} ?>
+                        <div class="coinpayments-settings-alert"></div>
+                        <button type="button" class="btn btn-success m-t-15 waves-effect" onclick="GetSupportedCoins()">Get Supported Coins</button>
+                    </form>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Qiwi payment</h6>
+                    <div class="qiwi-settings-alert"></div>
+                    <form class="qiwi-settings" method="POST">
+                        <div>
+                            <div class="float-left">
+                                <label for="qiwi_payment" class="main-label">Qiwi Payment Method</label>
+                                <br><small class="admin-info">Enable Qiwi to receive payments.</small>
+                            </div>
+                            <div class="form-group float-right switcher">
+                                <input type="hidden" name="qiwi_payment" value="no">
+                                <input type="checkbox" name="qiwi_payment" id="qiwi_payment-enabled" value="yes" <?php echo ($pt->config->qiwi_payment == 'yes') ? 'checked': '';?>>
+                                <label for="qiwi_payment-enabled" class="check-trail"><span class="check-handler"></span></label>
+                            </div>
+                            <div class="clearfix"></div>
+                            <hr>
+                        </div>
+
+                        <label for="qiwi_public_key">Qiwi Public Key</label>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <textarea id="qiwi_public_key" name="qiwi_public_key" class="form-control"><?php echo $pt->config->qiwi_public_key;?></textarea>
+                                <small class="admin-info">Your Qiwi API Public Key.</small>
+                            </div>
+                        </div>
+
+                        <label for="qiwi_private_key">Qiwi Private Key</label>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <textarea id="qiwi_private_key" name="qiwi_private_key" class="form-control"><?php echo $pt->config->qiwi_private_key;?></textarea>
+                                <small class="admin-info">Your Qiwi API Private Key.</small>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Configure PayFast Payment Method</h6>
+                    <form class="payfast-settings" method="POST">
+                        <div class="float-left">
+                            <label for="payfast_payment" class="main-label">PayFast Payment Method</label>
+                            <br><small class="admin-info">Get paid by PayFast payment provider.</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="payfast_payment" value="no" />
+                            <input type="checkbox" name="payfast_payment" id="chck-payfast_payment" value="yes" <?php echo ($pt->config->payfast_payment == 'yes') ? 'checked': '';?>>
+                            <label for="chck-payfast_payment" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <label for="payfast_mode">Test mode</label>
+                        <select class="form-control show-tick" id="payfast_mode" name="payfast_mode">
+                          <option value="production" <?php echo ($pt->config->payfast_mode == 'production') ? 'selected': '';?>>Live</option>
+                          <option value="sandbox" <?php echo ($pt->config->payfast_mode == 'sandbox') ? 'selected': '';?>>Test</option>
+                        </select>
+                        <small class="admin-info">Choose the mode your application is using, for testing use the SandBox mode.</small>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">PayFast Merchant Id</label>
+                                <input type="text" id="payfast_merchant_id" name="payfast_merchant_id" class="form-control" value="<?php echo $pt->config->payfast_merchant_id ;?>">
+                                <small class="admin-info">Your PayFast Merchant Id.</small>
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">PayFast Merchant Key</label>
+                                <input type="text" id="payfast_merchant_key" name="payfast_merchant_key" class="form-control" value="<?php echo $pt->config->payfast_merchant_key ;?>">
+                                <small class="admin-info">Your PayFast Merchant Key.</small>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Configure Braintree Payment Method</h6>
+                    <form class="braintree-settings" method="POST">
+                        <div class="float-left">
+                            <label for="braintree_payment" class="main-label">Braintree Payment Method</label>
+                            <br><small class="admin-info">Get paid by Braintree payment provider.</small>
+                        </div>
+                        <div class="form-group float-right switcher">
+                            <input type="hidden" name="braintree_payment" value="no" />
+                            <input type="checkbox" name="braintree_payment" id="chck-braintree_payment" value="yes" <?php echo ($pt->config->braintree_payment == 'yes') ? 'checked': '';?>>
+                            <label for="chck-braintree_payment" class="check-trail"><span class="check-handler"></span></label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <label for="braintree_mode">Test mode</label>
+                        <select class="form-control show-tick" id="braintree_mode" name="braintree_mode">
+                          <option value="production" <?php echo ($pt->config->braintree_mode == 'production') ? 'selected': '';?>>Live</option>
+                          <option value="sandbox" <?php echo ($pt->config->braintree_mode == 'sandbox') ? 'selected': '';?>>Test</option>
+                        </select>
+                        <small class="admin-info">Choose the mode your application is using, for testing use the SandBox mode.</small>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                              <label class="form-label">Braintree Merchant Id</label>
+                                <input type="text" id="braintree_merchant_id" name="braintree_merchant_id" class="form-control" value="<?php echo $pt->config->braintree_merchant_id ;?>">
+                                <small class="admin-info">Your Braintree Merchant Id.</small>
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                              <label class="form-label">Braintree Public Key</label>
+                              <textarea id="braintree_public_key" name="braintree_public_key" class="form-control"><?php echo $pt->config->braintree_public_key ;?></textarea>
+                                <small class="admin-info">Your Braintree Public Key.</small>
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                              <label class="form-label">Braintree Private Key</label>
+                              <textarea id="braintree_private_key" name="braintree_private_key" class="form-control"><?php echo $pt->config->braintree_private_key ;?></textarea>
+                                <small class="admin-info">Your Braintree Private Key.</small>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+    <!-- #END# Vertical Layout -->
+<script>
+function CustomName(self) {
+    if ($(self).is(':checked')) {
+        $('.custom_name_class').removeClass('hidden');
+    }
+    else{
+        $('.custom_name_class').addClass('hidden');
+    }
+}
+function GetSupportedCoins() {
+    $('form.coinpayments-settings').find('.btn-success').text('Please wait..');
+    $.get('{{LINK aj/ap/get_supported_coins}}', function (data) {
+        if (data.status == 200) {
+            location.reload();
+        } else {
+            $('.coinpayments-settings-alert').html('<div class="alert alert-danger">'+data.message+'</div>');
+            setTimeout(function () {
+                $('.coinpayments-settings-alert').empty();
+            }, 2000);
+        }
+        $('form.coinpayments-settings').find('.btn-success').text('Get Supported Coins');
+    });
+}
+$(function() {
+    $('.switcher input[type=checkbox]').click(function () {
+        var configName = $(this).attr('name');
+        var hash_id = $('input[name=hash_id]').val();
+        var objData = {};
+        if ($(this).is(":checked") === true) {
+            objData[configName] = $(this).val();
+        }
+        else{
+            if ($('input[name='+configName+']')[0]) {
+                objData[configName] = $($('input[name='+configName+']')[0]).val();
+            }
+        }
+        objData['hash_id'] = hash_id;
+        $.post('{{LINK aj/ap/save-settings}}', objData);
+    });
+
+    var setTimeOutColor = setTimeout(function (){});
+    $('select').on('change', function() {
+         clearTimeout(setTimeOutColor);
+        var thisElement = $(this);
+        var configName = thisElement.attr('name');
+        var hash_id = $('input[name=hash_id]').val();
+        var objData = {};
+        objData[configName] = this.value;
+        objData['hash_id'] = hash_id;
+        thisElement.addClass('warning');
+        $.post("{{LINK aj/ap/save-settings}}", objData, function (data) {
+            if (data.status == 200) {
+                thisElement.removeClass('warning');
+                thisElement.addClass('success');
+            } else {
+                thisElement.addClass('error');
+            }
+            var setTimeOutColor = setTimeout(function () {
+                thisElement.removeClass('success');
+                thisElement.removeClass('warning');
+                thisElement.removeClass('error');
+            }, 2000);
+        });
+    });
+    $('input[type=text], input[type=number] , textarea').on('input', delay(function() {
+            clearTimeout(setTimeOutColor);
+            var thisElement = $(this);
+            var configName = thisElement.attr('name');
+            var hash_id = $('input[name=hash_id]').val();
+            var objData = {};
+            objData[configName] = this.value;
+            objData['hash_id'] = hash_id;
+            thisElement.addClass('warning');
+            $.post("{{LINK aj/ap/save-settings}}", objData, function (data) {
+                if (data.status == 200) {
+                    thisElement.removeClass('warning');
+                    thisElement.addClass('success');
+                } else {
+                    thisElement.addClass('error');
+                }
+                var setTimeOutColor = setTimeout(function () {
+                    thisElement.removeClass('success');
+                    thisElement.removeClass('warning');
+                    thisElement.removeClass('error');
+                }, 2000);
+                //thisElement.focus();
+            });
+    }, 500));
+});
+</script>

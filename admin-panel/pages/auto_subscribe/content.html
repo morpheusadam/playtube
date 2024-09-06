@@ -1,0 +1,51 @@
+<div class="container-fluid">
+    <div>
+        <h3>Auto Friend</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Admin Panel</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Tools</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Auto Friend</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Auto Friend</h6>
+                    <small>When a user creates a new account, choose which users you would like to get auto friended / followed.</small>
+                    <div class="clearfix"></div>
+                    <br>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Username(s), sperated by a comma (,)</label>
+                                <input type="text" id="users" name="users" class="form-control" value="<?php echo $pt->config->auto_subscribe; ?>">
+                                
+                            </div>
+                        </div>
+                        <small>This process might take some time, you can check for your site changes after few minutes.</small><div class="clearfix"></div><br>
+                        <div class="clearfix"></div>
+                  <button type="submit" class="btn btn-danger waves-effect waves-light m-t-20" id="users-btn">Save</button>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    </div>
+<script>
+$(document).on('click', '#users-btn', function(event) {
+	event.preventDefault();
+	$(this).text('Please wait..');
+	$.get('{{LINK aj/ap/auto_friend}}', {users: $('#users').val()}, function(data, textStatus, xhr) {
+		$('#users-btn').text('Saved!');
+		setTimeout(function () {
+			$('#users-btn').text('Save');
+		}, 4000);
+	});
+});
+</script>

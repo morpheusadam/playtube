@@ -1,0 +1,305 @@
+<li class="dropdown hide-from-mobile pull-left profile-nav">
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+		<img class="header-image" src="{{ME avatar}}" alt="{{ME name}} avatar" />
+		<span class="name_loggedin_user desktop">{{ME name}}</span>
+		<span class="desktop hide_iam_from_mobile">
+				<svg width="4" height="14" viewBox="0 0 4 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M1.92603 10.25C2.86353 10.25 3.67603 11.0625 3.67603 12C3.67603 12.9688 2.86353 13.75 1.92603 13.75C0.957275 13.75 0.176025 12.9688 0.176025 12C0.176025 11.0625 0.957275 10.25 1.92603 10.25ZM1.92603 5.25C2.86353 5.25 3.67603 6.0625 3.67603 7C3.67603 7.96875 2.86353 8.75 1.92603 8.75C0.957275 8.75 0.176025 7.96875 0.176025 7C0.176025 6.0625 0.957275 5.25 1.92603 5.25ZM1.92603 3.75C0.957275 3.75 0.176025 2.96875 0.176025 2C0.176025 1.0625 0.957275 0.25 1.92603 0.25C2.86353 0.25 3.67603 1.0625 3.67603 2C3.67603 2.96875 2.86353 3.75 1.92603 3.75Z" fill="currentColor"/>
+				</svg>
+		</span>
+	</a>
+	<ul class="dropdown-menu ani-acc-menu custom_menu_login_usss" role="menu">
+		<div class="clip_top">
+			<img src="{{ME cover}}">
+		</div>
+		<div class="image_dropdown">
+			<div class="" style="position: relative;">
+				<?php if ($pt->user->is_pro > 0 && !empty($pt->pro_packages[$pt->user->pro_type])) { ?>
+				<span class="icon_pro">
+					<svg xmlns="http://www.w3.org/2000/svg" width="42" height="20" viewBox="0 0 42 20">
+					  <g id="pro" transform="translate(-1739 -2240)">
+					    <rect id="bg" width="42" height="20" rx="8" transform="translate(1739 2240)" fill="#3f90cf"/>
+					    <text id="PRO-2" data-name="PRO" transform="translate(1760.053 2254.134)" fill="#fff" font-size="12" font-weight="500"><tspan x="-11" y="0">PRO</tspan></text>
+					  </g>
+					</svg>
+				</span>
+				<?php } ?>
+				<img src="{{ME avatar}}" alt="{{ME name}} avatar" /> 
+			</div>
+			<a class="name_channel" href="{{ME url}}" data-load="?link1=timeline&id={{ME username}}">
+				<div class="name_pes">{{ME name}} </div>
+				<div class="channel_pass">{{LANG my_channel}}</div>
+			</a>
+		</div>
+		
+		<?php if ($pt->config->point_level_system == 1) { ?>
+			<li class="points___">
+
+				<div class="points_secton_wrap">
+					<img src="{{CONFIG theme_url}}/img/point_dropdown.png">
+					<div class="right_wrap_points__">
+						<div class="p_number__">{{ME points}} {{LANG points}}</div>
+						<div class="text_lang_span">{{LANG happy_point}}</div>
+					</div>
+				</div>
+				
+			</li>
+		<?php } ?>
+		
+		<?php if ($pt->config->switch_account == 'on'): ?>
+			<li class="divider"></li>
+			<li class="hid_svg">
+				<a href="javascript:void(0);" data-toggle="modal" data-target="#switch_accounts"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M560-520q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35ZM320-240q-33 0-56.5-23.5T240-320v-480q0-33 23.5-56.5T320-880h480q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H320ZM160-80q-33 0-56.5-23.5T80-160v-560h80v560h560v80H160Zm160-240h480q-42-57-105.5-88.5T560-440q-71 0-134.5 31.5T320-320Z" fill="currentColor" opacity="0.669"/></svg> {{LANG switch_account}}</a>
+			</li>
+			<li class="divider"></li>
+		<?php endif; ?>
+		
+		<?php if ($pt->config->go_pro == 'on' && !PT_IsUpgraded()): ?>
+			<li>
+			<a href="{{LINK go_pro}}" data-load="?link1=go_pro">
+					<svg xmlns="http://www.w3.org/2000/svg" width="15" height="16.769" viewBox="0 0 15 16.769">
+					  <path id="Path_30537" data-name="Path 30537" d="M18.5,6.472c0,7.377-1.065,10.974-7.378,12.776a.423.423,0,0,1-.242,0C4.566,17.444,3.5,13.885,3.5,6.586a.441.441,0,0,1,.321-.424A17.835,17.835,0,0,0,10.7,2.628a.387.387,0,0,1,.313-.127.443.443,0,0,1,.311.131c.821.833,4.289,2.559,6.871,3.42A.445.445,0,0,1,18.5,6.472Z" transform="translate(-3.5 -2.498)" fill="currentColor" opacity="0.669"/>
+					</svg>
+					{{LANG go_pro}}
+			</a>
+			</li>
+		<?php endif; ?>
+		<li>
+			<a href="{{LINK subscriptions}}" data-load="?link1=subscriptions">
+				
+				<svg xmlns="http://www.w3.org/2000/svg" width="15" height="14.21" viewBox="0 0 15 14.21">
+				  <path id="Path_30538" data-name="Path 30538" d="M17.054,9.814,14.6,12.176l.58,3.332a1.439,1.439,0,0,1-.573,1.415,1.478,1.478,0,0,1-1.558.12L10,15.467,6.956,17.043a1.476,1.476,0,0,1-1.558-.12,1.44,1.44,0,0,1-.573-1.415l.58-3.332L2.947,9.814a1.435,1.435,0,0,1-.377-1.485,1.454,1.454,0,0,1,1.191-1l3.4-.487L8.684,3.809a1.477,1.477,0,0,1,2.634,0l1.521,3.036,3.4.487a1.454,1.454,0,0,1,1.19,1A1.435,1.435,0,0,1,17.054,9.814Z" transform="translate(-2.5 -3)" fill="currentColor" opacity="0.669"/>
+				</svg>
+				{{LANG subscriptions}}
+			</a>
+		</li>
+		<li>
+			<a href="{{LINK wallet}}" data-load="?link1=wallet">
+				<svg xmlns="http://www.w3.org/2000/svg" width="15" height="11.842" viewBox="0 0 15 11.842">
+				  <path id="Path_30536" data-name="Path 30536" d="M13.947,4.5H6.053A3.558,3.558,0,0,0,2.5,8.053h15A3.558,3.558,0,0,0,13.947,4.5ZM2.5,9.632v3.158a3.558,3.558,0,0,0,3.553,3.553h7.895A3.558,3.558,0,0,0,17.5,12.789V9.632Zm5.921,3.947H6.053a.789.789,0,1,1,0-1.579H8.421a.789.789,0,0,1,0,1.579Z" transform="translate(-2.5 -4.5)" fill="currentColor" opacity="0.669"/>
+				</svg>
+				{{LANG wallet}}
+			</a>
+		</li>
+		<?php if (IS_LOGGED == true && $pt->config->history_system == 'on') { ?>
+			<li>
+				<a href="{{LINK history}}" data-load="?link1=history">
+					<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15">
+					  <path id="Path_30543" data-name="Path 30543" d="M10,2.5A7.5,7.5,0,1,0,17.5,10,7.507,7.507,0,0,0,10,2.5Zm3.158,8.289H10A.792.792,0,0,1,9.211,10V6.053a.789.789,0,1,1,1.579,0V9.211h2.368a.789.789,0,1,1,0,1.579Z" transform="translate(-2.5 -2.5)" fill="currentColor" opacity="0.669"/>
+					</svg>
+					{{LANG history}}
+				</a>
+			</li>
+		<?php } ?>
+		<li>
+			<a href="{{ME url}}?page=play-lists" data-load="?link1=timeline&id={{ME username}}&page=play-lists">
+				<svg xmlns="http://www.w3.org/2000/svg" width="15" height="14.213" viewBox="0 0 15 14.213">
+				  <path id="Path_30542" data-name="Path 30542" d="M17.4,9.366c-.754,3.866-4.717,6.581-6.385,7.57a1.987,1.987,0,0,1-2.024,0c-1.669-.989-5.632-3.7-6.386-7.57A5.6,5.6,0,0,1,3.749,4.781,4.736,4.736,0,0,1,7.451,3,5.135,5.135,0,0,1,10,3.666,5.135,5.135,0,0,1,12.549,3a4.736,4.736,0,0,1,3.7,1.781A5.594,5.594,0,0,1,17.4,9.366Z" transform="translate(-2.5 -3)" fill="currentColor" opacity="0.669"/>
+				</svg>
+				{{LANG play_lists}}
+			</a>
+		</li>
+		<?php if ($pt->config->history_system == 'on') { ?>
+			<!--<li>
+				<a href="{{LINK history}}" data-load="?link1=history">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> {{LANG history}}
+				</a>
+			</li>-->
+		<?php } ?>
+		<!--<li>
+			<a href="{{LINK liked-videos}}" data-load="?link1=liked-videos">
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M23,10C23,8.89 22.1,8 21,8H14.68L15.64,3.43C15.66,3.33 15.67,3.22 15.67,3.11C15.67,2.7 15.5,2.32 15.23,2.05L14.17,1L7.59,7.58C7.22,7.95 7,8.45 7,9V19A2,2 0 0,0 9,21H18C18.83,21 19.54,20.5 19.84,19.78L22.86,12.73C22.95,12.5 23,12.26 23,12V10M1,21H5V9H1V21Z" /></svg> {{LANG liked_videos}}
+			</a>
+		</li>-->
+		<?php if ($pt->config->all_create_articles == 'on') { ?>
+			<li class="hid_svg">
+				<a href="{{LINK my_articles}}" data-load="?link1=my_articles">
+					<svg xmlns="http://www.w3.org/2000/svg" width="15" height="19" viewBox="0 0 15 19">
+					  <path id="Path_30541" data-name="Path 30541" d="M14.75,5.5V3.04l4.21,4.21H16.5A1.758,1.758,0,0,1,14.75,5.5ZM16.5,8.75A3.256,3.256,0,0,1,13.25,5.5v-3H9A4.507,4.507,0,0,0,4.5,7V17A4.507,4.507,0,0,0,9,21.5h6A4.507,4.507,0,0,0,19.5,17V8.75Z" transform="translate(-4.5 -2.5)" fill="currentColor" opacity="0.669"/>
+					</svg>
+					{{LANG my_articles}}
+				</a>
+			</li>
+		<?php } ?>
+		<?php if (($pt->config->sell_videos_system == 'on')) {  ?>
+		<li class="hid_svg">
+			<a href="{{LINK paid-videos}}" data-load="?link1=paid-videos">
+				<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15.001" viewBox="0 0 15 15.001">
+				  <path id="Path_30535" data-name="Path 30535" d="M15.313,10.378a.387.387,0,0,0-.285-.127H3.973a.387.387,0,0,0-.285.127.422.422,0,0,0-.09.3l.533,4.035A2.634,2.634,0,0,0,6.733,17h5.55a2.631,2.631,0,0,0,2.61-2.295l.51-4.035A.414.414,0,0,0,15.313,10.378ZM8.75,14a.75.75,0,1,1-1.5,0V12.5a.75.75,0,0,1,1.5,0Zm3,0a.75.75,0,1,1-1.5,0V12.5a.75.75,0,0,1,1.5,0ZM17,7.438a1.687,1.687,0,0,1-1.687,1.687H3.688a1.687,1.687,0,1,1,0-3.375H5.325L7.357,2.364a.75.75,0,0,1,1.286.772L7.075,5.749h4.851L10.358,3.136a.75.75,0,0,1,1.286-.772L13.676,5.75h1.638A1.687,1.687,0,0,1,17,7.438Z" transform="translate(-2 -1.999)" fill="currentColor" fill-rule="evenodd" opacity="0.669"/>
+				</svg>
+				{{LANG purchased}}
+			</a>
+		</li>
+		<?php } ?>
+		<li class="divider"></li>
+		<!-- <li>
+			<a href="{{LINK manage-videos}}" data-load="?link1=manage-videos">
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-video"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg> {{LANG manage_videos}}
+			</a>
+		</li> -->
+		<li>
+			<a href="{{LINK dashboard}}" data-load="?link1=dashboard">
+				<svg xmlns="http://www.w3.org/2000/svg" width="15" height="10" viewBox="0 0 15 10">
+				  <path id="Path_30534" data-name="Path 30534" d="M13.019,8.962v3.077A3.466,3.466,0,0,1,9.558,15.5H5.712A3.466,3.466,0,0,1,2.25,12.038V8.962A3.466,3.466,0,0,1,5.712,5.5H9.558A3.466,3.466,0,0,1,13.019,8.962Zm3.538-1.739a1.3,1.3,0,0,0-1.335.065l-.877.585a.386.386,0,0,0-.172.32v4.615a.384.384,0,0,0,.172.32l.876.584a1.306,1.306,0,0,0,2.029-1.088V8.377A1.305,1.305,0,0,0,16.557,7.222Z" transform="translate(-2.25 -5.5)" fill="currentColor" opacity="0.669"/>
+				</svg>
+				{{LANG video_studio}}
+			</a>
+		</li>
+
+		<?php if ( $pt->config->popular_channels == 'on') { ?>
+			<!-- <li>
+				<a href="{{LINK popular_channels}}" data-load="?link1=popular_channels">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg> {{LANG popular_channels}}
+				</a>
+			</li> -->
+		<?php } ?>
+		<li class="divider"></li>
+		<!-- <li>
+			<a href="{{LINK settings/profile}}" data-load="?link1=settings&page=profile">
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3"><polygon points="14 2 18 6 7 17 3 17 3 13 14 2"></polygon><line x1="3" y1="22" x2="21" y2="22"></line></svg> {{LANG edit}}
+			</a>
+		</li> -->
+		<li>
+			<a href="{{LINK settings}}" data-load="?link1=settings">
+				<svg xmlns="http://www.w3.org/2000/svg" width="15.003" height="15.002" viewBox="0 0 15.003 15.002">
+					<path id="icon_setting" data-name="icon setting" d="M1601.044,2334h-1.1a1.6,1.6,0,0,1-1.678-1.5c0-.011,0-.022,0-.032a1.468,1.468,0,0,0-1.487-1.366,1.3,1.3,0,0,0-.711.173,1.777,1.777,0,0,1-.857.225,1.7,1.7,0,0,1-1.435-.78l-.553-.9a1.436,1.436,0,0,1-.017-1.538,1.635,1.635,0,0,1,.646-.592,1.324,1.324,0,0,0,.659-1.5,1.389,1.389,0,0,0-.679-.852,1.494,1.494,0,0,1-.619-2.088l.021-.034.542-.885a1.728,1.728,0,0,1,2.277-.57,1.6,1.6,0,0,0,2.026-.518,1.11,1.11,0,0,0,.186-.66,1.291,1.291,0,0,1,.226-.8,1.758,1.758,0,0,1,1.428-.78h1.139a1.72,1.72,0,0,1,1.438.78,1.285,1.285,0,0,1,.217.8,1.112,1.112,0,0,0,.186.66,1.573,1.573,0,0,0,1.321.686,1.589,1.589,0,0,0,.711-.168,1.717,1.717,0,0,1,2.269.57l.541.885a1.477,1.477,0,0,1-.535,2.089l-.062.034a1.381,1.381,0,0,0-.674.854,1.271,1.271,0,0,0,.158,1.021,1.209,1.209,0,0,0,.5.48,1.786,1.786,0,0,1,.654.592,1.457,1.457,0,0,1-.016,1.538l-.565.9a1.708,1.708,0,0,1-2.27.564l-.016-.009a1.338,1.338,0,0,0-.711-.173,1.469,1.469,0,0,0-1.494,1.366,1.59,1.59,0,0,1-1.637,1.538Zm-.544-9.616a2.216,2.216,0,0,0-2.292,2.122,2.024,2.024,0,0,0,.671,1.5,2.384,2.384,0,0,0,1.622.616,2.18,2.18,0,0,0,2.268-2.08,2.062,2.062,0,0,0-.659-1.539A2.338,2.338,0,0,0,1600.5,2324.381Z" transform="translate(-1592.99 -2318.996)" fill="currentColor" opacity="0.669"/>
+				</svg> {{LANG settings}}
+			</a>
+		</li>
+		<?php if ($pt->config->user_ads == 'on' && canUseFeature($pt->user->id,'who_can_user_ads')): ?>
+			<li class="hid_svg">
+				<a href="{{LINK ads}}" data-load="?link1=ads">
+					
+				<svg xmlns="http://www.w3.org/2000/svg" width="15" height="13.5" viewBox="0 0 15 13.5">
+				  <path id="Path_30540" data-name="Path 30540" d="M15.763,5.782A2.77,2.77,0,0,1,13.805,8.43,4.433,4.433,0,0,0,14,7.125a4.493,4.493,0,0,0-2.2-3.862A2.827,2.827,0,0,1,12.987,3,2.78,2.78,0,0,1,15.763,5.782ZM15.2,9.225a1.235,1.235,0,0,0-.937.112,2.5,2.5,0,0,1-1.043.308,3.825,3.825,0,0,1-.525.637A4.069,4.069,0,0,1,15.44,13.5h.517a.921.921,0,0,0,.818-.472A1.914,1.914,0,0,0,17,12.12v-.532A2.431,2.431,0,0,0,15.2,9.225Zm-8-5.962A2.827,2.827,0,0,0,6.012,3,2.777,2.777,0,0,0,5.2,8.43,4.433,4.433,0,0,1,5,7.125,4.493,4.493,0,0,1,7.2,3.263ZM6.3,10.283a3.825,3.825,0,0,1-.525-.637,2.5,2.5,0,0,1-1.042-.308A1.235,1.235,0,0,0,3.8,9.225,2.431,2.431,0,0,0,2,11.587v.532a1.914,1.914,0,0,0,.225.908.918.918,0,0,0,.81.472H3.56A4.069,4.069,0,0,1,6.3,10.283Zm5.88,1.02a1.75,1.75,0,0,0-.4-.053,1.525,1.525,0,0,0-.743.195,3.2,3.2,0,0,1-3.09,0,1.525,1.525,0,0,0-.742-.195,1.75,1.75,0,0,0-.4.053,2.966,2.966,0,0,0-2.19,2.872v.653A2.305,2.305,0,0,0,4.9,15.922a1.091,1.091,0,0,0,.982.578h7.23a1.091,1.091,0,0,0,.983-.578,2.305,2.305,0,0,0,.278-1.095v-.653A2.966,2.966,0,0,0,12.185,11.3Zm.69-4.178A3.375,3.375,0,1,0,9.5,10.5,3.375,3.375,0,0,0,12.875,7.125Z" transform="translate(-2 -3)" fill="currentColor" opacity="0.669"/>
+				</svg>
+				{{LANG ads}}
+				</a>
+			</li>
+		<?php endif; ?>
+		
+		<?php if (($pt->config->usr_v_mon == 'on' || $pt->config->sell_videos_system == 'on' || $pt->config->payed_subscribers == 'on')) { ?>
+			<!-- <li>
+				<a href="{{LINK transactions}}" data-load="?link1=transactions">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg> {{LANG earnings}}
+				</a>
+			</li> -->
+			<?php } ?>
+		<?php if (PT_IsAdmin() || $pt->user->admin != 0) { ?> 
+			<li class="hid_svg">
+				<a href="{{LINK admin-cp/}}">
+				<svg xmlns="http://www.w3.org/2000/svg" width="15" height="14.998" viewBox="0 0 15 14.998">
+				  <path id="Path_30539" data-name="Path 30539" d="M17.212,8.351a7.728,7.728,0,0,0-6.062-6.062,1.929,1.929,0,0,0-2.308,1.89V8.351a2.311,2.311,0,0,0,2.308,2.308h4.172a1.929,1.929,0,0,0,1.89-2.308Zm-1.588.625a.388.388,0,0,1-.3.144H11.149a.77.77,0,0,1-.769-.769V4.179a.392.392,0,0,1,.387-.39.371.371,0,0,1,.079.008A6.19,6.19,0,0,1,15.7,8.654.384.384,0,0,1,15.623,8.976ZM15.509,12.2a.786.786,0,0,1,.075.733,6.865,6.865,0,0,1-6.4,4.314,7.252,7.252,0,0,1-.738-.038,7.01,7.01,0,0,1-6.154-6.153A6.879,6.879,0,0,1,6.565,3.915.788.788,0,0,1,7.3,3.99a.766.766,0,0,1,.337.635V9.942a1.925,1.925,0,0,0,1.923,1.923h5.317A.765.765,0,0,1,15.509,12.2Z" transform="translate(-2.25 -2.251)" fill="currentColor" opacity="0.669"/>
+				</svg>
+				Admin Panel
+				</a>
+			</li> 
+		<?php } ?>
+
+		<?php if ((!empty($pt->page) && $pt->page != 'watch' && $pt->page != 'movies') || (!empty($pt->page) && $pt->page == 'watch' && !empty($pt->get_video) && !$pt->get_video->is_movie)) { ?>
+			<?php if ($pt->config->night_mode == 'both' || $pt->config->night_mode == 'night_default'): ?>
+		<li class="hid_svg">
+				<a href="javascript:;">
+				<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15">
+				  <g id="Group_39889" data-name="Group 39889" transform="translate(-4645 1056)" opacity="0.669">
+				    <path id="Path_30531" data-name="Path 30531" d="M13.25,2H5.75A3.754,3.754,0,0,0,2,5.75v4.5A3.754,3.754,0,0,0,5.75,14h3v1.5H6.5a.75.75,0,0,0,0,1.5h6a.75.75,0,0,0,0-1.5H10.25V14h3A3.754,3.754,0,0,0,17,10.25V5.75A3.754,3.754,0,0,0,13.25,2Zm2.25,8.25a2.253,2.253,0,0,1-2.25,2.25H5.75A2.253,2.253,0,0,1,3.5,10.25V5.75A2.253,2.253,0,0,1,5.75,3.5h7.5A2.253,2.253,0,0,1,15.5,5.75Z" transform="translate(4643 -1058)" fill="currentColor"/>
+				    <path id="Path_30532" data-name="Path 30532" d="M5.9,2.25A3.376,3.376,0,0,0,2.5,5.6v4.462A3.376,3.376,0,0,0,5.9,13.4H8.916v1.859H6.652a.744.744,0,1,0,0,1.487H12.69a.744.744,0,1,0,0-1.487H10.426V13.4h3.019Z" transform="translate(4642.75 -1057.75)" fill="currentColor"/>
+				  </g>
+				</svg>
+				<div class="custom_toggler_mode">
+					{{LANG mode}}
+
+					<label class="switch active">
+				      <input type="checkbox" {{MODE}} id="toggle-mode">
+				      <span class="slider round"></span>
+				    </label>
+				</div>
+				</a>
+		</li> 
+		<?php endif; ?> 
+		<?php } ?>
+
+
+				
+
+		<li class="divider"></li>
+		<li>
+			<a href="{{LINK logout}}">
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16.56,5.44L15.11,6.89C16.84,7.94 18,9.83 18,12A6,6 0 0,1 12,18A6,6 0 0,1 6,12C6,9.83 7.16,7.94 8.88,6.88L7.44,5.44C5.36,6.88 4,9.28 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12C20,9.28 18.64,6.88 16.56,5.44M13,3H11V13H13" /></svg> {{LANG log_out}}
+			</a>
+		</li>
+		<?php if ((!empty($pt->page) && $pt->page != 'watch' && $pt->page != 'movies') || (!empty($pt->page) && $pt->page == 'watch' && !empty($pt->get_video) && !$pt->get_video->is_movie)) { ?>
+			<?php if ($pt->config->night_mode == 'both' || $pt->config->night_mode == 'night_default' && 2==3): ?>
+				<li class="toggle-mode">
+					<label class="switch">
+						{{LANG mode}}
+						<input type="checkbox" {{MODE}} id="toggle-mode">
+						<span class="slider round">
+							<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15">
+							  <g id="Group_39889" data-name="Group 39889" transform="translate(-4645 1056)" opacity="0.669">
+							    <path id="Path_30531" data-name="Path 30531" d="M13.25,2H5.75A3.754,3.754,0,0,0,2,5.75v4.5A3.754,3.754,0,0,0,5.75,14h3v1.5H6.5a.75.75,0,0,0,0,1.5h6a.75.75,0,0,0,0-1.5H10.25V14h3A3.754,3.754,0,0,0,17,10.25V5.75A3.754,3.754,0,0,0,13.25,2Zm2.25,8.25a2.253,2.253,0,0,1-2.25,2.25H5.75A2.253,2.253,0,0,1,3.5,10.25V5.75A2.253,2.253,0,0,1,5.75,3.5h7.5A2.253,2.253,0,0,1,15.5,5.75Z" transform="translate(4643 -1058)" fill="#fff"/>
+							    <path id="Path_30532" data-name="Path 30532" d="M5.9,2.25A3.376,3.376,0,0,0,2.5,5.6v4.462A3.376,3.376,0,0,0,5.9,13.4H8.916v1.859H6.652a.744.744,0,1,0,0,1.487H12.69a.744.744,0,1,0,0-1.487H10.426V13.4h3.019Z" transform="translate(4642.75 -1057.75)" fill="#fff"/>
+							  </g>
+							</svg>
+						</span>
+					</label>
+				</li>
+			<?php endif; ?> 
+		<?php } ?>
+		<span class="headtoppoint"></span>
+	</ul>
+</li>
+
+<div class="modal matdialog" id="switch_accounts" role="dialog" aria-hidden="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title">
+					{{LANG switch_account}}
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span></button>
+				</h3>
+			</div>
+			<div class="modal-body dropdown-switch-account">
+				<?php if (!empty($pt->switched_accounts)) { ?>
+					<?php foreach ($pt->switched_accounts as $key => $value) {
+						$link = "javascript:void(0)";
+						$class = 'active';
+						$svg = '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path fill="currentColor" d="m424-296 282-282-56-56-226 226-114-114-56 56 170 170Zm56 216q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z"/></svg>';
+						if ($key != $pt->user->id) {
+							$link = PT_Link("switch_account?session=" . $value['session']);
+							$class = '';
+							$svg = '';
+						}
+					 ?>
+						<div>
+							<a href="<?php echo $link; ?>" class="user-avatar <?php echo $class; ?>">
+								<img src="<?php echo $value['avatar']; ?>" alt="My avatar">
+								<div class="info">
+									<b><?php echo $value['name']; ?></b>
+									<p><?php echo $value['email']; ?></p>
+								</div>
+								<?php echo $svg; ?>
+							</a>
+						</div>
+					<?php } ?>
+				<?php } ?>
+
+				<?php if(count($pt->switched_accounts) < $pt->config->switch_account_counts) { ?>
+					<button onclick="window.location.href = '{{LINK login?type=add_account}}'" class="btn btn-mat btn-main">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg> {{LANG add_account}}
+					</button>
+				<?php }?>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$('#switch_accounts').appendTo("body");
+	
+	$(function(){
+	   $('.switch input').on("click",function(){
+	      $(this).parent().toggleClass('active');
+	   });
+	});
+</script>

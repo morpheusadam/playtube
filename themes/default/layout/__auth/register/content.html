@@ -1,0 +1,243 @@
+<div class="container login-page">
+    <div class="login-form">
+        <h4>{{LANG lets_get_started}}</h4>
+    	<form action="{{LINK register}}" method="POST">
+    	    <div class="errors form-group errors_alert">{{ERRORS}}</div>
+    	     <div class="errors success form-group">{{SUCCESS}}</div>
+    	     <?php if ($pt->config->auto_username == 'on') { ?>
+    	     	<div class="form-group">
+					<input type="text" name="first_name" id="first_name" placeholder="{{LANG first_name}}" required>
+				</div>
+    	     	<div class="form-group">
+					<input type="text" name="last_name" id="last_name" placeholder="{{LANG last_name}}" required>
+				</div>
+    	     <?php }else{ ?>
+    	     	<div class="form-group">
+					<input type="text" name="username" id="username" placeholder="{{LANG username}}" required value="{{USERNAME}}">
+				</div>
+    	     <?php } ?>
+			<div class="form-group">
+				<input type="text" name="email" id="email" placeholder="{{LANG email_address}}" required value="{{EMAIL}}">
+			</div>
+			<div class="form-group">
+				<input type="password" name="password" id="password" placeholder="{{LANG password}}" required>
+				<?php if ($pt->config->password_complexity_system == 1) { ?>
+					<ul class="list-unstyled helper-text">
+						<li class="length">{{LANG least_characters}}</li>
+						<li class="lowercase">{{LANG contain_lowercase}}</li>
+						<li class="uppercase">{{LANG contain_uppercase}}</li>
+						<li class="special">{{LANG number_special}}</li>
+					</ul>
+					<input type="hidden" id="can_submit" value="0">
+				<?php } ?>
+			</div>
+			<div class="form-group">
+				<input type="password" name="c_password"  id="c_password" placeholder="{{LANG confirm_password}}" required>
+			</div>
+			<div class="form-group">
+				<select name="gender" id="gender" required>
+					<option value="male">{{LANG male}}</option>
+					<option value="female">{{LANG female}}</option>
+				</select>
+			</div>
+			{{CUSTOM_FIELDS}}
+			<div class="terms" style="color: #fff">
+		      <label for="accept_terms" style="font-size: 12px; cursor: pointer;"><input type="checkbox" style="float: left; width: auto; display: inline-block; margin-right: 5px; margin-top: 2px;" name="accept_terms" id="accept_terms"> 
+		       {{LANG terms_agreement}}
+		       <a style="color: #fff; text-decoration: underline;" href="{{LINK terms/terms}}">{{LANG terms_of_use}}</a> & <a href="{{LINK terms/privacy-policy}}" style="color: #fff; text-decoration: underline;">{{LANG privacy_policy}}</a>
+		       </label>
+		       <div class="clear"></div>
+		     </div>
+
+			<div class="recaptcha">{{RECAPTCHA}}</div>
+			<div class="form-group">
+				<input type="submit" class="button" value ="{{LANG sign_up}}">
+			</div>
+			<div class="new-here text-center">
+				{{LANG already_have_account}} <a class="dec" href="{{LINK login}}">{{LANG login_}}</a>
+			</div>
+			<?php if (isset($_GET['invite'])): ?>
+				<input type="text" class="hidden" value="<?php echo $_GET['invite']; ?>" name="invited">
+			<?php endif; ?>
+		</form>
+    </div>    
+</div>
+<ul class="bg-bubbles">
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+</ul>
+<script>
+<?php if ($pt->config->password_complexity_system == 1) { ?>
+
+(function(){
+	$('.login-form form').submit(function( event ) {
+		if ($('#can_submit').val() == 0) {
+			event.preventDefault();
+		  <?php if ($pt->config->password_complexity_system == 1) { ?>
+	    	if ($('.helper-text .length').hasClass('valid') && $('.helper-text .lowercase').hasClass('valid') && $('.helper-text .uppercase').hasClass('valid') && $('.helper-text .special').hasClass('valid')) {
+	    		$('#can_submit').val(1);
+	    		$(this).submit();
+	    	}
+	    	else{
+	    		$('.errors_alert').html("{{LANG complexity_requirements}}");
+	    		return false;
+	    	}
+	      <?php } ?>
+		}
+	});
+	var helperText = {
+		charLength: document.querySelector('.helper-text .length'),
+		lowercase: document.querySelector('.helper-text .lowercase'),
+		uppercase: document.querySelector('.helper-text .uppercase'),
+		special: document.querySelector('.helper-text .special')
+	};
+	var password = document.querySelector('#password');
+	
+	
+	
+	var pattern = {
+		charLength: function() {
+			if( password.value.length >= 6 ) {
+				return true;
+			}
+		},
+		lowercase: function() {
+			var regex = /^(?=.*[a-z]).+$/; // Lowercase character pattern
+
+			if( regex.test(password.value) ) {
+				return true;
+			}
+		},
+		uppercase: function() {
+			var regex = /^(?=.*[A-Z]).+$/; // Uppercase character pattern
+
+			if( regex.test(password.value) ) {
+				return true;
+			}
+		},
+		special: function() {
+			var regex = /^(?=.*[0-9_\W]).+$/; // Special character or number pattern
+
+			if( regex.test(password.value) ) {
+				return true;
+			}
+		}   
+	};
+	
+	// Listen for keyup action on password field
+	function CheckCPassword() {
+		$('.helper-text').slideDown('slow', function() {
+  	    	
+  	    });
+		// Check that password is a minimum of 8 characters
+		patternTest( pattern.charLength(), helperText.charLength );
+		
+		// Check that password contains a lowercase letter		
+		patternTest( pattern.lowercase(), helperText.lowercase );
+		
+		// Check that password contains an uppercase letter
+		patternTest( pattern.uppercase(), helperText.uppercase );
+		
+		// Check that password contains a number or special character
+		patternTest( pattern.special(), helperText.special );
+    
+	    // Check that all requirements are fulfilled
+	    if( hasClass(helperText.charLength, 'valid') &&
+				  hasClass(helperText.lowercase, 'valid') && 
+				 	hasClass(helperText.uppercase, 'valid') && 
+				  hasClass(helperText.special, 'valid')
+			) {
+				addClass(password.parentElement, 'valid');
+	    }
+	    else {
+	      removeClass(password.parentElement, 'valid');
+	    }
+	}
+  password.addEventListener('keyup', CheckCPassword);
+  password.addEventListener('input', CheckCPassword);
+	
+	function patternTest(pattern, response) {
+		if(pattern) {
+      addClass(response, 'valid');
+    }
+    else {
+      removeClass(response, 'valid');
+    }
+	}
+	
+	function addClass(el, className) {
+		if (el.classList) {
+			el.classList.add(className);
+		}
+		else {
+			el.className += ' ' + className;
+		}
+	}
+	
+	function removeClass(el, className) {
+		if (el.classList)
+				el.classList.remove(className);
+			else
+				el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+	}
+	
+	function hasClass(el, className) {
+		if (el.classList) {
+			console.log(el.classList);
+			return el.classList.contains(className);	
+		}
+		else {
+			new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className);	
+		}
+	}
+	
+})();
+<?php } ?>
+
+$(function() {
+	$('.button').on('click', function () {
+		if ($('#username').val() && $('#password').val() && $('#email').val() && $('#gender').val() && $('#c_password').val()) {
+			$(this).val("{{LANG please_wait}}");
+		}
+	});
+});
+</script>
+<style>
+.bg-bubbles {
+  background: -webkit-linear-gradient(top left, #{{COLOR1}} 0%, #{{COLOR2}} 100%);
+  background: linear-gradient(to bottom right, #{{COLOR1}} 0%, #{{COLOR2}} 100%);
+}
+.login-page {
+	margin-top: 150px;
+}
+.login-form input[type=submit] {
+	color: #{{COLOR1}} !important;
+}
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #fff;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    #fff;
+   opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    #fff;
+   opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:    #fff;
+}
+::-ms-input-placeholder { /* Microsoft Edge */
+   color:    #fff;
+}
+</style>

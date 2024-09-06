@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html id="html">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="title" content="{{CONTAINER_TITLE_DE}}">
+	<meta name="description" content="{{CONTAINER_DESC_DE}}">
+	<meta name="keywords" content="{{CONTAINER_KEYWORDS}}">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta property="fb:app_id" content="1643990952546825" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="shortcut icon" type="image/png" href="{{CONFIG theme_url}}/img/icon.png"/>
+    <link rel="stylesheet" href="{{CONFIG theme_url}}/css/jquery-ui.min.css">
+    <link rel="stylesheet" href="{{CONFIG theme_url}}/css/jquery.tagit.css">
+    <link rel="stylesheet" href="{{CONFIG theme_url}}/css/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{CONFIG theme_url}}/css/twemoji-awesome.css">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css">
+    <link rel="stylesheet" href="{{CONFIG theme_url}}/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{CONFIG theme_url}}/js/lib/sweetalert2/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="{{CONFIG theme_url}}/js/lib/notifIt/notifIt/css/notifIt.min.css">
+    <link rel="stylesheet" href="{{CONFIG theme_url}}/css/style.css">
+    <?php if ($pt->mode == 'night' || $pt->config->night_mode == 'night'): ?>
+    <link rel="stylesheet" href="{{CONFIG theme_url}}/css/night-mode.css" class="night-mode-css">      
+    <?php endif; ?>  
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Laila" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
+    <script src="{{CONFIG theme_url}}/js/jquery-3.min.js"></script>
+    <script src="{{CONFIG theme_url}}/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="{{CONFIG theme_url}}/js/jquery.form.min.js"></script>
+    <script type="text/javascript" src="{{CONFIG theme_url}}/js/tag-it.min.js"></script>
+    <script src="{{CONFIG theme_url}}/js/lib/sweetalert2/dist/sweetalert2.js"></script>
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{CONFIG theme_url}}/js/lib/notifIt/notifIt/css/notifIt.min.css">
+    <script src="{{CONFIG theme_url}}/js/lib/notifIt/notifIt/js/notifIt.min.js"></script>
+    <link rel="stylesheet" href="{{CONFIG theme_url}}/css/bootstrap-select.min.css?version={{CONFIG version}}">
+    <script type="text/javascript" src="{{CONFIG theme_url}}/js/bootstrap.min.js"></script>
+    <script src="{{CONFIG theme_url}}/js/bootstrap-select.min.js?version={{CONFIG version}}"></script>
+    <script src="{{CONFIG theme_url}}/js/emoji/emojionearea/dist/emojionearea.js?version={{CONFIG version}}"></script>
+    <link rel="stylesheet" type="text/css" href="{{CONFIG theme_url}}/js/emoji/emojionearea/dist/emojionearea.min.css?version={{CONFIG version}}"/>
+  
+
+
+    <script>
+        var site_url = '{{CONFIG site_url}}';
+        function PT_Ajax_Requests_File() {
+          return site_url + '/';
+        }
+    </script>
+    <script src="{{CONFIG theme_url}}/js/header.js"></script>
+</head>
+<body itemscope itemtype="http://schema.org/Organization" id="pt-body">
+  <input type="hidden" class="main_session" value="<?php echo PT_CreateMainSession();?>">
+
+	<div id="main-container" class="container" {{IS_LOGGED}}> 
+        {{CONTENT}}
+	</div>
+    {{EXTRA_JS}}
+	<script type="text/javascript" src="{{CONFIG theme_url}}/js/script.js"></script>
+    
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<form class="form create-new-list edit-list-form">
+	<div class="create-new-list-head">
+		<p><i class="fa fa-pencil"></i> {{LANG edit}} {{NAME}}</p>
+	</div>
+	<div class="sa-create-list-alert">
+		
+	</div>
+	<div class="form-group">
+		<input type="text" class="form-control" value="{{NAME}}">
+	</div>
+	<div class="form-group">
+		<select class="form-control">
+			<option value="1" selected="selected">{{LANG privacy}}</option>
+			<option value="1" {{PUBLIC}}>{{LANG public}}</option>
+			<option value="0" {{PRIVATE}}>{{LANG private}}</option>
+		</select>
+	</div>
+	<div class="form-group">
+		<textarea name="" id="" rows="3" class="form-control optional-field" placeholder="{{LANG description}}..">{{DESC}}</textarea>
+	</div>
+</form>

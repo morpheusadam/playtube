@@ -1,0 +1,19 @@
+<div class="pt_shadow pt_forms user-setting-panel form-horizontal">
+    <div class="row">
+        {{SESSIONS}}
+    </div>
+</div>
+
+<script>
+    function logOutSession(id) {
+        if (!confirm('Are you sure you want to log out from this device?')) {
+            return false;
+        }
+        $('#session_' + id).remove();
+        $.post('{{LINK aj/user/remove_session}}?hash=' + $('.main_session').val(), {id: id,user_id:<?php echo $pt->settings->id; ?>}, function (data) {
+            if (data.reload == true) {
+                location.reload();
+            }
+        });
+    }
+</script>

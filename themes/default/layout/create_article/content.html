@@ -1,0 +1,198 @@
+<style type="text/css">
+	.pt_forms .setting-panel-mdbtn {
+		position: relative !important;
+    	top: -18px;
+	}
+</style>
+
+<div class="container-home">
+<h3 class="recent-articles heading_all_sections_top">
+	<span><svg xmlns="http://www.w3.org/2000/svg" width="15" height="19" viewBox="0 0 15 19">
+					  <path id="Path_30541" data-name="Path 30541" d="M14.75,5.5V3.04l4.21,4.21H16.5A1.758,1.758,0,0,1,14.75,5.5ZM16.5,8.75A3.256,3.256,0,0,1,13.25,5.5v-3H9A4.507,4.507,0,0,0,4.5,7V17A4.507,4.507,0,0,0,9,21.5h6A4.507,4.507,0,0,0,19.5,17V8.75Z" transform="translate(-4.5 -2.5)" fill="currentColor"></path>
+					</svg>
+		{{LANG create_new_article}}
+	</span>
+</h3>
+<!-- <div class="wo_about_wrapper_parent">
+	<div class="wo_about_wrapper"> 
+		<div class="hero hero-overlay"> 
+			<div class="container">
+				<h1 class="text-center">{{LANG create_new_article}}</h1>
+			</div> 
+		</div>
+		<svg class="wave" width="100%" height="50px" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 75"> <defs> <style> .a { fill: none; } .b { clip-path: url(#a); } .c, .d { fill: #04abf2; } .d { opacity: 0.5; isolation: isolate; } </style> <clipPath id="a"> <rect class="a" width="1920" height="75"></rect> </clipPath> </defs> <title>wave</title> <g class="b"> <path class="c" d="M1963,327H-105V65A2647.49,2647.49,0,0,1,431,19c217.7,3.5,239.6,30.8,470,36,297.3,6.7,367.5-36.2,642-28a2511.41,2511.41,0,0,1,420,48"></path> </g> <g class="b"> <path class="d" d="M-127,404H1963V44c-140.1-28-343.3-46.7-566,22-75.5,23.3-118.5,45.9-162,64-48.6,20.2-404.7,128-784,0C355.2,97.7,341.6,78.3,235,50,86.6,10.6-41.8,6.9-127,10"></path> </g> <g class="b"> <path class="d" d="M1979,462-155,446V106C251.8,20.2,576.6,15.9,805,30c167.4,10.3,322.3,32.9,680,56,207,13.4,378,20.3,494,24"></path> </g> <g class="b"> <path class="d" d="M1998,484H-243V100c445.8,26.8,794.2-4.1,1035-39,141-20.4,231.1-40.1,378-45,349.6-11.6,636.7,73.8,828,150"></path> </g> </svg>
+	</div>
+</div> -->
+<div class="create_article_custom">
+	<div class="content pt_shadow">
+		<div class="col-md-12 ">
+			<div class="">
+				<div class="progress hidden">
+		            <span class="percent">0%</span>
+		            <div class="progress_bar_parent">
+		                <div class="bar upload-progress-bar progress-bar active"></div> 
+		            </div>
+		            <div class="clear"></div>
+		            <div class="text-center pt_prcs_vdo"></div>
+		        </div>
+				<form action="" class="form-horizontal setting-panel pt_forms" id="create_article_form" method="POST">
+					<div class="form-group">
+						<label class="col-md-12" for="title">{{LANG title}}</label>  
+						<div class="col-md-12">
+							<input id="title" name="title" type="text" placeholder="" class="form-control input-md">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-12" for="description">{{LANG descritpion}}</label>  
+						<div class="col-md-12">
+							<textarea name="description" id="description" cols="30" rows="5" class="form-control"></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-12" for="text">{{LANG the_article}}</label>  
+						<div class="col-md-12">
+							<textarea name="text" id="text" class="form-control"></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-12" for="category">{{LANG category}}</label>  
+						<div class="col-md-12">
+							<select name="category" id="category" class="form-control">
+								<?php foreach($pt->categories as $key => $category) {?>
+								<option value="<?php echo $key?>"><?php echo $category?></option>
+								<?php } ?>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-12" for="tags">{{LANG tags}}</label>  
+						<div class="col-md-12">
+							<input id="mySingleFieldTags" name="tags" type="text" placeholder="" class="form-control input-md">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-12" for="thumbnail">{{LANG thumbnail}}</label>  
+						<div class="col-md-12">
+							<div class="media_custom_css" onclick="document.getElementById('thumbnail').click(); return false">
+								<img src="{{CONFIG theme_url}}/img/upload_image.png">
+								<span>{{LANG select_media}}</span>
+							</div>
+							<div class="blog" id="productimage-holder"></div>
+					  
+							<input id="thumbnail" name="image" type="file" class="hidden" accept="image/*">
+							<span class="help-block">jpg, png, gif</span>
+						</div>
+					</div>
+					<div class="last-sett-btn modal-footer" style="margin: 0px -40px -10px -40px;">
+						<button type="submit" id="submit-btn" class="btn btn-main setting-panel-mdbtn"><svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-check-circle'><path d='M22 11.08V12a10 10 0 1 1-5.93-9.14'></path><polyline points='22 4 12 14.01 9 11.01'></polyline></svg> {{LANG publish}}</button>
+					</div>
+				</form>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>
+</div>
+<script src="{{CONFIG theme_url}}/js/tinymce/js/tinymce/tinymce.min.js"></script>
+<script>
+	tinymce.init({
+          selector: '#text',  // change this value according to your HTML
+          auto_focus: 'element1',
+          relative_urls: false,
+          remove_script_host: false,
+          height:500,
+		  <?php if ($pt->mode == 'night' || $pt->config->night_mode == 'night'): ?>
+			skin: "oxide-dark",
+			content_css: "dark",
+			<?php endif; ?>
+          toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image  uploadImages |  preview media fullpage | forecolor backcolor emoticons',
+          plugins: [
+              'advlist autolink link image  lists charmap  preview hr anchor pagebreak spellchecker',
+              'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+              'save table contextmenu directionality emoticons template paste textcolor'
+          ]
+        });
+$('.selectpicker').selectpicker({});
+
+$(document).ready(function() {
+	$("#thumbnail").on('change', function() {
+	//Get count of selected files
+	var product_countFiles = $(this)[0].files.length;
+	var product_imgPath = $(this)[0].value;
+	var extn = product_imgPath.substring(product_imgPath.lastIndexOf('.') + 1).toLowerCase();
+	var product_image_holder = $("#productimage-holder");
+	product_image_holder.empty();
+	if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+		if (typeof(FileReader) != "undefined") {
+		//loop for each file selected for uploaded.
+		for (var i = 0; i < product_countFiles; i++) 
+		{
+			var product_reader = new FileReader();
+			product_reader.onload = function(e) {
+				$("<img />", {
+                    "src": e.target.result,
+                    "class": "thumb-image"
+                  }).appendTo(product_image_holder);
+                }
+                product_image_holder.show();
+                product_reader.readAsDataURL($(this)[0].files[i]);
+              }
+            } else {
+              product_image_holder.html("<p>This browser does not support FileReader.</p>");
+            }
+         }
+	});
+});
+
+$(function () {
+	var bar         = $('.bar');
+    var percent     = $('.percent');
+    var prcsvdo      = $('.pt_prcs_vdo');
+	$("#mySingleFieldTags").tagit({
+		allowSpaces: true
+	});
+
+	$('#create_article_form').ajaxForm({
+	    url: '{{LINK aj/articles/new-article}}?hash=' + $('.main_session').val(),
+	    beforeSend: function() {
+	    	$('#submit-btn').attr('disabled', true);
+	    	$('#submit-btn').val("{{LANG please_wait}}");
+	    	$('.progress').removeClass('hidden');
+            var percentVal = '0%';
+            bar.width(percentVal);
+            percent.html(percentVal);
+	    },
+        uploadProgress: function(event, position, total, percentComplete) {
+             if(percentComplete > 50) {
+                percent.addClass('white');
+             }
+            var percentVal = percentComplete + '%';
+            bar.width(percentVal);
+            percent.html(percentVal);
+
+            if (percentComplete == 100) {
+               prcsvdo.html('<svg width="30" height="10" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg" fill="#000"><circle cx="15" cy="15" r="15"><animate attributeName="r" from="15" to="15" begin="0s" dur="0.8s" values="15;9;15" calcMode="linear" repeatCount="indefinite" /><animate attributeName="fill-opacity" from="1" to="1" begin="0s" dur="0.8s" values="1;.5;1" calcMode="linear" repeatCount="indefinite" /></circle><circle cx="60" cy="15" r="9" fill-opacity="0.3"><animate attributeName="r" from="9" to="9" begin="0s" dur="0.8s" values="9;15;9" calcMode="linear" repeatCount="indefinite" /><animate attributeName="fill-opacity" from="0.5" to="0.5" begin="0s" dur="0.8s" values=".5;1;.5" calcMode="linear" repeatCount="indefinite" /></circle><circle cx="105" cy="15" r="15"><animate attributeName="r" from="15" to="15" begin="0s" dur="0.8s" values="15;9;15" calcMode="linear" repeatCount="indefinite" /><animate attributeName="fill-opacity" from="1" to="1" begin="0s" dur="0.8s" values="1;.5;1" calcMode="linear" repeatCount="indefinite" /></circle></svg> {{LANG porcessing_image}}');
+               $('.progress').find('.bar').removeClass('upload-progress-bar');
+            }
+        },
+	    success: function(data) {
+	    	percentVal = '0%';
+            bar.width(percentVal);
+            $('.progress').addClass('hidden');
+	    	if (data.status == 200) {
+	    		Snackbar.show({text: "<div>{{LANG reviewed_article}}</div>"});
+	    		setTimeout(function () {
+	    			window.location.href = data.link;
+	    		},3000)
+	    	} 
+	        else {
+	    		$('#submit-btn').attr('disabled', false);
+	    	    $('#submit-btn').val("{{LANG publish}}");
+				Snackbar.show({text: "<div>"+ data.message +"</div>"});
+	    	}
+	    }
+	});
+});
+
+</script>

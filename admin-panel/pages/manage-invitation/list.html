@@ -1,0 +1,20 @@
+<tr class="setting-invitation" data-invitation="<?php echo $pt->invitation['id']; ?>" data_selected="<?php echo($pt->invitation['id']) ?>">
+  <td><input type="checkbox" id="check-data-<?php echo($pt->invitation['id']) ?>" class="delete-checkbox filled-in"><label for="check-data-<?php echo($pt->invitation['id']) ?>"></label></td>
+  <td >
+     <?php echo $pt->invitation['id']; ?>
+  </td>
+  <td >
+     <?php echo PT_Time_Elapsed_String($pt->invitation['time']); ?>
+  </td>
+  <td>
+     <?php echo $pt->invitation['code']; ?>
+  </td>
+  <td>
+     <?php if (!empty($pt->invitation['user_name'])) { ?>
+        <a href="<?php echo($pt->invitation['user_url']) ?>"><?php echo $pt->invitation['user_name']; ?></a>
+      <?php } ?>
+  </td>
+  <td>
+     <button class="btn bg-danger admn_table_btn delete-admin-invitation" id="<?php echo $pt->invitation['id']; ?>" onclick="Wo_DeleteCode('<?php echo($pt->invitation['id']) ?>','hide');">Delete</button>
+  </td>
+</tr>

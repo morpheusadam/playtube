@@ -1,0 +1,284 @@
+<div class="new_margin_login">
+<div class="new_login_page login-page signup_page">
+    <div class="login-form">
+    	<div class="start_free">
+    		{{LANG start_for_free}}
+    	</div>
+        <h4>{{LANG create_new_account}}<span>.</span></h4>
+        <div class="new-here">
+			{{LANG already_have_account}} <a class="new_link" href="{{LINK login}}">{{LANG login_}}</a>
+		</div>
+		<div class="login-page-width">
+    	<form action="{{LINK register}}" method="POST" autocomplete="off">
+    	    <div class="errors form-group errors_alert">{{ERRORS}}</div>
+    	     <div class="errors success form-group">{{SUCCESS}}</div>
+    	     <?php if ($pt->config->auto_username == 'on') { ?>
+    	     	<div class="flex_space">
+	    	     	<div class="form-group">
+						<input type="text" name="first_name" id="first_name" placeholder=" " required>
+						<label>{{LANG first_name}}</label>
+					</div>
+	    	     	<div class="form-group">
+						<input type="text" name="last_name" id="last_name" placeholder=" " required>
+						<label>{{LANG last_name}}</label>
+					</div>
+				</div>
+    	     <?php }else{ ?>
+    	     <div class="flex_space">
+    	     	<div class="form-group">
+					<input type="text" name="username" autocomplete="off" id="username" placeholder=" " required value="{{USERNAME}}">
+					<label>{{LANG username}}</label>
+				</div>
+				<div class="form-group">
+					<select name="gender" id="gender" required>
+						<option value="male">{{LANG male}}</option>
+						<option value="female">{{LANG female}}</option>
+					</select>
+					<label>{{LANG gender}}</label>
+				</div>
+			</div>
+    	     <?php } ?>
+			<div class="form-group">
+				<input type="text" name="email" id="email" placeholder=" " required value="{{EMAIL}}">
+				<label>{{LANG email_address}}</label>
+			</div>
+			<div class="form-group">
+				<input type="password" name="password" id="password" placeholder=" " required>
+				<label>{{LANG password}}</label>
+				<?php if ($pt->config->password_complexity_system == 1) { ?>
+					<ul class="list-unstyled helper-text">
+						<li class="length">{{LANG least_characters}}</li>
+						<li class="lowercase">{{LANG contain_lowercase}}</li>
+						<li class="uppercase">{{LANG contain_uppercase}}</li>
+						<li class="special">{{LANG number_special}}</li>
+					</ul>
+					<input type="hidden" id="can_submit" value="0">
+				<?php } ?>
+			</div>
+			<div class="form-group">
+				<input type="password" name="c_password"  id="c_password" placeholder=" " required>
+				<label>{{LANG confirm_password}}</label>
+			</div>
+			
+			{{CUSTOM_FIELDS}}
+			<div class="pt_vdo_cstm_radio">
+				<input type="checkbox" name="accept_terms" id="accept_terms">
+				<label for="accept_terms">{{LANG terms_agreement}} <a href="{{LINK terms/terms}}">{{LANG terms_of_use}}</a> & <a href="{{LINK terms/privacy-policy}}">{{LANG privacy_policy}}</a></label>
+			</div>
+
+			<div class="recaptcha">{{RECAPTCHA}}</div>
+			<div class="flex_space-signup mt-20">
+				<a href="{{LINK login}}">
+					<input type="button" class="button grey" value ="{{LANG login_}}">
+				</a>
+				<input type="submit" class="button main" value ="{{LANG sign_up}}">
+			</div>
+			
+			<?php if (isset($_GET['invite'])): ?>
+				<input type="text" class="hidden" value="<?php echo $_GET['invite']; ?>" name="invited">
+			<?php endif; ?>
+		</form>
+		</div>
+    </div>    
+</div>
+</div>
+<!-- <ul class="bg-bubbles">
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+</ul> -->
+<div class="login_path">
+	<img src="{{CONFIG theme_url}}/img/login_line.svg">
+</div>
+<script>
+<?php if ($pt->config->password_complexity_system == 1) { ?>
+
+(function(){
+	$('.login-form form').submit(function( event ) {
+		if ($('#can_submit').val() == 0) {
+			event.preventDefault();
+		  <?php if ($pt->config->password_complexity_system == 1) { ?>
+	    	if ($('.helper-text .length').hasClass('valid') && $('.helper-text .lowercase').hasClass('valid') && $('.helper-text .uppercase').hasClass('valid') && $('.helper-text .special').hasClass('valid')) {
+	    		$('#can_submit').val(1);
+	    		$(this).submit();
+	    	}
+	    	else{
+	    		$('.errors_alert').html("{{LANG complexity_requirements}}");
+	    		return false;
+	    	}
+	      <?php } ?>
+		}
+	});
+	var helperText = {
+		charLength: document.querySelector('.helper-text .length'),
+		lowercase: document.querySelector('.helper-text .lowercase'),
+		uppercase: document.querySelector('.helper-text .uppercase'),
+		special: document.querySelector('.helper-text .special')
+	};
+	var password = document.querySelector('#password');
+	
+	
+	
+	var pattern = {
+		charLength: function() {
+			if( password.value.length >= 6 ) {
+				return true;
+			}
+		},
+		lowercase: function() {
+			var regex = /^(?=.*[a-z]).+$/; // Lowercase character pattern
+
+			if( regex.test(password.value) ) {
+				return true;
+			}
+		},
+		uppercase: function() {
+			var regex = /^(?=.*[A-Z]).+$/; // Uppercase character pattern
+
+			if( regex.test(password.value) ) {
+				return true;
+			}
+		},
+		special: function() {
+			var regex = /^(?=.*[0-9_\W]).+$/; // Special character or number pattern
+
+			if( regex.test(password.value) ) {
+				return true;
+			}
+		}   
+	};
+	
+	// Listen for keyup action on password field
+	function CheckCPassword() {
+		$('.helper-text').slideDown('slow', function() {
+  	    	
+  	    });
+		// Check that password is a minimum of 8 characters
+		patternTest( pattern.charLength(), helperText.charLength );
+		
+		// Check that password contains a lowercase letter		
+		patternTest( pattern.lowercase(), helperText.lowercase );
+		
+		// Check that password contains an uppercase letter
+		patternTest( pattern.uppercase(), helperText.uppercase );
+		
+		// Check that password contains a number or special character
+		patternTest( pattern.special(), helperText.special );
+    
+	    // Check that all requirements are fulfilled
+	    if( hasClass(helperText.charLength, 'valid') &&
+				  hasClass(helperText.lowercase, 'valid') && 
+				 	hasClass(helperText.uppercase, 'valid') && 
+				  hasClass(helperText.special, 'valid')
+			) {
+				addClass(password.parentElement, 'valid');
+	    }
+	    else {
+	      removeClass(password.parentElement, 'valid');
+	    }
+	}
+  password.addEventListener('keyup', CheckCPassword);
+  password.addEventListener('input', CheckCPassword);
+	
+	function patternTest(pattern, response) {
+		if(pattern) {
+      addClass(response, 'valid');
+    }
+    else {
+      removeClass(response, 'valid');
+    }
+	}
+	
+	function addClass(el, className) {
+		if (el.classList) {
+			el.classList.add(className);
+		}
+		else {
+			el.className += ' ' + className;
+		}
+	}
+	
+	function removeClass(el, className) {
+		if (el.classList)
+				el.classList.remove(className);
+			else
+				el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+	}
+	
+	function hasClass(el, className) {
+		if (el.classList) {
+			console.log(el.classList);
+			return el.classList.contains(className);	
+		}
+		else {
+			new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className);	
+		}
+	}
+	
+})();
+<?php } ?>
+
+$(function() {
+	$('.button').on('click', function () {
+		if ($('#username').val() && $('#password').val() && $('#email').val() && $('#gender').val() && $('#c_password').val()) {
+			$(this).val("{{LANG please_wait}}");
+		}
+	});
+});
+</script>
+<style>
+	.navbar-fixed-top {
+		position: unset;
+	} 
+	.navbar-right, .navbar-left{
+		display: none !important;
+	}
+	
+/*.bg-bubbles {
+  background: -webkit-linear-gradient(top left, #{{COLOR1}} 0%, #{{COLOR2}} 100%);
+  background: linear-gradient(to bottom right, #{{COLOR1}} 0%, #{{COLOR2}} 100%);
+}*/
+	nav.navbar-findcond .logo-img {
+		margin-top: 5% !important;
+    margin-left: 6% !important;
+    max-width: none;
+	}
+	nav.navbar-findcond .logo-img img {
+    width: 100%;
+    max-width: 153px;
+    max-height: 48px;
+}
+
+.login-page {
+	margin-top: 150px;
+}
+.login-form input[type=submit] {
+	color: #{{COLOR1}} !important;
+}
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #fff;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    #fff;
+   opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    #fff;
+   opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:    #fff;
+}
+::-ms-input-placeholder { /* Microsoft Edge */
+   color:    #fff;
+}
+</style>

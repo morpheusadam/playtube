@@ -1,0 +1,56 @@
+<?php if (!empty($data['SHORTS_LIST'])) { ?>
+<div class="videos-latest-list row pt_timeline_vids">
+	{{SHORTS_LIST}}
+</div>
+<br><br>
+<?php if ($pt->total_shorts_pages > 1) { ?>
+	<div>
+		<hr>
+		<div class="pull-left showing_pages">
+			<?php echo "Showing $pt->page_number out of " . $pt->total_shorts_pages; ?>
+		</div>
+		<div class="pull-right">
+			<nav class="showing_nav">
+				<ul class="pagination">
+					<li>
+						<a href="{{LINK hashtag/{{TYPE}}?page_id=1" data-load="?link1=hashtag&id={{TYPE}}&page_id=1" class="waves-effect" title='First Page'>
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-left"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+						</a>
+					</li>
+					<?php if ($pt->page_number > 1) {  ?>
+					<li>
+						<a href="{{LINK hashtag/{{TYPE}}?page_id=<?php echo($pt->page_number - 1) ?>}}" data-load="?link1=hashtag&id={{TYPE}}&page_id=<?php echo($pt->page_number - 1) ?>" class="waves-effect" title='Previous Page'>
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left"><polyline points="15 18 9 12 15 6"></polyline></svg>
+						</a>
+					</li>
+					<?php  } ?>
+					<?php 
+					$nums = 0;
+					$nums_pages = ($pt->page_number > 3) ? ($pt->page_number - 3) : $pt->page_number;
+					for ($i=$nums_pages; $i <= $pt->total_shorts_pages; $i++) { 
+						if ($nums < 4) {
+						?>
+						<li class="<?php echo ($pt->page_number == $i) ? 'active' : ''; ?>"><a href="{{LINK hashtag/{{TYPE}}?page_id=<?php echo($i); ?>}}" data-load="?link1=hashtag&id={{TYPE}}&page_id=<?php echo($i) ?>" class="waves-effect"><?php echo $i ?></a></li>
+						<?php
+						}
+						$nums++;
+					}
+					?>
+					<?php if ($pt->total_shorts_pages > $pt->page_number) { ?>
+					<li>
+						<a href="{{LINK hashtag/{{TYPE}}?page_id=<?php echo ($pt->page_number + 1); ?>}}" data-load="?link1=hashtag&id={{TYPE}}&page_id=<?php echo($pt->page_number + 1) ?>" class="waves-effect" title="Next Page">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+						</a>
+					</li>
+					<?php } ?>
+					<li>
+						<a href="{{LINK hashtag/{{TYPE}}?page_id=<?php echo ($pt->total_shorts_pages); ?>}}&last_page=1" data-load="?link1=hashtag&id={{TYPE}}&page_id=<?php echo($pt->total_shorts_pages) ?>&last_page=1" class="waves-effect" title='Last Page'>
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-right"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+						</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+<?php } ?>
+<?php } ?>

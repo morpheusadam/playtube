@@ -1,0 +1,130 @@
+<div class="container-fluid">
+    <div>
+        <h3>Manage FAQs</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Admin Panel</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Pages</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Manage FAQs</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- Vertical Layout -->
+    <div class="row">
+        <div class="col-lg-4 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                	<h6 class="card-title">Create New FAQ</h6>
+                    <div class="faqs-alert"></div>
+                    <form class="add-faqs" method="POST">
+                      <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" name="faqs_title" value="" class="form-control" placeholder="Write your question">
+                            </div>
+                        </div>
+                    	<div class="form-group form-float">
+                            <div class="form-line">
+                                <textarea name="text" id="text" class="form-control" cols="23" rows="10" placeholder="Write your answer"></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Create</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+		<div class="col-lg-8 col-md-8">
+			<div class="card">
+				<div class="card-body">
+					<h3 class="card-title">Manage FAQs</h3>
+					<div class="active-announcements announcements">
+						<section id="accordion" class="tube_faq">
+							<?php
+								$faqs = $db->orderBy('id', 'DESC')->get(T_FAQS);
+
+								foreach ($faqs as $faq) {
+								$faq->time   = PT_Time_Elapsed_String($faq->time);
+							?>
+								<div id="faqs-<?php echo $faq->id;?>" class="accordion">
+									<div class="accordion-item">
+										<div class="btn btn-light">
+											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>
+										</div>
+										<div class="faq-card">
+											<div class="delete-button pull-right">
+												<button type="button"class="btn btn-sm btn-danger" onclick="deleteFaq(<?php echo $faq->id;?>)">Delete</button>
+											</div>
+											<h4>
+												<?php echo $faq->question;?>
+											</h4>
+
+											<div class="accordion-panel" id="faq-<?php echo $faq->id;?>">
+												<p><?php echo $faq->answer;?></p>
+											</div>
+										</div>
+									</div>
+								</div>
+							<?php } ?>
+						</section>
+					</div>
+				</div>
+			</div>
+		</div>
+  <div class="clearfix"></div>
+    </div>
+    <!-- #END# Vertical Layout -->
+<script>
+$(function() {
+	$(".accordion-item").click(function() {
+		// Toggle the item
+		$(this).toggleClass("is-active").find(".accordion-panel").slideToggle("ease-out");
+	});
+});
+
+	jQuery(document).ready(function($) {
+
+		var form = $('form.add-faqs');
+		form.ajaxForm({
+		    url: '{{LINK aj/ap/add_faqs}}',
+		    type:"POST",
+		    dataType:"json",
+		    beforeSubmit: function(arr,form) {
+		      	form.find('button').attr('disabled', 'true');
+		    },
+		    success: function(data) {
+		      if (data.status == 200) {
+            $('.faqs-alert').html('<div class="alert alert-success">FAQ added successfully!</div>');
+            setTimeout(function () {
+                $('.active').trigger('click');
+            }, 1500)
+		      } else {
+            $('.faqs-alert').html('<div class="alert alert-danger">Please check your details.</div>');
+          }
+		      form.find('button').removeAttr('disabled');
+		    }
+		});
+	});
+
+	function deleteFaq(id){
+		if (!id) {
+			return false;
+		}
+
+		$.ajax({
+			url: '{{LINK aj/ap/delete-faqs}}',
+			type: 'POST',
+			dataType: 'json',
+			data: {id:id},
+		}).done(function(data) {
+			if (data.status == 200) {
+				$("#faqs-"+id).slideUp('fast',function(){
+					$(this).remove();
+				})
+			}
+		});
+	}
+
+</script>

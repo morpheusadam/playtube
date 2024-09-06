@@ -1,0 +1,200 @@
+<div class="user-setting-panel pt_shadow">
+	<div class="yp_sett_header">
+		<h4>{{LANG balance_}} {{LANG settings}}</h4>
+	</div>
+	<form class="form-horizontal user-monetization-panel pt_forms" id="monetization-settings" method="POST">
+		<div class="row">
+			<div class="monetization-settings-alert"></div>
+			<div class="form-group">
+				<label class="col-md-12">{{LANG balance}}</label>
+				<div class="col-md-12">
+					<h5 class="pt_avbl_bal">
+						<span>{{CONFIG payment_currency}}</span>&nbsp;&nbsp;
+						<b>{{ME balance}}</b>
+					</h5>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-12" for="total_ads">{{LANG total_ads_limit}}</label>
+				<div class="col-md-12">
+					<div class="form-group-rs" id="total_ads">
+						<input id="total_ads" name="total_ads" type="text" placeholder="" class="form-control input-md" value="{{USER total_ads}}" onkeyup="SaveAds(this)">
+						<div class="clear"></div>
+						<small>{{LANG your_ads_will_stop}}</small>
+					</div>
+				</div>
+			</div>
+			<hr>
+			<div class="row pt_balance_row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label class="col-md-12">{{LANG withdraw_method}}</label>
+						<div class="col-md-12">
+                            <select id="withdraw_method" name="withdraw_method" class="form-control" onchange="ShowWithdrawMethod(this)">
+                                <?php 
+                                $first = 0;
+                                foreach ($pt->config->withdrawal_payment_method as $key => $value) { 
+                                    if ($value == 1) {
+                                        if ($first == 0) {
+                                            $first = $key;
+                                        }
+                                        if ($key != 'custom') { ?>
+                                            <option value="<?php echo $key; ?>"><?php echo $lang_array[$key]; ?></option>
+                                <?php   }elseif(!empty($pt->config->custom_name)){ ?>
+                                        <option value="<?php echo $key; ?>"><?php echo $pt->config->custom_name; ?></option>
+                                <?php }}} ?>
+                            </select>
+						</div>
+					</div>
+				</div>
+                <div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-12">{{LANG amount}} ({{LANG min}} {{CONFIG m_withdrawal}}: {{CONFIG payment_currency}})</label>
+                            <div class="col-md-12">
+                                <input type="number" class="form-control input-md" placeholder="0.00" name="amount">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="paypal_withdrawal" <?php echo($first == 'paypal' ? '' : 'style="display: none;"'); ?>>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-12">{{LANG paypal_email}}</label>
+                            <div class="col-md-12">
+                                <input type="email" class="form-control input-md" value="{{ME email}}" name="paypal_email">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="transfer_to_withdrawal" <?php echo(($first == 'skrill' || $first == 'custom') ? '' : 'style="display: none;"'); ?>>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-12">{{LANG transfer_to}}</label>
+                            <div class="col-md-12">
+                                <input type="text" class="form-control input-md" name="transfer_to">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bank_withdrawal" <?php echo($first == 'bank' ? '' : 'style="display: none;"'); ?>>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-12">{{LANG iban}}</label>
+                            <div class="col-md-12">
+                                <input type="text" class="form-control input-md" name="iban">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-12">{{LANG country}}</label>
+                            <div class="col-md-12">
+                                <input type="text" class="form-control input-md" name="country">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-12">{{LANG full_name}}</label>
+                            <div class="col-md-12">
+                                <input type="text" class="form-control input-md" name="full_name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-12">{{LANG swift_code}}</label>
+                            <div class="col-md-12">
+                                <input type="text" class="form-control input-md" name="swift_code">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="col-md-12">{{LANG address}}</label>
+                            <div class="col-md-12">
+                                <textarea name="address" type="text" class="form-control input-md"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+        <input type="hidden" name="hash_id" value="<?php echo PT_CreateSession()?>">
+        <input type="hidden" name="user_id" value="{{USER id}}">
+		<br>
+        <div>
+			<button id="submit" class="btn btn-main setting-panel-mdbtn" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> {{LANG submit}}</button>&nbsp;&nbsp;
+			<a href="{{LINK settings/withdrawals/{{ME username}}}}" class="btn btn-default setting-panel-mdbtn"> 
+               {{LANG withdrawals}}
+            </a>
+        </div>
+	</form>
+</div>
+
+<script>
+function ShowWithdrawMethod(self) {
+    if ($(self).val() == 'bank') {
+        $('.paypal_withdrawal').slideUp();
+        $('.transfer_to_withdrawal').slideUp();
+        $('.bank_withdrawal').slideDown();
+    }
+    else if($(self).val() == 'paypal'){
+        $('.bank_withdrawal').slideUp();
+        $('.transfer_to_withdrawal').slideUp();
+        $('.paypal_withdrawal').slideDown();
+    }
+    else{
+        $('.bank_withdrawal').slideUp();
+        $('.transfer_to_withdrawal').slideDown();
+        $('.paypal_withdrawal').slideUp();
+    }
+}
+    function SaveAds(self) {
+        $.post('{{LINK aj/user/save_ads}}?hash=' + $('.main_session').val(), {total_ads: $(self).val(),user_id:{{USER id}}}, function(data, textStatus, xhr) {
+            scrollToTop();
+            if (data.status == 200) {
+                $('.monetization-settings-alert').html('<div class="alert alert-success bg-success">' + data.message + '</div>');
+                $('.alert-success').fadeIn('fast', function() {
+                    $(this).delay(2500).slideUp(500, function() {
+                        $(this).remove();
+                    });
+                });
+            } 
+            else {
+                var errors = data.errors.join("<br>");
+                $('.monetization-settings-alert').html('<div class="alert alert-danger bg-danger">' + errors + '</div>');
+                $('.alert-danger').fadeIn(300);
+            }
+        });
+    }
+    jQuery(document).ready(function($) {
+        
+        var form = $('form#monetization-settings');
+        form.ajaxForm({
+            url: '{{LINK aj/user/request-withdrawal}}?hash=' + $('.main_session').val(),
+            dataType:'json',
+            beforeSend: function() {
+                form.find('button').text("{{LANG please_wait}}");
+            },
+            success: function(data) {
+                scrollToTop();
+                if (data.status == 200) {
+                    $('.monetization-settings-alert').html('<div class="alert alert-success bg-success">' + data.message + '</div>');
+                    $('.alert-success').fadeIn('fast', function() {
+                        $(this).delay(2500).slideUp(500, function() {
+                            $(this).remove();
+                        });
+                    });
+                } 
+                else if (data.status == 400) {
+                    $('.monetization-settings-alert').html('<div class="alert alert-danger bg-danger">' + data.message + '</div>');
+                    $('.alert-danger').fadeIn(300);
+                }
+                form.find('button').html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> {{LANG submit_withdrawal_request}}');
+            }
+        });
+    });
+
+</script>

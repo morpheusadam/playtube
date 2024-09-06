@@ -1,0 +1,109 @@
+<?php
+	$code = pt_custom_design("get");
+?>
+<div class="container-fluid">
+    <div>
+        <h3>Custom Design</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Admin Panel</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Design</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Custom Design</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- Vertical Layout -->
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Custom JS / CSS</h6>
+                    <div class="ads-settings-alert"></div>
+                    <form class="custom-design-settings" method="POST">
+                        <div class="form-group">
+                        	<label class="form-label">Header Custom JavaScript</small></label>
+                            <textarea name="header_js" id="custom-header-js" class="form-control"><?php echo $code[0];?></textarea>
+                        </div>
+                       <div class="form-group">
+                        	<label class="form-label">Footer Custom JavaScript</small></label>
+                            <textarea name="footer_js" id="custom-footer-js" class="form-control"><?php echo $code[1];?></textarea>
+                        </div>
+                        <div class="form-group">
+                        	<label class="form-label">Header CSS Style</small></label>
+                            <textarea name="css_styles" id="custom-css-code" class="form-control"><?php echo $code[2]; ?></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <!-- #END# Vertical Layout -->
+<script>
+$(function() {
+    	var form_ads_settings = $('form.custom-design-settings');
+        var readOnlyCodeMirror = CodeMirror.fromTextArea(document.getElementById('custom-header-js'), {
+	        mode: "javascript",
+	        theme: "default",
+	        lineNumbers: true,
+	        readOnly: false
+        });
+
+        var readOnlyCodeMirror = CodeMirror.fromTextArea(document.getElementById('custom-footer-js'), {
+        	mode: "javascript",
+        	theme: "default",
+        	lineNumbers: true,
+        	readOnly: false
+        });
+
+        var readOnlyCodeMirror = CodeMirror.fromTextArea(document.getElementById('custom-css-code'), {
+        	mode: "css",
+        	theme: "default",
+        	lineNumbers: true,
+        	readOnly: false
+        });   
+
+	    form_ads_settings.ajaxForm({
+	        url: '{{LINK aj/ap/save-custom-design-settings}}',
+	        dataType:'json',
+	        beforeSend: function() {
+	            form_ads_settings.find('.waves-effect').text('Please wait..');
+	        },
+	        success: function(data) {
+	        	if (data.status == 200) {
+                    $('.ads-settings-alert').html('<div class="alert alert-success"><i class="fa fa-check"></i> Your changes have been saved successfully</div>');
+                    setTimeout(function () {
+                        $('.ads-settings-alert').empty();
+                    }, 2000);
+		        }
+
+	            else if (data.status == 500) {
+	            	var error  = "";
+	            	
+	            	for (key in data.errors) {
+	            		error  = data.errors[key];
+	            		break;
+	            	}
+                    $('.ads-settings-alert').html('<div class="alert alert-danger">'+error+'</div>');
+                    setTimeout(function () {
+                        $('.ads-settings-alert').empty();
+                    }, 2000);
+	            }
+
+	            setTimeout(function(){
+	               swal.close();
+	            }, 5000);
+
+		        form_ads_settings.find('.waves-effect').text('Save');
+	            $("html, body").animate({ scrollTop: 0 }, "slow");
+	        }
+	    });
+});
+
+</script>
+

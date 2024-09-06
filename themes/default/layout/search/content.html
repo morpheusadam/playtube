@@ -1,0 +1,164 @@
+<div class="container-home">
+	<h3 class="recent-articles heading_all_sections_top search">
+		<span>
+			<svg class="feather feather-search" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g id="Group_304" data-name="Group 304" transform="translate(941 2420)"><g id="Search_1" data-name="Search 1" transform="translate(-939.756 -2417.756)"><path id="Path_57" data-name="Path 57" d="M2,7.752A6.752,6.752,0,1,1,8.752,14.5,6.752,6.752,0,0,1,2,7.752ZM7.971,3.209a.563.563,0,0,1-.468.644A3.189,3.189,0,0,0,4.853,6.5a.563.563,0,0,1-1.112-.176A4.314,4.314,0,0,1,7.327,2.741.563.563,0,0,1,7.971,3.209Z" fill="currentColor" fill-rule="evenodd"></path><path id="Path_58" data-name="Path 58" d="M18.47,17.47a.75.75,0,0,1,1.061,0l4,4A.75.75,0,1,1,22.47,22.53l-4-4A.75.75,0,0,1,18.47,17.47Z" transform="translate(-4.238 -4.238)" fill="currentColor"></path></g><rect id="Rectangle_321" data-name="Rectangle 321" width="24" height="24" transform="translate(-941 -2420)" fill="none"></rect></g></svg>
+			<span>{{LANG search_results}}: {{KEYWORD}}</span>
+		</span>
+		<span onclick="show_search_filter()" id="search_filter" class="btn btn-main">{{LANG filter_by}}</span>
+	</h3>
+	
+	<div class="vid_srch_filtr" id="filter_settings" style="display: <?php echo (empty($_POST['date']) && empty($_POST['category'])) ? 'none': 'block'?>;">
+		<div class="upload_video_bg_color">
+			<form class="search_filter_form row pt_forms" method="POST" action="{{LINK search}}<?php echo(!empty($_GET['keyword']) ? '?keyword='.$_GET['keyword'] : '') ?><?php echo(!empty($pt->page_number) ? '&page_id='.$pt->page_number : '') ?>">
+				<div class="form-group col-lg-4">
+					<label class="col-md-12 bold" for="type">{{LANG upload_date}}</label>
+					<div class="col-md-12">
+						<div>
+							<label for="date_last_hour">
+							<input onchange="ChangePage()" type="radio" name="date" id="date_last_hour" value="last_hour" <?php echo (isset($_POST['date']) && $_POST['date'] == 'last_hour') ? 'checked': ''?>>
+							<span>{{LANG last_hour}}</span>
+							</label>
+						</div>
+						<div>
+							<label for="date_today">
+							<input onchange="ChangePage()" type="radio" name="date" id="date_today" value="today" <?php echo (isset($_POST['date']) && $_POST['date'] == 'today') ? 'checked': ''?>>
+							<span>{{LANG today}}</span>
+							</label>
+						</div>
+						<div>
+							<label for="date_this_week">
+							<input onchange="ChangePage()" type="radio" name="date" id="date_this_week" value="this_week" <?php echo (isset($_POST['date']) && $_POST['date'] == 'this_week') ? 'checked': ''?>>
+							<span>{{LANG this_week}}</span>
+							</label>
+						</div>
+						<div>
+							<label for="date_this_month">
+							<input onchange="ChangePage()" type="radio" name="date" id="date_this_month" value="this_month" <?php echo (isset($_POST['date']) && $_POST['date'] == 'this_month') ? 'checked': ''?>>
+							<span>{{LANG this_month}}</span>
+							</label>
+						</div>
+						<div>
+							<label for="date_this_year">
+							<input onchange="ChangePage()" type="radio" name="date" id="date_this_year" value="this_year" <?php echo (isset($_POST['date']) && $_POST['date'] == 'this_year') ? 'checked': ''?>>
+							<span>{{LANG this_year}}</span>
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group col-lg-8">
+					<label class="col-md-12 bold" for="type">{{LANG categories}}</label>
+					<div class="col-md-12">
+						<?php foreach($pt->categories as $key => $category) { ?>
+							<div class="col-md-4 no-padding-left">
+								<label for="category_<?php echo $key; ?>">
+								<input onchange="ChangePage()" type="checkbox" name="category[]" id="category_<?php echo $key; ?>" value="<?php echo $key; ?>" <?php echo (isset($_POST['category']) && in_array($key, $_POST['category'])) ? 'checked': ''?>>
+								<span><?php echo $category; ?></span>
+								</label>
+							</div>
+						<?php } ?>
+					</div>
+				</div>
+				<div class="clear"></div>
+				<div class="last-sett-btn modal-footer">
+					<button id="submit" name="submit" class="btn btn-main">{{LANG search}}</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div class="upload_video_bg_color">
+		<div class="videos-latest-list row">
+      		{{VIDEOS}}
+		</div>
+		<?php if ($pt->total_pages > 1) { ?>
+			<div>
+				<hr>
+				<div class="pull-left showing_pages">
+		        	<?php echo "Showing $pt->page_number out of " . $pt->total_pages; ?>
+		        </div>
+		        <div class="pull-right">
+		        	<nav class="showing_nav">
+		                <ul class="pagination">
+		                	<li>
+		                        <a href="javascript:void(0)" class="waves-effect" title='First Page' onclick="GoToPage(1)">
+		                            <i class="material-icons">first_page</i>
+		                        </a>
+		                    </li>
+		                    <?php if ($pt->page_number > 1) {  ?>
+		                    <li>
+		                        <a href="javascript:void(0)" onclick="GoToPage(<?php echo($pt->page_number - 1) ?>)" class="waves-effect" title='Previous Page'>
+		                            <i class="material-icons">chevron_left</i>
+		                        </a>
+		                    </li>
+		                    <?php  } ?>
+		                    <?php 
+		                    $nums = 0;
+		                    $nums_pages = ($pt->page_number > 3) ? ($pt->page_number - 3) : $pt->page_number;
+		                    for ($i=$nums_pages; $i <= $pt->total_pages; $i++) { 
+		                    	if ($nums < 4) {
+		                    	?>
+		                    	<li class="<?php echo ($pt->page_number == $i) ? 'active' : ''; ?>"><a href="javascript:void(0)" onclick="GoToPage(<?php echo($i); ?>)" class="waves-effect"><?php echo $i ?></a></li>
+		                    	<?php
+		                    	}
+		                    	$nums++;
+		                    }
+		                    ?>
+		                    <?php if ($pt->total_pages > $pt->page_number) { ?>
+		                    <li>
+		                        <a href="javascript:void(0)" onclick="GoToPage(<?php echo ($pt->page_number + 1); ?>)" class="waves-effect" title="Next Page">
+		                            <i class="material-icons">chevron_right</i>
+		                        </a>
+		                    </li>
+		                    <?php } ?>
+		                    <li>
+		                        <a href="javascript:void(0)" onclick="GoToPage(<?php echo($pt->total_pages) ?>,'&last_page=1')" class="waves-effect" title='Last Page'>
+		                            <i class="material-icons">last_page</i>
+		                        </a>
+		                    </li>
+		                </ul>
+		            </nav>
+		        </div>
+			</div>
+		        
+        <?php } ?>
+		<?php if (count($pt->videos) > 0 && empty($_GET['is_channel'])) { ?>
+            <!-- <div class="watch-video-show-more desc load-more" data-type="search" data-keyword="{{KEYWORD}}" data-by-category="{{CAT}}" data-by-date="<?php echo($_POST['date']); ?>"> 
+                {{LANG show_more}}
+            </div> -->
+		<?php } ?>
+		<div class="clear"></div>
+	</div>
+	
+	<?php if (!empty($pt->users )) { ?>
+		<div class="upload_video_bg_color">
+			<div class="upload-head">
+				<h4><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg> {{LANG channels}}</h4>
+				<hr>
+			</div>
+			<div class=" row">
+				{{USERS}}
+			</div>
+			<div class="clear"></div>
+		</div>
+	<?php } ?>
+</div>
+
+<script type="text/javascript">
+	function ChangePage() {
+		$('.search_filter_form').attr('action', "{{LINK search}}<?php echo(!empty($_GET['keyword']) ? '?keyword='.$_GET['keyword'] : '') ?>&page_id=1");
+	}
+	function GoToPage(page_id,last='') {
+		$('.search_filter_form').attr('action', "{{LINK search}}<?php echo(!empty($_GET['keyword']) ? '?keyword='.$_GET['keyword'] : '') ?>&page_id="+page_id+last);
+		$('#submit').click();
+	}
+
+	function show_search_filter() {
+		if ($('#filter_settings').is(":hidden")) {
+			$('#filter_settings').slideDown('slow');
+		}
+		else{
+			$('#filter_settings').slideUp('slow');
+		}
+	}
+</script>
+

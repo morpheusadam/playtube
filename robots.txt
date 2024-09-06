@@ -1,0 +1,12 @@
+User-agent: *
+Disallow: /assets
+Disallow: /cache
+Disallow: /sources
+Disallow: /api
+Disallow: /script_backups
+Disallow: /updates
+Disallow: /install
+Disallow: /admincp
+Disallow: /admin-panel
+Disallow: /embed
+Disallow: /nodejs

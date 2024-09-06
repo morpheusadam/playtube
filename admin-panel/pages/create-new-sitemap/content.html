@@ -1,0 +1,114 @@
+<div class="container-fluid">
+    <div>
+        <h3>Create Sitemap</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Admin Panel</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Sitemap</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Create Sitemap</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- Vertical Layout -->
+    <div class="row">
+        <div class="col-lg-8 col-md-8 ">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Generate New Sitemap</h6>
+					<svg class="mb-3 rounded-circle" height="80" viewBox="0 0 32 32" width="80" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#e3f8fa"/><g fill="#26c6da"><path d="m22 8.667h-12c-1.103 0-2 .897-2 2v10.667c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-10.667c0-1.103-.897-2-2-2zm0 13.333h-12c-.368 0-.667-.299-.667-.667v-9.333h13.333v9.333c.001.368-.298.667-.666.667z"/><path d="m15.833 20c-.128 0-.256-.049-.354-.146-.195-.195-.195-.512 0-.707l2.333-2.333c.195-.195.512-.195.707 0s.195.512 0 .707l-2.333 2.333c-.097.097-.224.146-.353.146z"/><path d="m21.187 14.146c-.104-.104-.249-.157-.395-.145-1.485.122-2.514.569-3.438 1.493-.9.898-1.2 1.891-.916 3.035.044.18.185.32.365.365.097.024.193.039.288.055l1.93-1.93-1.101 1.946c.691-.076 1.328-.393 1.919-.986.925-.925 1.372-1.953 1.493-3.439.012-.145-.041-.29-.145-.394z"/></g><path d="m15.833 20.667c-.312 0-.605-.121-.825-.342-.221-.22-.342-.513-.342-.825s.121-.605.342-.825l.678-.678c-.073-.999.254-1.917.981-2.738v-.759c0-.643-.523-1.167-1.167-1.167h-3.667c-.643 0-1.167.523-1.167 1.167v5.667c0 .643.523 1.167 1.167 1.167h3.667c.587 0 1.069-.437 1.15-1.002-.219.216-.508.335-.817.335z" fill="#8ce1eb"/></svg>
+                    <p><b><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z" /></svg> The sitemap link is:</b> <a href="{{CONFIG site_url}}/sitemap-main.xml" target="_blank">{{CONFIG site_url}}/sitemap-main.xml</a></p>
+                    <form class="submit-sitemap-settings" method="POST">
+                    	<p><b><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z" /></svg> Last created sitemap:</b> <span class="last-created">{{CONFIG last_created_sitemap}}</span></p>
+                    	<div class="progress hidden">
+                            <div class="progress-bar bg-cyan progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">0%</div>
+                        </div>
+                        <input type="hidden" class="completed" value="0" name="completed">
+                        <input type="hidden" class="videos_file_number" value="1" name="videos_file_number">
+                        <input type="hidden" class="post_file_number" value="1" name="post_file_number">
+                        <input type="hidden" class="worked" value="0" name="worked">
+                        <input type="hidden" class="percentage" value="0" name="percentage">
+                        <input type="hidden" class="post_offset" value="0" name="post_offset">
+                        <input type="hidden" class="videos_offset" value="0" name="videos_offset">
+                        <div class="clearfix"></div>
+                        <br>
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Generate New Sitemap</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <!-- #END# Vertical Layout -->
+<script>
+$('.btn-primary').on('click', function(event) {
+
+    $('.progress').removeClass('hidden');
+    $('.progress-bar').width('0%').text('0%');
+    $('.completed').val('0');
+    $('.videos_file_number').val('1');
+    $('.post_file_number').val('1');
+    $('.worked').val('0');
+    $('.percentage').val('0');
+    $('.post_offset').val('0');
+    $('.videos_offset').val('0');
+    $('.progress-bar').removeClass('bg-light-green').addClass('active');
+    $('.progress-bar').addClass('bg-cyan');
+
+
+
+
+
+	
+	// $('.percentage').val('0');
+ //    $('.start_from').val('0');
+	// $('.artical_start_from').val('0');
+	// $('.file_number').val('1');
+	// $('.added_videos').val('1');
+	
+});
+$(function() {
+    var form_site_settings = $('form.submit-sitemap-settings');
+
+    form_site_settings.ajaxForm({
+        url: '{{LINK aj/ap/submit-sitemap-settings}}',
+        beforeSend: function() {
+            form_site_settings.find('button').text("{{LANG please_wait}}");
+        },
+        success: function(data) {
+            if (data.status == 201) {
+            	$('.progress-bar').width(data.percentage_full).text(data.percentage_full);
+                $('.completed').val(data.completed);
+                $('.videos_file_number').val(data.videos_file_number);
+                $('.post_file_number').val(data.post_file_number);
+                $('.worked').val(data.worked);
+                $('.percentage').val(data.percentage);
+                $('.post_offset').val(data.post_offset);
+                $('.videos_offset').val(data.videos_offset);
+
+
+
+            	
+                
+                
+                
+
+            	// $('.artical_start_from').val(data.artical_start_from);
+            	// $('.file_number').val(data.file_number);
+            	// $('.added_videos').val(data.added_videos);
+            	if (data.percentage < 100) {
+            		form_site_settings.submit();
+            	} else {
+            		$('.btn-primary').text('Generate New Sitemap');
+            		$('.progress-bar').removeClass('bg-cyan').removeClass('active');
+            		$('.progress-bar').addClass('bg-light-green');
+            		$('.last-created').text(data.last_created);
+            	}
+            }
+        }
+    });
+});
+</script>

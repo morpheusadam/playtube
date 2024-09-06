@@ -1,0 +1,68 @@
+<script type="text/javascript">
+	<?php if ($pt->config->live_video == 1 && !empty($pt->get_video->stream_name) && $pt->get_video->is_still_live && $pt->get_video->live_ended == 0) { ?>
+  var post_live_<?php echo $pt->get_video->id; ?> = setInterval(function(){ 
+  	setTimeout(function (argument) {
+		if($('#live_post_comments_<?php echo $pt->get_video->id; ?>').length == 0 || $('#video-id').val() != <?php echo $pt->get_video->id; ?>){
+	  		clearInterval(post_live_<?php echo $pt->get_video->id; ?>);
+	  	}
+    },10000);
+  	
+      data = {};
+      for (var i = 0; i < $('.live_comments').length; i++) {
+        if ($($('.live_comments')[i]).attr('live_comment_id')) {
+          data[i] = $($('.live_comments')[i]).attr('live_comment_id');
+        }
+      }
+      $.post("{{LINK aj/live/check_comments}}?hash=" + $('.main_session').val(), {post_id: <?php echo $pt->get_video->id; ?>,ids:data,page:"<?php echo($pt->page) ?>"}, function(data, textStatus, xhr) {
+        if (data.status == 200) {
+          if (data.still_live == 'offline') {
+            $('#live_post_comments_<?php echo $pt->get_video->id; ?>').remove();
+            $('[id=post-<?php echo $pt->get_video->id; ?>]').find('.comment-textarea').attr('disabled');
+            return false;
+          }
+          $('#live_post_comments_<?php echo $pt->get_video->id; ?>').append(data.html);
+          $('#live_count_<?php echo $pt->get_video->id; ?>').html(data.count);
+          $('#live_word_<?php echo $pt->get_video->id; ?>').html(data.word);
+          var comments = $('#live_post_comments_<?php echo $pt->get_video->id; ?> .live_comments');
+          if (comments.length > 4) {
+            var i;
+            for (i = 0; i < comments.length; i++) {
+              if ($('#live_post_comments_<?php echo $pt->get_video->id; ?> .live_comments').length > 4) {
+                comments[i].remove();
+              }
+            }
+          }
+          if (data.comments == 'off') {
+            $('.pt_video_comments').find('textarea').attr('disabled','true');
+            $('.pt_video_comments').find('.btn-main').attr('disabled','true');
+          }
+          else if(data.comments == 'on'){
+            $('.pt_video_comments').find('textarea').removeAttr('disabled');
+            $('.pt_video_comments').find('.btn-main').removeAttr('disabled');
+          }
+        }
+        else if(data.removed == 'yes'){
+            clearInterval(post_live_<?php echo $pt->get_video->id; ?>);
+            $('#live_count_<?php echo $pt->get_video->id; ?>').html(0);
+            //$('#live_post_comments_<?php echo $pt->get_video->id; ?>').remove();
+            $('#live_post_comments_<?php echo $pt->get_video->id; ?>').html("<h3 class='end_video_text'><?php echo(str_replace('{user}', $pt->get_video->owner->name, $lang_array['stream_has_ended'])) ?></h3>");
+            $('.pt_video_comments').remove();
+            return false;
+        }
+        else{
+            clearInterval(post_live_<?php echo $pt->get_video->id; ?>);
+            $('#live_count_<?php echo $pt->get_video->id; ?>').html(0);
+            //$('#live_post_comments_<?php echo $pt->get_video->id; ?>').remove();
+            $('#live_post_comments_<?php echo $pt->get_video->id; ?>').html("<h3 class='end_video_text'><?php echo(str_replace('{user}', $pt->get_video->owner->name, $lang_array['stream_has_ended'])) ?></h3>");
+            $('.pt_video_comments').remove();
+            return false;
+        }
+      });
+   }, 3000);
+
+<?php } ?>
+   <?php if ($pt->config->live_video == 1 && !empty($pt->config->agora_app_id) && !empty($pt->get_video->stream_name) && $pt->get_video->is_still_live) { ?>
+  RunLiveAgora("<?php echo $pt->get_video->stream_name; ?>","post_live_video_<?php echo($pt->get_video->id) ?>","<?php echo($pt->get_video->agora_token) ?>");
+  
+<?php } ?>
+</script>

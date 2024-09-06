@@ -1,0 +1,94 @@
+<style>
+	.yp_side_drawer ul.sections {
+		border-color: #25293d !important;
+	}
+	.second-header-layout li.active > a {
+	    background: #171a25 !important;
+	}
+	ul.dropdown-menu > li > a:hover {
+		background: #25283a !important;
+	}
+	.pagination li a {border-color: #25293d !important;}
+	.showing_nav, .pagination, .pagination>li {
+	    background: #08090f !important;
+	}
+	.pt_footer .container-fluid {border: 0;}
+	ul.notfi-dropdown {
+	    border-color: #25293d !important;
+	}
+	.movie_slider {
+		height: 500px;
+		background-repeat: no-repeat !important;
+	    background-size: cover !important;
+	    background-attachment: fixed;
+	    margin-left: -16px;
+	    margin-right: -15px;
+	    margin-top: -90px;
+	    padding: 100px 50px;
+	    display: flex;
+	    justify-content: flex-start;
+	    align-items: center;
+	    background-image : linear-gradient(180deg, #ffffff73 0%, #ffffff 49%, #fffffffa 100%), url('{{THUMBNAIL}}');background-position: center;position: relative;
+	}
+
+	.movie_slider {
+		background-image : linear-gradient(180deg, #19181700 0%, #000000C3 49%, #000000FA 100%), url('{{THUMBNAIL}}');
+	}
+
+
+	.pt_movie_list .video-wrapper {
+    	background: transparent !important;
+    	padding: unset;
+    }
+</style>
+<div class="movie_slider">
+	<div class="movie_inner_content">
+		<div class="feature_wrap">
+			<div class="feature_text_title new_feature_title">
+				{{TITLE}}
+			</div>
+			<p>
+				{{DESC}}
+			</p>
+
+			<div class="movie_cat_">
+				<a href="{{LINK movies?category_={{CATEGORY_ID}}}}" data-load="?link1=movies&category_={{CATEGORY_ID}}">{{CAT}}</a>
+			</div>
+
+			<div class="feature_channel_wrap">
+				<div class="left_wrap">
+					<a href="{{URL}}" class="button_watch"  data-load="?link1=watch&id={{VIDEO_ID_}}">
+						{{LANG watch}} <img src="{{CONFIG theme_url}}/img/play_icon.png">
+					</a>
+					<div class="share_button">
+						<button type="button" onclick="openShareModal();">
+							<svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M23.96 10.7161C23.96 12.1223 22.835 13.2161 21.46 13.2161C20.7412 13.2161 20.085 12.9348 19.6162 12.4348L14.8975 14.8098C14.9287 14.9348 14.96 15.0911 14.96 15.2161C14.96 15.3723 14.9287 15.5286 14.8975 15.6536L19.6162 17.9973C20.085 17.5286 20.7412 17.2161 21.46 17.2161C22.835 17.2161 23.96 18.3411 23.96 19.7161C23.96 21.1223 22.835 22.2161 21.46 22.2161C20.0537 22.2161 18.96 21.1223 18.96 19.7161C18.96 19.4348 18.9912 19.1223 19.085 18.8723L14.5537 16.5911C14.085 17.2786 13.335 17.7161 12.46 17.7161C11.0537 17.7161 9.95996 16.6223 9.95996 15.2161C9.95996 13.8411 11.0537 12.7161 12.46 12.7161C13.335 12.7161 14.085 13.1848 14.5537 13.8723L19.085 11.5911C18.9912 11.3098 18.96 11.0286 18.96 10.7161C18.96 9.34106 20.0537 8.21606 21.46 8.21606C22.835 8.21606 23.96 9.34106 23.96 10.7161ZM12.4287 16.7161C13.2725 16.7161 13.9287 16.0598 13.9287 15.2161C13.9287 14.4036 13.2725 13.7161 12.4287 13.7161C11.6162 13.7161 10.9287 14.4036 10.9287 15.2161C10.9287 16.0598 11.6162 16.7161 12.4287 16.7161ZM21.46 9.21606C20.6162 9.21606 19.96 9.90356 19.96 10.7161C19.96 11.5598 20.6162 12.2161 21.46 12.2161C22.2725 12.2161 22.96 11.5598 22.96 10.7161C22.96 9.90356 22.2725 9.21606 21.46 9.21606ZM21.46 21.2161C22.2725 21.2161 22.96 20.5598 22.96 19.7161C22.96 18.9036 22.2725 18.2161 21.46 18.2161C20.6162 18.2161 19.96 18.9036 19.96 19.7161C19.96 20.5598 20.6162 21.2161 21.46 21.2161Z" fill="currentColor"/>
+							</svg>
+						</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<div class="share_feat_vid pt_wallet_forms hidden">
+	<div class="form-group">
+		<label>
+			<span>{{LANG share}}</span>
+		</label>
+	</div>
+	<div class="form-group">
+		<div class="share-video">
+			<a href="javascript:void(0);" class="fa fa-facebook" onclick="OpenShareWindow('https://www.facebook.com/sharer/sharer.php?u={{URL}}')"></a>
+			<a href="javascript:void(0);" class="fa fa-twitter" onclick="OpenShareWindow('https://twitter.com/intent/tweet?url={{URL}}')"></a>
+			<a href="javascript:void(0);" class="fa fa-google" onclick="OpenShareWindow('https://plus.google.com/share?url={{URL}}')"></a>
+			<a href="javascript:void(0);" class="fa fa-linkedin" onclick="OpenShareWindow('https://www.linkedin.com/shareArticle?mini=true&url={{URL}}&title={{TITLE}}')"></a>
+			<a href="javascript:void(0);" class="fa fa-pinterest" onclick="OpenShareWindow('https://pinterest.com/pin/create/button/?url={{URL}}&media={{THUMBNAIL}}')"></a>
+			<a href="javascript:void(0);" class="fa fa-tumblr" onclick="OpenShareWindow('http://www.tumblr.com/share/link?url={{URL}}')"></a>
+			<a href="javascript:void(0);" class="fa fa-reddit" onclick="OpenShareWindow('http://www.reddit.com/submit?url={{URL}}')"></a>
+		</div>
+	</div>
+</div>

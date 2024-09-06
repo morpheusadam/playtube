@@ -1,0 +1,252 @@
+<div class="modal fade pt_auth_box" id="registerbox" tabindex="-1" role="dialog" aria-labelledby="registerbox">
+	<div class="modal-dialog" role="document">
+		<div class="login_page">
+			<div class="login-page">
+				<div class="login-form registeration_modal" id="register_form_p">
+					<h4>{{LANG sign_up}}</h4>
+					<form action="{{LINK register}}" method="POST">
+						<div class="errors form-group errors_alert"></div>
+						<div class="errors success form-group"></div>
+						<?php if ($pt->config->auto_username == 'on') { ?>
+							<div class="pp_mat_input">
+								<input type="text" name="first_name" id="first_name" placeholder="{{LANG first_name}}" required autofocus>
+								<label for="first_name">{{LANG first_name}}</label>
+							</div>
+							<div class="pp_mat_input">
+								<input type="text" name="last_name" id="last_name" placeholder="{{LANG last_name}}" required autofocus>
+								<label for="last_name">{{LANG last_name}}</label>
+							</div>
+						<?php }else{ ?>
+							<div class="pp_mat_input">
+								<input type="text" name="username" id="username" placeholder="{{LANG username}}" required autofocus>
+								<label for="username">{{LANG username}}</label>
+							</div>
+						<?php } ?>
+						<div class="pp_mat_input">
+							<input type="email" name="email" id="email" placeholder="{{LANG email_address}}" required>
+							<label for="email">{{LANG email_address}}</label>
+						</div>
+						<div class="pp_mat_input">
+							<input type="password" name="password" id="password" placeholder="{{LANG password}}" required>
+							<label for="password">{{LANG password}}</label>
+							<?php if ($pt->config->password_complexity_system == 1) { ?>
+					<ul class="list-unstyled helper-text">
+						<li class="length">{{LANG least_characters}}</li>
+						<li class="lowercase">{{LANG contain_lowercase}}</li>
+						<li class="uppercase">{{LANG contain_uppercase}}</li>
+						<li class="special">{{LANG number_special}}</li>
+					</ul>
+					<input type="hidden" id="can_submit" value="0">
+				<?php } ?>
+						</div>
+						<div class="pp_mat_input">
+							<input type="password" name="c_password"  id="c_password" placeholder="{{LANG confirm_password}}" required>
+							<label for="c_password">{{LANG confirm_password}}</label>
+						</div>
+						<div class="pp_mat_input">
+							<select name="gender" id="gender" required>
+								<option value="male">{{LANG male}}</option>
+								<option value="female">{{LANG female}}</option>
+							</select>
+						</div>
+						<?php 
+						$pt->custom_fields = $db->where('registration_page','1')->get(T_FIELDS);
+						if (!empty($pt->custom_fields)) {
+						    foreach ($pt->custom_fields as $field) {
+						    $field_id       = $field->id; ?>
+						    	<div class="form-group">
+								      <?php if ($field->type == 'select'): ?>
+								            <?php $options = @explode(',', $field->options);?>
+								            <div class="pp_mat_input">
+									            <select name="<?php echo("fid_$field_id") ?>" id="">
+									                  <?php foreach ($options as $key => $value): ?>
+									                        <option value="<?php echo $key + 1;?>">
+									                              <?php echo $value;?>
+									                        </option>
+									                  <?php endforeach; ?>
+									            </select>
+									        </div>
+								      <?php elseif($field->type == 'textbox'): ?>
+								      	<div class="pp_mat_input">
+											<input  name="<?php echo("fid_$field_id") ?>" type="text" placeholder="<?php echo($field->name) ?>" class="form-control">
+											<label for="<?php echo("fid_$field_id") ?>"><?php echo($field->name) ?></label>
+										</div>
+								      <?php elseif($field->type == 'textarea'): ?>
+								      	<div class="pp_mat_input">
+								            <textarea style="resize: vertical;" name="<?php echo("fid_$field_id") ?>" cols="20" rows="3" placeholder="<?php echo($field->name) ?>" class="form-control"></textarea>
+								            <label for="<?php echo("fid_$field_id") ?>"><?php echo($field->name) ?></label>
+								        </div>
+								      <?php endif; ?>
+								</div>
+						<?php } } ?>
+						<div class="recaptcha">
+							<?php if ($pt->config->recaptcha == 'on') { ?>
+								<div class="g-recaptcha" data-sitekey="<?php echo($pt->config->recaptcha_key) ?>"></div>
+							<?php } ?>
+						</div>
+						<div class="login_signup_combo">
+							<input type="submit" class="btn btn-main button" value="{{LANG sign_up}}">
+						</div>
+						<div class="terms">
+							<label for="accept_terms">
+								<input type="checkbox" name="accept_terms" id="accept_terms">{{LANG terms_agreement}}
+								<a href="{{LINK terms/terms}}">{{LANG terms_of_use}}</a> & <a href="{{LINK terms/privacy-policy}}">{{LANG privacy_policy}}</a>
+							</label>
+							<div class="clear"></div>
+						</div>
+						<hr>
+						<div class="signup__">
+							{{LANG already_have_account}} <a class="dec" href="{{LINK login}}">{{LANG login_}}</a>
+						</div>
+						<input type="hidden" id="checked" value="off" name="terms">
+						<?php if (isset($_GET['invite'])): ?>
+							<input type="text" class="hidden" value="<?php echo $_GET['invite']; ?>" name="invited">
+						<?php endif; ?>
+					</form>
+				</div>    
+			</div>
+		</div>
+		<script>
+			<?php if ($pt->config->password_complexity_system == 1) { ?>
+
+(function(){
+	$('#register_form_p form').submit(function( event ) {
+		if ($('#can_submit').val() == 0) {
+			event.preventDefault();
+		  <?php if ($pt->config->password_complexity_system == 1) { ?>
+	    	if ($('.helper-text .length').hasClass('valid') && $('.helper-text .lowercase').hasClass('valid') && $('.helper-text .uppercase').hasClass('valid') && $('.helper-text .special').hasClass('valid')) {
+	    		$('#can_submit').val(1);
+	    		$(this).submit();
+	    	}
+	    	else{
+	    		$('.errors_alert').html("{{LANG complexity_requirements}}");
+	    		return false;
+	    	}
+	      <?php } ?>
+		}
+	});
+	var helperText = {
+		charLength: document.querySelector('.registeration_modal .helper-text .length'),
+		lowercase: document.querySelector('.registeration_modal .helper-text .lowercase'),
+		uppercase: document.querySelector('.registeration_modal .helper-text .uppercase'),
+		special: document.querySelector('.registeration_modal .helper-text .special')
+	};
+	var password = document.querySelector('.registeration_modal #password');
+	
+	
+	
+	var pattern = {
+		charLength: function() {
+			if( password.value.length >= 6 ) {
+				return true;
+			}
+		},
+		lowercase: function() {
+			var regex = /^(?=.*[a-z]).+$/; // Lowercase character pattern
+
+			if( regex.test(password.value) ) {
+				return true;
+			}
+		},
+		uppercase: function() {
+			var regex = /^(?=.*[A-Z]).+$/; // Uppercase character pattern
+
+			if( regex.test(password.value) ) {
+				return true;
+			}
+		},
+		special: function() {
+			var regex = /^(?=.*[0-9_\W]).+$/; // Special character or number pattern
+
+			if( regex.test(password.value) ) {
+				return true;
+			}
+		}   
+	};
+	
+	// Listen for keyup action on password field
+  function CheckCPassword() {
+		$('.registeration_modal .helper-text').slideDown('slow', function() {
+  	    	
+  	    });
+		// Check that password is a minimum of 8 characters
+		patternTest( pattern.charLength(), helperText.charLength );
+		
+		// Check that password contains a lowercase letter		
+		patternTest( pattern.lowercase(), helperText.lowercase );
+		
+		// Check that password contains an uppercase letter
+		patternTest( pattern.uppercase(), helperText.uppercase );
+		
+		// Check that password contains a number or special character
+		patternTest( pattern.special(), helperText.special );
+    
+	    // Check that all requirements are fulfilled
+	    if( hasClass(helperText.charLength, 'valid') &&
+				  hasClass(helperText.lowercase, 'valid') && 
+				 	hasClass(helperText.uppercase, 'valid') && 
+				  hasClass(helperText.special, 'valid')
+			) {
+				addClass(password.parentElement, 'valid');
+	    }
+	    else {
+	      removeClass(password.parentElement, 'valid');
+	    }
+	}
+  password.addEventListener('keyup', CheckCPassword);
+  password.addEventListener('input', CheckCPassword);
+	
+	function patternTest(pattern, response) {
+		if(pattern) {
+      addClass(response, 'valid');
+    }
+    else {
+      removeClass(response, 'valid');
+    }
+	}
+	
+	function addClass(el, className) {
+		if (el.classList) {
+			el.classList.add(className);
+		}
+		else {
+			el.className += ' ' + className;
+		}
+	}
+	
+	function removeClass(el, className) {
+		if (el.classList)
+				el.classList.remove(className);
+			else
+				el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+	}
+	
+	function hasClass(el, className) {
+		if (el.classList) {
+			console.log(el.classList);
+			return el.classList.contains(className);	
+		}
+		else {
+			new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className);	
+		}
+	}
+	
+})();
+<?php } ?>
+		$(function() {
+			$("#accept_terms").change(function() {
+				if(this.checked) {
+					$('#checked').val('on');
+				} else {
+					$('#checked').val('off');
+				}
+			});
+			$('.button').on('click', function () {
+				if ($('#username').val() && $('#password').val() && $('#email').val() && $('#gender').val() && $('#c_password').val()) {
+					$(this).val("{{LANG please_wait}}");
+				}
+			});
+		});
+		</script>
+	</div>
+</div>

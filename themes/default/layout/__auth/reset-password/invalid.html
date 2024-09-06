@@ -1,0 +1,50 @@
+l<div class="container login-page">
+    <div class="login-form">
+    	<form action="{{LINK reset-password/{{CODE}}}}" method="POST">
+    	    <div class="errors form-group">{{LANG invalid_request}}</div>
+			<div class="new-here">
+				{{LANG got_your_password}} <a class="dec" href="{{LINK login}}">{{LANG login_}}</a>
+			</div>
+		</form>
+    </div>    
+</div>
+<ul class="bg-bubbles">
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+</ul>
+<style>
+.bg-bubbles {
+  background: -webkit-linear-gradient(top left, #{{COLOR1}} 0%, #{{COLOR2}} 100%);
+  background: linear-gradient(to bottom right, #{{COLOR1}} 0%, #{{COLOR2}} 100%);
+}
+.login-form input[type=submit] {
+	color: {{COLOR1}};
+}
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #fff;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    #fff;
+   opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    #fff;
+   opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:    #fff;
+}
+::-ms-input-placeholder { /* Microsoft Edge */
+   color:    #fff;
+}
+</style>

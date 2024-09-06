@@ -1,0 +1,276 @@
+<?php if ($pt->config->comment_system == 'default' || $pt->config->comment_system == 'both') { ?>
+	<hr>
+    <div class="comments-content pt_video_comments">
+        <div class="comments-header">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="21" height="21"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M16.8 19L14 22.5 11.2 19H6a1 1 0 0 1-1-1V7.103a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1V18a1 1 0 0 1-1 1h-5.2zM2 2h17v2H3v11H1V3a1 1 0 0 1 1-1z"/></svg>&nbsp;{{COUNT_COMMENTS}} {{LANG comments}}
+            <span class="dropdown sort-comments-dropdown pull-right">
+				<span class="dropdown-toggle pointer" type="button" data-toggle="dropdown">
+					<i class="material-icons">sort</i>&nbsp;&nbsp;&nbsp;{{LANG sort_by}}
+				</span>
+				<ul class="dropdown-menu">
+          
+					<li class="sort-comments" id="1">
+						<a href="javascript:void(0);">{{LANG top_commnets}}</a>
+					</li>
+					<li class="sort-comments" id="2">
+						<a href="javascript:void(0);">{{LANG last_commnets}}</a>
+					</li>
+				</ul>
+            </span>
+        </div>
+        <?php if (($pt->config->sell_videos_system == 'on' && $pt->get_video->sell_video > 0 && $pt->is_paid > 0) || $pt->get_video->sell_video == 0 || ($pt->config->sell_videos_system == 'on' && $pt->get_video->sell_video > 0 && $pt->get_video->is_owner)) {
+          if ($pt->get_video->sell_video == 0 || $pt->get_video->is_owner || ($pt->get_video->sell_video > 0 && $pt->is_paid > 0)) { ?>
+		<div class="pt_blogcomm_combo yp_video_comment">
+			<?php if (IS_LOGGED): ?>
+			<img class="avatar" src="{{ME avatar}}" alt="{{ME name}} avatar" />
+			<?php endif; ?>
+			<textarea name="comment" rows="1" class="form-control jTextarea" id="comment-textarea" placeholder="{{LANG write_your_comment}}"></textarea>
+			<div class="dropdown add-emoticons">
+				<a href="#" class="dropdown-toggle" type="button" id="dropdownEmo" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" onclick="load_ajax_publisher_emojii();">
+					<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M12,23 C5.92486775,23 1,18.0751322 1,12 C1,5.92486775 5.92486775,1 12,1 C18.0751322,1 23,5.92486775 23,12 C23,18.0751322 18.0751322,23 12,23 Z M12,21 C16.9705627,21 21,16.9705627 21,12 C21,7.02943725 16.9705627,3 12,3 C7.02943725,3 3,7.02943725 3,12 C3,16.9705627 7.02943725,21 12,21 Z M15.2746538,14.2978292 L16.9105622,15.4483958 C15.7945475,17.0351773 13.9775544,18 12,18 C10.0224456,18 8.20545254,17.0351773 7.08943782,15.4483958 L8.72534624,14.2978292 C9.4707028,15.3575983 10.6804996,16 12,16 C13.3195004,16 14.5292972,15.3575983 15.2746538,14.2978292 Z M14,11 L14,9 L16,9 L16,11 L14,11 Z M8,11 L8,9 L10,9 L10,11 L8,11 Z" /></svg>
+				</a>
+				<ul class="dropdown-menu dropdown-menu-right publisher-box-emooji" aria-labelledby="dropdownEmo">
+					
+				</ul>
+			</div>
+			<button class="btn" onclick="PT_PostComment(this)">{{LANG publish}}&nbsp;&nbsp;&nbsp;<svg xmlns="http://www.w3.org/2000/svg" class="btn btn-main" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"></path></svg></button>
+		</div>
+		<br><br>
+     <?php } } ?>
+        <div class="comment-button">
+            <div class="user-comments" id="video-pinned-comments">
+				<div id="pinned-comment">
+					{{PINNED_COMMENTS}}
+				</div>
+            </div>
+        </div>
+        <div class="comments-loading hidden">
+			<i class="fa fa-circle-o-notch spin"></i>
+        </div>
+        <?php if ($pt->config->live_video != 1 || ($pt->config->live_video == 1 && !$pt->get_video->is_still_live) ) { ?>
+        <div class="user-comments" id="video-user-comments">
+          {{COMMENTS}}
+        </div>
+        <?php } ?>
+        
+        <?php if ($pt->count_comments > 0): ?>
+            <div class="watch-video-show-more comments-load">
+              {{LANG show_more}}
+            </div>
+        <?php endif; ?>
+    </div>
+<?php } ?>
+<?php if ($pt->config->comment_system == 'fb' || $pt->config->comment_system == 'both') { ?>
+    <div class="content">
+        <div class="comments-header">
+            {{LANG fb_comments}}
+        </div>
+        <div class="comment-box">
+            <div class="fb-comments" data-href="{{URL}}" data-numposts="5" width="100%"></div>
+        </div>
+    </div>
+<?php } ?>
+<input type="hidden" id="video-id" value="{{VIDEO_ID}}">
+
+<script>
+function load_ajax_publisher_emojii(){
+    var emojjii = "😀*😁*😂*🤣*😃*😄*😅*😆*😉*😊*😋*😎*😍*😘*😗*😙*😚*🙂*🤗*🤩*🤔*🤨*😐*😑*😶*🙄*😏*😣*😥*😮*🤐*😯*😪*😫*😴*😌*😛*😜*😝*🤤*😒*😓*😔*😕*🙃*🤑*😲*☹️*🙁*😖*😞*😟*😤*😢*😭*😦*😧*😨*😩*🤯*😬*😰*😱*😳*🤪*😵*😡*😠*🤬*😷*🤒*🤕*🤢*🤮*🤧*😇*🤠*🤡*🤥*🤫*🤭*🧐*🤓*😈*👿*👹*👺*💀*👻*👽*🤖*💩*😺*😸*😹*😻*😼*😽*🙀*😿*😾*👶*👧*🧒*👦*👩*🧑*👨*👵*🧓*👴*👲*💅*🤳*💃*🕺*🕴*👫*👭*👬*💑*🤲*👐*🙌*👏*🤝*👍*👎*👊*✊*🤛*🤜*🤞*✌️*🤟*🤘*👌*👈*👉*👆*👇*☝️*✋*🤚*🖐*🖖*👋*🤙*💪*🖕*✍️*🙏*💍*💄*💋*👄*👅*👂*👃*👣*👁*👀*🧠*🗣*👤*👥";
+
+	$('.publisher-box-emooji').html("");
+	$.each(emojjii.split('*'), function(key, value) {
+		$('.publisher-box-emooji').append("<span class=\"emoji_holder\" onclick=\"Wo_AddEmo('"+ value +"', '.pt_blogcomm_combo textarea');\"><span>"+ value + "</span>");
+	});
+}
+
+function Wo_AddEmo(code, input) {
+  inputTag = $(input);
+  inputVal = inputTag.val();
+  if(typeof (inputTag.attr('placeholder')) != "undefined") {
+    inputPlaceholder = inputTag.attr('placeholder');
+    if(inputPlaceholder == inputVal) {
+      inputTag.val('');
+      inputVal = inputTag.val();
+    }
+  }
+  if(inputVal.length == 0) {
+    inputTag.val(code + ' ');
+  } else {
+    inputTag.val(inputVal + ' ' + code);
+  }
+  inputTag.keyup();
+}
+
+jQuery(document).ready(function($) {
+
+    var sort_comments_by = 2;
+
+    $("li.sort-comments").click(function(event) {
+      sort_comments_by = $(this).attr('id');
+      var video_id     = $('#video-id').val();
+      var data_obj     = {
+        video_id:video_id,
+        sort_by:sort_comments_by
+      };
+
+      $('#video-user-comments').empty();
+      $(".comments-loading").removeClass('hidden');
+
+      $.post('{{LINK aj/sort-comments}}',data_obj, function(data, textStatus, xhr) {
+        if (data.status == 200) {
+          PT_Delay(function(){
+            $(".comments-loading").addClass('hidden');
+            $('#video-user-comments').html(data.comments);
+          },200);
+        }
+        else{
+          PT_Delay(function(){
+            $(".comments-loading").addClass('hidden');
+          },200);
+        }
+      }); 
+
+    });
+
+    $.fn.scrollTo = function (speed) {
+      if (typeof(speed) === 'undefined')
+          speed = 500;
+
+      $('html, body').animate({
+          scrollTop: ($(this).offset().top - 100)
+      }, speed);
+
+      return $(this);
+    };
+
+    <?php if (!empty($_GET['cl']) && is_numeric($_GET['cl'])): ?>
+      if ($('#comment-<?php echo($_GET['cl']); ?>').length) {
+        var comment = $('#comment-<?php echo($_GET['cl']); ?>');
+        comment.scrollTo().find('p.comment-text').addClass('active');
+        PT_Delay(function(){
+          comment.find('p.comment-text').removeClass('active')
+        },2000);
+      }
+      else{
+        $('#video-user-comments').scrollTo();
+      }
+    <?php elseif(!empty($_GET['rl']) && is_numeric($_GET['rl'])): ?>
+      if ($('#reply-<?php echo($_GET['rl']); ?>').length) {
+        var reply  = $('#reply-<?php echo($_GET['rl']); ?>');
+        reply.scrollTo().find('p.reply-text').addClass('active');
+        PT_Delay(function(){
+          reply.find('p.reply-text').removeClass('active');
+        },2000);
+      }
+      else{
+        $('#video-user-comments').scrollTo();
+      }
+    <?php endif; ?>
+
+    $('#comment-textarea').on('click', function(event) {
+      event.preventDefault();
+      var logged = $('#main-container').attr('data-logged');
+      if (!logged) {
+        window.location.href = "{{LINK login?to=<?php echo $pt->page_url_;?>}}";
+        return false;
+      }
+      $(this).css('border', '1px solid #888');
+    });
+
+    $('.comments-load').on('click', function(event) {
+      event.preventDefault();
+      var last_id  = $('.main-comment:last').attr('data-id');
+      var video_id = $('#video-id').val();
+      var data_obj = {
+        last_id: last_id,
+        video_id:video_id,
+        sort_by:sort_comments_by
+      };
+
+      if (sort_comments_by == 1) {
+        var comment_ids      = [];
+        $('.main-comment').each(function(index, el) {
+          comment_ids.push($(el).attr('data-id'));
+        });
+
+        data_obj['comments'] = comment_ids.join()      
+      }
+
+      $.post('{{LINK aj/load-more-comments}}',data_obj, function(data, textStatus, xhr) {
+        if (data.status == 200) {
+          $('#video-user-comments').append(data.comments);
+        } 
+
+        else {
+          $('.comments-load').text(data.message);
+        }
+      });      
+   });
+});
+
+function PT_PostComment(button) {
+   var text = $('#comment-textarea').val();
+   if (!text) {
+      return false;
+   }
+   var video_id = $('#video-id').val();
+   if (!video_id) {
+      return false;
+   }
+   if ($('#live_post_comments_'+video_id+' .live_comments').length >= 4) {
+      $('#live_post_comments_'+video_id+' .live_comments').first().remove();
+    }
+      $('#live_post_comments_'+video_id).append('<div class="main-comment live_comments" live_comment_id=""><div class="main-comment-data-sp"><div class="user-avatar pull-left"><img src="{{ME avatar}}" alt="{{ME name}}"></div><div class="user-name"><a href="{{ME url}}" data-load="?link1=timeline&id={{ME username}}">{{ME name}}</a><?php if ($pt->user->verified == 1): ?><i class="fa fa-check-circle fa-fw verified"></i><?php endif; ?></div><div class="user-comment"><p class="comment-text">'+text+'</p></div><div class="clear"></div></div><div class="clear"></div></div>');
+   $(button).attr('disabled', true);
+   $.post('{{LINK aj/add-comment}}', {video_id: video_id, text: text}, function(data, textStatus, xhr) {
+      if (data.status == 200) {
+         if ($('.no-comments-found').length > 0) {
+            $('.no-comments-found').remove();
+         }
+         $('#comment-textarea').val('').css('height', '49px');;
+         $('#video-user-comments').prepend(data.comment);
+      }
+      else{
+        $('#live_post_comments_'+video_id).find("[live_comment_id='']").remove();
+      }
+      $(button).attr('disabled', false);
+   });
+}
+
+function PT_DeleteComment(id) {
+  if (!id) { return false; }
+  if (!confirm('{{LANG delete_confirmation}}')) { return false; }
+  $('#comment-' + id).slideUp('fast');
+  $.post('{{LINK aj/delete-comment}}', {id: id});
+}
+
+function PT_PinComment(id,pin){
+  if (!id) { return false; }
+  let pinned_comments = $('#pinned-comment');
+
+  if (pin) {
+    $("#comment-" + id).slideUp(200,function(){
+		Snackbar.show({text: '{{LANG comment_pinned}}'});
+    })
+  }
+  else{
+    pinned_comments.empty();
+	Snackbar.show({text: '{{LANG comment_unpinned}}'});
+  } 
+  
+  $.post('{{LINK aj/pin-comment}}', {id: id},function(data){
+    if (data.status == 200) {
+
+      $("#comment-" + id).slideUp(100,function(){
+        $(this).remove();
+        pinned_comments.scrollTo();
+      });
+
+      pinned_comments.html(data.html);
+    }
+
+    else if(data.status == 304){
+      $("#video-user-comments").append(data.html);
+    } 
+  });
+}
+</script>

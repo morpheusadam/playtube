@@ -1,0 +1,127 @@
+<?php 
+$page = 'video';
+$page_link = 'Hosted video file, e.g (http://site.com/video.mp4)';
+if (empty($_GET['id'])) {
+	header("Location: " .  PT_LoadAdminLink(''));
+	exit();
+}
+$id = PT_Secure($_GET['id']);
+$get_ad = $db->where('id', $id)->getOne(T_VIDEO_ADS);
+if (empty($get_ad)) {
+	header("Location: " .  PT_LoadAdminLink(''));
+	exit();
+}
+$link = $get_ad->ad_media;
+if (!empty($get_ad->ad_image)) {
+	$page_link = 'Image link, e.g (http://site.com/image.png)';
+	$link = $get_ad->ad_image;
+    $page = 'image';
+}
+if (!empty($get_ad->vast_xml_link)) {
+	$page_link = 'XML link, e.g (http://yourdomain.com/vast.xml)';
+	$link = $get_ad->vast_xml_link;
+    $page = 'vast';
+}
+?>
+<div class="container-fluid">
+    <div>
+        <h3>Create New Ad</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Admin Panel</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Advertisement</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Manage Video Ads</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Edit Ad</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- Vertical Layout -->
+    <div class="row">
+        <div class="col-lg-8 col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Edit: <?php echo $get_ad->name ?></h6>
+                    <div class="ads-settings-alert"></div>
+                    <form class="ads-settings" method="POST">
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Name</label>
+                                <input type="text" id="name" name="name" class="form-control" value="<?php echo $get_ad->name ?>">
+                                
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label"><?php echo $page_link ?></label>
+                                <input type="text" id="link" name="link" class="form-control" value="<?php echo $link ?>">
+                                
+                            </div>
+                        </div>
+                        <?php if ($page != 'vast') { ?>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">URL redirect the user to this link after clicking on the ad</label>
+                                <input type="text" name="ad_link" class="form-control" value="<?php echo $get_ad->ad_link ?>">
+                                
+                            </div>
+                        </div>
+                        <?php } ?>
+                        
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Skip Ad Seconds (0 = disabled)</label>
+                                <input type="text" id="skip_seconds" name="skip_seconds" class="form-control" value="<?php echo $get_ad->skip_seconds ?>">
+                                
+                            </div>
+                        </div>
+                        <?php if (!empty($get_ad->vast_xml_link)) { ?>
+                        <label for="vast_type">Type</label>
+                        <div class="form-group">
+                            <input type="radio" name="vast_type" id="vast_type-enabled" value="vast" <?php echo ($get_ad->vast_type == 'vast') ? 'checked' : '' ?>>
+                            <label for="vast_type-enabled">Vast</label>
+                            <input type="radio" name="vast_type" id="vast_type-disabled" value="vpaid" <?php echo ($get_ad->vast_type == 'vpaid') ? 'checked' : '' ?>>
+                            <label for="vast_type-disabled" class="m-l-20">VPaid</label>
+                        </div>
+                        <?php } ?>
+                        <input type="hidden" value="<?php echo $page ?>" name="type">
+                        <input type="hidden" value="<?php echo $get_ad->id ?>" name="id">
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <!-- #END# Vertical Layout -->
+<script>
+$(function() {
+    var form_ads_settings = $('form.ads-settings');
+    form_ads_settings.ajaxForm({
+        url: '{{LINK aj/ap/edit-ads}}',
+        beforeSend: function() {
+            form_ads_settings.find('button').text("{{LANG please_wait}}");
+        },
+        success: function(data) {
+            if (data.status == 200) {
+            	$('.ads-settings-alert').html('<div class="alert alert-success"><i class="fa fa-check"></i> Ad successfully updated</div>');
+            	setTimeout(function () {
+            		$('.ads-settings-alert').empty();
+            		window.location.href = '{{LINK admin-cp/manage-video-ads}}';
+            	}, 2000);
+            } else {
+            	$('.ads-settings-alert').html('<div class="alert alert-danger">'+data.error+'</div>');
+                setTimeout(function () {
+                    $('.ads-settings-alert').empty();
+                }, 2000);
+            }
+            form_ads_settings.find('button').text('Save');
+        }
+    });
+});
+</script>

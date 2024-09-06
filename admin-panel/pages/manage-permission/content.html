@@ -1,0 +1,369 @@
+<?php
+if (empty($_GET['id']) || !is_numeric($_GET['id']) || $_GET['id'] == $pt->user->id || $pt->user->admin != 1) {
+    header("Location: " . PT_Link(''));
+    exit();
+}
+$user_data = PT_UserData(PT_Secure($_GET['id']));
+if (empty($user_data)) {
+    header("Location: " . PT_Link(''));
+    exit();
+}
+$user_data = ToArray($user_data);
+$per_array = array();
+$all_pages = scandir('admin-panel/pages');
+unset($all_pages[0]);
+unset($all_pages[1]);
+if (!empty($all_pages)) {
+    foreach ($all_pages  as $key => $value) {
+        $per_array[$value] = 0;
+    }
+}
+if (empty($user_data['permission'])) {
+    $permission = json_encode($per_array);
+    $db->where('id',$user_data['id'])->update(T_USERS,array('permission' => $permission));
+    $user_data = PT_UserData($user_data['id']);
+    $user_data = ToArray($user_data);
+    $user_data['permission'] = json_decode($user_data['permission'],true);
+}
+else{
+    $user_data['permission'] = json_decode($user_data['permission'],true);
+    if (!empty($user_data['permission'])) {
+        foreach ($per_array as $key => $value) {
+            if (!in_array($key, array_keys($user_data['permission']))) {
+                $user_data['permission'][$key] = 0;
+            }
+        }
+        $permission = json_encode($user_data['permission']);
+        $db->where('id',$user_data['id'])->update(T_USERS,array('permission' => $permission));
+        $user_data = PT_UserData($user_data['id']);
+        $user_data = ToArray($user_data);
+        $user_data['permission'] = json_decode($user_data['permission'],true);
+    }
+    else{
+        $permission = json_encode($per_array);
+        $db->where('id',$user_data['id'])->update(T_USERS,array('permission' => $permission));
+        $user_data = PT_UserData($user_data['id']);
+        $user_data = ToArray($user_data);
+        $user_data['permission'] = json_decode($user_data['permission'],true);
+    }
+}
+
+?>
+<div class="container-fluid">
+    <div>
+        <h3>Manage user permissions</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Home</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Users</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Manage user permissions</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="row">
+        
+        <div class="clearfix"></div>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">User Permission</h6>
+                    <div class="float-left">
+                        <label for="dashboard" class="main-label"></label>
+                    </div>
+                    <div class="text-center">
+                        <button type="button" name="permission_type" value="normal" id="btn_permission_normal" class="btn select_user_perm <?php echo($user_data['admin'] == 0 ? 'btn-info' : 'active_permissions') ?>" <?php if($user_data['admin'] != 0){ ?>onclick="Wo_Permission(<?php echo $user_data['id']?>,'hide','normal');" <?php } ?>>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" /></svg> Normal
+                        </button>
+						<button type="button" name="permission_type" value="editor" id="btn_permission_editor" class="btn select_user_perm <?php echo($user_data['admin'] == 3 ? 'btn-info' : 'active_permissions') ?>" <?php if($user_data['admin'] != 3){ ?>onclick="Wo_Permission(<?php echo $user_data['id']?>,'hide','editor');" <?php } ?>>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M21.7,13.35L20.7,14.35L18.65,12.3L19.65,11.3C19.86,11.09 20.21,11.09 20.42,11.3L21.7,12.58C21.91,12.79 21.91,13.14 21.7,13.35M12,18.94L18.06,12.88L20.11,14.93L14.06,21H12V18.94M12,14C7.58,14 4,15.79 4,18V20H10V18.11L14,14.11C13.34,14.03 12.67,14 12,14M12,4A4,4 0 0,0 8,8A4,4 0 0,0 12,12A4,4 0 0,0 16,8A4,4 0 0,0 12,4Z" /></svg> Editor
+                        </button>
+                        <button type="button" name="permission_type" value="moderator" id="btn_permission_moderator" class="btn select_user_perm <?php echo($user_data['admin'] == 2 ? 'btn-info' : 'active_permissions') ?>" <?php if($user_data['admin'] != 2){ ?>onclick="Wo_Permission(<?php echo $user_data['id']?>,'hide','moderator');" <?php } ?>>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 3C14.21 3 16 4.79 16 7S14.21 11 12 11 8 9.21 8 7 9.79 3 12 3M16 13.54C16 14.6 15.72 17.07 13.81 19.83L13 15L13.94 13.12C13.32 13.05 12.67 13 12 13S10.68 13.05 10.06 13.12L11 15L10.19 19.83C8.28 17.07 8 14.6 8 13.54C5.61 14.24 4 15.5 4 17V21H20V17C20 15.5 18.4 14.24 16 13.54Z" /></svg> Moderator
+                        </button>
+                        <button type="button" name="permission_type" value="admin" id="btn_permission_admin" class="btn select_user_perm <?php echo($user_data['admin'] == 1 ? 'btn-info' : 'active_permissions') ?>" <?php if($user_data['admin'] != 1){ ?> onclick="Wo_Permission(<?php echo $user_data['id']?>,'hide','admin');" <?php } ?>>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M17.13,17C15.92,18.85 14.11,20.24 12,20.92C9.89,20.24 8.08,18.85 6.87,17C6.53,16.5 6.24,16 6,15.47C6,13.82 8.71,12.47 12,12.47C15.29,12.47 18,13.79 18,15.47C17.76,16 17.47,16.5 17.13,17Z" /></svg> Admin
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div>
+        </div>
+        </div>
+        <br>
+        <div class="clearfix"></div>
+        <?php if ($user_data['admin'] == 2 || $user_data['admin'] == 3) { 
+            $SideArray = array(
+                0 => array('main_title' => 'Dashboard',
+                           'sub' => array('dashboard' => 'Dashboard')),
+                1 => array('main_title' => 'Settings',
+                           'sub' => array('general-settings' => 'General Configuration',
+                                          'site-settings' => 'Website Information',
+                                          'ffmpeg' => 'Import & Upload Configuration',
+                                          'video_settings' => 'Video & Player Settings',
+                                          'email-settings' => 'E-mail Setup',
+                                          'social-login' => 'Social Login Settings',
+                                          'live' => 'Setup Live Streaming',
+                                          )),
+                2 => array('main_title' => 'Payments & Ads',
+                           'sub' => array('payment-settings' => 'Payment Configuration',
+                                          'ads-settings' => 'Advertisement Settings',
+                                          'bank-receipts' => 'Manage Bank Receipts',
+                                          'manage-video-ads' => 'Manage Video Ads',
+                                          'create-video-ad' => 'Create Video Ads',
+                                          'manage-website-ads' => 'Manage Website Ads',
+                                          'manage-user-ads' => 'Manage User Ads',
+                                          'payment-requests' => 'Payment Requests',
+                                          'manage-currencies' => 'Manage Currencies',
+                                          'earnings' => 'Earnings',
+                                          )),
+                3 => array('main_title' => 'Languages',
+                           'sub' => array('add-language' => 'Add New Language & Keys',
+                                          'manage-languages' => 'Manage Languages',
+                                          'edit-lang' => 'Edit Language',
+                                          )),
+            ); ?>
+            <div class="col-lg-3 col-md-3">
+                <?php foreach ($SideArray as $key => $value) { ?>
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title"><?php echo($value['main_title']); ?></h6>
+                            <?php foreach ($value['sub'] as $key2 => $value2) { ?>
+                                <div class="float-left">
+                                    <label for="<?php echo($key2); ?>" class="main-label"><?php echo($value2); ?></label>
+                                </div>
+                                <div class="form-group float-right switcher">
+                                    <input type="hidden" name="<?php echo($key2); ?>" value="0" />
+                                    <input type="checkbox" name="<?php echo($key2); ?>" id="chck-<?php echo($key2); ?>" value="1" <?php echo ($user_data['permission'][$key2] == 1) ? 'checked': '';?>>
+                                    <label for="chck-<?php echo($key2); ?>" class="check-trail"><span class="check-handler"></span></label>
+                                </div>
+                                <div class="clearfix"></div>
+                                <?php 
+                                if (array_keys($value['sub'])[count($value['sub']) - 1] != $key2) { ?>
+                                    <hr>
+                                <?php } ?>
+                            <?php } ?>
+                        </div>
+                    </div>
+               <?php  } ?>
+            </div>
+            <?php 
+            $SideArray = array(
+                0 => array('main_title' => 'Users',
+                           'sub' => array('manage-users' => 'Manage Users',
+                                          'manage-profile-fields' => 'Manage Custom Profile Fields',
+                                          'verification-requests' => 'Manage Verification Requests',
+                                          'monetization-requests' => 'Manage Monetization Requests',
+                                          )),
+                1 => array('main_title' => 'Videos',
+                           'sub' => array('manage-videos' => 'Manage Videos',
+                                          'manage-comments' => 'Manage Video Comments')),
+                2 => array('main_title' => 'Import Videos',
+                           'sub' => array('import-from-youtube' => 'Import From YouTube',
+                                          'import-from-dailymotion' => 'Import From Dailymotion',
+                                          'import-from-twitch' => 'Import From Twitch')),
+                3 => array('main_title' => 'Movies',
+                           'sub' => array('manage-movies' => 'Manage Movies',
+                                          'manage-movies-category' => 'Manage Categories')),
+                4 => array('main_title' => 'Articles',
+                           'sub' => array('create-article' => 'Create New Article',
+                                          'manage-articles' => 'Manage Articles',
+                                          'edit-article' => 'Edit Articles')),
+            ); ?>
+            <div class="col-lg-3 col-md-3">
+                <?php foreach ($SideArray as $key => $value) { ?>
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title"><?php echo($value['main_title']); ?></h6>
+                            <?php foreach ($value['sub'] as $key2 => $value2) { ?>
+                                <div class="float-left">
+                                    <label for="<?php echo($key2); ?>" class="main-label"><?php echo($value2); ?></label>
+                                </div>
+                                <div class="form-group float-right switcher">
+                                    <input type="hidden" name="<?php echo($key2); ?>" value="0" />
+                                    <input type="checkbox" name="<?php echo($key2); ?>" id="chck-<?php echo($key2); ?>" value="1" <?php echo ($user_data['permission'][$key2] == 1) ? 'checked': '';?>>
+                                    <label for="chck-<?php echo($key2); ?>" class="check-trail"><span class="check-handler"></span></label>
+                                </div>
+                                <div class="clearfix"></div>
+                                <?php 
+                                if (array_keys($value['sub'])[count($value['sub']) - 1] != $key2) { ?>
+                                    <hr>
+                                <?php } ?>
+                            <?php } ?>
+                        </div>
+                    </div>
+               <?php  } ?>
+            </div>
+            <?php 
+            $SideArray = array(
+                0 => array('main_title' => 'Manage Categories',
+                           'sub' => array('manage_categories' => 'Manage Categories',
+                                          'manage_sub_categories' => 'Manage Sub Categories'
+                                          )),
+                1 => array('main_title' => 'Pro System',
+                           'sub' => array('prosys-settings' => 'Pro System Settings',
+                                          'manage-payments' => 'Recent Payments')),
+                2 => array('main_title' => 'Design',
+                           'sub' => array('manage-themes' => 'Themes',
+                                          'change-site-desgin' => 'Update Website Design',
+                                          'custom-design' => 'Custom Design')),
+                3 => array('main_title' => 'Reports',
+                           'sub' => array('manage-video-reports' => 'Manage video reports',
+                                          'copy_report' => 'Manage Copyright Reports',
+                                          )),
+                4 => array('main_title' => 'Pages',
+                           'sub' => array('manage-custom-pages' => 'Manage Custom Pages',
+                                          'manage-pages' => 'Manage Pages',
+                                          'manage-faqs' => 'Manage FAQs',
+                                          'seo' => 'Manage Pages SEO',
+                                          )),
+            ); ?>
+            <div class="col-lg-3 col-md-3">
+                <?php foreach ($SideArray as $key => $value) { ?>
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title"><?php echo($value['main_title']); ?></h6>
+                            <?php foreach ($value['sub'] as $key2 => $value2) { ?>
+                                <div class="float-left">
+                                    <label for="<?php echo($key2); ?>" class="main-label"><?php echo($value2); ?></label>
+                                </div>
+                                <div class="form-group float-right switcher">
+                                    <input type="hidden" name="<?php echo($key2); ?>" value="0" />
+                                    <input type="checkbox" name="<?php echo($key2); ?>" id="chck-<?php echo($key2); ?>" value="1" <?php echo ($user_data['permission'][$key2] == 1) ? 'checked': '';?>>
+                                    <label for="chck-<?php echo($key2); ?>" class="check-trail"><span class="check-handler"></span></label>
+                                </div>
+                                <div class="clearfix"></div>
+                                <?php 
+                                if (array_keys($value['sub'])[count($value['sub']) - 1] != $key2) { ?>
+                                    <hr>
+                                <?php } ?>
+                            <?php } ?>
+                        </div>
+                    </div>
+               <?php  } ?>
+            </div>
+            <?php 
+            $SideArray = array(
+                0 => array('main_title' => 'Tools',
+                           'sub' => array('manage-announcements' => 'Manage Announcements',
+                                          'ban-users' => 'Ban Users',
+                                          'manage-activities' => 'Manage Activities',
+                                          'mass-notifications' => 'Mass Notifications',
+                                          'manage-invitation-keys' => 'Manage Invitation Keys',
+                                          'manage-invitation' => 'Users Invitation',
+                                          'auto_subscribe' => 'Auto Subscribe',
+                                          'auto-delete' => 'Auto Delete Videos',
+                                          'clean-videos' => 'Clean Dead Videos',
+                                          'newsletters' => 'Newsletter',
+                                          )),
+                1 => array('main_title' => 'Sitemap',
+                           'sub' => array('create-new-sitemap' => 'Create Sitemap'
+                                          )),
+                2 => array('main_title' => 'Mobile & API Settings',
+                           'sub' => array('api-settings' => 'Manage API Access Keys',
+                                          'push-notifications-system' => 'Push Notifications System'
+                                          )),
+                3 => array('main_title' => 'Backup',
+                           'sub' => array('backup' => 'Backup'
+                                          )),
+            ); ?>
+            <div class="col-lg-3 col-md-3">
+                <?php foreach ($SideArray as $key => $value) { ?>
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title"><?php echo($value['main_title']); ?></h6>
+                            <?php foreach ($value['sub'] as $key2 => $value2) { ?>
+                                <div class="float-left">
+                                    <label for="<?php echo($key2); ?>" class="main-label"><?php echo($value2); ?></label>
+                                </div>
+                                <div class="form-group float-right switcher">
+                                    <input type="hidden" name="<?php echo($key2); ?>" value="0" />
+                                    <input type="checkbox" name="<?php echo($key2); ?>" id="chck-<?php echo($key2); ?>" value="1" <?php echo ($user_data['permission'][$key2] == 1) ? 'checked': '';?>>
+                                    <label for="chck-<?php echo($key2); ?>" class="check-trail"><span class="check-handler"></span></label>
+                                </div>
+                                <div class="clearfix"></div>
+                                <?php 
+                                if (array_keys($value['sub'])[count($value['sub']) - 1] != $key2) { ?>
+                                    <hr>
+                                <?php } ?>
+                            <?php } ?>
+                        </div>
+                    </div>
+               <?php  } ?>
+            </div>
+
+
+        <?php }elseif($user_data['admin'] == 1){ ?>
+            <div class="col-lg-12 col-md-12">
+                <div class="alert alert-warning">Admin can manage everything</div>
+            </div>
+        <?php } ?>
+    </div>
+</div>
+<div class="modal fade" id="PermissionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal1Label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModal1Label">Add as a  Moderator?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="ModeratorModalAlert"></div>
+                <p class="permission_text">Are you sure you want to add as a  Moderator?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function Wo_Permission(user_id,type = 'show',type2) {
+        if (type == 'hide') {
+            $('#PermissionModal').find('.btn-secondary').attr('onclick', "Wo_Permission('"+user_id+"','show','"+type2+"')");
+            text = 'Add as a normal user?';
+            text2 = 'Are you sure you want to add as a normal user?';
+            if (type2 == 'moderator') {
+                text = 'Add as a moderator?';
+                text2 = 'Are you sure you want to add as a moderator?';
+            }
+            if (type2 == 'editor') {
+                text = 'Add as a editor?';
+                text2 = 'Are you sure you want to add as a editor?';
+            }
+            if (type2 == 'admin') {
+                text = 'Add as an admin?';
+                text2 = 'Are you sure you want to add as an admin?';
+            }
+            $('#PermissionModal').find('.modal-title').html(text);
+            $('#PermissionModal').find('.permission_text').html(text2);
+            $('#PermissionModal').modal('show');
+            return false;
+        }
+        $.get("{{LINK aj/ap/permission}}",{user_id: user_id,type2: type2},function(data) {
+            location.reload();
+        });
+    }
+    $(function() {
+        $('.switcher input[type=checkbox]').click(function () {
+            setToTrue = 0;
+            if ($(this).is(":checked") === true) {
+                setToTrue = 1;
+            }
+            var permission = $(this).attr('name');
+            var objData = {};
+            objData['permission'] = permission;
+            objData['permission_val'] = setToTrue;
+            var user_id = '<?php echo (int)$user_data['id'];?>';
+            objData['user_id'] = user_id;
+            $.get("{{LINK aj/ap/update_moderator_permission}}", objData);
+        });
+    });
+</script>

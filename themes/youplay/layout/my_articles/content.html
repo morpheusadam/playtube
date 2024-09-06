@@ -1,0 +1,82 @@
+<div class="col-md-12">
+	<div class="articles-content">
+		<div class="subscriptions-list author-list articles-container">
+			<h3 class="recent-articles" style="display: block;">{{LANG my_articles}}
+			<?php if ($pt->config->all_create_articles == 'on') { ?>
+				<a href="{{LINK create_article}}" class="btn btn-main pull-right" data-load="?link1=create_article">{{LANG create_article}} </a><div class="clear"></div>
+			<?php } ?>
+			</h3>
+			<br>
+			<div class="row">
+				{{POSTS}}
+			</div>
+		</div>
+		<?php if ($pt->total_pages > 1) { ?>
+			<div>
+				<hr>
+				<div class="pull-left showing_pages">
+		        	<?php echo "Showing $pt->page_number out of " . $pt->total_pages; ?>
+		        </div>
+		        <div class="pull-right">
+		        	<nav class="showing_nav">
+		                <ul class="pagination">
+		                	<li>
+		                        <a href="{{LINK my_articles?page_id=1}}" class="waves-effect" title='First Page'>
+		                            <i class="material-icons">first_page</i>
+		                        </a>
+		                    </li>
+		                    <?php if ($pt->page_number > 1) {  ?>
+		                    <li>
+		                        <a href="{{LINK my_articles?page_id=<?php echo($pt->page_number - 1) ?>}}" class="waves-effect" title='Previous Page'>
+		                            <i class="material-icons">chevron_left</i>
+		                        </a>
+		                    </li>
+		                    <?php  } ?>
+		                    <?php 
+		                    $nums = 0;
+		                    $nums_pages = ($pt->page_number > 3) ? ($pt->page_number - 3) : $pt->page_number;
+		                    for ($i=$nums_pages; $i <= $pt->total_pages; $i++) { 
+		                    	if ($nums < 4) {
+		                    	?>
+		                    	<li class="<?php echo ($pt->page_number == $i) ? 'active' : ''; ?>"><a href="{{LINK my_articles?page_id=<?php echo($i) ?>}}" class="waves-effect"><?php echo $i ?></a></li>
+		                    	<?php
+		                    	}
+		                    	$nums++;
+		                    }
+		                    ?>
+		                    <?php if ($pt->total_pages > $pt->page_number) { ?>
+		                    <li>
+		                        <a href="{{LINK my_articles?page_id=<?php echo($pt->page_number + 1) ?>}}" class="waves-effect" title="Next Page">
+		                            <i class="material-icons">chevron_right</i>
+		                        </a>
+		                    </li>
+		                    <?php } ?>
+		                    <li>
+		                        <a href="{{LINK my_articles?page_id=<?php echo($pt->total_pages) ?>}}&last_page=1" class="waves-effect" title='Last Page'>
+		                            <i class="material-icons">last_page</i>
+		                        </a>
+		                    </li>
+		                </ul>
+		            </nav>
+		        </div>
+			</div>
+		        
+        <?php } ?>
+	</div>
+</div>
+
+<script type="text/javascript">
+	function PT_DeleteArticle(id) {
+	  if (!id) {
+	    return false;
+	  }
+	  if (!confirm("{{LANG delete_article_text}}")) {
+	    return false;
+	  }
+	  $.post('{{LINK aj/articles/delete-article}}', {id: id}, function(data, textStatus, xhr) {
+	    if (data.status == 200) {
+	        window.location.href = '{{LINK my_articles}}';
+	    }
+	  });
+	}
+</script>

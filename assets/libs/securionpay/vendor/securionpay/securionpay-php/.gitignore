@@ -1,0 +1,9 @@
+*.iml
+.idea
+.classpath
+.project
+.settings
+
+/vendor
+composer.lock
+composer.phar

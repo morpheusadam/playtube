@@ -1,0 +1,39 @@
+<div class="ma_page_content">
+	<!-- Forgot Box -->
+	<div class="reset_page">
+		<div class="reset-page">
+			<div class="reset-form">
+				<h4>{{LANG app_permission}}</h4>
+				<div class="app_permission_alert"></div>
+				<div class="avatar">
+					<img src="{{app_avatar}}" alt="Picture" style="width: 100px;border-radius: 10px;height: 100px;box-shadow: 0 1px 2px #0000001f;pointer-events: none;user-select: none;"/>
+				</div>
+				<p>{{app_name}}</p>
+				<p>{{app_description}}</p>
+				<p>{{app_name}} {{LANG receive_the_following_info}}:({{LANG user_data}})</p>
+				<button type="button" class="btn btn-block btn-primary btn-mat" onclick="acceptPermission()">{{LANG accept}}</button>
+				<a href="{{app_website_url}}">{{LANG back}}</a>
+			</div>    
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	function acceptPermission() {
+		$.post('{{LINK aj/developers/accept}}?hash=' + $('.main_session').val(), {id: "{{app_id}}"},(data) => {
+			if (data.status == 200) {
+				$(".app_permission_alert").html('<div class="alert alert-success bg-success"><i class="fa fa-check"></i> '+
+	            data.message
+	            +'</div>');
+	            PT_Delay(function(){
+	            window.location.href = data.url;
+	          },2000);
+			}
+			else{
+				$(".app_permission_alert").html('<div class="alert alert-danger bg-danger"><i class="fa fa-check"></i> '+
+	            data.message
+	            +'</div>');
+			}
+		});
+	}
+	
+</script>

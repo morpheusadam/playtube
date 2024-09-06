@@ -1,0 +1,56 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "d714dcb37a26e2de05b5dbd5c258dbca",
+    "packages": [
+        {
+            "name": "mantoufan/alipay-global-sdk-php",
+            "version": "0.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mantoufan/alipay-global-sdk-php.git",
+                "reference": "ad858702712784a05cf1445f741311f2b314d0b0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mantoufan/alipay-global-sdk-php/zipball/ad858702712784a05cf1445f741311f2b314d0b0",
+                "reference": "ad858702712784a05cf1445f741311f2b314d0b0",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mantoufan\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Xiaoyu Wu",
+                    "email": "mhjlw@126.com"
+                }
+            ],
+            "description": "Alipay Global Third Party SDK",
+            "support": {
+                "issues": "https://github.com/mantoufan/alipay-global-sdk-php/issues",
+                "source": "https://github.com/mantoufan/alipay-global-sdk-php/tree/0.0.3"
+            },
+            "time": "2022-08-26T15:54:19+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.2.0"
+}

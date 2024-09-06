@@ -1,0 +1,49 @@
+<tr id="list-{{ID}}" data_selected="{{ID}}">
+	<td><input type="checkbox" id="check-data-{{ID}}" class="delete-checkbox filled-in"><label for="check-data-{{ID}}"></label></td>
+	<td>
+		<span>
+			{{ID}}
+		</span>
+	</td>
+	<td>
+		<span>
+			{{USERNAME}}
+		</span>
+	</td>
+	<td>
+		<time>
+			{{DATE}}
+		</time>
+	</td>
+	<td>
+		<span>
+			<a href="{{URL}}">
+				{{TITLE}}
+			</a>
+		</span>
+	</td>
+	<td>
+      <button onclick="PT_ManageVReports({{ID}},2,this);" type="button" class="btn bg-info admn_table_btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" /></svg> View</button>
+      <button onclick="PT_ManageVReports({{ID}},3,this,'hide');" type="button" class="btn bg-danger admn_table_btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" /></svg> Delete</button>
+   	</td>
+</tr>
+<tr id="view_info_{{ID}}" style="display: none;">
+	<td colspan="6">
+		<div class="row">
+	        <div class="col-md-8">
+	            <div class="card">
+	                <div class="card-body">
+	                    <div class="row">
+	                        <div class="col-md-6">
+	                            <p>
+	                                <span class="badge bg-success-bright text-success">Message</span>
+	                            </p>
+	                            <p><?php echo($pt->report->text) ?></p>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</td>
+</tr>

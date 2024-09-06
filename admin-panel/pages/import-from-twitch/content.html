@@ -1,0 +1,612 @@
+<?php
+$pt->sub_categories_array = array();
+foreach ($pt->sub_categories as $cat_key => $subs) {
+    $pt->sub_categories_array["'".$cat_key."'"] = '<option value="0">Sub Category</option>';
+    foreach ($subs as $sub_key => $sub_value) {
+        $selected = '';
+        if (!empty($_GET['sub_category_id'])) {
+            $selected = ($_GET['sub_category_id'] == $sub_key) ? 'selected' : '';
+        }
+        $pt->sub_categories_array["'".$cat_key."'"] .= '<option value="'.array_keys($sub_value)[0].'" '.$selected.'>'.$sub_value[array_keys($sub_value)[0]].'</option>';
+    }
+}
+$query       = '';
+$offset       = '';
+$cursor       = '';
+$multi_query = '';
+$limit       = 50;
+$respond_error = 0;
+$twitch_user_id = 0;
+$page_id     = 1;
+$page     = 'current';
+if (empty($pt->config->twitch_api)) {
+    $respond_error = 1;
+    $error_text = 'please put your Twitch Client Id in Settings > General Settings to start import videos from Twitch.';
+}
+
+if (!empty($_GET['query']) || !empty($_GET['multi-query'])) {
+    if (empty($pt->config->twitch_access_token)) {
+        header("Location: https://id.twitch.tv/oauth2/authorize?client_id=".$pt->config->twitch_api."&scope=bits:read+openid&response_type=token%20id_token&redirect_uri=".PT_LoadAdminLinkSettings('import-from-twitch'));
+        exit();
+    }
+    if (!empty($_GET['query'])) {
+        $query = PT_Secure($_GET['query']);
+    }
+    $clientId = $pt->config->twitch_api;
+
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, 'https://api.twitch.tv/helix/search/channels?query='.$query);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+
+
+    $headers = array();
+    $headers[] = 'Client-ID: ' . $clientId;
+    $headers[] = 'Authorization: Bearer '.$pt->config->twitch_access_token;
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+    $result = curl_exec($ch);
+    if (curl_errno($ch)) {
+        echo 'Error:' . curl_error($ch);
+    }
+    curl_close($ch);
+    if (!empty($result)) {
+        $json = json_decode($result,true);
+        if (!empty($json) && !empty($json['data'])) {
+            $twitch_user_id = $json['data'][0]['id'];
+
+            if (!empty($_GET['limit']) && $limit < 101) {
+                $limit = (int) PT_Secure($_GET['limit']);
+            }
+            if (!empty($_GET['page-query'])) {
+                $page     = $_GET['page-query'];
+            }
+            if (!empty($_GET['cursor'])) {
+                $cursor = PT_Secure($_GET['cursor']);
+            }
+            $query = urlencode($query);
+
+
+            for ($i=0; $i < 100; $i++) { 
+                $channelsApi = 'https://api.twitch.tv/helix/videos?first='.$limit.'&user_id='.$twitch_user_id;
+                if (!empty($cursor) && $page == 'next') {
+                    $channelsApi = 'https://api.twitch.tv/helix/videos?first='.$limit.'&after='.$cursor.'&user_id='.$twitch_user_id;
+                }
+                if (!empty($cursor) && $page == 'previous') {
+                    $channelsApi = 'https://api.twitch.tv/helix/videos?first='.$limit.'&before='.$cursor.'&user_id='.$twitch_user_id;
+                }
+
+
+                
+                $ch = curl_init();
+
+                curl_setopt_array($ch, array(
+                   CURLOPT_HTTPHEADER => array(
+                      'Client-ID: ' . $clientId,
+                      'Authorization: Bearer '.$pt->config->twitch_access_token
+                   ),
+                   CURLOPT_RETURNTRANSFER => true,
+                   CURLOPT_URL => $channelsApi
+                ));
+                $response = curl_exec($ch);
+
+                curl_close($ch);
+                if (!empty($response)) {
+                    $get_videos = json_decode($response,true);
+
+
+
+                    if (!empty($get_videos['data'])) {
+                        if (!empty($get_videos['pagination']) && !empty($get_videos['pagination']['cursor'])) {
+                            $cursor = PT_Secure($get_videos['pagination']['cursor']);
+                            $page = 'next';
+                        }
+
+                        $ids = array();
+                        foreach ($get_videos['data'] as $key => $video) {
+                            $check_if_exists = $db->where('twitch', $video['id'])->getValue(T_VIDEOS, 'count(*)');
+                            if ($check_if_exists == 0) {
+                                $ids[] = $video['id'];
+                            }
+                        }
+                        if (!empty($ids)) {
+
+                            break;
+                        }
+                        else{
+                        }
+                    }
+                    elseif (!empty($get_videos) && !empty($get_videos['error']) && !empty($get_videos['message'])) {
+                        $respond_error = 1;
+                        $error_text = $get_videos['message'];
+                        break;
+                    }
+                }
+                else{
+                    $respond_error = 1;
+                    $error_text = 'No videos found';
+                }
+            }
+        }
+        elseif (!empty($json) && !empty($json['error']) && !empty($json['message'])) {
+            if (strtolower($json['error']) == 'unauthorized') {
+                header("Location: https://id.twitch.tv/oauth2/authorize?client_id=".$pt->config->twitch_api."&scope=bits:read+openid&response_type=token%20id_token&redirect_uri=".PT_LoadAdminLinkSettings('import-from-twitch'));
+                exit();
+            }
+            $respond_error = 1;
+            $error_text = $json['message'];
+        }
+    }
+    else{
+        $respond_error = 1;
+        $error_text = 'Something went wrong Please try again later';
+    }
+
+            
+}
+
+$user_id = 0;
+$username = '';
+if (!empty($_GET['username']) && isset($_GET['username'])) {
+    $username = PT_Secure($_GET['username']);
+    $user  = $db->where('username', $username)->getOne(T_USERS);
+    if (!empty($user)) {
+        $user_id = $user->id;
+    }
+    else{
+        $respond_error = 1;
+        $error_text = 'user not found';
+    }
+}
+$category_filter = array_keys(ToArray($pt->categories))[0];
+if (!empty($_GET['category_id'])) {
+    if (in_array($_GET['category_id'], array_keys(ToArray($pt->categories)))) {
+        $category_filter = $_GET['category_id'];
+    }
+}
+$get_ini     = ini_get('max_input_vars');
+$auto_import = 0;
+if (!empty($_GET['auto_import'])) {
+    $auto_import = 1;
+}
+?>
+<div class="container-fluid">
+
+    <div>
+        <h3>Import From Twitch</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Admin Panel</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Videos</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Import Videos</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Import From Twitch</li>
+            </ol>
+        </nav>
+    </div>
+    <?php if ($get_ini <= 1000) { ?>
+  	<div class="alert alert-warning">
+  		If you want to import more than 180 videos by one click, you need to increase <b>max_input_vars</b> in your php.ini file.
+  	</div>
+  	<?php } ?>
+    <!-- Vertical Layout -->
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Import Videos From Twitch</h6>
+                   <div class="row">
+                       <div class="col-md-12" style="margin-bottom:0;">
+                        <div class="twitch_import"></div>
+                            <form method="get" action="<?php echo PT_LoadAdminLinkSettings('import-from-twitch'); ?>">
+                              <div class="row">
+                              	<div class="col-md-2" id="normal-query-form">
+	                              	<div class="form-group form-float">
+	                                    <div class="form-line">
+                                            <label class="form-label search-form">Channel name To Import from</label>
+	                                        <input type="text" name="query" id="query" class="form-control" value="<?php echo (empty($multi_query)) ? urldecode($query) : ''; ?>">
+
+	                                    </div>
+	                                </div>
+	                              </div>
+	                              <div class="col-lg-2 col-md-2">
+                                    <label>&nbsp;</label>
+                                    <select class="form-control show-tick" id="limit" name="limit">
+                                        <option value="all" selected disabled>Limit Per Page</option>
+                                        <option value="5" <?php echo ($limit == 5) ? 'selected' : '' ?>>5</option>
+                                        <option value="10" <?php echo ($limit == 10) ? 'selected' : '' ?>>10</option>
+                                        <option value="25" <?php echo ($limit == 25) ? 'selected' : '' ?>>25</option>
+                                        <option value="50" <?php echo ($limit == 50) ? 'selected' : '' ?>>50 (Default)</option>
+                                        <option value="100" <?php echo ($limit == 100) ? 'selected' : '' ?>>100 (Default)</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <label>&nbsp;</label>
+                                    <select class="form-control show-tick" id="page-query" name="page-query">
+                                        <option value="current" selected>Current Page</option>
+                                        <option value="next">Next Page</option>
+                                        <option value="previous">Previous Page</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <label>&nbsp;</label>
+                                    <select class="form-control show-tick" id="category_id" name="category_id">
+                                        <?php
+                                        foreach($pt->categories as $key => $category) {
+                                            $selected = ($key == $category_filter) ? 'selected' : '';
+                                        ?>
+                                        <option value="<?php echo $key?>" <?php echo $selected?>><?php echo $category?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                                <div class="col-lg-2 col-md-2" <?php if (empty($pt->sub_categories_array["'1'"])) { ?> style="display: none;"<?php } ?> id="sub_category_div">
+                                    <label>&nbsp;</label>
+                                    <select name="sub_category_id" id="sub_category_id" class="form-control">
+                                        <?php echo $pt->sub_categories_array["'1'"]; ?>
+                                    </select>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="col-lg-4 col-md-4">
+                                    <label>&nbsp;</label>
+                                    <select class="form-control show-tick" id="auto_import" name="auto_import">
+                                        <option value="0" <?php echo ($auto_import == 0) ? 'selected' : '';?>>Manual Import</option>
+                                        <option value="1" <?php echo ($auto_import == 1) ? 'selected' : '';?>>Auto Import (Auto Import After Loading)</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2" id="normal-query-form">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <label class="form-label search-form">Import as (Username)</label>
+                                            <input type="text" name="username" id="username" class="form-control" value="<?php echo ($username); ?>">
+
+                                        </div>
+                                    </div>
+                                  </div>
+                                  <input type="hidden" name="cursor" value="<?php echo($cursor); ?>" id="cursor">
+
+	                            <div class="col-md-2">
+                                    <label>&nbsp;</label>
+                                <div></div>
+	                              	<button class="btn btn-info">Search</button>
+	                            </div>
+                                
+                              </div>
+                              <div class="clearfix"></div>
+                           </form>
+                       </div>
+                   </div>
+                   <div class="clearfix"></div>
+                </div>
+            </div>
+            <?php if ((isset($_GET['query']) || isset($_GET['multi-query'])) && $respond_error == 0) { ?>
+			<h3>Videos</h3>
+                <div class="body">
+                   <div class="row" id="videos-layout">
+                        <?php
+                        if (!empty($ids)) {
+                        	foreach ($get_videos['data'] as $key => $video) {
+                                $video['new_duration'] = '00:00';
+                                $hour_added = false;
+                                $min_added = false;
+                                if (strpos($video['duration'], 'h') !== false) {
+                                    $hour = explode('h', $video['duration']);
+                                    if (!empty($hour) && !empty($hour[0]) && is_numeric($hour[0])) {
+                                        if ($hour[0] < 10) {
+                                            $video['new_duration'] = '0'.$hour[0];
+                                        }
+                                        else{
+                                            $video['new_duration'] = $hour[0];
+                                        }
+                                        $video['duration'] = $hour[1];
+                                        $hour_added = true;
+                                    }
+                                }
+                                if (strpos($video['duration'], 'm') !== false) {
+                                    $min = explode('m', $video['duration']);
+                                    if (!empty($min) && !empty($min[0]) && is_numeric($min[0])) {
+                                        if ($hour_added) {
+                                            $video['new_duration'] .= ':';
+                                        }
+                                        if ($min[0] < 10) {
+                                            if ($hour_added) {
+                                                $video['new_duration'] .= '0'.$min[0];
+                                            }
+                                            else{
+                                                $video['new_duration'] = '0'.$min[0];
+                                            }
+                                        }
+                                        else{
+                                            if ($hour_added) {
+                                                $video['new_duration'] .= $min[0];
+                                            }
+                                            else{
+                                                $video['new_duration'] = $min[0];
+                                            }
+                                        }
+                                        $video['duration'] = $min[1];
+                                        $min_added = true;
+                                    }
+                                }
+                                if (strpos($video['duration'], 's') !== false) {
+                                    $sec = explode('s', $video['duration']);
+                                    if (!empty($sec) && !empty($sec[0]) && is_numeric($sec[0])) {
+                                        if ($min_added) {
+                                            $video['new_duration'] .= ':';
+                                        }
+                                        if ($sec[0] < 10) {
+                                            if ($min_added) {
+                                                $video['new_duration'] .= '0'.$sec[0];
+                                            }
+                                            else{
+                                                $video['new_duration'] = '00:0'.$sec[0];
+                                            }
+                                        }
+                                        else{
+                                            if ($min_added) {
+                                                $video['new_duration'] .= $sec[0];
+                                            }
+                                            else{
+                                                $video['new_duration'] = '00:'.$sec[0];
+                                            }
+                                        }
+                                        $min_added = true;
+                                    }
+                                }
+                        		$thumb = PT_GetMedia('upload/photos/thumbnail.jpg');
+                                if (!empty($video['thumbnail_url'])) {
+                                    $thumb = str_replace('%{width}', '00', $video['thumbnail_url']);
+                                    $thumb = str_replace('%{height}', '00', $thumb);
+                                }
+                                $thumb = str_replace('http://', 'https://', $thumb);
+                        		$tags = '';
+					            $duration = '00:00';
+					            if (!empty($video['new_duration'])) {
+					                $duration = $video['new_duration'];
+					            }
+                                $title = '';
+                                if (!empty($video['title'])) {
+                                    $title = $video['title'];
+                                }
+                                $description = '';
+                                if (!empty($video['description'])) {
+                                    $description = $video['description'];
+                                }
+	                        	$array_data = array(
+	                        		'ID' => $video['id'],
+	                        		'TITLE' => $title,
+	                        		'DESC' => $description,
+	                        		'THUMB' => $thumb,
+	                        		'TAGS' => $tags,
+	                        		'DURATION' => $duration
+	                        	);
+	                        	echo PT_LoadAdminPage('import-from-twitch/list', $array_data);
+	                        }
+                        } else {
+                        	echo '<div class="no-data-found">No videos found, try another page.</div>';
+                        }
+                        ?>
+
+
+                   </div>
+                   <input type="hidden" name="user_id_" id="user_id_" value="<?php echo($user_id); ?>" >
+                   <div class="clearfix"></div>
+                   <?php if (!empty($ids)) { ?>
+                    <div class="text-center">
+                		<button class="btn btn-info btn-load-more-videos" data-token="<?php echo $page_id?>" data-token-="<?php echo $offset?>">Load <?php echo $limit ?> more videos</button>
+                		<button class="btn btn-success btn-import">Import selected <span></span></button>
+                	</div>
+                    <?php } ?>
+                </div>
+            <?php } ?>
+            <?php if (isset($_GET['finished']) && !empty($_SESSION['imported-videos'])) { ?>
+			<div class="card">
+				<div class="card-body text-center py-5">
+					<svg height="80" viewBox="0 0 24 24" width="80" class="mb-3" xmlns="http://www.w3.org/2000/svg"><g id="_01" data-name="01"><path d="m21.35 5.78a4.93 4.93 0 0 0 -3.99-4.1 6.436 6.436 0 0 0 -1.5-.17.915.915 0 0 0 -.17-.01h-8.38a7.449 7.449 0 0 0 -1.45.13 4.965 4.965 0 0 0 -4.21 4.15 7.032 7.032 0 0 0 -.15 1.49v8.51a6.572 6.572 0 0 0 .16 1.5 4.978 4.978 0 0 0 4.2 4.09 7.449 7.449 0 0 0 1.45.13h8.38a.915.915 0 0 0 .17-.01 6.436 6.436 0 0 0 1.5-.17 4.934 4.934 0 0 0 3.98-4.04 7.926 7.926 0 0 0 .16-1.5v-8.5a7.2 7.2 0 0 0 -.15-1.5zm-1.09 11.66-2.4 2.22a.749.749 0 0 1 -1.04-.02l-1.11-1.11a.754.754 0 0 1 0-1.06.767.767 0 0 1 1.07 0l.59.6 1.88-1.73a.755.755 0 0 1 1.06.04.746.746 0 0 1 -.05 1.06z" fill="#c0cdea"></path><path d="m21.5 7.31v.05h-20v-.05a7.449 7.449 0 0 1 .13-1.45h5.64v-4.36h1.5v4.36h5.46v-4.36h1.5v4.36h5.64a7.449 7.449 0 0 1 .13 1.45z" fill="#6282c1"></path><path d="m21.5 15.18c0-.01-.01-.02-.02-.03a4.5 4.5 0 0 0 -7.33 5.17 4.334 4.334 0 0 0 1.01 1.16h.01c.01.01.02.02.03.02a4.374 4.374 0 0 0 2.8 1 4.433 4.433 0 0 0 2.96-1.12 4.327 4.327 0 0 0 .89-1.06 4.5 4.5 0 0 0 .65-2.32 4.428 4.428 0 0 0 -1-2.82zm-5.79 2.29a.767.767 0 0 1 1.07 0l.59.6 1.88-1.73a.755.755 0 0 1 1.06.04.746.746 0 0 1 -.05 1.06l-2.4 2.22a.749.749 0 0 1 -1.04-.02l-1.11-1.11a.754.754 0 0 1 0-1.06z" fill="#1d9b61"></path></g></svg>
+					<h2 class="card-title mb-2">Auto Import Successfully Completed!</h2>
+					<div class="body">
+						<?php echo (!empty($_SESSION['imported-videos'])) ? number_format($_SESSION['imported-videos']) : ''; ?> videos successfully imported.
+					</div>
+				</div>
+            </div>
+            <?php unset($_SESSION['imported-videos']); } ?>
+            <?php if ($respond_error == 1 && !empty($error_text)) { ?>
+			<div class="card">
+                <div class="card-body text-center py-5">
+                    <h2 class="card-title mb-2">Error found while fetching the videos!</h2>
+					<div class="body">
+						<?php echo $error_text?>
+					</div>
+                </div>
+            </div>
+            <?php } ?>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <!-- #END# Vertical Layout -->
+
+<div id="import-modal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content modal-col-teal shadow-lg rounded-lg">
+			<div class="modal-body text-center p-5">
+				<h4 class=" m-0"><p class="loading m-0">Importing <?php if (isset($_SESSION['keyword-id'])) { echo (!empty($explode[$_SESSION['keyword-id']])) ? '"' . $explode[$_SESSION['keyword-id']] . '"' : '';} ?></p></h4>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+    setInterval(function () {
+        $(".content").getNiceScroll().resize();
+    }, 500);
+    var url = new URL(window.location.href.replace("#", "?"));
+    if (url.searchParams.has('access_token')) {
+        $.post('{{LINK aj/ap/save-settings}}', {
+            twitch_access_token: url.searchParams.get('access_token'),
+            hash_id: $('input[name=hash_id]').val()
+        });
+        $('.twitch_import').html('<div class="alert alert-success">New token generated successfully you can start import videos now</div>')
+        setTimeout(() => {
+            window.location.href = "<?php echo PT_LoadAdminLinkSettings('import-from-twitch'); ?>";
+        } , 3000);
+        
+    }
+        
+    function CreateToken() {
+        window.location.href = "https://id.twitch.tv/oauth2/authorize?client_id=<?php echo($pt->config->twitch_api); ?>&scope=bits:read+openid&response_type=token%20id_token&redirect_uri=<?php echo PT_LoadAdminLinkSettings('import-from-twitch'); ?>";
+    }
+<?php
+$js_array = json_encode($pt->sub_categories_array);
+echo "var sub_categories_array = ". $js_array . ";\n";
+?>
+$(window).on('load', function(){
+    <?php if (!empty($_GET['category_id'])) { ?>
+        if (typeof(sub_categories_array["'<?php echo($_GET['category_id']) ?>'"]) == 'undefined') {
+            $('#sub_category_div').hide();
+            //$('#sub_category_id').html('');
+            $('#sub_category_div').html('<select name="sub_category_id" id="sub_category_id" class="form-control"></select>');
+        }
+        else{
+            $('#sub_category_div').show();
+            //$('#sub_category_id').html(sub_categories_array["'<?php echo($_GET['category_id']) ?>'"]);
+            $('#sub_category_div').html('<select name="sub_category_id" id="sub_category_id" class="form-control">'+sub_categories_array["'<?php echo($_GET['category_id']) ?>'"]+'</select>');
+        }
+
+    <?php }else{ ?>
+        $('#sub_category_div').html('<select name="sub_category_id" id="sub_category_id" class="form-control"><?php echo !empty($pt->sub_categories_array) ? $pt->sub_categories_array["'1'"] : ''; ?></select>');
+    <?php } ?>
+});
+
+$(document).on('change', '#category_id', function(event) {
+
+    event.preventDefault();
+    id = $(this).val();
+    if (typeof(sub_categories_array["'"+id+"'"]) == 'undefined') {
+        $('#sub_category_div').hide();
+        $('#sub_category_id').html('');
+   }
+   else{
+        $('#sub_category_div').show();
+        $('#sub_category_id').html(sub_categories_array["'"+id+"'"]);
+  }
+});
+// $('#auto_import').change(function(event) {
+//   if ($(this).val() == 1) {
+//     $('#multi-query-form').removeClass('hidden');
+//     $('#normal-query-form').addClass('hidden');
+//     $('#query').val('');
+//   } else {
+//     $('#multi-query-form').addClass('hidden');
+//     $('#multi-query').val('');
+//     $('#normal-query-form').removeClass('hidden');
+//   }
+// });
+$('.btn-load-more-videos').on('click' , function(event) {
+	event.preventDefault();
+	$('.btn-load-more-videos').text('Loading..');
+	$.post('{{LINK aj/ap/load-more-twitch}}', {twitch_user_id: "<?php echo($twitch_user_id); ?>", query: $('#query').val(), limit: $('#limit').val(), cursor: $('#cursor').val() }, function(data, textStatus, xhr) {
+		if (data.status == 200) {
+			$('#videos-layout').append(data.html);
+			$('.btn-load-more-videos').text('LOAD <?php echo $limit ?> MORE VIDEOS');
+			$(".form-line").addClass("focused");
+            $('#cursor').val(data.cursor);
+			$('.btn-import').find('span').text(' (' + $('.import-checkbox-input:checked').length + ')');
+            setTimeout(function () {
+                $(".content").getNiceScroll().resize()
+            },300)
+		} else {
+			$('.btn-load-more-videos').text('No more videos found');
+		}
+	});
+});
+$('.import-checkbox-input, .check-all').change(function(event) {
+    $('.btn-import').find('span').text(' (' + $('.import-checkbox-input:checked').length + ')');
+});
+$(function () {
+	$('.btn-import').find('span').text(' (' + $('.import-checkbox-input:checked').length + ')');
+    <?php if ($auto_import == 1 && !empty($ids)) {?>
+    setTimeout(function () {
+        $('.btn-import').trigger('click');
+    }, 3000);
+    <?php } ?>
+    <?php if (empty($ids) && !empty($_SESSION['keyword-id'])) {?>
+      $('#page-query').val(1);
+      $('form').submit();
+    <?php } ?>
+});
+$('.btn-import').on('click', function(event) {
+    data = new Array();
+    $('.btn-import').attr('disabled', true);
+    $('.btn-import').text('Please wait..');
+    $('#import-modal').modal('show');
+    user_id = $('#user_id_').val();
+    $('.youtube-video').each(function(index, el) {
+    	var video_id = $(this).attr('data-id');
+    	var is_checked = $(this).find('.import-checkbox-input').is(":checked");
+    	if (is_checked) {
+    		object_video = {
+    			video_id: video_id,
+    			title: $(this).find('#title').val(),
+    			description: $(this).find('#description').val(),
+    			duration: $(this).find('#duration').val(),
+    			tags: $(this).find('#tags').val(),
+    			thumb: $(this).find('#thumb').val(),
+    		}
+    		data.push(object_video);
+    	}
+    });
+    $.post('{{LINK aj/ap/import-twitch-videos}}', {videos: data, category_id: $('#category_id').val(),sub_category_id: $('#sub_category_id').val(),user_id:user_id}, function () {
+        $('#import-modal').find('.modal-content').removeClass('modal-col-teal').addClass('modal-col-light-green');
+        $('#import-modal').find('.loading').html('<i class="fa fa-check"></i> Videos successfully imported, redirecting to next page');
+        var val = Number($('#page-query').val());
+        if (val < 100) {
+        	$('#page-query').val(val + 1);
+        	$('form').submit();
+        } else {
+        	$('#page-query').val(1);
+        	$('form').submit();
+        }
+    });
+});
+</script>
+
+<style>
+
+p {
+  color: white;
+  font: 30px;
+  text-align: center;}
+
+
+/* loading dots */
+
+.loading:after {
+  content: ' .';
+  animation: dots 1s steps(5, end) infinite;}
+
+@keyframes dots {
+  0%, 20% {
+    color: rgba(0,0,0,0);
+    text-shadow:
+      .25em 0 0 rgba(0,0,0,0),
+      .5em 0 0 rgba(0,0,0,0);}
+  40% {
+    color: white;
+    text-shadow:
+      .25em 0 0 rgba(0,0,0,0),
+      .5em 0 0 rgba(0,0,0,0);}
+  60% {
+    text-shadow:
+      .25em 0 0 white,
+      .5em 0 0 rgba(0,0,0,0);}
+  80%, 100% {
+    text-shadow:
+      .25em 0 0 white,
+      .5em 0 0 white;}}
+
+</style>

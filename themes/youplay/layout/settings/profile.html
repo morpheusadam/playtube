@@ -1,0 +1,132 @@
+<form class="form-horizontal user-setting-panel pt_forms pt_shadow" id="profile-settings" method="POST">
+	<div class="yp_sett_header">
+		<h4>{{LANG profile}} {{LANG settings}}</h4>
+	</div>
+    <div class="setting-profile-alert"></div>
+	<!-- Text input-->
+	<div class="form-group col-lg-6">
+		<label class="col-md-12" for="first_name">{{LANG first_name}}</label>
+		<div class="col-md-12">
+			<input id="first_name" name="first_name" type="text" placeholder="" class="form-control input-md" value="{{USER first_name}}">
+		</div>
+	</div>
+	<!-- Text input-->
+	<div class="form-group col-lg-6">
+		<label class="col-md-12" for="last_name">{{LANG last_name}}</label>
+		<div class="col-md-12">
+			<input id="last_name" name="last_name" type="text" placeholder="" class="form-control input-md" value="{{USER last_name}}">
+		</div>
+	</div>
+	<!-- Textarea-->
+	<div class="form-group">
+		<label class="col-md-12" for="about">{{LANG about_profile}}</label>
+		<div class="col-md-12">
+			<textarea name="about" id="about" cols="20" class="form-control" rows="5">{{USER about_decoded}}</textarea>
+		</div>
+	</div>
+	<hr>
+	<!-- Text input-->
+	<div class="form-group">
+		<label class="col-md-12" for="facebook">{{LANG facebook}}</label>
+		<div class="col-md-12">
+			<input id="facebook" name="facebook" type="text" placeholder="{{LANG username}}" class="form-control input-md" value="{{USER facebook}}">
+		</div>
+	</div>
+	<!-- Text input-->
+	<div class="form-group">
+		<label class="col-md-12" for="google">{{LANG google}}</label>
+		<div class="col-md-12">
+			<input id="google" name="google" type="text" placeholder="{{LANG username}}" class="form-control input-md" value="{{USER google}}">
+		</div>
+	</div>
+	<!-- Text input-->
+	<div class="form-group">
+		<label class="col-md-12" for="twitter">{{LANG twitter}}</label>
+		<div class="col-md-12">
+			<input id="twitter" name="twitter" type="text" placeholder="{{LANG username}}" class="form-control input-md" value="{{USER twitter}}">
+		</div>
+	</div>
+	<!-- Text input-->
+	<div class="form-group">
+		<label class="col-md-12" for="instagram">{{LANG instagram}}</label>
+		<div class="col-md-12">
+			<input id="instagram" name="instagram" type="text" placeholder="{{LANG username}}" class="form-control input-md" value="{{USER instagram}}">
+		</div>
+	</div>
+	<div class="form-group">
+        <label class="col-md-12" for="geo_blocking">{{LANG fav_category}}</label>
+        <div class="col-md-12">
+            <div class="form-group-rs" id="geo_blocking">
+            <select class="form-control selectpicker show-menu-arrow show-tick" multiple name="fav_category[]" data-live-search="true" title="{{LANG fav_category}}" data-actions-box="true">
+                <?php 
+                foreach ($pt->categories as $key => $name): 
+                if($key != 'other'){
+                    ?>
+                    <option value="<?php echo($key); ?>" <?php if (in_array($key, $pt->settings->fav_category)) {echo "selected";} ?>>
+                        <span>
+                            <?php echo($name); ?>
+                        </span>
+                    </option>
+                <?php } ?>
+                <?php endforeach; ?>
+            </select>
+			<span class="help-block" style="opacity: 1;margin-top: 10px;">{{LANG choose_which_categories}}</span>
+            <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <?php if ($pt->config->pro_google == 'on' && $pt->settings->is_pro) { ?>
+    <div class="form-group">
+		<label class="col-md-12" for="google_tracking_code">{{LANG google_tracking_id}}</label>
+		<div class="col-md-12">
+			<input id="google_tracking_code" name="google_tracking_code" type="text" class="form-control input-md" value="{{USER google_tracking_code}}">
+			<span class="help-block" style="opacity: 1;margin-top: 10px;">{{LANG track_your_own_profile}}</span>
+            <div class="clear"></div>
+		</div>
+	</div>
+	<?php } ?>
+	<hr>
+	{{CUSTOM_FIELDS}}
+	<input type="hidden" name="hash_id" value="<?php echo PT_CreateSession()?>">
+	<input type="hidden" name="user_id" value="{{USER id}}">
+	<input type="hidden" name="cf" value="{{CUSTOM_DATA}}">
+	<!-- Button (Double) -->
+	<div class="form-group">
+		<div class="col-md-12">
+				<button id="submit" name="submit" class="btn btn-main setting-panel-mdbtn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> {{LANG save}}</button>
+		</div>
+		<div class="clear"></div>
+	</div>
+</form>
+
+<script>
+    $(function() {
+    	$('.show-tick').selectpicker({});
+        var form = $('form#profile-settings');
+        form.ajaxForm({
+            url: '{{LINK aj/user/profile}}?hash=' + $('.main_session').val(),
+            beforeSend: function() {
+                //form.find('button').text("{{LANG please_wait}}");
+                // FL_progressIconLoader(form.find('button'));
+                $('#profile-settings').find('button').text("{{LANG please_wait}}");
+            },
+            success: function(data) {
+                scrollToTop();
+                if (data.status == 200) {
+                    $('.setting-profile-alert').html('<div class="alert alert-success">' + data.message + '</div>');
+                    $('.alert-success').fadeIn('fast', function() {
+                        $(this).delay(2500).slideUp(500, function() {
+                            $(this).remove();
+                        });
+                    });
+                } else if (data.errors) {
+                    var errors = data.errors.join("<br>");
+                    $('.setting-profile-alert').html('<div class="alert alert-danger">' + errors + '</div>');
+                    $('.alert-danger').fadeIn(300);
+                }
+                $('#profile-settings').find('button').html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> {{LANG save}}');
+                // FL_progressIconLoader(form.find('button'));
+            }
+        });
+    });
+</script>

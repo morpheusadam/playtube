@@ -1,0 +1,94 @@
+<tr id="list-{{ID}}" data_selected="{{ID}}">
+	<td><input type="checkbox" id="check-data-{{ID}}" class="delete-checkbox filled-in"><label for="check-data-{{ID}}"></label></td>
+	<td>
+		<span>
+			{{ID}}
+		</span>
+	</td>
+	<td>
+		<span>
+			{{USERNAME}}
+		</span>
+	</td>
+	<td>
+		<time>
+			{{DATE}}
+		</time>
+	</td>
+	<td class="request-status">
+		<span class="alert-warning">
+			Pending
+		</span>	
+	</td>
+	<td>
+      <button onclick="PT_ManageVRequests({{ID}},2,this);" type="button" class="btn bg-info admn_table_btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" /></svg> View</button>
+	  <button onclick="PT_ManageVRequests({{ID}},1,this);" type="button" class="btn bg-success admn_table_btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M10,17L5,12L6.41,10.58L10,14.17L17.59,6.58L19,8M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg> Verify</button>
+      <button onclick="PT_ManageVRequests({{ID}},3,this,'hide');" type="button" class="btn bg-danger admn_table_btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" /></svg> Delete</button>
+   	</td>
+</tr>
+<tr id="view_info_{{ID}}" style="display: none;">
+	<td colspan="6">
+		<div class="row">
+	        <div class="col-md-8">
+	            <div class="card">
+	                <div class="card-body">
+	                    <div class="row">
+	                        <div class="col-md-3">
+	                        	<a href="<?php echo(PT_GetMedia($pt->requests->personal_photo)) ?>" class="image-popup-gallery-item-{{ID}}">
+			                        <div class="image-hover">
+			                            <img src="<?php echo(PT_GetMedia($pt->requests->personal_photo)) ?>" class="rounded" alt="image" style="width: 100%;min-height: 200px;max-height: 200px;">
+			                            <div class="image-hover-body rounded">
+			                                <div>
+			                                    <h4 class="mb-2">Personal Image</h4>
+			                                </div>
+			                            </div>
+			                        </div>
+			                    </a>
+	                        </div>
+	                        <div class="col-md-3">
+	                        	<a href="<?php echo(PT_GetMedia($pt->requests->id_photo)) ?>" class="image-popup-gallery-item-{{ID}}">
+			                        <div class="image-hover">
+			                            <img src="<?php echo(PT_GetMedia($pt->requests->id_photo)) ?>" class="rounded" alt="image" style="width: 100%;min-height: 200px;max-height: 200px;">
+			                            <div class="image-hover-body rounded">
+			                                <div>
+			                                    <h4 class="mb-2">Identification</h4>
+			                                </div>
+			                            </div>
+			                        </div>
+			                    </a>
+	                        </div>
+	                        <div class="col-md-6">
+	                            <p>
+	                                <span class="badge bg-success-bright text-success">Name</span>
+	                            </p>
+	                            <p><?php echo($pt->requests->name) ?></p>
+	                            <p>
+	                                <span class="badge bg-info-bright text-info">Message</span>
+	                            </p>
+	                            <p><?php echo($pt->requests->message) ?></p>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</td>
+</tr>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('.image-popup-gallery-item-{{ID}}').magnificPopup({
+	        type: 'image',
+	        gallery: {
+	            enabled: true
+	        },
+	        zoom: {
+	            enabled: true,
+	            duration: 300,
+	            easing: 'ease-in-out',
+	            opener: function(openerElement) {
+	                return openerElement.is('img') ? openerElement : openerElement.find('img');
+	            }
+	        }
+	    });
+	});
+</script>

@@ -1,0 +1,203 @@
+<?php 
+$filter_keyword = (!empty($_GET['query'])) ? PT_Secure($_GET['query']) : '';
+$link = "";
+if (!empty($filter_keyword)) {
+    $link .= "&query=".$filter_keyword;
+    $sql      = "`page_name` LIKE '%$filter_keyword%' OR `page_title` LIKE '%$filter_keyword%' OR `page_content` LIKE '%$filter_keyword%'";
+    $db->where($sql);
+} 
+$sort_link = $link;
+$sort_array = array('DESC_i' => array('id' , 'DESC'),
+                    'ASC_i'  => array('id' , 'ASC'),
+                    'DESC_n' => array('page_name' , 'DESC'),
+                    'ASC_n'  => array('page_name' , 'ASC'),
+                    'DESC_t' => array('page_title' , 'DESC'),
+                    'ASC_t'  => array('page_title' , 'ASC'));
+if (!empty($_GET['sort']) && in_array($_GET['sort'], array_keys($sort_array))) {
+    $db->orderBy($sort_array[$_GET['sort']][0],$sort_array[$_GET['sort']][1]);
+    $link .= "&sort=".PT_Secure($_GET['sort']);
+}
+else{
+    $_GET['sort'] = 'DESC_i';
+    $db->orderBy('id', 'DESC');
+}
+$pages = $db->get(T_CUSTOM_PAGES);
+ ?>
+<div class="container-fluid">
+    <div>
+        <h3>Manage Custom Pages</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Admin Panel</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Pages</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Manage Custom Pages</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-body">
+					<a href="<?php echo PT_LoadAdminLinkSettings('add-new-custom-page'); ?>" class="btn btn-info pull-right">Create New Custom Page</a>
+                    <h6 class="card-title">Manage & Edit Custom Pages</h6>
+                    
+                    <div class="clearfix"></div>
+                    <br>
+                    <div class="row">
+                       <div class="col-md-6" style="margin-bottom:0;">
+                            <form method="get" action="<?php echo PT_LoadAdminLinkSettings('manage-custom-pages'); ?>">
+                              <div class="row">
+                                <div class="col-md-9">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <label class="form-label search-form">Search for Keyword</label>
+                                            <input type="text" name="query" id="query" class="form-control" value="<?php echo(!empty($filter_keyword) ? $filter_keyword : '') ?>">
+                                            
+                                        </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-3">
+                                    <label>&nbsp;</label>
+                                <div></div>
+                                     <button class="btn btn-info">Search</button>
+                                  </div>
+                              </div>
+                              <div class="clearfix"></div>
+                           </form>
+                       </div>
+                   </div>
+                   <div class="table-responsive1">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                   <th width="60"><input type="checkbox" id="check-all" class="filled-in check-all" ><label for="check-all"></label></th>
+                                   <th width="100">ID 
+                                        <?php if (!empty($_GET['sort']) && $_GET['sort'] == 'DESC_i') { ?>
+                                            <svg onclick="location.href = '<?php echo(PT_LoadAdminLinkSettings('manage-custom-pages?page-id=1').$sort_link."&sort=ASC_i") ?>'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#000000" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up cursor-p"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+                                        <?php }else{ ?>
+                                            <svg onclick="location.href = '<?php echo(PT_LoadAdminLinkSettings('manage-custom-pages?page-id=1').$sort_link."&sort=DESC_i") ?>'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#000000" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-down cursor-p"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                                        <?php } ?></th>
+					               <th>Page Name 
+                                        <?php if (!empty($_GET['sort']) && $_GET['sort'] == 'DESC_n') { ?>
+                                            <svg onclick="location.href = '<?php echo(PT_LoadAdminLinkSettings('manage-custom-pages?page-id=1').$sort_link."&sort=ASC_n") ?>'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#000000" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up cursor-p"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+                                        <?php }else{ ?>
+                                            <svg onclick="location.href = '<?php echo(PT_LoadAdminLinkSettings('manage-custom-pages?page-id=1').$sort_link."&sort=DESC_n") ?>'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#000000" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-down cursor-p"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                                        <?php } ?></th>
+					               <th>Page Title 
+                                        <?php if (!empty($_GET['sort']) && $_GET['sort'] == 'DESC_t') { ?>
+                                            <svg onclick="location.href = '<?php echo(PT_LoadAdminLinkSettings('manage-custom-pages?page-id=1').$sort_link."&sort=ASC_t") ?>'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#000000" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up cursor-p"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+                                        <?php }else{ ?>
+                                            <svg onclick="location.href = '<?php echo(PT_LoadAdminLinkSettings('manage-custom-pages?page-id=1').$sort_link."&sort=DESC_t") ?>'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#000000" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-down cursor-p"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                                        <?php } ?></th>
+					               <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php 
+                                
+                                foreach ($pages as $key => $page) {
+                                    echo PT_LoadAdminPage('manage-custom-pages/list', array('ID' => $page->id, 'NAME' => $page->page_name,'TITLE' => $page->page_title));
+                                }
+				                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                            <div class="col-lg-3 col-md-3">
+                                <span>&nbsp;</span>
+                                <button type="button" class="btn btn-info waves-effect delete-selected d-block" disabled>Delete Selected<span></span></button>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+    <!-- #END# Vertical Layout -->
+<div class="modal fade" id="SelectedDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal1Label" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModal1Label">Delete Page?</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  Are you sure that you want to remove the selected Page(s)?
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" onclick="DeleteSelected()" data-dismiss="modal">Delete</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal1Label" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModal1Label">Delete Page?</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  Are you sure you want to remove this Page?
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Delete</button>
+              </div>
+          </div>
+      </div>
+  </div>
+<script type="text/javascript">
+    $('.check-all').on('click', function(event) {
+        $('input:checkbox').not(this).prop('checked', this.checked);
+    });
+    $('.delete-checkbox, .check-all').change(function(event) {
+        $('.delete-selected').attr('disabled', false);
+        $('.delete-selected').find('span').text(' (' + $('.delete-checkbox:checked').length + ')');
+    });
+    $('.submit-selected').on('click', function(event) {
+        event.preventDefault();
+        $('#SelectedStatusModal').modal('show');
+    });
+
+    $('.delete-selected').on('click', function(event) {
+        event.preventDefault();
+        $('#SelectedDeleteModal').modal('show');
+    });
+    function DeleteSelected() {
+        data = new Array();
+        $('td input:checked').parents('tr').each(function () {
+            data.push($(this).attr('data_selected'));
+        });
+        $('.delete-selected').attr('disabled', true);
+        $('.delete-selected').text('Please wait..');
+        $.post("{{LINK aj/ap/remove_multi_page}}", {ids: data}, function () {
+            $.each( data, function( index, value ){
+                $('#' + value).remove();
+            });
+            $('.delete-selected').text('Delete Selected');
+        });
+    }
+    function DeleteCustomPage(id,type = 'show') {
+        if (type == 'hide') {
+            $('#DeleteModal').find('.btn-primary').attr('onclick', "DeleteCustomPage('"+id+"')");
+            $('#DeleteModal').modal('show');
+            return false;
+          }
+        $.post('{{LINK aj/ap/delete_custom_page}}', {id: id}, function(data, textStatus, xhr) {
+              if (data.status == 200) {
+                $('#'+id).remove();
+            }
+        });
+    }
+</script>

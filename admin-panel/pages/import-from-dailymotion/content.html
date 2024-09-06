@@ -1,0 +1,463 @@
+<?php
+$pt->sub_categories_array = array();
+foreach ($pt->sub_categories as $cat_key => $subs) {
+    $pt->sub_categories_array["'".$cat_key."'"] = '<option value="0">Sub Category</option>';
+    foreach ($subs as $sub_key => $sub_value) {
+        $selected = '';
+        if (!empty($_GET['sub_category_id'])) {
+            $selected = ($_GET['sub_category_id'] == $sub_key) ? 'selected' : '';
+        }
+        $pt->sub_categories_array["'".$cat_key."'"] .= '<option value="'.array_keys($sub_value)[0].'" '.$selected.'>'.$sub_value[array_keys($sub_value)[0]].'</option>';
+    }
+}
+$query       = '';
+$multi_query = '';
+$limit       = 50;
+$respond_error = 0;
+$search_made = 0;
+$page_id     = 1;
+if (!empty($_GET['query']) || !empty($_GET['multi-query'])) {
+    if (!empty($_GET['query'])) {
+        $query = PT_Secure($_GET['query']);
+    } else if ($_GET['multi-query']) {
+        $query       = PT_Secure($_GET['multi-query']);
+        $multi_query = $query;
+        $explode     = explode(',', $query);
+        if (!isset($_SESSION['keyword-id']) && empty($_GET['finished'])) {
+            $query = $_SESSION['keyword-id'] = 0;
+            $query = $explode[0];
+        } else {
+            $query = $explode[$_SESSION['keyword-id']];
+        }
+    }
+    if (!empty($_GET['limit']) && $limit < 101) {
+        $limit = (int) PT_Secure($_GET['limit']);
+    }
+    $search_made = 1;
+    $page_id = 1;
+    if (!empty($_GET['page-query'])) {
+        if (is_numeric($_GET['page-query'])) {
+            $page_id = PT_Secure($_GET['page-query']);
+        }
+    }
+    $query = urlencode($query);
+    $call_url   = "https://api.dailymotion.com/videos/?search=$query&page=$page_id&limit=$limit&fields=thumbnail_1080_url,thumbnail_large_url,title,duration,description,tags,id";
+    $get_videos = connect_to_url($call_url);
+    $get_videos = json_decode($get_videos);
+    if (!empty($get_videos)) {
+        if (!empty($get_videos->total)) {
+            $ids = array();
+            foreach ($get_videos->list as $key => $video) {
+                $check_if_exists = $db->where('daily', $video->id)->getValue(T_VIDEOS, 'count(*)');
+                if ($check_if_exists == 0) {
+                    $ids[] = $video->id;
+                }
+            }
+        }
+    } else {
+        $respond_error = 1;
+        $error_text = 'Error connecting to Dailmotion API, you might reached your daily limit, please try again later.';
+    }
+}
+if (empty($ids) && empty($respond_error)) {
+    $keyword_id = (isset($_SESSION['keyword-id'])) ? $_SESSION['keyword-id'] : null;
+    if (!empty($explode[$keyword_id + 1])) {
+        $_SESSION['keyword-id'] = $_SESSION['keyword-id'] + 1;
+    } else {
+        unset($_SESSION['keyword-id']);
+        if (empty($_GET['finished']) && $search_made == 1) {
+            header("Location: " . PT_LoadAdminLinkSettings('import-from-dailymotion?finished=1'));
+        }
+    }
+}
+$user_id = 0;
+$username = '';
+if (!empty($_GET['username']) && isset($_GET['username'])) {
+    $username = PT_Secure($_GET['username']);
+    $user  = $db->where('username', $username)->getOne(T_USERS);
+    if (!empty($user)) {
+        $user_id = $user->id;
+    }
+    else{
+        $respond_error = 1;
+        $error_text = 'user not found';
+    }
+}
+$category_filter = array_keys(ToArray($pt->categories))[0];
+if (!empty($_GET['category_id'])) {
+    if (in_array($_GET['category_id'], array_keys(ToArray($pt->categories)))) {
+        $category_filter = $_GET['category_id'];
+    }
+}
+$get_ini     = ini_get('max_input_vars');
+$auto_import = 0;
+if (!empty($_GET['auto_import'])) {
+    $auto_import = 1;
+}
+?>
+<div class="container-fluid">
+    <div>
+        <h3>Import From Dailymotion</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Admin Panel</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Videos</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Import Videos</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Import From Dailymotion</li>
+            </ol>
+        </nav>
+    </div>
+    <?php if ($get_ini <= 1000) { ?>
+  	<div class="alert alert-warning">
+  		If you want to import more than 180 videos by one click, you need to increase <b>max_input_vars</b> in your php.ini file.
+  	</div>
+  	<?php } ?>
+    <!-- Vertical Layout -->
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Import Videos From Dailymotion</h6>
+                   <div class="row">
+                       <div class="col-md-12" style="margin-bottom:0;">
+                            <form method="get" action="<?php echo PT_LoadAdminLinkSettings('import-from-dailymotion'); ?>">
+                              <div class="row">
+                              	<div class="col-md-2" id="normal-query-form">
+	                              	<div class="form-group form-float">
+	                                    <div class="form-line">
+                                            <label class="form-label search-form">Keyword To Import</label>
+	                                        <input type="text" name="query" id="query" class="form-control" value="<?php echo (empty($multi_query)) ? urldecode($query) : ''; ?>">
+
+	                                    </div>
+	                                </div>
+	                              </div>
+	                              <div class="col-lg-2 col-md-2">
+                                    <label>&nbsp;</label>
+                                    <select class="form-control show-tick" id="limit" name="limit">
+                                        <option value="all" selected disabled>Limit Per Page</option>
+                                        <option value="5" <?php echo ($limit == 5) ? 'selected' : '' ?>>5</option>
+                                        <option value="10" <?php echo ($limit == 10) ? 'selected' : '' ?>>10</option>
+                                        <option value="25" <?php echo ($limit == 25) ? 'selected' : '' ?>>25</option>
+                                        <option value="50" <?php echo ($limit == 50) ? 'selected' : '' ?>>50 (Default)</option>
+                                        <option value="100" <?php echo ($limit == 100) ? 'selected' : '' ?>>100 (Default)</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <label>&nbsp;</label>
+                                    <select class="form-control show-tick" id="page-query" name="page-query">
+                                        <option value="1" selected disabled>Page</option>
+                                        <?php for ($i=1; $i < 100; $i++) { ?>
+                                        	<option value="<?php echo $i ?>" <?php echo ($page_id == $i) ? 'selected' : '' ?>><?php echo $i ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <label>&nbsp;</label>
+                                    <select class="form-control show-tick" id="category_id" name="category_id">
+                                        <?php
+                                        foreach($pt->categories as $key => $category) {
+                                            $selected = ($key == $category_filter) ? 'selected' : '';
+                                        ?>
+                                        <option value="<?php echo $key?>" <?php echo $selected?>><?php echo $category?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                                <div class="col-lg-2 col-md-2" <?php if (empty($pt->sub_categories_array["'1'"])) { ?> style="display: none;"<?php } ?> id="sub_category_div">
+                                    <label>&nbsp;</label>
+                                    <select name="sub_category_id" id="sub_category_id" class="form-control">
+                                        <?php echo $pt->sub_categories_array["'1'"]; ?>
+                                    </select>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="col-lg-4 col-md-4">
+                                    <label>&nbsp;</label>
+                                    <select class="form-control show-tick" id="auto_import" name="auto_import">
+                                        <option value="0" <?php echo ($auto_import == 0) ? 'selected' : '';?>>Manual Import</option>
+                                        <option value="1" <?php echo ($auto_import == 1) ? 'selected' : '';?>>Auto Import (Auto Import After Loading)</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-2" id="normal-query-form">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <label class="form-label search-form">Import as (Username)</label>
+                                            <input type="text" name="username" id="username" class="form-control" value="<?php echo ($username); ?>">
+
+                                        </div>
+                                    </div>
+                                  </div>
+
+                                <div class="col-md-12 <?php echo (!empty($multi_query)) ? '' : 'hidden' ?>" id="multi-query-form">
+                                  <div class="form-group form-float">
+                                      <div class="form-line">
+                                        <label class="form-label search-form">Keywords separated by comma (This will import the next word automatically after the previous one is finished, 100 pages will be imported for each keyword)</label>
+                                          <textarea name="multi-query" id="multi-query" class="form-control" rows="5"><?php echo $multi_query ?></textarea>
+
+                                      </div>
+                                  </div>
+                                </div>
+
+	                            <div class="col-md-2">
+                                    <label>&nbsp;</label>
+                                <div></div>
+	                              	<button class="btn btn-info">Search</button>
+	                            </div>
+                              </div>
+                              <div class="clearfix"></div>
+                           </form>
+                       </div>
+                   </div>
+                   <div class="clearfix"></div>
+                </div>
+            </div>
+            <?php if ((isset($_GET['query']) || isset($_GET['multi-query'])) && $respond_error == 0) { ?>
+			<h3>Videos</h3>
+                <div class="body">
+                   <div class="row" id="videos-layout">
+                        <?php
+                        if (!empty($ids)) {
+                        	foreach ($get_videos->list as $key => $video) {
+                        		$thumb = PT_GetMedia('upload/photos/thumbnail.jpg');
+                                if (!empty($video->thumbnail_1080_url)) {
+                                    $thumb = $video->thumbnail_1080_url;
+                                } else if (!empty($video->thumbnail_large_url)) {
+                                    $thumb = $video->thumbnail_large_url;
+                                }
+                                $thumb = str_replace('http://', 'https://', $thumb);
+                        		$tags = '';
+                        		if (is_array($video->tags)) {
+                                    $tags_array = array();
+                                    $tag_count = 0;
+				    				foreach ($video->tags as $key => $tag) {
+				    					if ($tag_count < 11) {
+                                            $tags_array[] = $tag;
+                                        }
+                                        $tag_count++;
+				    				}
+				    				$tags = implode(',', $tags_array);
+				    			}
+					            $duration = '00:00';
+					            if (!empty($video->duration)) {
+					                $duration = gmdate("i:s", $video->duration);
+					            }
+	                        	$array_data = array(
+	                        		'ID' => $video->id,
+	                        		'TITLE' => $video->title,
+	                        		'DESC' => $video->description,
+	                        		'THUMB' => $thumb,
+	                        		'TAGS' => $tags,
+	                        		'DURATION' => $duration
+	                        	);
+	                        	echo PT_LoadAdminPage('import-from-dailymotion/list', $array_data);
+	                        }
+                        } else {
+                        	echo '<div class="col-12"><div class="card"><div class="card-body"><div class="alert alert-danger m-0">No videos found, try another page.</div></div></div></div>';
+                        }
+                        ?>
+
+
+                   </div>
+                   <input type="hidden" name="user_id_" id="user_id_" value="<?php echo($user_id); ?>" >
+                   <div class="clearfix"></div>
+                   <?php if (!empty($ids)) { ?>
+                    <div class="text-center">
+                		<button class="btn btn-info btn-load-more-videos" data-token="<?php echo $page_id?>">Load <?php echo $limit ?> more videos</button>
+                		<button class="btn btn-success btn-import">Import selected <span></span></button>
+                	</div>
+                    <?php } ?>
+                </div>
+            <?php } ?>
+            <?php if (isset($_GET['finished']) && !empty($_SESSION['imported-videos'])) { ?>
+            <div class="card">
+				<div class="card-body text-center py-5">
+					<svg height="80" viewBox="0 0 24 24" width="80" class="mb-3" xmlns="http://www.w3.org/2000/svg"><g id="_01" data-name="01"><path d="m21.35 5.78a4.93 4.93 0 0 0 -3.99-4.1 6.436 6.436 0 0 0 -1.5-.17.915.915 0 0 0 -.17-.01h-8.38a7.449 7.449 0 0 0 -1.45.13 4.965 4.965 0 0 0 -4.21 4.15 7.032 7.032 0 0 0 -.15 1.49v8.51a6.572 6.572 0 0 0 .16 1.5 4.978 4.978 0 0 0 4.2 4.09 7.449 7.449 0 0 0 1.45.13h8.38a.915.915 0 0 0 .17-.01 6.436 6.436 0 0 0 1.5-.17 4.934 4.934 0 0 0 3.98-4.04 7.926 7.926 0 0 0 .16-1.5v-8.5a7.2 7.2 0 0 0 -.15-1.5zm-1.09 11.66-2.4 2.22a.749.749 0 0 1 -1.04-.02l-1.11-1.11a.754.754 0 0 1 0-1.06.767.767 0 0 1 1.07 0l.59.6 1.88-1.73a.755.755 0 0 1 1.06.04.746.746 0 0 1 -.05 1.06z" fill="#c0cdea"></path><path d="m21.5 7.31v.05h-20v-.05a7.449 7.449 0 0 1 .13-1.45h5.64v-4.36h1.5v4.36h5.46v-4.36h1.5v4.36h5.64a7.449 7.449 0 0 1 .13 1.45z" fill="#6282c1"></path><path d="m21.5 15.18c0-.01-.01-.02-.02-.03a4.5 4.5 0 0 0 -7.33 5.17 4.334 4.334 0 0 0 1.01 1.16h.01c.01.01.02.02.03.02a4.374 4.374 0 0 0 2.8 1 4.433 4.433 0 0 0 2.96-1.12 4.327 4.327 0 0 0 .89-1.06 4.5 4.5 0 0 0 .65-2.32 4.428 4.428 0 0 0 -1-2.82zm-5.79 2.29a.767.767 0 0 1 1.07 0l.59.6 1.88-1.73a.755.755 0 0 1 1.06.04.746.746 0 0 1 -.05 1.06l-2.4 2.22a.749.749 0 0 1 -1.04-.02l-1.11-1.11a.754.754 0 0 1 0-1.06z" fill="#1d9b61"></path></g></svg>
+					<h2 class="card-title mb-2">Auto Import Successfully Completed!</h2>
+					<div class="body">
+						<?php echo (!empty($_SESSION['imported-videos'])) ? number_format($_SESSION['imported-videos']) : ''; ?> videos successfully imported.
+					</div>
+				</div>
+            </div>
+            <?php unset($_SESSION['imported-videos']); } ?>
+            <?php if ($respond_error == 1 && !empty($error_text)) { ?>
+            <div class="card">
+                <div class="card-body text-center py-5">
+                    <h2 class="card-title mb-2">Error found while fetching the videos!</h2>
+					<div class="body">
+						<?php echo $error_text?>
+					</div>
+                </div>
+            </div>
+            <?php } ?>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <!-- #END# Vertical Layout -->
+	
+<div id="import-modal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content modal-col-teal shadow-lg rounded-lg">
+			<div class="modal-body text-center p-5">
+				<h4 class=" m-0"><p class="loading m-0">Importing <?php if (isset($_SESSION['keyword-id'])) { echo (!empty($explode[$_SESSION['keyword-id']])) ? '"' . $explode[$_SESSION['keyword-id']] . '"' : '';} ?></p></h4>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+    setInterval(function () {
+        $(".content").getNiceScroll().resize();
+    }, 500);
+<?php
+$js_array = json_encode($pt->sub_categories_array);
+echo "var sub_categories_array = ". $js_array . ";\n";
+?>
+$(window).on('load', function(){
+    <?php if (!empty($_GET['category_id'])) { ?>
+        if (typeof(sub_categories_array["'<?php echo($_GET['category_id']) ?>'"]) == 'undefined') {
+            $('#sub_category_div').hide();
+            //$('#sub_category_id').html('');
+            $('#sub_category_div').html('<select name="sub_category_id" id="sub_category_id" class="form-control"></select>');
+        }
+        else{
+            $('#sub_category_div').show();
+            //$('#sub_category_id').html(sub_categories_array["'<?php echo($_GET['category_id']) ?>'"]);
+            $('#sub_category_div').html('<select name="sub_category_id" id="sub_category_id" class="form-control">'+sub_categories_array["'<?php echo($_GET['category_id']) ?>'"]+'</select>');
+        }
+
+    <?php }else{ ?>
+        $('#sub_category_div').html('<select name="sub_category_id" id="sub_category_id" class="form-control"><?php echo $pt->sub_categories_array["'1'"]; ?></select>');
+    <?php } ?>
+});
+
+$(document).on('change', '#category_id', function(event) {
+
+    event.preventDefault();
+    id = $(this).val();
+    if (typeof(sub_categories_array["'"+id+"'"]) == 'undefined') {
+        $('#sub_category_div').hide();
+        $('#sub_category_id').html('');
+   }
+   else{
+        $('#sub_category_div').show();
+        $('#sub_category_id').html(sub_categories_array["'"+id+"'"]);
+  }
+});
+$('#auto_import').change(function(event) {
+  if ($(this).val() == 1) {
+    $('#multi-query-form').removeClass('hidden');
+    $('#normal-query-form').addClass('hidden');
+    $('#query').val('');
+  } else {
+    $('#multi-query-form').addClass('hidden');
+    $('#multi-query').val('');
+    $('#normal-query-form').removeClass('hidden');
+  }
+});
+$('.btn-load-more-videos').on('click' , function(event) {
+	event.preventDefault();
+	var token = $(this).attr('data-token');
+	$('.btn-load-more-videos').text('Loading..');
+	$.post('{{LINK aj/ap/load-more-daily}}', {pageToken: token, query: $('#query').val(), limit: $('#limit').val() }, function(data, textStatus, xhr) {
+		if (data.status == 200) {
+			$('#videos-layout').append(data.html);
+			$('.btn-load-more-videos').attr('data-token', data.token);
+			$('.btn-load-more-videos').text('LOAD <?php echo $limit ?> MORE VIDEOS');
+			$(".form-line").addClass("focused");
+			$('.btn-import').find('span').text(' (' + $('.import-checkbox-input:checked').length + ')');
+		} else {
+			$('.btn-load-more-videos').text('No more videos found');
+		}
+	});
+});
+$('.import-checkbox-input, .check-all').change(function(event) {
+    $('.btn-import').find('span').text(' (' + $('.import-checkbox-input:checked').length + ')');
+});
+$(function () {
+	$('.btn-import').find('span').text(' (' + $('.import-checkbox-input:checked').length + ')');
+    <?php if ($auto_import == 1 && !empty($ids)) {?>
+    setTimeout(function () {
+        $('.btn-import').trigger('click');
+    }, 3000);
+    <?php } ?>
+    <?php if (empty($ids) && !empty($_SESSION['keyword-id'])) {?>
+      $('#page-query').val(1);
+      $('form').submit();
+    <?php } ?>
+});
+$('.btn-import').on('click', function(event) {
+    data = new Array();
+    $('.btn-import').attr('disabled', true);
+    $('.btn-import').text('Please wait..');
+    $('#import-modal').modal('show');
+    user_id = $('#user_id_').val();
+    $('.youtube-video').each(function(index, el) {
+    	var video_id = $(this).attr('data-id');
+    	var is_checked = $(this).find('.import-checkbox-input').is(":checked");
+    	if (is_checked) {
+    		object_video = {
+    			video_id: video_id,
+    			title: $(this).find('#title').val(),
+    			description: $(this).find('#description').val(),
+    			duration: $(this).find('#duration').val(),
+    			tags: $(this).find('#tags').val(),
+    			thumb: $(this).find('#thumb').val(),
+    		}
+    		data.push(object_video);
+    	}
+    });
+    $.post('{{LINK aj/ap/import-daily-videos}}', {videos: data, category_id: $('#category_id').val(),sub_category_id: $('#sub_category_id').val(),user_id:user_id}, function () {
+        $('#import-modal').find('.modal-content').removeClass('modal-col-teal').addClass('modal-col-light-green');
+        $('#import-modal').find('.loading').html('<i class="fa fa-check"></i> Videos successfully imported, redirecting to next page');
+        var val = Number($('#page-query').val());
+        if (val < 100) {
+        	$('#page-query').val(val + 1);
+        	$('form').submit();
+        } else {
+        	$('#page-query').val(1);
+        	$('form').submit();
+        }
+    });
+});
+</script>
+
+<style>
+
+p {
+  color: white;
+  font: 30px;
+  text-align: center;}
+
+
+/* loading dots */
+
+.loading:after {
+  content: ' .';
+  animation: dots 1s steps(5, end) infinite;}
+
+@keyframes dots {
+  0%, 20% {
+    color: rgba(0,0,0,0);
+    text-shadow:
+      .25em 0 0 rgba(0,0,0,0),
+      .5em 0 0 rgba(0,0,0,0);}
+  40% {
+    color: white;
+    text-shadow:
+      .25em 0 0 rgba(0,0,0,0),
+      .5em 0 0 rgba(0,0,0,0);}
+  60% {
+    text-shadow:
+      .25em 0 0 white,
+      .5em 0 0 rgba(0,0,0,0);}
+  80%, 100% {
+    text-shadow:
+      .25em 0 0 white,
+      .5em 0 0 white;}}
+
+</style>

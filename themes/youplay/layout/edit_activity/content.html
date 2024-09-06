@@ -1,0 +1,145 @@
+<div class="wo_about_wrapper_parent">
+	<div class="wo_about_wrapper"> 
+		<div class="hero hero-overlay"></div>
+	</div>
+</div>
+<div class="pt_page_margin">
+	<div class="mat_header">
+		<h1> {{LANG edit_activity}}</h1>
+	</div>
+<div class="row">
+	<div class="clear"></div>
+<div class="col-md-12">
+	<div class="content pt_shadow">
+		<div class="clear"></div>
+		<div class="col-md-12">
+			<div class="clear"></div>
+     
+			<div class="col-md-12" id="upload-form">
+				<div class="progress hidden">
+		            <span class="percent">0%</span>
+		            <div class="progress_bar_parent">
+		                <div class="bar upload-progress-bar progress-bar active"></div> 
+		            </div>
+		            <div class="clear"></div>
+		            <div class="text-center pt_prcs_vdo"></div>
+		        </div>
+		        <div class="clear"></div>
+					<br>
+				<form action="" class="form-horizontal setting-panel pt_forms" id="edit_post_form" method="POST" style="margin-top: 70px">
+					<br>
+					<br>
+					<div class="form-group">
+						<label class="col-md-12" for="text">{{LANG write_message}}</label>  
+						<div class="col-md-12">
+							<textarea name="text" id="text" cols="30" rows="5" class="form-control">{{TITLE}}</textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-12" for="image">{{LANG image}}</label>  
+						<div class="col-md-12">
+							<div class="upload-product-image pull-left" onclick="document.getElementById('image').click(); return false">
+								<div class="upload-image-content">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-camera"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+								</div>
+							</div>
+							<div style="overflow-x: auto;width: calc(100% - 112px);">
+								<div id="productimage-holder"><img src="{{IMAGE}}" class="thumb-image"></div>
+							</div>
+							<input id="image" name="image" type="file" class="hidden" accept="image/*">
+							<span class="help-block">jpg, png, gif</span>
+						</div>
+					</div>
+					<input type="hidden" name="id" value="{{ID}}">
+					<div class="last-sett-btn modal-footer" style="margin: 0px -40px -10px -40px;">
+						<button type="submit" id="submit-btn" class="btn btn-main setting-panel-mdbtn"><svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-check-circle'><path d='M22 11.08V12a10 10 0 1 1-5.93-9.14'></path><polyline points='22 4 12 14.01 9 11.01'></polyline></svg> {{LANG publish}}</button>
+					</div>
+				</form>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>
+</div>
+</div>
+<script>
+
+$(document).ready(function() {
+	$("#image").on('change', function() {
+	//Get count of selected files
+	var product_countFiles = $(this)[0].files.length;
+	var product_imgPath = $(this)[0].value;
+	var extn = product_imgPath.substring(product_imgPath.lastIndexOf('.') + 1).toLowerCase();
+	var product_image_holder = $("#productimage-holder");
+	product_image_holder.empty();
+	if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+		if (typeof(FileReader) != "undefined") {
+		//loop for each file selected for uploaded.
+		for (var i = 0; i < product_countFiles; i++) 
+		{
+			var product_reader = new FileReader();
+			product_reader.onload = function(e) {
+				$("<img />", {
+                    "src": e.target.result,
+                    "class": "thumb-image"
+                  }).appendTo(product_image_holder);
+                }
+                product_image_holder.show();
+                product_reader.readAsDataURL($(this)[0].files[i]);
+              }
+            } else {
+              product_image_holder.html("<p>This browser does not support FileReader.</p>");
+            }
+         }
+	});
+});
+
+$(function () {
+	var bar         = $('.bar');
+    var percent     = $('.percent');
+    var prcsvdo      = $('.pt_prcs_vdo');
+
+	$('#edit_post_form').ajaxForm({
+	    url: '{{LINK aj/post/edit}}?hash=' + $('.main_session').val(),
+	    beforeSend: function() {
+	    	$('#submit-btn').attr('disabled', true);
+	    	$('#submit-btn').val("{{LANG please_wait}}");
+	    	$('.progress').removeClass('hidden');
+            var percentVal = '0%';
+            bar.width(percentVal);
+            percent.html(percentVal);
+	    },
+        uploadProgress: function(event, position, total, percentComplete) {
+             if(percentComplete > 50) {
+                percent.addClass('white');
+             }
+            var percentVal = percentComplete + '%';
+            bar.width(percentVal);
+            percent.html(percentVal);
+
+            if (percentComplete == 100) {
+               prcsvdo.html('<svg width="30" height="10" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg" fill="#000"><circle cx="15" cy="15" r="15"><animate attributeName="r" from="15" to="15" begin="0s" dur="0.8s" values="15;9;15" calcMode="linear" repeatCount="indefinite" /><animate attributeName="fill-opacity" from="1" to="1" begin="0s" dur="0.8s" values="1;.5;1" calcMode="linear" repeatCount="indefinite" /></circle><circle cx="60" cy="15" r="9" fill-opacity="0.3"><animate attributeName="r" from="9" to="9" begin="0s" dur="0.8s" values="9;15;9" calcMode="linear" repeatCount="indefinite" /><animate attributeName="fill-opacity" from="0.5" to="0.5" begin="0s" dur="0.8s" values=".5;1;.5" calcMode="linear" repeatCount="indefinite" /></circle><circle cx="105" cy="15" r="15"><animate attributeName="r" from="15" to="15" begin="0s" dur="0.8s" values="15;9;15" calcMode="linear" repeatCount="indefinite" /><animate attributeName="fill-opacity" from="1" to="1" begin="0s" dur="0.8s" values="1;.5;1" calcMode="linear" repeatCount="indefinite" /></circle></svg> {{LANG porcessing_image}}');
+               $('.progress').find('.bar').removeClass('upload-progress-bar');
+            }
+        },
+	    success: function(data) {
+	    	percentVal = '0%';
+            bar.width(percentVal);
+            $('.progress').addClass('hidden');
+	    	if (data.status == 200) {
+	    		Snackbar.show({text: "<div>{{LANG post_edited}}</div>"});
+	    		setTimeout(function () {
+	    			window.location.href = data.link;
+	    		},3000)
+	    	} 
+	        else {
+	    		$('#submit-btn').attr('disabled', false);
+	    	    $('#submit-btn').val("{{LANG publish}}");
+				Snackbar.show({text: "<div>"+ data.message +"</div>"});
+	    	}
+	    }
+	});
+});
+
+</script>

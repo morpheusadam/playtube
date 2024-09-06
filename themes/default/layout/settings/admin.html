@@ -1,0 +1,104 @@
+<!-- Multiple Radios -->
+<div class="form-group col-lg-6">
+	<label class="col-md-12" for="activation">{{LANG status}}</label>
+	<div class="col-md-12">
+		<div class="pt_vdo_cstm_radio">
+			<input type="radio" name="activation" id="activation-0" value="1" <?php echo ($pt->settings->active == 1) ? 'checked': ''?>>
+			<label for="activation-0">{{LANG active}}</label>
+		</div>
+		<div class="pt_vdo_cstm_radio">
+			<input type="radio" name="activation" id="activation-1" value="2" <?php echo ($pt->settings->active == 2) ? 'checked': ''?>>
+			<label for="activation-1">{{LANG inactive}}</label>
+		</div>
+	</div>
+</div>
+<div class="form-group col-lg-6">
+	<label class="col-md-12" for="type">PRO</label>
+	<div class="col-md-12">
+		<div class="pt_vdo_cstm_radio">
+			<input type="radio" name="is_pro" id="is_pro-1" value="1" <?php echo ($pt->settings->is_pro == '1') ? 'checked': ''?>>
+			<label for="is_pro-1">{{LANG pro_mbr}}</label>
+		</div>
+		<div class="pt_vdo_cstm_radio">
+			<input type="radio" name="is_pro" id="is_pro-0" value="0" <?php echo ($pt->settings->is_pro == '0') ? 'checked': ''?>>
+			<label for="is_pro-0">{{LANG free_mbr}}</label>
+		</div>
+	</div>
+</div>
+<div class="form-group col-lg-6">
+	<label class="col-md-12" for="type">{{LANG type}}</label>
+	<div class="col-md-12">
+		<div class="pt_vdo_cstm_radio">
+			<input type="radio" name="type" id="type-0" value="1" <?php echo ($pt->settings->admin == 0) ? 'checked': ''?>>
+			<label for="type-0">{{LANG user}}</label>
+		</div>
+		<div class="pt_vdo_cstm_radio">
+			<input type="radio" name="type" id="type-1" value="2" <?php echo ($pt->settings->admin == 1) ? 'checked': ''?>>
+			<label for="type-1">{{LANG admin}}</label>
+		</div>
+	</div>
+</div>
+<div class="form-group col-lg-6">
+	<label class="col-md-12" for="type">{{LANG verification}}</label>
+	<div class="col-md-12">
+		<div class="pt_vdo_cstm_radio">
+			<input type="radio" name="verified" id="verified-0" value="verified" <?php echo ($pt->settings->verified == 1) ? 'checked': ''?>>
+			<label for="verified-0">{{LANG verified}}</label>
+		</div>
+		<div class="pt_vdo_cstm_radio">
+			<input type="radio" name="verified" id="verified-1" value="no_verified" <?php echo ($pt->settings->verified == 0) ? 'checked': ''?>>
+			<label for="verified-1">{{LANG not_verified}}</label>
+		</div>
+	</div>
+</div>
+<div class="form-group col-lg-6">
+	<label class="col-md-12" for="type">{{LANG suspend_upload}}</label>
+	<div class="col-md-12">
+		<div class="pt_vdo_cstm_radio">
+			<input type="radio" name="suspend_upload" id="suspend_upload-0" value="suspend" <?php echo ($pt->settings->suspend_upload == 1) ? 'checked': ''?>>
+			<label for="suspend_upload-0">{{LANG yes}}</label>
+		</div>
+		<div class="pt_vdo_cstm_radio">
+			<input type="radio" name="suspend_upload" id="suspend_upload-1" value="unsuspend" <?php echo ($pt->settings->suspend_upload == 0) ? 'checked': ''?>>
+			<label for="suspend_upload-1">{{LANG no}}</label>
+		</div>
+	</div>
+</div>
+<div class="form-group col-lg-6">
+	<label class="col-md-12" for="type">{{LANG suspend_import}}</label>
+	<div class="col-md-12">
+		<div class="pt_vdo_cstm_radio">
+			<input type="radio" name="suspend_import" id="suspend_import-0" value="suspend" <?php echo ($pt->settings->suspend_import == 1) ? 'checked': ''?>>
+			<label for="suspend_import-0">{{LANG yes}}</label>
+		</div>
+		<div class="pt_vdo_cstm_radio">
+			<input type="radio" name="suspend_import" id="suspend_import-1" value="unsuspend" <?php echo ($pt->settings->suspend_import == 0) ? 'checked': ''?>>
+			<label for="suspend_import-1">{{LANG no}}</label>
+		</div>
+	</div>
+</div>
+<div class="form-group col-lg-6">
+    <label class="col-md-12" for="user_upload_limit">{{LANG user_upload_limit}}</label>
+    <div class="col-md-12">
+        <select id="user_upload_limit" name="user_upload_limit" class="form-control">
+            <option value="0" <?php if($pt->settings->user_upload_limit == '0'){ echo "selected";} ?>>Not selected</option>
+            <option value="2000000" <?php if($pt->settings->user_upload_limit == '2000000'){ echo "selected";} ?>>2MB</option>
+            <option value="6000000" <?php if($pt->settings->user_upload_limit == '6000000'){ echo "selected";} ?>>6MB</option>
+            <option value="12000000" <?php if($pt->settings->user_upload_limit == '12000000'){ echo "selected";} ?>>12MB</option>
+            <option value="24000000" <?php if($pt->settings->user_upload_limit == '24000000'){ echo "selected";} ?>>24MB</option>
+            <option value="48000000" <?php if($pt->settings->user_upload_limit == '48000000'){ echo "selected";} ?>>48MB</option>
+            <option value="96000000" <?php if($pt->settings->user_upload_limit == '96000000'){ echo "selected";} ?>>96MB</option>
+            <option value="256000000" <?php if($pt->settings->user_upload_limit == '256000000'){ echo "selected";} ?>>256MB</option>
+            <option value="512000000" <?php if($pt->settings->user_upload_limit == '512000000'){ echo "selected";} ?>>512MB</option>
+            <option value="1000000000" <?php if($pt->settings->user_upload_limit == '1000000000'){ echo "selected";} ?>>1GB</option>
+            <option value="10000000000" <?php if($pt->settings->user_upload_limit == '10000000000'){ echo "selected";} ?>>10GB</option>
+            <option value="unlimited" <?php if($pt->settings->user_upload_limit == 'unlimited'){ echo "selected";} ?>>Unlimited</option>
+        </select>
+    </div>
+</div>
+<div class="form-group col-lg-6">
+    <label class="col-md-12" for="wallet">{{LANG wallet}}</label>
+    <div class="col-md-12">
+        <input id="wallet" name="wallet" type="text" placeholder="" class="form-control input-md" value="{{USER wallet}}">
+    </div>
+</div>

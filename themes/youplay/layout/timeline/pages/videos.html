@@ -1,0 +1,14 @@
+<div class="videos-latest-list">
+	<h3 class="recent-articles"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 426.667 426.667" height="20" width="20" fill="#04abf2"> <g> <g> <g> <path d="M42.667,85.333H0V384c0,23.573,19.093,42.667,42.667,42.667h298.667V384H42.667V85.333z"/> <path d="M384,0H128c-23.573,0-42.667,19.093-42.667,42.667v256c0,23.573,19.093,42.667,42.667,42.667h256 c23.573,0,42.667-19.093,42.667-42.667v-256C426.667,19.093,407.573,0,384,0z M213.333,266.667v-192l128,96L213.333,266.667z"/> </g> </g> </g></svg>&nbsp;&nbsp;&nbsp;{{LANG latest_videos}}</h3>
+	<div class="row pt_timeline_vids pt_timeline_latest_vids">
+		{{VIDEOS}}
+	</div>
+</div>
+
+<?php if ($pt->videos_count > 1) { ?>
+<div class="watch-video-show-more desc load-more" data-type="profile_videos">
+   {{LANG show_more}}
+</div>
+<?php } ?>
+
+<div class="clear"></div>

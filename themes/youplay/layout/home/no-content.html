@@ -1,0 +1,18 @@
+<div class="page-margin">
+	<div class="content">
+		<div class="top-video">
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<div class="empty_state">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-video-off"><path d="M16 16v1a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2m5.66 0H14a2 2 0 0 1 2 2v3.34l1 1L23 7v10"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+						<h3>{{LANG no_videos_found_for_now}}</h3>
+					</div>
+					<?php if (PT_IsAdmin()): ?>
+						<p><a class="btn btn-default" href="{{LINK admin-cp/import-from-youtube}}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download-cloud"><polyline points="8 17 12 21 16 17"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"></path></svg> {{LANG import}}</a></p>
+					<?php endif; ?>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+	</div>
+</div>

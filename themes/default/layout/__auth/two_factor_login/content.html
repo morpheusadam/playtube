@@ -1,0 +1,63 @@
+1<div class="container login-page">
+    <div class="login-form">
+    	<form action="{{LINK two_factor_submit}}" method="POST">
+			<p class="text-center" style="color: #fff;">{{MESSAGE}}</p>
+    	    <div class="errors form-group">{{ERROR}}</div>
+			<div class="form-group">
+				<input type="text" name="code" id="code" placeholder="{{LANG confirm_code}}" required value="">
+			</div>
+			<div class="form-group">
+				<input type="submit" class="button" value ="{{LANG submit}}">
+			</div>
+		</form>
+    </div>    
+</div>
+<ul class="bg-bubbles">
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+</ul>
+<script>
+$(function() {
+	$('[type = submit]').on('click', function () {
+		if ($('#code').val()) {
+			$(this).val("{{LANG please_wait}}");
+		}
+	});
+});
+</script>
+<style>
+.bg-bubbles {
+      background: -webkit-linear-gradient(top left, #0095D8 0%, #87ddff 100%);
+    background: linear-gradient(to bottom right, #0095D8 0%, #87ddff 100%);
+}
+.login-form input[type=submit] {
+	color: #0095D8 !important;
+}
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #fff;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    #fff;
+   opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    #fff;
+   opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:    #fff;
+}
+::-ms-input-placeholder { /* Microsoft Edge */
+   color:    #fff;
+}
+</style>

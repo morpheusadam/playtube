@@ -1,0 +1,71 @@
+{
+    "packages": [
+        {
+            "name": "hybridauth/hybridauth",
+            "version": "v3.8.2",
+            "version_normalized": "3.8.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hybridauth/hybridauth.git",
+                "reference": "0d6e31482c544e5ed2bdc83bd3c033054129c482"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hybridauth/hybridauth/zipball/0d6e31482c544e5ed2bdc83bd3c033054129c482",
+                "reference": "0d6e31482c544e5ed2bdc83bd3c033054129c482",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.4 || ^7.0 || ^8.0"
+            },
+            "require-dev": {
+                "ext-curl": "*",
+                "phpunit/phpunit": "^4.8.35 || ^6.5 || ^8.0"
+            },
+            "suggest": {
+                "firebase/php-jwt": "Needed to support Apple provider",
+                "phpseclib/phpseclib": "Needed to support Apple provider"
+            },
+            "time": "2022-08-18T19:48:17+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Hybridauth\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Miled",
+                    "email": "hybridauth@gmail.com"
+                }
+            ],
+            "description": "PHP Social Authentication Library",
+            "homepage": "https://hybridauth.github.io",
+            "keywords": [
+                "Authentication",
+                "OpenId",
+                "api",
+                "apple",
+                "authorization",
+                "facebook",
+                "google",
+                "oauth",
+                "social",
+                "twitter"
+            ],
+            "support": {
+                "gitter": "https://gitter.im/hybridauth/hybridauth",
+                "issues": "https://github.com/hybridauth/hybridauth/issues",
+                "source": "https://github.com/hybridauth/hybridauth/tree/v3.8.2"
+            },
+            "install-path": "../hybridauth/hybridauth"
+        }
+    ],
+    "dev": true,
+    "dev-package-names": []
+}

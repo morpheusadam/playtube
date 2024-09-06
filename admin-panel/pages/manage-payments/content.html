@@ -1,0 +1,202 @@
+<?php 
+
+
+$json_static_dump   = array();
+$total_earnings_sum = 0;
+$total_earnings_tms = 0;
+$month              = date('n');
+$year               = date('Y');
+$total_earnings     = $db->get(T_PAYMENTS);
+$total_earnings_tm  = $db->where('date',"$month/$year")->get(T_PAYMENTS);
+
+$total_sales        = count($total_earnings);
+$year_sales = array('01' => 0 ,'02' => 0 ,'03' => 0 ,'04' => 0 ,'05' => 0 ,'06' => 0 ,'07' => 0 ,'08' => 0 ,'09' => 0 ,'10' => 0 ,'11' => 0 ,'12' => 0);
+for($i=1; $i < 13; $i++) {
+    $pro_sales_static   = $db->where('date',"$i/$year")->getValue(T_PAYMENTS, 'count(*)');
+    $code = $i;
+    if ($i < 10) {
+        $code = '0'.$i;
+    }
+    if (in_array($code, array_keys($year_sales))) {
+        $year_sales[$code] = $pro_sales_static;
+    }
+    $json_static_dump[] = array(
+        'month' => $pt->months[$i],
+        'pro_sales' => $pro_sales_static
+    );
+}
+$pt->year_sales = implode(', ', $year_sales);
+
+
+$json_static_dump = json_encode($json_static_dump);
+
+foreach ($total_earnings as $amount) {
+    $total_earnings_sum += $amount->amount;
+}
+
+foreach ($total_earnings_tm as $amount) {
+    $total_earnings_tms += $amount->amount;
+}
+
+?>
+
+<div class="container-fluid">
+    <div>
+        <h3>Recent payments</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Admin Panel</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Pro System</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Recent payments</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- Widgets -->
+    <div class="row clearfix">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">TOTAL EARNINGS</h6>
+                    <div class="d-flex align-items-center mb-3">
+                        <div>
+                            <div class="avatar">
+                                <span class="avatar-title bg-primary-bright text-primary rounded-pill">
+                                    <i class="material-icons">attach_money</i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="font-weight-bold ml-1 font-size-30 ml-3"><?php echo $total_earnings_sum; ?></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">PAID SALES</h6>
+                    <div class="d-flex align-items-center mb-3">
+                        <div>
+                            <div class="avatar">
+                                <span class="avatar-title bg-info-bright text-info rounded-pill">
+                                    <i class="fa fa-rocket"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="font-weight-bold ml-1 font-size-30 ml-3"><?php echo $total_sales; ?></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">EARNINGS THIS MONTH</h6>
+                    <div class="d-flex align-items-center mb-3">
+                        <div>
+                            <div class="avatar">
+                                <span class="avatar-title bg-warning-bright text-warning rounded-pill">
+                                    <i class="material-icons">attach_money</i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="font-weight-bold ml-1 font-size-30 ml-3"><?php echo $total_earnings_tms; ?></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #END# Widgets -->
+    <div class="row clearfix">
+        <!-- Bar Chart -->
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">STATICS</h6>
+                    <div id="salse_static" class="graph"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>    
+$(function () {
+
+    function salse_static() {
+        if ($('#salse_static').length) {
+            var options = {
+                chart: {
+                    type: 'bar',
+                    fontFamily: "Inter",
+                    offsetX: -26,
+                    stacked: false,
+                    height: 265,
+                    width: '102%',
+                    toolbar: {
+                        show: false
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                series: [{
+                    name: 'Pro Sales',
+                    data: [<?php echo $pt->year_sales; ?>]
+                }],
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: '50%',
+                        endingShape: 'rounded'
+                    },
+                },
+                colors: ['#5066e1'],
+                xaxis: {
+                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct','Nov','Dec']
+                },
+                tooltip: {
+                    y: {
+                        formatter: function (val) {
+                            return val
+                        }
+                    }
+                }
+            };
+
+            var chart = new ApexCharts(
+                document.querySelector("#salse_static"),
+                options
+            );
+
+            chart.render();
+        }
+    }
+
+    salse_static();
+
+
+
+
+
+
+
+
+
+    // Morris.Bar({
+    //     element: 'salse_static',
+    //     data:<?php echo $json_static_dump; ?>,
+
+    //         xkey: 'month',
+    //         ykeys: ['pro_sales'],
+    //         labels: ['Pro sales'],
+    //         pointSize: 1,
+    //         hideHover: 'auto',
+    //         resize: true,
+    //         barColors: ['#8BC34A']
+    // });
+});
+</script>

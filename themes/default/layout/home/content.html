@@ -1,0 +1,621 @@
+<style type="text/css">
+	.pt_hdr_adss:empty+#container_content {
+		margin-top: 66px;
+	}
+  .swal2-modal {
+    width: 600px !important;
+}
+</style>
+
+<div class="top_marsking">
+	
+</div>
+<div class="owl-carousel pl_feat_vid_slider owl-theme home_feat pt_new_home_feat_vidd">
+	
+		<?php if (!empty($pt->videos_array)) {
+			foreach ($pt->videos_array as $key => $video_slide) {
+		?>
+			<div class="pl_feat_vid_slide">
+				<div class="pt_fv_blur_img">
+					<div class="feature_image_main" style="background-image: url('<?php echo $video_slide->thumbnail; ?>');">
+						
+						<div class="pt_hmpg_contanr">
+						<div class="feature_wrap">
+							<h4><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="12" height="12"><path fill="currentColor" d="M12 16a8 8 0 118-8 8.009 8.009 0 01-8 8zm0 2a9.938 9.938 0 01-6-2.019V21.5a2.5 2.5 0 004.062 1.952l1.626-1.3a.5.5 0 01.624 0l1.626 1.3A2.5 2.5 0 0018 21.5v-5.519A9.94 9.94 0 0112 18z"/></svg> {{LANG featured_video}}</h4>
+							
+							<div class="right_feature_wrap">
+								<span>
+									<a href="{{USER url}}" data-load="?link1=timeline&id={{USER username}}"><img src="{{USER avatar}}" alt="{{USER name}}"></a>
+								</span>
+								<div class="chanel_content">
+										<a href="{{USER url}}" data-load="?link1=timeline&id={{USER username}}"><span>
+											<?php echo $video_slide->owner->name_v; ?>
+										</span></a>
+										<div class="subscribe_channel">
+											{{SUBSCIBE_BUTTON}}
+										</div>
+								</div>
+							</div>
+							
+							<hr>
+							
+							<div class="feature_text_title">
+								<a href="<?php echo($video_slide->url) ?>" data-load="?link1=watch&id=<?php echo(PT_Slug($video_slide->title, $video_slide->video_id)) ?>"><?php echo $video_slide->title; ?></a>
+							</div>
+							
+							<p class="video_info">{{TIME}}<span class="bold">·</span>{{CATEGORY}}<span class="bold">·</span>{{DURATION}}</p>
+							
+							<p>
+								<?php echo $video_slide->markup_description; ?>
+							</p>
+
+							<div class="feature_channel_wrap">
+								<div class="left_wrap">
+									<a href="<?php echo($video_slide->url) ?>" data-load="?link1=watch&id=<?php echo(PT_Slug($video_slide->title, $video_slide->video_id)) ?>" class="button_watch hide_feat_vid_btnn">
+										Watch <img src="{{CONFIG theme_url}}/img/play_icon.png">
+									</a>
+									<div class="share_button">
+										<button type="button" onclick="openShareModal();">
+											<svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<path d="M23.96 10.7161C23.96 12.1223 22.835 13.2161 21.46 13.2161C20.7412 13.2161 20.085 12.9348 19.6162 12.4348L14.8975 14.8098C14.9287 14.9348 14.96 15.0911 14.96 15.2161C14.96 15.3723 14.9287 15.5286 14.8975 15.6536L19.6162 17.9973C20.085 17.5286 20.7412 17.2161 21.46 17.2161C22.835 17.2161 23.96 18.3411 23.96 19.7161C23.96 21.1223 22.835 22.2161 21.46 22.2161C20.0537 22.2161 18.96 21.1223 18.96 19.7161C18.96 19.4348 18.9912 19.1223 19.085 18.8723L14.5537 16.5911C14.085 17.2786 13.335 17.7161 12.46 17.7161C11.0537 17.7161 9.95996 16.6223 9.95996 15.2161C9.95996 13.8411 11.0537 12.7161 12.46 12.7161C13.335 12.7161 14.085 13.1848 14.5537 13.8723L19.085 11.5911C18.9912 11.3098 18.96 11.0286 18.96 10.7161C18.96 9.34106 20.0537 8.21606 21.46 8.21606C22.835 8.21606 23.96 9.34106 23.96 10.7161ZM12.4287 16.7161C13.2725 16.7161 13.9287 16.0598 13.9287 15.2161C13.9287 14.4036 13.2725 13.7161 12.4287 13.7161C11.6162 13.7161 10.9287 14.4036 10.9287 15.2161C10.9287 16.0598 11.6162 16.7161 12.4287 16.7161ZM21.46 9.21606C20.6162 9.21606 19.96 9.90356 19.96 10.7161C19.96 11.5598 20.6162 12.2161 21.46 12.2161C22.2725 12.2161 22.96 11.5598 22.96 10.7161C22.96 9.90356 22.2725 9.21606 21.46 9.21606ZM21.46 21.2161C22.2725 21.2161 22.96 20.5598 22.96 19.7161C22.96 18.9036 22.2725 18.2161 21.46 18.2161C20.6162 18.2161 19.96 18.9036 19.96 19.7161C19.96 20.5598 20.6162 21.2161 21.46 21.2161Z" fill="currentColor"/>
+											</svg>
+											<!-- <img src="{{CONFIG theme_url}}/img/share.png" alt=""> -->
+										</button>
+									</div>
+									<div class="share_button copy">
+										<button type="button" onclick="copyFeatvid();">
+											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32"><path fill="currentColor" d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"></path></svg>
+										</button>
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<div class="feat_vid_big_play_btn">
+							<a href="<?php echo($video_slide->url) ?>" data-load="?link1=watch&id=<?php echo(PT_Slug($video_slide->title, $video_slide->video_id)) ?>" class="btn btn-main">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36"><path fill="currentColor" d="M19.376 12.4158L8.77735 19.4816C8.54759 19.6348 8.23715 19.5727 8.08397 19.3429C8.02922 19.2608 8 19.1643 8 19.0656V4.93408C8 4.65794 8.22386 4.43408 8.5 4.43408C8.59871 4.43408 8.69522 4.4633 8.77735 4.51806L19.376 11.5838C19.6057 11.737 19.6678 12.0474 19.5146 12.2772C19.478 12.3321 19.4309 12.3792 19.376 12.4158Z"></path></svg>
+							</a>
+						</div>
+						</div>
+
+					</div>
+
+				</div>
+				<!-- <?php /* ?> -->
+				<div class="container">
+					<div class="top-video pl_feat_vid_slide_nav">
+						<div class="row">
+							<div class="pt_featured_video">
+								<h4 title="{{LANG featured_video}}">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-award"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+								</h4>
+								<div class="video-player">
+									<!-- <a href="<?php echo($video_slide->url) ?>" data-load="?link1=watch&id=<?php echo(PT_Slug($video_slide->title, $video_slide->video_id)) ?>">
+										<div class="thumbnail_holder"><img src="<?php echo $video_slide->thumbnail; ?>"></div>
+									</a> -->
+									<div class="feature_wrap">
+										<div class="feature_text_title">
+												<a href="<?php echo($video_slide->url) ?>" data-load="?link1=watch&id=<?php echo(PT_Slug($video_slide->title, $video_slide->video_id)) ?>"><?php echo $video_slide->title; ?></a>
+										</div>
+									</div>
+									<div class="video-title">
+										<input type="hidden" value="<?php echo($video_slide->id) ?>" id="video-id">
+										<div class="video_title_combo">
+											<div class="video-big-title">
+												<a href="<?php echo($video_slide->url) ?>" data-load="?link1=watch&id=<?php echo(PT_Slug($video_slide->title, $video_slide->video_id)) ?>"><?php echo $video_slide->title; ?></a>
+											</div>
+											<div class="video_info">
+												<span class="video-views"><?php echo $video_slide->views; ?> {{LANG views}}</span>
+												<span class="video-likes">
+													<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M23,10C23,8.89 22.1,8 21,8H14.68L15.64,3.43C15.66,3.33 15.67,3.22 15.67,3.11C15.67,2.7 15.5,2.32 15.23,2.05L14.17,1L7.59,7.58C7.22,7.95 7,8.45 7,9V19A2,2 0 0,0 9,21H18C18.83,21 19.54,20.5 19.84,19.78L22.86,12.73C22.95,12.5 23,12.26 23,12V10M1,21H5V9H1V21Z" /></svg>&nbsp;<span class="likes" id="likes"><?php echo number_format($video_slide->likes); ?></span>&nbsp;&nbsp;
+													<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,15H23V3H19M15,3H6C5.17,3 4.46,3.5 4.16,4.22L1.14,11.27C1.05,11.5 1,11.74 1,12V14A2,2 0 0,0 3,16H9.31L8.36,20.57C8.34,20.67 8.33,20.77 8.33,20.88C8.33,21.3 8.5,21.67 8.77,21.94L9.83,23L16.41,16.41C16.78,16.05 17,15.55 17,15V5C17,3.89 16.1,3 15,3Z" /></svg>&nbsp;<span class="likes" id="dislikes"><?php echo number_format($video_slide->dislikes); ?></span>
+												</span>
+											</div>
+											<div class="publisher-element">
+												<div class="publisher-avatar pull-left hide-in-mobile-720">
+												<a href="{{USER url}}" data-load="?link1=timeline&id={{USER username}}"><img src="{{USER avatar}}" alt="{{USER name}}"></a>
+												</div>
+												<div class="publisher-name">
+													<a href="<?php echo $video_slide->owner->url; ?>" data-load="?link1=timeline&id=<?php echo $video_slide->owner->username; ?>"><?php echo $video_slide->owner->name_v; ?></a>
+												</div>
+												<div class="clear"></div>
+											</div>
+											<p class="feat_desc"><?php echo $video_slide->markup_description; ?></p>
+										</div>
+										<div class="clear"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- <?php */ ?> -->
+			</div>
+		<?php }} ?>
+</div>
+
+<div class="page-margin video-player-page pt_homepg_whote_bg margin">
+	
+	<div class="pt_hmpg_contanr">
+
+		<?php /* ?>
+		<div class="pt_home_vid_content pt_sec_nav_cats">
+			<div class="title">
+				<h4><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#2196F3" d="M11,13.5V21.5H3V13.5H11M12,2L17.5,11H6.5L12,2M17.5,13C20,13 22,15 22,17.5C22,20 20,22 17.5,22C15,22 13,20 13,17.5C13,15 15,13 17.5,13Z"></path></svg> {{LANG categories}}</h4>
+			</div>
+				
+			<div class="pt_sec_nav_slide_prnt">
+				<div <?php if ($pt->language_type == 'rtl') { ?>dir="rtl"<?php } ?> class="swiper-wrapper pt_sec_nav_slide">
+					<div class="swiper-slide"><a class="active" href="{{LINK }}" data-load="?link1=home">{{LANG all}}</a></div>
+					<?php foreach($pt->categories as $key => $category) {
+							if (1) { ?>
+						<div class="swiper-slide"><a class="" href="{{LINK videos/category/<?php echo $key?>}}" data-load="?link1=videos&page=category&id=<?php echo $key?>"><?php echo $category?></a></div>
+					<?php } }?>
+				</div>
+				<button class="swiper-button-next"></button>
+				<button class="swiper-button-prev"></button>
+			</div>
+		</div>
+		<?php */ ?>
+		
+		<?php if ($pt->config->shorts_system == 'on') { ?>
+        <div class="pt_home_vid_content">
+			<div class="home-page-categories pt_hmpg_vidlst">
+				<div class="title">
+					<h4><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                      <g id="Group_290" data-name="Group 290" transform="translate(1296 2420)">
+                                        <path id="Group_261" data-name="Group 261" d="M14,1.732a6,6,0,0,0-6,0L3.608,4.267a6,6,0,0,0-3,5.2v5.072a6,6,0,0,0,3,5.2L8,22.267a6,6,0,0,0,6,0l4.392-2.536a6,6,0,0,0,3-5.2V9.464a6,6,0,0,0-3-5.2ZM10.1,16.247q.627.057,1.159.057a8.134,8.134,0,0,0,1.539-.142,4.885,4.885,0,0,0,1.339-.427,2.5,2.5,0,0,0,.931-.8,2.254,2.254,0,0,0-.01-2.432,2.574,2.574,0,0,0-1.092-.836,8.634,8.634,0,0,0-1.891-.579,7.84,7.84,0,0,1-1.938-.618,1.09,1.09,0,0,1-.665-1,.866.866,0,0,1,.323-.7,2.065,2.065,0,0,1,.865-.4,4.89,4.89,0,0,1,1.168-.133,6.971,6.971,0,0,1,1.216.095,5.879,5.879,0,0,0,.912.086,1.111,1.111,0,0,0,.37-.057.54.54,0,0,0,.266-.181.521.521,0,0,0,.1-.333q0-.209-.275-.361a2.621,2.621,0,0,0-.722-.266,8.13,8.13,0,0,0-.969-.161,9.034,9.034,0,0,0-1-.057,7.981,7.981,0,0,0-1.587.152,5.118,5.118,0,0,0-1.339.437,2.645,2.645,0,0,0-.922.741,1.646,1.646,0,0,0-.332,1.026,1.9,1.9,0,0,0,.389,1.2,3.03,3.03,0,0,0,1.14.855,8.838,8.838,0,0,0,1.843.57,11.855,11.855,0,0,1,1.653.437,1.976,1.976,0,0,1,.845.513,1.105,1.105,0,0,1,.247.751.942.942,0,0,1-.408.807,2.53,2.53,0,0,1-1.026.418,6.715,6.715,0,0,1-1.3.124,6.841,6.841,0,0,1-1.216-.1q-.57-.114-1.026-.218a3.312,3.312,0,0,0-.713-.1.77.77,0,0,0-.5.142.525.525,0,0,0-.171.428.508.508,0,0,0,.171.4,1.668,1.668,0,0,0,.475.266,5.039,5.039,0,0,0,.95.256A11.4,11.4,0,0,0,10.1,16.247Z" transform="translate(-1294.608 -2419.928)" fill="currentColor" fill-rule="evenodd"></path>
+                                        <rect id="Rectangle_310" data-name="Rectangle 310" width="24" height="24" transform="translate(-1296 -2420)" fill="none"></rect>
+                                      </g>
+                                    </svg> {{LANG shorts}}
+						<span class="view_more_link">
+							<a href="{{LINK shorts}}" data-load="?link1=shorts&id=">
+							<!-- 	<div class="explore_more">
+									<svg width="44" height="33" viewBox="0 0 44 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M28 32C36.5604 32 43.5 25.0604 43.5 16.5C43.5 7.93959 36.5604 1 28 1C19.4396 1 12.5 7.93959 12.5 16.5C12.5 25.0604 19.4396 32 28 32Z" stroke="currentColor"/>
+										<path d="M0 16.5H32" stroke="currentColor"/>
+										<path d="M24 8.5L32 16.5" stroke="currentColor" stroke-linecap="square"/>
+										<path d="M24 24.5L32 16.5" stroke="currentColor" stroke-linecap="square"/>
+									</svg>
+								</div> -->
+							</a>
+						</span>
+					</h4>
+				</div>
+				<div class="videos">
+					<div class="row cus_story_slider">
+						{{SHORTS_HTML}}
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+        </div>
+      <?php } ?>
+        <div class="pt_home_vid_content">
+			<div class="home-page-categories pt_hmpg_vidlst">
+				<div class="title">
+					<h4><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                      <g id="Group_283" data-name="Group 283" transform="translate(1192 2420)">
+                                        <g id="Activity_2" data-name="Activity 2" transform="translate(-1193.25 -2420)">
+                                          <path id="Path_42" data-name="Path 42" d="M20,7a3,3,0,0,1-2.608-4.484c-.293-.061-.6-.107-.929-.142-1.142-.124-2.582-.124-4.418-.124h-.09c-1.837,0-3.276,0-4.418.124a5.823,5.823,0,0,0-2.916.974A5.75,5.75,0,0,0,3.348,4.62a5.823,5.823,0,0,0-.974,2.916c-.124,1.142-.124,2.582-.124,4.418v.09c0,1.837,0,3.276.124,4.418a5.824,5.824,0,0,0,.974,2.916A5.749,5.749,0,0,0,4.62,20.652a5.823,5.823,0,0,0,2.916.975c1.142.124,2.582.124,4.418.124h.091c1.837,0,3.276,0,4.418-.124a5.823,5.823,0,0,0,2.916-.975,5.749,5.749,0,0,0,1.272-1.272,5.823,5.823,0,0,0,.975-2.916c.124-1.142.124-2.582.124-4.418v-.091c0-1.837,0-3.276-.124-4.418-.035-.326-.081-.635-.142-.929A2.986,2.986,0,0,1,20,7ZM17.33,8.469a.75.75,0,0,1,.343,1l-1.46,2.977a2.691,2.691,0,0,1-4.907-.166,1.191,1.191,0,0,0-2.172-.074l-1.46,2.977a.75.75,0,1,1-1.347-.661l1.46-2.977a2.691,2.691,0,0,1,4.907.166,1.191,1.191,0,0,0,2.172.074l1.46-2.977A.75.75,0,0,1,17.33,8.469Z" fill="currentColor" fill-rule="evenodd"></path>
+                                          <path id="Path_43" data-name="Path 43" d="M18,4a2,2,0,1,0,2-2A2,2,0,0,0,18,4Z" fill="currentColor"></path>
+                                        </g>
+                                        <rect id="Rectangle_313" data-name="Rectangle 313" width="24" height="24" transform="translate(-1192 -2420)" fill="none"></rect>
+                                      </g>
+                                    </svg> {{LANG trending}}
+						<span class="view_more_link">
+							<a href="{{LINK videos/trending}}" data-load="?link1=videos&page=trending">
+							<!-- 	<div class="explore_more">
+									<svg width="44" height="33" viewBox="0 0 44 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M28 32C36.5604 32 43.5 25.0604 43.5 16.5C43.5 7.93959 36.5604 1 28 1C19.4396 1 12.5 7.93959 12.5 16.5C12.5 25.0604 19.4396 32 28 32Z" stroke="currentColor"/>
+										<path d="M0 16.5H32" stroke="currentColor"/>
+										<path d="M24 8.5L32 16.5" stroke="currentColor" stroke-linecap="square"/>
+										<path d="M24 24.5L32 16.5" stroke="currentColor" stroke-linecap="square"/>
+									</svg>
+								</div> -->
+							</a>
+						</span>
+					</h4>
+				</div>
+				<div class="videos">
+					<div class="row pt_no_vid_found_trend">
+						{{TRENDING_LIST}}
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+        </div>
+		<!-- <hr class="pt_hmpg_hr"> -->
+        <div class="pt_home_vid_content">
+			<div class="home-page-categories pt_hmpg_vidlst">
+
+				<div class="title">
+					<h4><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                  <g id="Group_284" data-name="Group 284" transform="translate(972 2420)">
+                                    <g id="Group_266" data-name="Group 266">
+                                      <g id="Play_Octagon" data-name="Play Octagon" transform="translate(-971.724 -2420.023)">
+                                        <path id="Path_55" data-name="Path 55" d="M10.733,8.752a1.315,1.315,0,0,1,.651.2c.4.2.906.507,1.644.962s1.246.768,1.6,1.038a1.479,1.479,0,0,1,.516.535,1.332,1.332,0,0,1,0,1.019,1.478,1.478,0,0,1-.516.535c-.358.27-.866.583-1.6,1.038s-1.247.766-1.644.962a1.316,1.316,0,0,1-.651.2,1.072,1.072,0,0,1-.762-.476,1.652,1.652,0,0,1-.18-.763c-.041-.471-.041-1.1-.041-2.009s0-1.538.041-2.009a1.653,1.653,0,0,1,.18-.763A1.073,1.073,0,0,1,10.733,8.752Z" fill="currentColor"></path>
+                                        <path id="Path_56" data-name="Path 56" d="M11.715,1.031q.285-.014.57,0a5.705,5.705,0,0,1,2.161.6c.733.34,1.584.832,2.661,1.454l.061.035C18.246,3.74,19.1,4.232,19.758,4.7a5.706,5.706,0,0,1,1.6,1.572q.155.24.285.494A5.706,5.706,0,0,1,22.2,8.933c.072.8.072,1.788.072,3.032v.07c0,1.244,0,2.227-.072,3.032a5.706,5.706,0,0,1-.562,2.171q-.13.254-.285.494a5.706,5.706,0,0,1-1.6,1.572c-.661.465-1.512.956-2.589,1.578l-.061.035c-1.077.622-1.929,1.113-2.661,1.453a5.707,5.707,0,0,1-2.161.6q-.285.014-.57,0a5.707,5.707,0,0,1-2.161-.6c-.733-.34-1.584-.832-2.661-1.453l-.061-.035C5.754,20.26,4.9,19.768,4.242,19.3a5.706,5.706,0,0,1-1.6-1.572q-.155-.24-.285-.494A5.706,5.706,0,0,1,1.8,15.067c-.072-.8-.072-1.788-.072-3.031v-.071c0-1.244,0-2.227.072-3.032a5.706,5.706,0,0,1,.562-2.171q.13-.254.285-.494A5.706,5.706,0,0,1,4.242,4.7C4.9,4.232,5.754,3.74,6.831,3.118l.061-.035c1.077-.622,1.929-1.113,2.661-1.454A5.706,5.706,0,0,1,11.715,1.031ZM13.781,8.62c-.7-.429-1.266-.779-1.735-1.01a2.689,2.689,0,0,0-1.479-.349A2.572,2.572,0,0,0,8.732,8.383,3.032,3.032,0,0,0,8.3,9.862c-.047.543-.047,1.239-.047,2.1v.072c0,.862,0,1.559.047,2.1a3.032,3.032,0,0,0,.435,1.479,2.572,2.572,0,0,0,1.834,1.122,2.689,2.689,0,0,0,1.479-.349c.469-.231,1.038-.581,1.735-1.01l.066-.041c.7-.429,1.267-.78,1.688-1.1a2.883,2.883,0,0,0,1-1.155,2.832,2.832,0,0,0,0-2.175,2.884,2.884,0,0,0-1-1.155c-.421-.317-.99-.668-1.688-1.1Z" fill="currentColor" fill-rule="evenodd"></path>
+                                      </g>
+                                      <rect id="Rectangle_320" data-name="Rectangle 320" width="24" height="24" transform="translate(-972 -2420)" fill="none"></rect>
+                                    </g>
+                                  </g>
+                                </svg> {{LANG top_videos}}
+						<span class="view_more_link">
+							<a href="{{LINK videos/top}}" data-load="?link1=videos&page=top">
+								
+							</a>
+						</span>
+					</h4>
+				</div>
+				<div class="videos">
+					<div class="row pt_no_vid_found_top cus_slider">
+						{{TOP_LIST}}
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+        </div>
+        <?php if ($pt->config->live_video == 1 && $pt->have_live) { ?>
+        <div class="pt_home_vid_content">
+			<div class="home-page-categories pt_hmpg_vidlst">
+				<div class="title">
+					<h4>
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M7.6727 3.66836C7.85585 4.03988 7.70315 4.48953 7.33163 4.67268C4.61229 6.01327 2.75 8.79333 2.75 12C2.75 15.2066 4.61229 17.9867 7.33163 19.3273C7.70315 19.5104 7.85585 19.9601 7.6727 20.3316C7.48954 20.7031 7.03989 20.8558 6.66837 20.6727C3.46083 19.0914 1.25 15.8043 1.25 12C1.25 8.19571 3.46083 4.90855 6.66837 3.32729C7.03989 3.14413 7.48954 3.29683 7.6727 3.66836ZM16.3273 3.66836C16.5105 3.29683 16.9601 3.14413 17.3316 3.32729C20.5392 4.90855 22.75 8.19571 22.75 12C22.75 15.8043 20.5392 19.0914 17.3316 20.6727C16.9601 20.8558 16.5105 20.7031 16.3273 20.3316C16.1441 19.9601 16.2969 19.5104 16.6684 19.3273C19.3877 17.9867 21.25 15.2066 21.25 12C21.25 8.79333 19.3877 6.01327 16.6684 4.67268C16.2969 4.48953 16.1441 4.03988 16.3273 3.66836ZM8.59913 7.54948C8.84794 7.88064 8.78118 8.3508 8.45002 8.5996C7.41628 9.37627 6.75 10.6102 6.75 12C6.75 13.3898 7.41628 14.6237 8.45002 15.4004C8.78118 15.6492 8.84794 16.1193 8.59913 16.4505C8.35033 16.7817 7.88017 16.8484 7.54901 16.5996C6.1544 15.5518 5.25 13.8814 5.25 12C5.25 10.1186 6.1544 8.44816 7.54901 7.40036C7.88017 7.15156 8.35033 7.21832 8.59913 7.54948ZM15.4009 7.54948C15.6497 7.21832 16.1198 7.15156 16.451 7.40036C17.8456 8.44816 18.75 10.1186 18.75 12C18.75 13.8814 17.8456 15.5518 16.451 16.5996C16.1198 16.8484 15.6497 16.7817 15.4009 16.4505C15.1521 16.1193 15.2188 15.6492 15.55 15.4004C16.5837 14.6237 17.25 13.3898 17.25 12C17.25 10.6102 16.5837 9.37627 15.55 8.5996C15.2188 8.3508 15.1521 7.88064 15.4009 7.54948ZM10.75 12C10.75 11.3096 11.3096 10.75 12 10.75C12.6904 10.75 13.25 11.3096 13.25 12C13.25 12.6903 12.6904 13.25 12 13.25C11.3096 13.25 10.75 12.6903 10.75 12ZM12 9.24998C10.4812 9.24998 9.25 10.4812 9.25 12C9.25 13.5188 10.4812 14.75 12 14.75C13.5188 14.75 14.75 13.5188 14.75 12C14.75 10.4812 13.5188 9.24998 12 9.24998Z" fill="currentColor"></path>
+                                  </svg> {{LANG live_videos}}
+						<span class="view_more_link">
+							<a href="{{LINK videos/live}}" data-load="?link1=videos&page=live">
+							<!-- 	<div class="explore_more">
+									<svg width="44" height="33" viewBox="0 0 44 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M28 32C36.5604 32 43.5 25.0604 43.5 16.5C43.5 7.93959 36.5604 1 28 1C19.4396 1 12.5 7.93959 12.5 16.5C12.5 25.0604 19.4396 32 28 32Z" stroke="currentColor"/>
+										<path d="M0 16.5H32" stroke="currentColor"/>
+										<path d="M24 8.5L32 16.5" stroke="currentColor" stroke-linecap="square"/>
+										<path d="M24 24.5L32 16.5" stroke="currentColor" stroke-linecap="square"/>
+									</svg>
+								</div> -->
+							</a>
+						</span>
+						<!-- <span class="view_more_link"><a href="{{LINK videos/live}}" data-load="?link1=videos&page=live">{{LANG explore_more}}</a></span> -->
+					</h4>
+				</div>
+				<div class="videos">
+					<div class="row pt_no_vid_found_top cus_slider">
+						{{LIVE_LIST}}
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+        </div>
+        <?php } ?>
+        <?php if ($pt->config->show_articles == 'on') { ?>
+        	<div class="pt_home_vid_content">
+				<div class="home-page-categories pt_hmpg_vidlst">
+					<div class="title">
+						<h4><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                      <g id="Group_281" data-name="Group 281" transform="translate(1123 2420)">
+                                        <g id="Document_Align_Left_16" data-name="Document Align Left 16" transform="translate(-1123 -2420)">
+                                          <path id="Path_48" data-name="Path 48" d="M3,13c0,3.75,0,5.625.955,6.939a5,5,0,0,0,1.106,1.106C6.375,22,8.25,22,12,22s5.625,0,6.939-.955a5,5,0,0,0,1.106-1.106C21,18.625,21,16.75,21,13V11c0-.839,0-1.584-.011-2.25h-.07A12.414,12.414,0,0,1,19.1,8.679a5.75,5.75,0,0,1-4.78-4.78,12.408,12.408,0,0,1-.071-1.819v-.07C13.584,2,12.839,2,12,2c-3.75,0-5.625,0-6.939.955A5,5,0,0,0,3.955,4.061C3,5.375,3,7.25,3,11ZM8,7.25a.75.75,0,0,0,0,1.5h3a.75.75,0,0,0,0-1.5Zm0,4a.75.75,0,0,0,0,1.5h8a.75.75,0,0,0,0-1.5Zm0,4a.75.75,0,0,0,0,1.5h3a.75.75,0,0,0,0-1.5Z" fill="currentColor" fill-rule="evenodd"></path>
+                                          <path id="Path_49" data-name="Path 49" d="M19.335,7.2a11.514,11.514,0,0,0,1.6.052,5.836,5.836,0,0,0-.89-3.189,5,5,0,0,0-1.106-1.106,5.835,5.835,0,0,0-3.189-.89,11.518,11.518,0,0,0,.052,1.6A4.25,4.25,0,0,0,19.335,7.2Z" fill="currentColor"></path>
+                                        </g>
+                                        <rect id="Rectangle_315" data-name="Rectangle 315" width="24" height="24" transform="translate(-1123 -2420)" fill="none"></rect>
+                                      </g>
+                                    </svg> {{LANG articles}}
+
+							<span class="view_more_link">
+								<a href="{{LINK articles}}" data-load="?link1=articles">
+									<!-- <div class="explore_more">
+										<svg width="44" height="33" viewBox="0 0 44 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M28 32C36.5604 32 43.5 25.0604 43.5 16.5C43.5 7.93959 36.5604 1 28 1C19.4396 1 12.5 7.93959 12.5 16.5C12.5 25.0604 19.4396 32 28 32Z" stroke="currentColor"/>
+										<path d="M0 16.5H32" stroke="currentColor"/>
+										<path d="M24 8.5L32 16.5" stroke="currentColor" stroke-linecap="square"/>
+										<path d="M24 24.5L32 16.5" stroke="currentColor" stroke-linecap="square"/>
+									</svg>
+									</div> -->
+								</a>
+							</span>
+						</h4>
+					</div>
+					<div class="articles-content pt_homep_articls">
+						<div class="row cus_slider">
+							{{HTML_POSTS}}
+						</div>
+					</div>
+				</div>
+				<div class="clear"></div>
+	        </div>
+        <?php } ?>
+		<!-- <hr class="pt_hmpg_hr"> -->
+ 
+		{{SUBSC_HTML}}
+
+		<div class="pt_home_vid_content">
+			<div class="home-page-categories pt_hmpg_vidlst">
+				<div class="title">
+					<h4><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                      <g id="Group_282" data-name="Group 282" transform="translate(879 2420)">
+                                        <g id="Video_1" data-name="Video 1" transform="translate(-879.25 -2420.25)">
+                                          <path id="Path_59" data-name="Path 59" d="M7.733,8.752a1.315,1.315,0,0,1,.651.2c.4.2.906.507,1.644.962s1.246.768,1.6,1.038a1.479,1.479,0,0,1,.516.535,1.332,1.332,0,0,1,0,1.019,1.479,1.479,0,0,1-.516.535c-.358.27-.866.583-1.6,1.038s-1.247.766-1.644.962a1.315,1.315,0,0,1-.651.2,1.072,1.072,0,0,1-.762-.476,1.653,1.653,0,0,1-.18-.763c-.041-.471-.041-1.1-.041-2.009s0-1.538.041-2.009a1.653,1.653,0,0,1,.18-.763A1.072,1.072,0,0,1,7.733,8.752Z" fill="currentColor"></path>
+                                          <path id="Path_60" data-name="Path 60" d="M9.034,3.25H8.966c-1.372,0-2.447,0-3.312.071a5.918,5.918,0,0,0-2.265.556A5.75,5.75,0,0,0,.877,6.39,5.918,5.918,0,0,0,.321,8.655C.25,9.519.25,10.595.25,11.966v.067c0,1.372,0,2.447.071,3.312A5.918,5.918,0,0,0,.877,17.61,5.75,5.75,0,0,0,3.39,20.123a5.919,5.919,0,0,0,2.265.556c.864.071,1.94.071,3.311.071h.068c1.372,0,2.447,0,3.312-.071a5.918,5.918,0,0,0,2.265-.556,5.75,5.75,0,0,0,2.513-2.513q.075-.147.138-.3a23.414,23.414,0,0,0,2.9,1.134,2.771,2.771,0,0,0,2.347-.2,2.771,2.771,0,0,0,1.123-2.07,24.43,24.43,0,0,0,.121-3.224v-1.9a24.43,24.43,0,0,0-.121-3.224,2.771,2.771,0,0,0-1.123-2.07,2.771,2.771,0,0,0-2.347-.2,23.41,23.41,0,0,0-2.9,1.134q-.063-.152-.138-.3A5.75,5.75,0,0,0,14.61,3.877a5.918,5.918,0,0,0-2.265-.556C11.481,3.25,10.405,3.25,9.034,3.25Zm1.747,5.37c-.7-.429-1.266-.779-1.735-1.01a2.688,2.688,0,0,0-1.479-.349A2.572,2.572,0,0,0,5.732,8.383,3.032,3.032,0,0,0,5.3,9.862c-.047.543-.047,1.24-.047,2.1v.072c0,.862,0,1.559.047,2.1a3.031,3.031,0,0,0,.435,1.479,2.572,2.572,0,0,0,1.834,1.122,2.688,2.688,0,0,0,1.479-.349c.469-.231,1.038-.581,1.735-1.01l.066-.041c.7-.429,1.267-.78,1.688-1.1a2.883,2.883,0,0,0,1-1.155,2.832,2.832,0,0,0,0-2.175,2.883,2.883,0,0,0-1-1.155c-.421-.317-.99-.668-1.688-1.1Z" fill="currentColor" fill-rule="evenodd"></path>
+                                        </g>
+                                        <rect id="Rectangle_323" data-name="Rectangle 323" width="24" height="24" transform="translate(-879 -2420)" fill="none"></rect>
+                                      </g>
+                                    </svg> {{LANG latest_videos}}
+						<span class="view_more_link">
+							<a href="{{LINK videos/latest}}" data-load="?link1=videos&page=latest">
+								<!-- <div class="explore_more">
+									<svg width="44" height="33" viewBox="0 0 44 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M28 32C36.5604 32 43.5 25.0604 43.5 16.5C43.5 7.93959 36.5604 1 28 1C19.4396 1 12.5 7.93959 12.5 16.5C12.5 25.0604 19.4396 32 28 32Z" stroke="currentColor"/>
+										<path d="M0 16.5H32" stroke="currentColor"/>
+										<path d="M24 8.5L32 16.5" stroke="currentColor" stroke-linecap="square"/>
+										<path d="M24 24.5L32 16.5" stroke="currentColor" stroke-linecap="square"/>
+									</svg>
+								</div> -->
+							</a>
+						</span>
+						<!-- <span class="view_more_link"><a href="{{LINK videos/latest}}" data-load="?link1=videos&page=latest">{{LANG explore_more}}</a></span> -->
+					</h4>
+				</div>
+				<div class="videos">
+					<div class="row cus_slider">
+						{{LATEST_LIST}}
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<!-- <hr class="pt_hmpg_hr"> -->
+		
+		{{HOME_PAGE_VIDEOS}}
+	</div>
+</div>
+
+<!-- Modal -->
+<div class="share_feat_vid hidden">
+	<div class="pt_wallet_forms">
+		<div class="form-group">
+			<label>
+				<span>{{LANG share}}</span>
+			</label>
+		</div>
+	</div>
+	<div class="video_section_wrap form-group">
+		<div class="share-video" style="width: 100%;">
+			<div class="row share-input" style="width: 100%;">
+				<div class="col-md-10">
+					<input type="text" value="<?php echo($video_slide->url) ?>" id="copy_feaat_vid" class="form-control input-md" readonly onClick="this.select();">
+				</div>
+			</div>
+			<a href="javascript:void(0);" class="fa fa-facebook" onclick="OpenShareWindow('https://www.facebook.com/sharer/sharer.php?u=<?php echo($video_slide->url) ?>')"></a>
+			<a href="javascript:void(0);" class="fa fa-twitter" onclick="OpenShareWindow('https://twitter.com/intent/tweet?url=<?php echo($video_slide->url) ?>')"></a>
+			<a href="javascript:void(0);" class="fa fa-google" onclick="OpenShareWindow('https://plus.google.com/share?url=<?php echo($video_slide->url) ?>')"></a>
+			<a href="javascript:void(0);" class="fa fa-linkedin" onclick="OpenShareWindow('https://www.linkedin.com/shareArticle?mini=true&url=<?php echo($video_slide->url) ?>&title=<?php echo $video_slide->title; ?>')"></a>
+			<a href="javascript:void(0);" class="fa fa-pinterest" onclick="OpenShareWindow('https://pinterest.com/pin/create/button/?url=<?php echo($video_slide->url) ?>&media=<?php echo $video_slide->thumbnail; ?>')"></a>
+			<a href="javascript:void(0);" class="fa fa-tumblr" onclick="OpenShareWindow('http://www.tumblr.com/share/link?url=<?php echo($video_slide->url) ?>')"></a>
+			<a href="javascript:void(0);" class="fa fa-reddit" onclick="OpenShareWindow('http://www.reddit.com/submit?url=<?php echo($video_slide->url) ?>')"></a>
+			<?php if (!empty($pt->config->wowonder_domain_uri) && $pt->config->wowonder_img) {?>
+				<a href="javascript:void(0);" class="share-third" onclick="OpenShareWindow('{{CONFIG wowonder_domain_uri}}/sharer?url=<?php echo($video_slide->url) ?>')"><img src="{{CONFIG wowonder_img}}" alt="share to "></a>
+			<?php } ?>
+			<a href="javascript:void(0);" onclick="copyToClipboard(this)" class="fa fa-link" link="<?php echo($video_slide->url) ?>"></a>
+		</div>
+	</div>
+</div>
+
+<script>
+function copyFeatvid() {
+	var copyText = document.getElementById("copy_feaat_vid");
+	copyText.select();
+	copyText.setSelectionRange(0, 99999);
+	navigator.clipboard.writeText(copyText.value);
+	Snackbar.show({
+		showAction: false,
+		pos: 'bottom-center',
+		text: 'Link Copied'
+	});
+}
+
+function openShareModal() {
+	swal({
+	  html:$('.share_feat_vid').clone().addClass('clone').removeClass('hidden'),
+	  showCloseButton: true,
+	  showCancelButton: false,
+	  focusConfirm: false,
+	  showConfirmButton: false,
+	  buttonsStyling:false,
+	  allowOutsideClick:true,
+	  showLoaderOnConfirm: true,
+	}).then(function(){/*pass*/},function(){/*pass*/});
+}
+	
+var swiper = new Swiper('.pt_sec_nav_slide_prnt', {
+	loop: false,
+	slidesPerView: "auto",
+
+	// Navigation arrows
+	navigation: {
+	    nextEl: '.swiper-button-next',
+	    prevEl: '.swiper-button-prev',
+	},
+});
+
+$(document).ready(function(){
+	$(".pl_feat_vid_slider").owlCarousel({
+		items:1,
+		nav: true,
+		dots: false,
+		navContainer: '.pl_feat_vid_slide_nav',
+		// dotsContainer: '.pl_feat_vid_slide_dots',
+		navText: ['<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>','<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" /></svg>'],
+		<?php if ($pt->language_type == 'rtl') { ?>
+		rtl: true,
+		<?php } ?>
+	});
+});
+
+$(document).ready(function() {
+if( !$.trim( $('.pt_no_vid_found_trend').html() ).length ) {
+	$('.pt_no_vid_found_trend').html(`<h5 class="empty_state"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" class="feather"><path fill="currentColor" d="M21 14.2V8.91c0-.89-1.08-1.34-1.71-.71L17 10.5V7c0-.55-.45-1-1-1h-5.61l8.91 8.91c.62.63 1.7.18 1.7-.71zM2.71 2.56c-.39.39-.39 1.02 0 1.41L4.73 6H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.21 0 .39-.08.55-.18l2.48 2.48c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L4.12 2.56c-.39-.39-1.02-.39-1.41 0z"/></svg> {{LANG no_videos_found_for_now}}</h5>`);
+};
+});
+
+$(document).ready(function() {
+if( !$.trim( $('.pt_no_vid_found_top').html() ).length ) {
+	$('.pt_no_vid_found_top').html('<h5 class="empty_state"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" class="feather"><path fill="currentColor" d="M21 14.2V8.91c0-.89-1.08-1.34-1.71-.71L17 10.5V7c0-.55-.45-1-1-1h-5.61l8.91 8.91c.62.63 1.7.18 1.7-.71zM2.71 2.56c-.39.39-.39 1.02 0 1.41L4.73 6H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.21 0 .39-.08.55-.18l2.48 2.48c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L4.12 2.56c-.39-.39-1.02-.39-1.41 0z"/></svg> {{LANG no_videos_found_for_now}}</h5>');
+};
+});
+
+$(function () {
+   $('#save-button').on('click', function(event) {
+      event.preventDefault();
+      var logged = $('#main-container').attr('data-logged');
+      if (!logged) {
+         window.location.href = "{{LINK login?to=<?php echo $pt->actual_link;?>}}";
+         return false;
+      }
+      var video_id = $('#video-id').val();
+      if ($(this).attr('saved')) {
+         $(this).html('<i class="fa fa-floppy-o fa-fw"></i> {{LANG save}}');
+         $(this).removeAttr('saved');
+      } else {
+         $(this).html('<i class="fa fa-check fa-fw"></i> {{LANG saved}}');
+         $(this).attr('saved', 'true');
+      }
+      $.post('{{LINK aj/save-video}}', {video_id: video_id});
+   });
+});
+
+<?php if ($pt->config->shorts_system == 'on') { ?>
+$(document).ready(function(){
+  $('.cus_story_slider').slick({
+  infinite: false,
+  slidesToShow: 6,
+  <?php if ($pt->language_type == 'rtl') { ?>rtl: true,<?php } ?>
+  slidesToScroll: 2,
+  responsive: [
+	{
+      breakpoint: 1360,
+      settings: {
+        slidesToShow: 4
+      }
+    },
+	{
+      breakpoint: 1251,
+      settings: {
+        slidesToShow: 5
+      }
+    },
+	{
+      breakpoint: 1127,
+      settings: {
+        slidesToShow: 4
+      }
+    },
+    {
+      breakpoint: 992,
+      settings: {
+        slidesToShow: 4
+      }
+    },
+	{
+      breakpoint: 910,
+      settings: {
+        slidesToShow: 3
+      }
+    },
+    {
+      breakpoint: 705,
+      settings: {
+        slidesToShow: 2
+      }
+    },
+	{
+      breakpoint: 530,
+      settings: {
+        arrows: false,
+		slidesToShow: 2,
+		waitForAnimate: false,
+      }
+    },
+    {
+      breakpoint: 485,
+      settings: {
+        arrows: false,
+		slidesToShow: 2,
+		slidesToScroll: 1,
+		waitForAnimate: false,
+      }
+    }
+  ]
+  });
+});
+<?php } ?>
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.cus_slider').slick({
+  prevArrow:"<div class='explore_more prev' aria-disabled='true'><img class='slick-prev' src='{{CONFIG theme_url}}/img/arrow.svg'></div>",
+  nextArrow:"<div class='explore_more next'><img class='slick-next' src='{{CONFIG theme_url}}/img/arrow.svg'></div>",
+  <?php if ($pt->language_type == 'rtl') { ?>
+		rtl: true,
+		<?php } ?>
+  infinite: false,
+  slidesToShow: 4,
+    slidesToScroll: 1,
+  responsive: [
+	{
+      breakpoint: 1360,
+      settings: {
+        slidesToShow: 4
+      }
+    },
+	{
+      breakpoint: 1251,
+      settings: {
+        slidesToShow: 4
+      }
+    },
+	{
+      breakpoint: 1127,
+      settings: {
+        slidesToShow: 4
+      }
+    },
+    {
+      breakpoint: 992,
+      settings: {
+        slidesToShow: 4
+      }
+    },
+	{
+      breakpoint: 910,
+      settings: {
+        slidesToShow: 3
+      }
+    },
+    {
+      breakpoint: 705,
+      settings: {
+        slidesToShow: 1
+      }
+    },
+	{
+      breakpoint: 530,
+      settings: {
+        arrows: false,
+		slidesToShow: 1,
+		waitForAnimate: false,
+      }
+    },
+    {
+      breakpoint: 485,
+      settings: {
+        arrows: false,
+		slidesToShow: 1,
+		slidesToScroll: 1,
+		waitForAnimate: false,
+      }
+    }
+  ]
+  });
+});
+</script>

@@ -1,0 +1,11 @@
+<div class="form-group">
+	<label class="col-md-12" >{{NAME}}</label>  
+	<div class="col-md-12">
+		<?php if ($pt->field->type == 'textbox'): ?>
+			<input name="fid_{{ID}}" id="{{ID}}" type="text" class="form-control input-md" value="{{FID}}">
+		<?php elseif($pt->field->type == 'textarea'): ?>
+			<textarea class="form-control" id="{{ID}}" name="fid_{{ID}}" cols="20" rows="3">{{FID}}</textarea>
+		<?php endif; ?>
+		<span class="help-block">{{DESC}}</span>
+	</div>
+</div>

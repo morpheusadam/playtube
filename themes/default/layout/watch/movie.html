@@ -1,0 +1,2001 @@
+<link rel="stylesheet" href="{{CONFIG theme_url}}/css/night-mode.css">
+<style>body, .watch-video-show-more {background: #08090f !important;}.navbar-fixed-top, #get-notifications, .navbar-fixed-top ul.navbar-nav > li, .dropdown-menu, .dropdown-menu > li, .pt_language_select:before {background: #12141E !important;}.pt_footer .container-fluid, footer .footer-container, .footer-container .footer-links ul li, .content, .pt_foot_lang > li, .pt_blogcomm_combo textarea, .pt_video_info .watch-video-show-more, .vid_mov_e_info li {background: #12141E !important;}body {overflow-x: hidden;}footer.pt_footer, .top-video.video-player-page{position: relative;}nav.navbar-findcond .search-header input {background-color: #08090f !important;}.navbar.navbar-findcond.navbar-default.second-header-layout {border-top: 2px solid #25293d !important;background: #12141E !important;}.publisher-element, .video-options, hr, .pt_blogcomm_combo textarea, .watch-video-show-more {border-color: #25293d !important;}.main-comment .pt-comment-item-reply-form input {background-color: #12141e !important;border-color: #2a2d30 !important;box-shadow: none;}.navbar.navbar-findcond.navbar-default.second-header-layout ul.nav.navbar-nav li {background: #12141E !important;}nav.navbar-findcond ul.dropdown-menu > li > a:hover {background: #25283a !important;}.btn-subscribed {background: #3590d9}.video-info-element .views-bar {background-color: #3b404f;}.yp_side_drawer, .yp_side_drawer ul.sections, .yp_side_drawer ul.sections li {
+   background: #12141E !important;
+   }
+   .dropdown-menu.notfi-dropdown h5, ul.notfi-dropdown ul#notifications-list li.notifications-list, ul.notfi-dropdown ul#notifications-list li.no-notifications {
+   background: #12141e !important;border-color: #25293d !important;
+   }
+   textarea#embed, .share-input input {
+   border-color: #25293d !important;
+   background-color: #181b27 !important;
+   }
+   .yp_side_drawer ul.sections {
+   border-color: #25293d !important;
+   }
+   ul.dropdown-menu > li > a:hover {
+   background: #25283a !important;
+   }
+   .content {
+   box-shadow: none;
+   }
+   .second-header-layout li.active > a {
+   background: #171a25 !important;
+   }
+   .pt_footer .container-fluid {border: 0;}
+   textarea#embed {
+   border-color: #25293d !important;
+   background-color: #181b27 !important;
+   }
+   ul.notfi-dropdown {
+   border-color: #25293d !important;
+   }
+   .dropdown-menu.notfi-dropdown h5, ul.notfi-dropdown ul#notifications-list li.notifications-list {
+   background: #12141e !important;border-color: #25293d !important;
+   }
+   @media (min-width: 1800px) {
+   .video-player.pt_video_player {
+   height: 670px;
+   }
+   .video-player.pt_video_player .mejs__container {
+   height: 670px !important;min-height: 670px;max-height: 670px !important;
+   }
+   }
+</style>
+<div class="top-video video-player-page">
+   <div class="row">
+      <div id="background" class="hidden"></div>
+      <div class="col-md-12 player-video">
+         <?php if (($pt->config->require_login == 'on' && IS_LOGGED) || $pt->config->require_login == 'off') { ?>
+         <?php if ($pt->continent_hide == false) { ?>
+         <?php if ((($pt->config->sell_videos_system == 'on' && $pt->get_video->sell_video > 0 && $pt->get_video->owner->subscriber_price == 0) || ($pt->get_video->sell_video == 0 && $pt->get_video->owner->subscriber_price == 0)) || ($pt->config->payed_subscribers == 'on' && ($pt->get_video->owner->subscriber_price > 0 || $pt->get_video->owner->subscriber_price == 0) ) || $pt->get_video->is_owner ) { ?>
+         <?php
+            if (($pt->get_video->owner->subscriber_price == 0 || ($pt->get_video->owner->subscriber_price > 0 && $pt->show_user_video == 1)) || ($pt->config->sell_videos_system == 'on' && $pt->get_video->sell_video > 0)  || $pt->get_video->is_owner) {
+             if ($pt->get_video->sell_video == 0 || $pt->get_video->is_owner || $pt->video_approved == false  || !empty($pt->get_video->demo) || ($pt->get_video->sell_video > 0 && $pt->is_paid > 0)) { ?>
+         <?php if ($pt->video_approved == true || PT_IsAdmin()) { ?>
+         <?php if ($pt->get_video->age == false || PT_IsAdmin()) { ?>
+         <?php if ($pt->video_type == 'public' || PT_IsAdmin()) { ?>
+         <div class="video-player pt_video_player {{USR_AD_TRANS}}">
+            <?php if (!empty($pt->config->watermark)) { ?>
+            <div class="watermark">
+               <a href="{{CONFIG site_url}}"><img src="{{CONFIG watermark}}" alt='watermark logo'></a>
+            </div>
+            <?php } ?>
+            <?php if ($pt->converted === true && $pt->in_queue == false): ?>
+            <?php if (!empty($pt->cards)) { ?>
+            <?php  foreach ($pt->cards as $key => $card) {
+               ?>
+            <div style="position: absolute;z-index: 888;display: none;<?php echo (!empty($card->color) ? 'color: '.$card->color.' !important;' : ''); echo (!empty($card->background_color) ? 'background-color: '.$card->background_color.' !important;' : ''); echo (!empty($card->part) && $card->part == 'top_left' ? 'top: 10px !important; left: 10px !important;' : ''); echo (!empty($card->part) && $card->part == 'top_right' ? 'top: 10px !important; right: 10px !important;' : ''); echo (!empty($card->part) && $card->part == 'bottom_left' ? 'bottom: 40px !important; left: 10px !important;' : ''); echo (!empty($card->part) && $card->part == 'bottom_right' ? 'bottom: 40px !important; right: 10px !important;' : ''); echo (!empty($card->part) && $card->part == 'center' ? 'top: 50% !important; left: 40% !important;' : ''); ?>" class="<?php if($card->type == 'text'){ ?>card_<?php echo(str_replace(':', '_', $card->duration)) ?><?php } ?> <?php echo ($card->type == 'video' || $card->type == 'subscribe' ? 'card_end' : ''); ?>">
+               <?php if ($card->type == 'text' && !empty($card->url)) { ?>
+               <a href="<?php echo($card->url) ?>" target="_blank" style="<?php echo (!empty($card->color) ? 'color: '.$card->color.' !important;' : ''); ?>"><?php echo($card->title) ?></a>
+               <?php }elseif ($card->type == 'text' && empty($card->url)) { ?>
+               <p style="<?php echo (!empty($card->color) ? 'color: '.$card->color.' !important;' : ''); ?>"><?php echo($card->title) ?></p>
+               <?php } ?>
+               <?php if ($card->type == 'subscribe') { ?>
+               <div class="user-wrapper vid_pop_channls <?php if($card->part == 'top_left' || $card->part == 'bottom_left'){echo('pull-left');} if($card->part == 'top_right' || $card->part == 'bottom_right'){echo('pull-right');} ?>">
+                  <div class="video-thumb">
+                     <a href="<?php echo($pt->get_video->owner->url) ?>" data-load="?link1=timeline&id=<?php echo($pt->get_video->owner->username) ?>">
+                     <img src="<?php echo($pt->get_video->owner->avatar) ?>" alt="<?php echo($pt->get_video->owner->name) ?>">
+                     </a>
+                  </div>
+                  <div class="video-title">
+                     <a href="<?php echo($pt->get_video->owner->url) ?>" data-load="?link1=timeline&id=<?php echo($pt->get_video->owner->username) ?>">
+                        <h4 style="margin-top: 0"><?php echo($pt->get_video->owner->name) ?></h4>
+                     </a>
+                     <h6>
+                        <?php echo($pt->get_video->owner->about) ?>
+                     </h6>
+                     <?php if (!IS_LOGGED) { ?>
+                     <?php if ($pt->get_video->owner->subscriber_price) { ?>
+                     <br><br><button class="btn btn-main" onselectstart="return false"onclick="location.href = site_url+'/login';">{{LANG subscribe}} {{CURRENCY}}<?php echo $pt->get_video->owner->subscriber_price; ?> </button>
+                     <?php }else{ ?>
+                     {{SUBSCIBE_BUTTON}}
+                     <?php } ?>
+                     <?php }else{ ?>
+                     <?php if ($pt->get_video->owner->subscriber_price) { ?>
+                     <button class="btn btn-main" onselectstart="return false" onclick="PT_PaySubscribe(<?php echo $pt->get_video->user_id; ?>,this,'subscribe')">{{LANG subscribe}} {{CURRENCY}}<?php echo $pt->get_video->owner->subscriber_price; ?> </button>
+                     <?php }else{ ?>
+                     {{SUBSCIBE_BUTTON}}
+                     <?php } } ?>
+                  </div>
+               </div>
+               <?php } ?>
+               <?php if ($card->type == 'video') {
+                  $ref_video = PT_GetVideoByID($card->ref_video, 0, 1,2);
+                  if (!empty($ref_video) && $ref_video->user_id == $card->user_id) {
+                  ?>
+               <div class="video-wrapper <?php if($card->part == 'top_left' || $card->part == 'bottom_left'){echo('pull-left');} if($card->part == 'top_right' || $card->part == 'bottom_right'){echo('pull-right');} ?>" style="max-width: 25%;" data-id="54" id="video-54">
+                  <div>
+                     <div class="video-thumb">
+                        <a href="<?php echo($ref_video->url) ?>" data-load="?link1=watch&id=<?php echo(PT_Slug($ref_video->title, $ref_video->video_id)) ?>"><img src="<?php echo($ref_video->thumbnail) ?>" alt="<?php echo($ref_video->title) ?>" style="width: 100%;"></a>
+                     </div>
+                     <div class="video-info">
+                        <div>
+                           <div class="video-title">
+                              <a href="<?php echo($ref_video->url) ?>" title="<?php echo($ref_video->title) ?>" data-load="?link1=watch&id=<?php echo(PT_Slug($ref_video->title, $ref_video->video_id)) ?>"><?php echo($ref_video->title) ?></a>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="clear"></div>
+                  </div>
+               </div>
+               <?php } } ?>
+            </div>
+            <?php }} ?>
+            <video id="my-video<?php if ($pt->config->player_type == 'fluidPlayer' || $pt->config->player_type == 'plyr') { ?>_<?php echo $pt->get_video->id; ?><?php } ?>" <?php if ($pt->config->player_type == 'videojs') { ?>   class="video-js" data-setup=''  <?php } ?> controls <?php if (empty($pt->ad_image)) { ?>  <?php } ?> style="width:100%; height:100%;position: relative;" poster="{{THUMBNAIL}}" autoplay playsinline>
+               <?php if (!empty($pt->video_4096)) { ?>
+               <source src="{{VIDEO_LOCATION_4096}}" type="{{VIDEO_TYPE}}" data-quality="4K" title='4K' label='4K' res='4096' size='4096'>
+               <?php } ?>
+               <?php if (!empty($pt->video_2048)) { ?>
+               <source src="{{VIDEO_LOCATION_2048}}" type="{{VIDEO_TYPE}}" data-quality="2K" title='2K' label='2K' res='2048' size='2048'>
+               <?php } ?>
+               <?php if (!empty($pt->video_1080)) { ?>
+               <source src="{{VIDEO_LOCATION_1080}}" type="{{VIDEO_TYPE}}" data-quality="1080p" title='1080p' label='1080p' res='1080' size='1080'>
+               <?php } ?>
+               <?php if (!empty($pt->video_720)) { ?>
+               <source src="{{VIDEO_LOCATION_720}}" type="{{VIDEO_TYPE}}" data-quality="720p" title='720p' label='720p' res='720' size='720'>
+               <?php } ?>
+               <?php if (!empty($pt->video_480)) { ?>
+               <source src="{{VIDEO_LOCATION_480}}" type="{{VIDEO_TYPE}}" data-quality="480p" title='480p' label='480p' res='480' size='480'>
+               <?php } ?>
+               <?php if (!empty($pt->video_360)) { ?>
+               <source src="{{VIDEO_LOCATION_360}}" type="{{VIDEO_TYPE}}" data-quality="360p" title='360p' label='360p' res='360' size='360'>
+               <?php } ?>
+               <?php if (!empty($pt->video_240)) { ?>
+               <source src="{{VIDEO_LOCATION_240}}" type="{{VIDEO_TYPE}}" data-quality="240p" title='240p' label='240p' res='240' size='240'>
+               <?php } ?>
+               <?php if (!empty($pt->get_video->youtube) || (!empty($pt->get_video->video_location) && empty($pt->video_240))) { ?>
+               <source src="{{VIDEO_LOCATION}}" type="{{VIDEO_TYPE}}" data-quality="HD" title='HD' label='HD' res='<?php echo(!empty($pt->video_res) ? $pt->video_res : '360') ?>'>
+               <?php } ?>
+               Your browser does not support HTML5 video.
+               <!-- //src="http://www.youtube.com/watch?v=nOEw9iiopwI" type="video/youtube" -->
+            </video>
+            <?php if (!empty($pt->ad_image)) { ?>
+            <a href="{{AD_P_LINK}}" class="ad-link" target="_blank">
+               <div class="ad-image">
+                  <div class="ads-test"><i class="fa fa-bullhorn"></i> Advertisement will close in <span class="timer">(<span>{{AD_SKIP_NUM}}</span>)</span></div>
+                  <img src="{{AD_IMAGE}}" alt="Ads">
+               </div>
+            </a>
+            <?php } ?>
+            <?php if ($pt->config->resize_video == 'on') { ?>
+            <!-- <div class="icons hidden">
+               <span class="expend-player"><i class="fa fa-expand fa-fw"></i></span>
+               </div> -->
+            <?php } ?>
+            {{USER_ADS_DESC_OVERLAY}}
+            <?php else: ?>
+            <div class="video-processing">
+               <img src="{{THUMBNAIL}}" alt="" style="width: 100%;">
+               <div>
+                  <h5>
+                     <?php if ($pt->in_queue == true) { ?>
+                     <?php if (!empty($pt->video_owner)): ?>
+                     {{LANG ur_video_queue}}
+                     <?php else: ?>
+                     {{LANG this_video_queue}}
+                     <?php endif; ?>
+                     <?php }else{ ?>
+                     <p>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="feather feather-loader spin spin-svg">
+                           <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
+                        </svg>
+                     </p>
+                     <?php if (!empty($pt->video_owner)): ?>
+                     {{LANG ur_video_porcessing}}
+                     <?php else: ?>
+                     {{LANG this_video_porcessing}}
+                     <?php endif; ?>
+                     <?php } ?>
+                  </h5>
+               </div>
+            </div>
+            <?php endif; ?>
+         </div>
+         <?php } else { ?>
+         <div class="video-processing">
+            <img src="{{THUMBNAIL}}" alt="" style="width: 100%;">
+            <div>
+               <h5>
+                  <p>
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shield">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                     </svg>
+                  </p>
+                  {{LANG video_private_text}}
+               </h5>
+            </div>
+         </div>
+         <?php } ?>
+         <?php } else { ?>
+         <div class="video-processing">
+            <img src="{{THUMBNAIL}}" alt="" style="width: 100%;">
+            <div>
+               <h5>
+                  <p>
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-x">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <line x1="18" y1="8" x2="23" y2="13"></line>
+                        <line x1="23" y1="8" x2="18" y2="13"></line>
+                     </svg>
+                  </p>
+                  {{LANG age_restrict_text}}
+                  <?php if (!IS_LOGGED) { ?>
+                  <br><br>
+                  <p>{{LANG age_restrcit_text_2}}</p>
+                  <?php } ?>
+               </h5>
+            </div>
+         </div>
+         <?php } ?>
+         <?php } else { ?>
+         <div class="video-processing">
+            <img src="{{THUMBNAIL}}" alt="" style="width: 100%;">
+            <div>
+               <h5>
+                  <p>
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                     </svg>
+                  </p>
+                  {{LANG video_approve_text}}
+               </h5>
+            </div>
+         </div>
+         <?php } ?>
+         <?php }else{ ?>
+         <div class="video-processing">
+            <img src="{{THUMBNAIL}}" alt="" style="width: 100%;">
+            <div>
+               <h5>
+                  <p>
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign">
+                        <line x1="12" y1="1" x2="12" y2="23"></line>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                     </svg>
+                  </p>
+                  {{LANG movies_text}}
+                  <?php if ($pt->get_video->owner->subscriber_price) {
+                     $text = str_replace('{{PRICE}}', $pt->currency.$pt->get_video->owner->subscriber_price, $lang_array['buy_or_subscribe']);
+                     $text = str_replace('{{USERNAME}}',$pt->get_video->owner->name, $text);
+                     echo($text);
+                     ?>
+                  <?php } ?>
+                  <br><br>
+                  <?php if (!IS_LOGGED) { ?>
+                  <?php if (!empty($pt->get_video->main_video_price)) { ?>
+                  <button class="btn btn-main" onselectstart="return false" onclick="location.href = site_url+'/login';">{{LANG pay}} {{CURRENCY}}<?php echo $pt->get_video->main_video_price; ?> </button>
+                  <?php }if ($pt->get_video->rent_price){ ?>
+                  <button class="btn btn-main" style="right: 125px" onselectstart="return false" onclick="location.href = site_url+'/login';">{{LANG rent}} {{CURRENCY}}<?php echo $pt->get_video->rent_price; ?> </button>
+                  <?php } ?>
+                  <?php if ($pt->get_video->owner->subscriber_price) { ?>
+                  <br><br><button class="btn btn-main" onselectstart="return false"onclick="location.href = site_url+'/login';">{{LANG subscribe}} {{CURRENCY}}<?php echo $pt->get_video->owner->subscriber_price; ?> </button>
+                  <?php } ?>
+                  <?php } else{ ?>
+                  <?php if (!empty($pt->get_video->main_video_price)) { ?>
+                  <button class="btn btn-main p_t_show_btn_ p_t_show_btn_buy" onselectstart="return false" onclick="pay_to_see(<?php echo $pt->get_video->id; ?>,<?php echo $pt->get_video->main_video_price; ?>)">{{LANG pay}} {{CURRENCY}}<?php echo $pt->get_video->main_video_price; ?> </button>
+                  <?php }if ($pt->get_video->rent_price){ ?>
+                  <button class="btn btn-main p_t_show_btn_ p_t_show_btn_rent" style="right: 125px" onselectstart="return false" onclick="pay_to_see(<?php echo $pt->get_video->id; ?>,<?php echo $pt->get_video->rent_price; ?>,'rent')">{{LANG rent}} {{CURRENCY}}<?php echo $pt->get_video->rent_price; ?> </button>
+                  <?php } ?>
+                  <?php if ($pt->get_video->owner->subscriber_price) { ?>
+                  <button class="btn btn-main" onselectstart="return false" onclick="PT_PaySubscribe(<?php echo $pt->get_video->user_id; ?>,this,'subscribe')">{{LANG subscribe}} {{CURRENCY}}<?php echo $pt->get_video->owner->subscriber_price; ?> </button>
+                  <?php } } ?>
+               </h5>
+            </div>
+         </div>
+         <?php } ?>
+         <?php }else{ ?>
+         <div class="video-processing">
+            <img src="{{THUMBNAIL}}" alt="" style="width: 100%;">
+            <div>
+               <h5>
+                  <p>
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign">
+                        <line x1="12" y1="1" x2="12" y2="23"></line>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                     </svg>
+                  </p>
+                  <?php if ($pt->get_video->owner->subscriber_price) {
+                     echo(str_replace('{{PRICE}}', $pt->currency.$pt->get_video->owner->subscriber_price, $lang_array['subscribe_to_see']));
+                     ?>
+                  <?php }else{ ?>
+                  {{LANG pay_to_see}}
+                  <?php } ?>
+                  <br><br>
+                  <?php if (!IS_LOGGED) { ?>
+                  <button class="btn btn-main" onselectstart="return false" onclick="location.href = site_url+'/login';">{{LANG subscribe}} {{CURRENCY}}<?php echo $pt->get_video->owner->subscriber_price; ?> </button>
+                  <?php } else{ ?>
+                  <?php if ($pt->get_video->owner->subscriber_price) { ?>
+                  <button class="btn btn-main" onselectstart="return false" onclick="PT_PaySubscribe(<?php echo $pt->get_video->user_id; ?>,this,'subscribe')">{{LANG subscribe}} {{CURRENCY}}<?php echo $pt->get_video->owner->subscriber_price; ?> </button>
+                  <?php } } ?>
+               </h5>
+            </div>
+         </div>
+         <?php }}else{ ?>
+         <div class="video-processing">
+            <img src="{{THUMBNAIL}}" alt="" style="width: 100%;">
+            <div>
+               <h5>
+                  <p>
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                     </svg>
+                  </p>
+                  {{LANG video_not_available}}
+               </h5>
+            </div>
+         </div>
+         <?php } } else{ ?>
+         <div class="video-processing">
+            <img src="{{THUMBNAIL}}" alt="" style="width: 100%;">
+            <div>
+               <h5>
+                  <?php if (empty($_COOKIE['r'])) { ?>
+                  <p>
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="feather feather-loader spin spin-svg">
+                        <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
+                     </svg>
+                  </p>
+                  <a href="{{URL}}" data-load="?link1=watch&id={{VIDEO_ID_}}" id="redirect_to_video_page"></a>
+                  <?php  } else if (!in_array(base64_decode($_COOKIE['r']), $pt->continents)) { ?>
+                  <p>
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                     </svg>
+                  </p>
+                  {{LANG unknown_location}}
+                  <?php  } else{ ?>
+                  <p>
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                     </svg>
+                  </p>
+                  {{LANG video_not_available_location}}
+                  <?php } ?>
+               </h5>
+            </div>
+         </div>
+         <?php } ?>
+         <?php }else{ ?>
+         <div class="video-processing">
+            <img src="{{THUMBNAIL}}" alt="" style="width: 100%;">
+            <div>
+               <h5>
+                  <p>
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                     </svg>
+                  </p>
+                  <?php
+                     $login = substr($lang_array['please_login_to_see_video'], strpos($lang_array['please_login_to_see_video'], '{{')+2,strpos($lang_array['please_login_to_see_video'], '}}') - (strpos($lang_array['please_login_to_see_video'], '{{')+2) );
+                     $link = "<a href='".PT_Link('login')."'>".$login."</a>";
+                     
+                     echo(str_replace('{{login}}', $link, $lang_array['please_login_to_see_video']));
+                      ?>
+               </h5>
+            </div>
+         </div>
+         <?php } ?>
+         <div class="clear"></div>
+      </div>
+      <br>
+      <div class="watch-container" style="margin: auto;">
+         <div class="row wtch_mv_main_row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8 wtch_mv_info_main">
+               <div class="content pt_shadow">
+                  <div class="video-title pt_video_info">
+                     <input type="hidden" value="{{ID}}" id="video-id">
+                     <div class="row wtch_mv_main_row">
+                        <div class="col-md-2 no-padding-right">
+                           <div class="wtch_mv_img">
+                              <img src="{{THUMBNAIL}}">
+                           </div>
+                        </div>
+                        <div class="col-md-10">
+                           <?php if (!empty($pt->get_video->trailer)) { ?>
+                           <button type="button" class="btn btn-success pt_mve_btn" data-toggle="modal" data-target="#movie_trailer">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                 <path fill="currentColor" d="M20.84 2.18L16.91 2.96L19.65 6.5L21.62 6.1L20.84 2.18M13.97 3.54L12 3.93L14.75 7.46L16.71 7.07L13.97 3.54M9.07 4.5L7.1 4.91L9.85 8.44L11.81 8.05L9.07 4.5M4.16 5.5L3.18 5.69A2 2 0 0 0 1.61 8.04L2 10L6.9 9.03L4.16 5.5M2 10V20C2 21.11 2.9 22 4 22H20C21.11 22 22 21.11 22 20V10H2Z" />
+                              </svg>
+                              {{LANG video_trailer}}
+                           </button>
+                           <?php } ?>
+                           <div class="video-big-title">
+                              <h1 itemprop="title">{{TITLE}}
+                                 <?php if ($pt->get_video->privacy == 1) { ?> <span class="private-text">{{LANG private}}</span><?php } ?>
+                                 <?php if ($pt->get_video->privacy == 2) { ?> <span class="private-text">{{LANG unlisted}}</span><?php } ?>
+                                 <?php if ($pt->get_video->sell_video > 0) { ?>
+                                 <?php if ($pt->video_approved == true) { ?>
+                                 <span><i class="fa fa-check-circle fa-fw verified" title="{{LANG video_verified}}"></i></span>
+                                 <?php } ?>
+                                 <?php } ?>
+                              </h1>
+                           </div>
+                           <div>
+                              <?php if (($pt->config->sell_videos_system == 'on') || $pt->get_video->sell_video == 0 ) { ?>
+                              <div class="video-likes pull-right">
+                                 <div class="like-btn {{LIKE_ACTIVE_CLASS}}" id="likes-bar" onclick="Wo_LikeSystem('{{ID}}', 'like', this, 'is_ajax')" data-likes="{{RAEL_LIKES}}" {{ISLIKED}}>
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up">
+                                    <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+                                 </svg>
+                                 <span class="likes" id="likes">{{LIKES}}</span>
+                              </div>
+                              <div class="video-info-element pull-right">
+                                 <div class="views-bar" style="width: {{DISLIKES_P}}%"></div>
+                                 <div class="views-bar blue" style="width: {{LIKES_P}}%"></div>
+                                 <div class="clear"></div>
+                              </div>
+                              <div class="like-btn text-right {{DIS_ACTIVE_CLASS}}" id="dislikes-bar" onclick="Wo_LikeSystem('{{ID}}', 'dislike', this, 'is_ajax')" data-likes="{{RAEL_DISLIKES}}" {{ISDISLIKED}}>
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down">
+                                 <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path>
+                              </svg>
+                              <span class="likes" id="dislikes">{{DISLIKES}}</span>
+                           </div>
+                           <div class="clear"></div>
+                        </div>
+                        <?php } ?>
+                     </div>
+                     <div class="video-views">
+                        <span id="video-views-count">{{VIEWS}}</span> {{LANG views}}
+                        <?php if ($pt->get_video->sell_video > 0) { ?>
+                        &nbsp;   &nbsp;<span><?php echo $pt->purchased; ?> {{LANG purchased}}</span>
+                        <?php } ?>
+                     </div>
+                     <?php if ($pt->get_video->sell_video > 0 && PT_IsAdmin()) { ?>
+                     <br>
+                     <div class="alert alert-danger">
+                        <span>{{LANG admin_can_see}}</span>
+                        <br>
+                        <?php if (!empty($pt->get_video->main_video_price)) { ?>
+                        {{LANG video_price}} {{CURRENCY}}<?php echo $pt->get_video->main_video_price; ?>
+                        <?php } ?>
+                        <?php if (!empty($pt->get_video->rent_price)) { ?>
+                        <br>
+                        {{LANG video_rent_price}} {{CURRENCY}}<?php echo $pt->get_video->rent_price; ?>
+                        <?php } ?>
+                     </div>
+                     <?php } ?>
+                     <?php if (!empty($pt->video_end)) { ?>
+                     <br>
+                     <div class="alert alert-danger">
+                        <span>{{LANG rent_time_will}} : <?php echo $pt->video_end; ?></span>
+                     </div>
+                     <?php } ?>
+                     <div class="publisher-element pull-left">
+                        <div class="publisher-avatar pull-left hide-in-mobile-720">
+                           <a href="{{USER url}}"><img src="{{USER avatar}}" alt="{{USER name}}"></a>
+                        </div>
+                        <div class="publisher-name">
+                           <a href="{{USER url}}" data-load="?link1=timeline&id={{USER username}}">{{USER name_v}}</a>
+                        </div>
+                        <div class="publisher-subscribe-button">
+                           <?php if (!empty($pt->get_video->demo) && PT_GetMedia($pt->get_video->demo) == $pt->get_video->video_location) { ?>
+                           <?php if (!IS_LOGGED) { ?>
+                           <?php if (!empty($pt->get_video->main_video_price)) { ?>
+                           <button class="btn btn-main btn_to_purchase_vid" onselectstart="return false" onclick="location.href = site_url+'/login';">{{LANG pay}} {{CURRENCY}}<?php echo $pt->get_video->main_video_price; ?> </button>
+                           <?php } ?>
+                           <?php if (!empty($pt->get_video->rent_price)) { ?>
+                           <button class="btn btn-main btn_to_purchase_vid" onselectstart="return false" onclick="location.href = site_url+'/login';">{{LANG rent}} {{CURRENCY}}<?php echo $pt->get_video->rent_price; ?> </button>
+                           <?php } ?>
+                           <?php } else{ ?>
+                           <?php if (!empty($pt->get_video->main_video_price)) { ?>
+                           <button class="btn btn-main p_t_show_btn_ p_t_show_btn_buy btn_to_purchase_vid" onselectstart="return false" onclick="pay_to_see(<?php echo $pt->get_video->id; ?>,<?php echo $pt->get_video->main_video_price; ?>)">{{LANG pay}} {{CURRENCY}}<?php echo $pt->get_video->main_video_price; ?> </button>
+                           <?php } ?>
+                           <?php if (!empty($pt->get_video->rent_price)) { ?>
+                           <button class="btn btn-main p_t_show_btn_ p_t_show_btn_rent btn_to_purchase_vid" onselectstart="return false" onclick="pay_to_see(<?php echo $pt->get_video->id; ?>,<?php echo $pt->get_video->rent_price; ?>,'rent')">{{LANG rent}} {{CURRENCY}}<?php echo $pt->get_video->rent_price; ?> </button>
+                           <?php } ?>
+                           <?php } ?>
+                           <?php } ?>
+                           {{SUBSCIBE_BUTTON}}
+                        </div>
+                        <div class="clear"></div>
+                     </div>
+                     <div class="clear"></div>
+                     <div class="video-options">
+                        <button class="btn-share" id="share-video">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-share-2">
+                              <circle cx="18" cy="5" r="3"></circle>
+                              <circle cx="6" cy="12" r="3"></circle>
+                              <circle cx="18" cy="19" r="3"></circle>
+                              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                           </svg>
+                           {{LANG share}}
+                        </button>
+                        <?php if ($pt->config->embed_system == 'on' && $pt->get_video->embedding == 0) {?>
+                        <?php if ($pt->get_video->sell_video == 0) { ?>
+                        <button class="btn-share" id="embed-video">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-code">
+                              <polyline points="16 18 22 12 16 6"></polyline>
+                              <polyline points="8 6 2 12 8 18"></polyline>
+                           </svg>
+                           {{LANG embed}}
+                        </button>
+                        <?php } ?>
+                        <?php } ?>
+                        <?php if ($pt->get_video->is_owner == true) { ?>
+                        <a class="btn btn-share" href="{{LINK edit-video/{{ID}}}}" data-load="?link1=edit-video&id=category&id={{ID}}">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit">
+                              <polygon points="16 3 21 8 8 21 3 21 3 16 16 3"></polygon>
+                           </svg>
+                           {{LANG edit_video}}
+                        </a>
+                        <?php } ?>
+                        <?php if ($pt->get_video->is_owner) { ?>
+                        <a href="{{LINK view_analytics/{{VIDEO_ID_}}}}&type=today" class="btn-share btn-report" data-load="?link1=view_analytics&id={{VIDEO_ID_}}&type=today" data-rep="1">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download">
+                              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                              <polyline points="17 6 23 6 23 12"></polyline>
+                           </svg>
+                           <span>{{LANG analytics}}</span>
+                        </a>
+                        <?php } ?>
+                        <?php if ($pt->config->donate_system == 'on' && !empty($pt->user_data->donation_paypal_email) && $pt->get_video->sell_video == 0) { ?>
+                        <button class="btn-share" onclick="location.href = 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business={{USER donation_paypal_email}}&lc=US&item_name=Donation+to+{{USER name}}&no_note=0&cn=&currency_code=USD&bn=PP-DonationsBF:btn_donateCC_LG.gif:NonHosted'">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign">
+                              <line x1="12" y1="1" x2="12" y2="23"></line>
+                              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                           </svg>
+                           {{LANG donate}}
+                        </button>
+                        <?php } ?>
+                        <?php if (IS_LOGGED): ?>
+                        <?php if ($pt->reported === true): ?>
+                        <button class="btn-share btn-report active pull-right" onclick="PT_ReportVideo('{{ID}}',this);" data-rep="0">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-flag">
+                              <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                              <line x1="4" y1="22" x2="4" y2="15"></line>
+                           </svg>
+                           <span>{{LANG cancel_report}}</span>
+                        </button>
+                        <?php else: ?>
+                        <button class="btn-share btn-report pull-right" onclick="PT_ReportVideo('{{ID}}',this);" data-rep="1">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-flag">
+                              <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                              <line x1="4" y1="22" x2="4" y2="15"></line>
+                           </svg>
+                           <span>{{LANG report}}</span>
+                        </button>
+                        <?php endif; ?>
+                        <?php if (IS_LOGGED && $pt->config->report_copyright == 'on' && $pt->get_video->is_owner == false) { ?>
+                        <button class="btn-share btn-report pull-right" onclick="PT_ReportCopyVideo('{{ID}}',this);" data-rep="1">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-flag">
+                              <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                              <line x1="4" y1="22" x2="4" y2="15"></line>
+                           </svg>
+                           <span>{{LANG report_copyright}}</span>
+                        </button>
+                        <?php } ?>
+                        <?php endif; ?>
+                        <?php if ($pt->get_video->sell_video == 0) { ?>
+                        <div class="embed-placement hidden">
+                           <div class="embed-placement_innr">
+                              <input type="text" name="embed" id="embed" class="form-control" onclick="this.select()" value='<iframe src="{{LINK embed/{{VIDEO_MAIN_ID}}}}" frameborder="0" width="700" height="400" allowfullscreen></iframe>' autocomplete="off">
+                              &nbsp;&nbsp;&nbsp;
+                              <div class="colorpickerf input-group colorpicker-component">
+                                 <input id="demo" type="text" class="form-control" value="#04abf2" onchange="ChangeIframeColor(this)" />
+                                 <span class="input-group-addon"><i></i></span>
+                              </div>
+                           </div>
+                           <div class="pt_embed_playr">
+                              <iframe src="{{LINK embed/{{VIDEO_MAIN_ID}}}}" frameborder="0" width="542" height="400" allowfullscreen></iframe>
+                           </div>
+                        </div>
+                        <script>
+                           $('.colorpickerf').colorpicker({
+                              horizontal: true,
+                              fallbackColor: '#04abf2'
+                           });
+                                 function ChangeIframeColor(self) {
+                                    let src = "{{LINK embed/{{VIDEO_MAIN_ID}}}}";
+                                    let final_src = src + "?color=" + $(self).val().replace('#','');
+                                    $('.embed-placement').find('#embed').val('<iframe src="'+final_src+'" frameborder="0" width="700" height="400" allowfullscreen></iframe>')
+                                    $('.embed-placement').find('iframe').attr('src',final_src);
+                                 }
+                        </script>
+                        <?php } ?>
+                        <div class="share-video hidden">
+                           <div class="row share-input">
+                              <div class="col-md-4">
+                                 <input type="text" value="{{CONFIG site_url}}/v/<?php echo $pt->get_video->short_id; ?>" class="form-control input-md" readonly onClick="this.select();">
+                              </div>
+                           </div>
+                           <a href="#" class="fa fa-facebook" onclick="OpenShareWindow('https://www.facebook.com/sharer/sharer.php?u={{ENCODED_URL}}')"></a>
+                           <a href="#" class="fa fa-twitter" onclick="OpenShareWindow('https://twitter.com/intent/tweet?url={{ENCODED_URL}}')"></a>
+                           <a href="#" class="fa fa-google" onclick="OpenShareWindow('https://plus.google.com/share?url={{ENCODED_URL}}')"></a>
+                           <a href="#" class="fa fa-linkedin" onclick="OpenShareWindow('https://www.linkedin.com/shareArticle?mini=true&url={{ENCODED_URL}}&title={{TITLE}}')"></a>
+                           <a href="#" class="fa fa-pinterest" onclick="OpenShareWindow('https://pinterest.com/pin/create/button/?url={{ENCODED_URL}}&media={{THUMBNAIL}}')"></a>
+                           <a href="#" class="fa fa-tumblr" onclick="OpenShareWindow('http://www.tumblr.com/share/link?url={{ENCODED_URL}}')"></a>
+                           <a href="#" class="fa fa-reddit" onclick="OpenShareWindow('http://www.reddit.com/submit?url={{ENCODED_URL}}')"></a>
+                           <?php if (!empty($pt->config->wowonder_domain_uri) && $pt->config->wowonder_img) {?> <a href="#" class="share-third" onclick="OpenShareWindow('{{CONFIG wowonder_domain_uri}}/sharer?url={{ENCODED_URL}}')"><img src="{{CONFIG wowonder_img}}" alt="share to "></a> <?php } ?>
+                           <a href="#" onclick="copyToClipboard(this)" class="fa fa-link" link="{{CONFIG site_url}}/v/<?php echo $pt->get_video->short_id; ?>"></a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="video-published">
+                  {{LANG published_on}} {{TIME}} / {{LANG in}}
+                  <a href="{{LINK movies?category_={{CATEGORY_ID}}}}" data-load="?link1=movies&category_={{CATEGORY_ID}}"><?php echo $pt->movies_categories[$pt->get_video->category_id]; ?></a>
+               </div>
+               <div class="watch-video-description">
+                  <p dir="auto" itemprop="description">{{DESC}}</p>
+                  <ul class="list-unstyled vid_mov_e_info">
+                     <li>
+                        <h4 class="title">{{LANG stars}}</h4>
+                        <p><?php echo (!empty($pt->get_video->stars) ? $pt->get_video->stars : ''); ?></p>
+                     </li>
+                     <li>
+                        <h4 class="title">{{LANG producer}}</h4>
+                        <p><?php echo (!empty($pt->get_video->producer) ? $pt->get_video->producer : ''); ?></p>
+                     </li>
+                     <li>
+                        <h4 class="title">{{LANG release}}</h4>
+                        <p><?php echo (!empty($pt->get_video->movie_release) ? $pt->get_video->movie_release : ''); ?></p>
+                     </li>
+                     <li>
+                        <h4 class="title">{{LANG country}}</h4>
+                        <p><?php echo (!empty($countries_name[$pt->get_video->country]) ? $countries_name[$pt->get_video->country] : ''); ?></p>
+                     </li>
+                     <li>
+                        <h4 class="title">{{LANG quality}}</h4>
+                        <p><?php echo (!empty($pt->get_video->quality) ? $pt->get_video->quality : ''); ?></p>
+                     </li>
+                     <li>
+                        <h4 class="title">{{LANG category}}</h4>
+                        <p><?php echo (!empty($pt->movies_categories[$pt->get_video->category_id]) ? $pt->movies_categories[$pt->get_video->category_id] : ''); ?></p>
+                     </li>
+                  </ul>
+               </div>
+               <div class="watch-video-show-more desc">
+                  {{LANG show_more}}
+               </div>
+            </div>
+         </div>
+         <div class="ads-placment">{{COMMENT_AD}}</div>
+         <?php
+            if (($pt->config->sell_videos_system == 'on') || $pt->get_video->sell_video == 0 ) { ?>
+         {{VIDEO_COMMENTS}}
+         <?php }  ?>
+      </div>
+      <div class="col-md-2"></div>
+   </div>
+   <div class="clear"></div>
+</div>
+</div>
+<img class="wtch_mv_pcrn pcrn3" src="{{CONFIG theme_url}}/img/popcorn5.svg" alt="{{TITLE}}">
+<img class="wtch_mv_pcrn pcrn4" src="{{CONFIG theme_url}}/img/popcorn4.svg" alt="{{TITLE}}">
+</div>
+<?php if (!empty($pt->get_video->trailer)) { ?>
+<div class="modal fade watch-movie-trailer-modal" id="movie_trailer" tabindex="-1" role="dialog" aria-labelledby="movie_trailerLabel">
+   <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+         <div class="modal-body">
+            <div class="embed-responsive-movie">
+               <div>
+                  <video id="my-trailer" controls style="width: 100%;height: 100%;" poster="{{THUMBNAIL}}" playsinline>
+                     <source src="<?php echo(PT_GetMedia($pt->get_video->trailer)) ?>">
+                  </video>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<script>
+   $('#movie_trailer').on('hide.bs.modal', function (e) {
+      $('#my-trailer')[0].pause();
+   })
+</script>
+<?php } ?>
+<script type="text/javascript">
+   jQuery(document).ready(function($) {
+      const video = document.querySelector('video');
+      video.addEventListener('timeupdate', (event) => {
+         end_time = parseInt((video.duration * 99) / 100);
+         currentTime = parseInt(video.currentTime);
+         if($('.card_end').length > 0 && currentTime === end_time){
+            $('.card_end').slideDown();
+            HideCard('card_end');
+         }
+         ad_date = '';
+         minutes = parseInt(video.currentTime / 60, 10);
+         seconds = parseInt(video.currentTime % 60);
+         if (minutes < 10 && minutes > 0) {
+            ad_date = '0'+minutes+'_';
+         }
+         else if (minutes > 9) {
+            ad_date = minutes+'_';
+         }
+         else if (minutes == 0) {
+            ad_date = '00_';
+         }
+         if (seconds < 10 && seconds > 0) {
+            ad_date = ad_date + '0'+seconds;
+         }
+         else if (seconds > 9) {
+            ad_date = ad_date + seconds;
+         }
+         else if (seconds == 0) {
+            ad_date = ad_date + '00';
+         }
+         if($('.card_'+ad_date).length > 0){
+            $('.card_'+ad_date).slideDown();
+            HideCard('card_'+ad_date);
+         }
+      });
+   });
+   <?php if (empty($pt->ad_image) && empty($pt->vast_url) && empty($pt->ad_media)) { ?>
+   var video_media = document.querySelector("video");
+   setTimeout(function () {
+   video_media.play();
+   },1000);
+   <?php } ?>
+   <?php if (!empty($pt->get_video->demo) && PT_GetMedia($pt->get_video->demo) == $pt->get_video->video_location) { ?>
+      $("video").bind("ended", function() {
+         var link_ = "'"+site_url+"/login'";
+         var rent = "'rent'";
+         <?php if ($pt->get_video->owner->subscriber_price) { ?>
+            var type = "'subscribe'";
+            var text = "<?php $text = str_replace('{{PRICE}}', $pt->currency.$pt->get_video->owner->subscriber_price, $lang_array['buy_or_subscribe']);
+      $text = str_replace('{{USERNAME}}',$pt->get_video->owner->name, $text);
+         echo($text); ?>";
+            $('.video-player').prepend('<div class="video-processing pay_to_content"><div class="pay_to_content_background"></div><div style="background: rgba(0,0,0,0.8) !important;"><h5><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></p>'+text+'<br><br><?php if (!IS_LOGGED) { ?><?php if (!empty($pt->get_video->main_video_price)) { ?><button class="btn btn-main" onselectstart="return false" onclick="location.href = '+link_+';">{{LANG pay}} {{CURRENCY}}<?php echo $pt->get_video->main_video_price; ?> </button><?php } ?><?php if(!empty($pt->get_video->rent_price)){ ?><button class="btn btn-main p_t_show_btn_ p_t_show_btn_rent" onselectstart="return false" onclick="location.href = '+link_+';">{{LANG rent}} {{CURRENCY}}<?php echo $pt->get_video->rent_price; ?> </button><?php } ?><?php if ($pt->get_video->owner->subscriber_price) { ?><br><br><button class="btn btn-main" onselectstart="return false"onclick="location.href = '+link_+';">{{LANG subscribe}} {{CURRENCY}}<?php echo $pt->get_video->owner->subscriber_price; ?></button><?php } ?><?php } else{ ?><?php if(!empty($pt->get_video->main_video_price)){ ?><button class="btn btn-main p_t_show_btn_ p_t_show_btn_buy" onselectstart="return false" onclick="pay_to_see(<?php echo $pt->get_video->id; ?>,<?php echo $pt->get_video->main_video_price; ?>)">{{LANG pay}} {{CURRENCY}}<?php echo $pt->get_video->main_video_price; ?> </button><?php } ?><br><br><?php if(!empty($pt->get_video->rent_price)){ ?><button class="btn btn-main p_t_show_btn_ p_t_show_btn_rent" onselectstart="return false" onclick="pay_to_see(<?php echo $pt->get_video->id; ?>,<?php echo $pt->get_video->rent_price; ?>,'+rent+')">{{LANG rent}} {{CURRENCY}}<?php echo $pt->get_video->rent_price; ?> </button><?php } ?><br><br><button class="btn btn-main" onselectstart="return false" onclick="PT_PaySubscribe(<?php echo $pt->get_video->user_id; ?>,this,'+type+')">{{LANG subscribe}} {{CURRENCY}}<?php echo $pt->get_video->owner->subscriber_price; ?> </button><?php } ?></h5></div></div>');
+   
+         <?php }else{ ?>
+            $('.video-player').prepend('<div class="video-processing pay_to_content"><div class="pay_to_content_background"></div><div style="background: rgba(0,0,0,0.8) !important;"><h5><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></p>{{LANG pay_to_see_video}}<br><br><?php if (!IS_LOGGED) { ?><?php if (!empty($pt->get_video->main_video_price)) { ?><button class="btn btn-main" onselectstart="return false" onclick="location.href = '+link_+';">{{LANG pay}} {{CURRENCY}}<?php echo $pt->get_video->main_video_price; ?> </button><?php } ?><?php if(!empty($pt->get_video->rent_price)){ ?><button class="btn btn-main p_t_show_btn_ p_t_show_btn_rent" onselectstart="return false" onclick="location.href = '+link_+';">{{LANG rent}} {{CURRENCY}}<?php echo $pt->get_video->rent_price; ?> </button><?php } ?><?php } else{ ?><?php if (!empty($pt->get_video->main_video_price)) { ?><button class="btn btn-main p_t_show_btn_ p_t_show_btn_buy" onselectstart="return false" onclick="pay_to_see(<?php echo $pt->get_video->id; ?>,<?php echo $pt->get_video->main_video_price; ?>)">{{LANG pay}} {{CURRENCY}}<?php echo $pt->get_video->main_video_price; ?> </button><?php } ?><?php if(!empty($pt->get_video->rent_price)){ ?><button class="btn btn-main p_t_show_btn_ p_t_show_btn_rent" onselectstart="return false" onclick="pay_to_see(<?php echo $pt->get_video->id; ?>,<?php echo $pt->get_video->rent_price; ?>,'+rent+')">{{LANG rent}} {{CURRENCY}}<?php echo $pt->get_video->rent_price; ?> </button><?php } ?><?php } ?></h5></div></div>');
+   
+         <?php } ?>
+   
+   
+   
+   
+      });
+   <?php } ?>
+   var sources = [];
+   for (var i = 0 ; i < $('video').find('source').length; i++) {
+      sources[i] = parseFloat($($('video').find('source')[i]).attr('res'));
+   }
+   
+   // var imageAddr = "http://www.kenrockwell.com/contax/images/g2/examples/31120037-5mb.jpg";
+   // var downloadSize = 4995374;
+   var imageAddr = site_url+"/upload/photos/speed.jpg";
+   var downloadSize = 1082828;
+   function getQuality() {
+      MeasureConnectionSpeed();
+   
+   
+      function MeasureConnectionSpeed() {
+         if (getCookie('internet_speed') > 0) {
+            showResults(getCookie('internet_speed'));
+         }
+         else{
+            var startTime, endTime;
+          var download = new Image();
+          download.onload = function () {
+              endTime = (new Date()).getTime();
+              showResults();
+          }
+   
+          download.onerror = function (err, msg) {
+              ShowProgressMessage(0);
+          }
+   
+          startTime = (new Date()).getTime();
+          var cacheBuster = "?nnn=" + startTime;
+          download.src = imageAddr + cacheBuster;
+         }
+         //console.log($.cookie("internet_speed"));
+   
+   
+          function showResults(speed = 0) {
+            if (speed == 0) {
+               var duration = (endTime - startTime) / 1000;
+                 var bitsLoaded = downloadSize * 8;
+                 var speedBps = (bitsLoaded / duration).toFixed(2);
+                 var speedKbps = (speedBps / 1024).toFixed(2);
+                 var speedMbps = (speedKbps / 1024).toFixed(2);
+                 setCookie("internet_speed", speedKbps,1);
+   
+            }
+            else{
+               speedKbps = speed;
+               if (speed < 240) {
+                  speedKbps = 250;
+               }
+            }
+              for (var i = 0 ; i < sources.length; i++) {
+               if (sources[i] < parseFloat(speedKbps)) {
+                  is_clicked = true;
+                  video_source = sources[i];
+                  <?php if ($pt->config->player_type == 'fluidPlayer' && empty($pt->get_video->youtube)) { ?>
+                     $('#source_my-video_{{ID}}_'+video_source+'p').click();
+                     $('.source_button_icon').removeClass('source_selected');
+                     $('#source_my-video_{{ID}}_auto').find('span').addClass('source_selected');
+                  <?php } elseif ($pt->config->player_type == 'videojs' && empty($pt->get_video->youtube)) { ?>
+                     $( ".vjs-menu-item-text:contains('"+video_source+"p')" ).click();
+                     $('.vjs-resolution-button-label').text('auto');
+                  <?php }else{ ?>
+                     $('#'+$('.mejs__container').attr('id')+'-qualities-'+video_source+'p').click();
+                     $('.mejs__qualities-button').find('button').text('auto');
+                     $('.mejs__qualities-selector-label').removeClass('mejs__qualities-selected');
+                     $('#quality__auto').addClass('mejs__qualities-selected');
+                  <?php } ?>
+                  break;
+               }
+              }
+          }
+      }
+   }
+   function setAuto(self) {
+      <?php if ($pt->config->player_type == 'fluidPlayer' && empty($pt->get_video->youtube)) { ?>
+         $('.source_button_icon').removeClass('source_selected');
+         $('#source_my-video_{{ID}}_auto').find('span').addClass('source_selected');
+      <?php } elseif ($pt->config->player_type == 'videojs' && empty($pt->get_video->youtube)) { ?>
+         $('.vjs-resolution-button-label').text('auto');
+      <?php }else{ ?>
+         $('.mejs__qualities-button').find('button').text('auto');
+         $('.mejs__qualities-selector-label').removeClass('mejs__qualities-selected');
+         $('#quality__auto').addClass('mejs__qualities-selected');
+      <?php } ?>
+      getQuality();
+      setTimeout(function (argument) {
+         setCookie('auto', 'auto', 1);
+      },1000);
+   }
+   $(document).ready(function(){
+      document.querySelector('video').addEventListener("loadeddata", function(){
+        setCookie('auto', '', 1);
+      });
+   });
+   <?php if (!empty($_COOKIE['auto'])) { ?>
+      setTimeout(function (argument) {
+         setAuto('');
+      },2000);
+   <?php } ?>
+</script>
+<?php if ($pt->config->player_type == 'videojs' && empty($pt->get_video->youtube)) { ?>
+<script src="{{CONFIG theme_url}}/player/js/video_js/video.js"></script>
+<script src="{{CONFIG theme_url}}/player/js/video_js/videojs-resolution-switcher.js"></script>
+<script src="{{CONFIG theme_url}}/player/js/video_js/videojs-contrib-ads.min.js"></script>
+<script src="{{CONFIG theme_url}}/player/js/video_js/videojs.ima.js"></script>
+<?php } ?>
+<?php if (empty($pt->get_video->facebook) && empty($pt->get_video->vimeo) && empty($pt->get_video->daily)) { ?>
+<script type="text/javascript">
+   function go_to_duration(duration) {
+   window.scrollTo(0, 0);
+   var vid = document.querySelector("video");
+   vid.currentTime = duration;
+   vid.play();
+   }
+</script>
+<?php } ?>
+<?php if (empty($pt->get_video->facebook) && empty($pt->get_video->vimeo) && empty($pt->get_video->daily) && ($pt->get_video->sell_video == 0 || $pt->get_video->is_owner || $pt->video_approved == false  || !empty($pt->get_video->demo) || ($pt->get_video->sell_video > 0 && $pt->is_paid > 0))) { ?>
+<script type="text/javascript">
+   <?php if ($pt->config->player_type == 'fluidPlayer' && empty($pt->get_video->youtube)) { ?>
+   
+      if ('{{VAST_URL}}' != '') {
+         myFluidPlayer = fluidPlayer(
+            'my-video_<?php echo $pt->get_video->id; ?>',
+             {
+                 vastOptions: {
+                     adList: [ {roll : "preRoll",
+                  vastTag : "{{VAST_URL}}",
+                  vastTimeout: {{AD_SKIP_NUM}} * 1000 }],
+                  vastAdvanced: {
+                      vastLoadedCallback:       (function() {  }),
+                      noVastVideoCallback:      (function() {  }),
+                      vastVideoSkippedCallback: (function() {
+                        setTimeout(function () {
+                           if ($('#autoplay').is(":checked")) {
+                              var media = document.querySelector("video");
+                              media.addEventListener('ended', function (e) {
+                                 if ($('#autoplay').is(":checked")) {
+                                    var url = $('#next-video').find('.video-title').find('a').attr('href');
+                                    if (url) {
+                                       window.location.href = url;
+                                    }
+                                 }
+                               }, false);
+   
+                           }
+                        },2000);
+                       }),
+                      vastVideoEndedCallback:   (function() {
+                        setTimeout(function () {
+                           if ($('#autoplay').is(":checked")) {
+                              var media = document.querySelector("video");
+                              media.addEventListener('ended', function (e) {
+                                 if ($('#autoplay').is(":checked")) {
+                                    var url = $('#next-video').find('.video-title').find('a').attr('href');
+                                    if (url) {
+                                       window.location.href = url;
+                                    }
+                                 }
+                               }, false);
+   
+                           }
+                        },2000);
+   
+                       })
+                  }
+                 },
+                 layoutControls: {
+                  playbackRateEnabled:    true,
+                  fillToContainer:true,
+                  autoPlay: true
+                 }
+             }
+         );
+            myFluidPlayer.on('play', function(){
+               // if (pt_elexists('.ads-overlay-info')) {
+               //   $('.ads-overlay-info').remove();
+               // }
+   
+               $('.ads-test').remove();
+   
+               if ($('body').attr('resized') == 'true') {
+                   PT_Resize(true);
+               }
+               $('.mejs__container').css('height', ($('.mejs__container').width() / 1.77176216) + 'px');
+               $('video, iframe').css('height', '100%');
+             });
+      }else{
+         <?php if (!empty($pt->ad_image)) { ?>
+         myFluidPlayer = fluidPlayer('my-video_<?php echo $pt->get_video->id; ?>',{
+                 layoutControls: {
+                  playbackRateEnabled:    true,
+                  fillToContainer:true,
+                  autoPlay: false,
+                  playButtonShowing: true,
+                  playPauseAnimation: false
+   
+                 }
+         });
+         if ($('#autoplay').is(":checked")) {
+            var media = document.querySelector("video");
+            media.addEventListener('ended', function (e) {
+               if ($('#autoplay').is(":checked")) {
+                  var url = $('#next-video').find('.video-title').find('a').attr('href');
+                  if (url) {
+                     window.location.href = url;
+                  }
+               }
+             }, false);
+   
+         }
+         <?php }else{ ?>
+            myFluidPlayer = fluidPlayer('my-video_<?php echo $pt->get_video->id; ?>',{
+                 layoutControls: {
+                  playbackRateEnabled:    true,
+                  fillToContainer:true,
+                  autoPlay: true,
+                  playButtonShowing: true,
+                  playPauseAnimation: false
+   
+                 }
+            });
+            if ($('#autoplay').is(":checked")) {
+               var media = document.querySelector("video");
+               media.addEventListener('ended', function (e) {
+                  if ($('#autoplay').is(":checked")) {
+                     var url = $('#next-video').find('.video-title').find('a').attr('href');
+                     if (url) {
+                        window.location.href = url;
+                     }
+                  }
+                }, false);
+   
+            }
+         <?php } ?>
+   
+      }
+      if (sources.length > 1) {
+         setTimeout(function () {
+            $('#my-video_{{ID}}_fluid_control_video_source_list').append('<div id="source_my-video_{{ID}}_auto" class="fluid_video_source_list_item" onclick="setAuto(this)"><span class="source_button_icon"></span>auto</div>');
+         },1000);
+      }
+   
+   
+   
+   <?php }elseif ($pt->config->player_type == 'videojs' && empty($pt->get_video->youtube)) { ?>
+   
+   
+   
+      if ({{AD_MEDIA}} != '') {
+         var ad_started = false;
+            //var player = videojs("my-video", { "controls": true, "autoplay": 'play', "preload": "auto" });
+            var player = videojs('my-video', {
+             controls: true,
+             "autoplay": 'play',
+             plugins: {
+               videoJsResolutionSwitcher: {
+                 default: 'low', // Default resolution [{Number}, 'low', 'high'],
+                 dynamicLabel: true
+               }
+             }
+           }, function(){
+             var player = this;
+             window.player = player
+             player.updateSrc([
+                <?php if (!empty($pt->video_4096)) { ?>
+               {
+                 src: '{{VIDEO_LOCATION_4096}}',
+                 type: '{{VIDEO_TYPE}}',
+                 label: '4K',
+                 res: 4096
+               },
+               <?php } ?>
+               <?php if (!empty($pt->video_2048)) { ?>
+               {
+                 src: '{{VIDEO_LOCATION_2048}}',
+                 type: '{{VIDEO_TYPE}}',
+                 label: '2K',
+                 res: 2048
+               },
+               <?php } ?>
+               <?php if (!empty($pt->video_1080)) { ?>
+               {
+                 src: '{{VIDEO_LOCATION_1080}}',
+                 type: '{{VIDEO_TYPE}}',
+                 label: '1080p',
+                 res: 1080
+               },
+               <?php } ?>
+               <?php if (!empty($pt->video_720)) { ?>
+               {
+                 src: '{{VIDEO_LOCATION_720}}',
+                 type: '{{VIDEO_TYPE}}',
+                 label: '720p',
+                 res: 720
+               },
+               <?php } ?>
+               <?php if (!empty($pt->video_480)) { ?>
+               {
+                 src: '{{VIDEO_LOCATION_480}}',
+                 type: '{{VIDEO_TYPE}}',
+                 label: '480p',
+                 res: 480
+               },
+               <?php } ?>
+               <?php if (!empty($pt->video_360)) { ?>
+               {
+                 src: '{{VIDEO_LOCATION_360}}',
+                 type: '{{VIDEO_TYPE}}',
+                 label: '360p',
+                 res: 360
+               },
+               <?php } ?>
+               <?php if (!empty($pt->video_240)) { ?>
+               {
+                 src: '{{VIDEO_LOCATION_240}}',
+                 type: '{{VIDEO_TYPE}}',
+                 label: '240p',
+                 res: 240
+               },
+               <?php } ?>
+               <?php if (!empty($pt->get_video->youtube) || (!empty($pt->get_video->video_location) && empty($pt->video_360))) { ?>
+               {
+                 src: '{{VIDEO_LOCATION}}',
+                 type: '{{VIDEO_TYPE}}',
+                 label: <?php echo(!empty($pt->video_quality) ? '"'.$pt->video_quality.'"' : '"360p"') ?>,
+                 res: <?php echo(!empty($pt->video_res) ? $pt->video_res : 360) ?>
+               },
+               <?php } ?>
+             ])
+   
+           });
+   
+   
+            player.ads(); // initialize videojs-contrib-ads
+   
+            // request ads whenever there's new video content
+            player.on('contentchanged', function() {
+              // in a real plugin, you might fetch your ad inventory here
+              player.trigger('adsready');
+            });
+            player.on('readyforpreroll', function() {
+               if (ad_started == false) {
+                  player.ads.startLinearAdMode();
+                  // play your linear ad content
+                 // in this example, we use a static mp4
+                 player.src({{AD_MEDIA}});
+                  ad_started = true;
+                  $('.vjs-resolution-button').hide();
+               }
+   
+   
+   
+              // send event when ad is playing to remove loading spinner
+              player.one('adplaying', function() {
+   
+   
+               if (pt_elexists('.ads-overlay-info')) {
+                 $('.ads-overlay-info').remove();
+               }
+   
+               $('.ads-test').remove();
+   
+               if ($('body').attr('resized') == 'true') {
+                   PT_Resize(true);
+               }
+               $('.mejs__container').css('height', ($('.mejs__container').width() / 1.77176216) + 'px');
+               $('video, iframe').css('height', '100%');
+   
+   
+                player.trigger('ads-ad-started');
+   
+                 num = {{AD_SKIP_NUM}};
+                 $('.video-player').append('<span class="video_js_skip_ad">Skip in '+num+'</span>');
+                  setInterval(function () {
+                     num = num -1;
+   
+                     if (num == 0 || num < 0) {
+                        $('.video_js_skip_ad').html('<a href="javascript:void(0)" onclick="end_video_js_ad()">{{LANG skip_ad}}</a>');
+   
+                        //$('.video-player').attr('onclick', '');
+                     }
+                     if (num > 0) {
+                        $('.video-player').attr('onclick', 'window.open("'+{{AD_LINK}}+'");');
+                        $('.video_js_skip_ad').text('Skip in '+(num));
+                     }
+                  },1000);
+              });
+   
+              // resume content when all your linear ads have finished
+              player.one('adended', function() {
+                player.ads.endLinearAdMode();
+                $('.video_js_skip_ad').remove();
+                $('.video-player').attr('onclick', '');
+                setTimeout(function () {
+                  if ($('#autoplay').is(":checked")) {
+                     var media = document.querySelector("video");
+                     media.addEventListener('ended', function (e) {
+                        if ($('#autoplay').is(":checked")) {
+                           var url = $('#next-video').find('.video-title').find('a').attr('href');
+                           if (url) {
+                              window.location.href = url;
+                           }
+                        }
+                      }, false);
+   
+                  }
+   
+               },2000);
+                $('.vjs-resolution-button').show();
+              });
+            });
+   
+            player.trigger('adsready');
+            function end_video_js_ad() {
+               player.ads.endLinearAdMode();
+               $('.video_js_skip_ad').remove();
+               $('.video-player').attr('onclick', '');
+                setTimeout(function () {
+                  if ($('#autoplay').is(":checked")) {
+                     var media = document.querySelector("video");
+                     media.addEventListener('ended', function (e) {
+                        if ($('#autoplay').is(":checked")) {
+                           var url = $('#next-video').find('.video-title').find('a').attr('href');
+                           if (url) {
+                              window.location.href = url;
+                           }
+                        }
+                      }, false);
+   
+                  }
+   
+               },2000);
+                $('.vjs-resolution-button').show();
+   
+            }
+         }else{
+            <?php if (!empty($pt->ad_image)) { ?>
+            //videojs("my-video", { "controls": true, "autoplay": false, "preload": "auto" });
+            videojs('my-video', {
+                controls: true,
+                plugins: {
+                  videoJsResolutionSwitcher: {
+                    default: 'low', // Default resolution [{Number}, 'low', 'high'],
+                    dynamicLabel: true
+                  }
+                }
+              }, function(){
+                var player = this;
+                window.player = player
+                player.updateSrc([
+                   <?php if (!empty($pt->video_4096)) { ?>
+                  {
+                    src: '{{VIDEO_LOCATION_4096}}',
+                    type: '{{VIDEO_TYPE}}',
+                    label: '4K',
+                    res: 4096
+                  },
+                  <?php } ?>
+                  <?php if (!empty($pt->video_2048)) { ?>
+                  {
+                    src: '{{VIDEO_LOCATION_2048}}',
+                    type: '{{VIDEO_TYPE}}',
+                    label: '2K',
+                    res: 2048
+                  },
+                  <?php } ?>
+                  <?php if (!empty($pt->video_1080)) { ?>
+                  {
+                    src: '{{VIDEO_LOCATION_1080}}',
+                    type: '{{VIDEO_TYPE}}',
+                    label: '1080p',
+                    res: 1080
+                  },
+                  <?php } ?>
+                  <?php if (!empty($pt->video_720)) { ?>
+                  {
+                    src: '{{VIDEO_LOCATION_720}}',
+                    type: '{{VIDEO_TYPE}}',
+                    label: '720p',
+                    res: 720
+                  },
+                  <?php } ?>
+                  <?php if (!empty($pt->video_480)) { ?>
+                  {
+                    src: '{{VIDEO_LOCATION_480}}',
+                    type: '{{VIDEO_TYPE}}',
+                    label: '480p',
+                    res: 480
+                  },
+                  <?php } ?>
+                  <?php if (!empty($pt->video_360)) { ?>
+                  {
+                    src: '{{VIDEO_LOCATION_360}}',
+                    type: '{{VIDEO_TYPE}}',
+                    label: '360p',
+                    res: 360
+                  },
+                  <?php } ?>
+                  <?php if (!empty($pt->video_240)) { ?>
+                  {
+                    src: '{{VIDEO_LOCATION_240}}',
+                    type: '{{VIDEO_TYPE}}',
+                    label: '240p',
+                    res: 240
+                  },
+                  <?php } ?>
+                  <?php if (!empty($pt->get_video->youtube) || (!empty($pt->get_video->video_location) && empty($pt->video_360))) { ?>
+                  {
+                    src: '{{VIDEO_LOCATION}}',
+                    type: '{{VIDEO_TYPE}}',
+                    label: <?php echo(!empty($pt->video_quality) ? '"'.$pt->video_quality.'"' : '"360p"') ?>,
+                    res: <?php echo(!empty($pt->video_res) ? $pt->video_res : 360) ?>
+                  },
+                  <?php } ?>
+                ])
+   
+              });
+            if ($('#autoplay').is(":checked")) {
+               var media = document.querySelector("video");
+               media.addEventListener('ended', function (e) {
+                  if ($('#autoplay').is(":checked")) {
+                     var url = $('#next-video').find('.video-title').find('a').attr('href');
+                     if (url) {
+                        window.location.href = url;
+                     }
+                  }
+                }, false);
+   
+            }
+            <?php }else{ ?>
+   
+   
+   
+   
+              // videojs("my-video", { "controls": true, "autoplay": 'play', "preload": "auto" });
+              videojs('my-video', {
+                   controls: true,
+                   plugins: {
+                     videoJsResolutionSwitcher: {
+                       default: 'low', // Default resolution [{Number}, 'low', 'high'],
+                       dynamicLabel: true
+                     }
+                   }
+                 }, function(){
+                   var player = this;
+                   window.player = player
+                   player.updateSrc([
+                      <?php if (!empty($pt->video_4096)) { ?>
+                     {
+                       src: '{{VIDEO_LOCATION_4096}}',
+                       type: '{{VIDEO_TYPE}}',
+                       label: '4K',
+                       res: 4096
+                     },
+                     <?php } ?>
+                     <?php if (!empty($pt->video_2048)) { ?>
+                     {
+                       src: '{{VIDEO_LOCATION_2048}}',
+                       type: '{{VIDEO_TYPE}}',
+                       label: '2K',
+                       res: 2048
+                     },
+                     <?php } ?>
+                     <?php if (!empty($pt->video_1080)) { ?>
+                     {
+                       src: '{{VIDEO_LOCATION_1080}}',
+                       type: '{{VIDEO_TYPE}}',
+                       label: '1080p',
+                       res: 1080
+                     },
+                     <?php } ?>
+                     <?php if (!empty($pt->video_720)) { ?>
+                     {
+                       src: '{{VIDEO_LOCATION_720}}',
+                       type: '{{VIDEO_TYPE}}',
+                       label: '720p',
+                       res: 720
+                     },
+                     <?php } ?>
+                     <?php if (!empty($pt->video_480)) { ?>
+                     {
+                       src: '{{VIDEO_LOCATION_480}}',
+                       type: '{{VIDEO_TYPE}}',
+                       label: '480p',
+                       res: 480
+                     },
+                     <?php } ?>
+                     <?php if (!empty($pt->video_360)) { ?>
+                     {
+                       src: '{{VIDEO_LOCATION_360}}',
+                       type: '{{VIDEO_TYPE}}',
+                       label: '360p',
+                       res: 360
+                     },
+                     <?php } ?>
+                     <?php if (!empty($pt->video_240)) { ?>
+                     {
+                       src: '{{VIDEO_LOCATION_240}}',
+                       type: '{{VIDEO_TYPE}}',
+                       label: '240p',
+                       res: 240
+                     },
+                     <?php } ?>
+                     <?php if (!empty($pt->get_video->youtube) || (!empty($pt->get_video->video_location) && empty($pt->video_360))) { ?>
+                     {
+                       src: '{{VIDEO_LOCATION}}',
+                       type: '{{VIDEO_TYPE}}',
+                       label: <?php echo(!empty($pt->video_quality) ? '"'.$pt->video_quality.'"' : '"360p"') ?>,
+                       res: <?php echo(!empty($pt->video_res) ? $pt->video_res : 360) ?>
+                     },
+                     <?php } ?>
+                   ]);
+   
+                   if ('{{VAST_URL}}' != '') {
+                     var options = {
+                          id: 'my-video',
+                          adTagUrl: "{{VAST_URL}}",
+                           vastLoadTimeout:{{AD_SKIP_NUM}} * 1000
+                        };
+   
+                        player.ima(options);
+   
+                        // Remove controls from the player on iPad to stop native controls from stealing
+                        // our click
+                        var contentPlayer =  document.getElementById('my-video_html5_api');
+                        if ((navigator.userAgent.match(/iPad/i) ||
+                              navigator.userAgent.match(/Android/i)) &&
+                            contentPlayer.hasAttribute('controls')) {
+                          contentPlayer.removeAttribute('controls');
+                        }
+   
+                        // Initialize the ad container when the video player is clicked, but only the
+                        // first time it's clicked.
+                        var initAdDisplayContainer = function() {
+                          player.ima.initializeAdDisplayContainer();
+                          wrapperDiv.removeEventListener(startEvent, initAdDisplayContainer);
+                        }
+   
+                        var startEvent = 'click';
+                        if (navigator.userAgent.match(/iPhone/i) ||
+                            navigator.userAgent.match(/iPad/i) ||
+                            navigator.userAgent.match(/Android/i)) {
+                          startEvent = 'touchend';
+                        }
+   
+                        var wrapperDiv = document.getElementById('my-video');
+                        wrapperDiv.addEventListener(startEvent, initAdDisplayContainer);
+   
+   
+   
+   
+                    }
+   
+   
+   
+                 });
+   
+   
+   
+   
+               if ($('#autoplay').is(":checked")) {
+                  var media = document.querySelector("video");
+                  media.addEventListener('ended', function (e) {
+                     if ($('#autoplay').is(":checked")) {
+                        var url = $('#next-video').find('.video-title').find('a').attr('href');
+                        if (url) {
+                           window.location.href = url;
+                        }
+                     }
+                   }, false);
+   
+               }
+            <?php } ?>
+   
+         }
+   
+         if (sources.length > 1) {
+            setTimeout(function () {
+               $('.vjs-menu-content').append('<li class="vjs-menu-item" tabindex="-1" role="menuitem" aria-disabled="false" onclick="setAuto(this)"><span class="vjs-menu-item-text">auto</span><span class="vjs-control-text" aria-live="polite"></span></li>');
+            },1000);
+         }
+   
+   <?php }else if($pt->config->player_type == 'default' || !empty($pt->get_video->youtube)){ ?>
+   
+      $('video').mediaelementplayer({
+         pluginPath: 'https://cdnjs.com/libraries/mediaelement-plugins/',
+         shimScriptAccess: 'always',
+         autoplay: true,
+         features: ['playpause', 'current', 'progress', 'duration', 'speed', 'skipback', 'jumpforward', 'tracks', 'markers', 'volume', 'chromecast', 'contextmenu', 'flash' <?php echo ($pt->config->ffmpeg_system == 'on' && empty($pt->get_video->youtube)) ? ", 'quality'" : ''?> {{ADS}} {{VAT}}, 'fullscreen'],
+         vastAdTagUrl: '{{VAST_URL}}',
+         vastAdsType: '{{VAST_TYPE}}',
+         jumpForwardInterval: 20,
+         adsPrerollMediaUrl: [{{AD_MEDIA}}],
+         adsPrerollAdUrl: [{{AD_LINK}}],
+         adsPrerollAdEnableSkip: {{AD_SKIP}},
+         adsPrerollAdSkipSeconds: {{AD_SKIP_NUM}},
+         success: function (media) {
+             media.addEventListener('ended', function (e) {
+   
+               src = $('video').attr('src');
+               sources = $('video').find('source');
+               for (var i = sources.length - 1; i >= 0; i--) {
+                  if ($(sources[i]).attr('src') == src) {
+                     if ($('#autoplay').is(":checked")) {
+                        var url = $('#next-video').find('.pt_video_side_vids').find('a').attr('href');
+                        if (url) {
+                           window.location.href = url;
+                        }
+                     }
+                     else{
+                       /* pass */
+                     }
+                  }
+               }
+             }, false);
+   
+             media.addEventListener('playing', function (e) {
+               if (pt_elexists('.ads-overlay-info')) {
+                 $('.ads-overlay-info').remove();
+               }
+   
+               $('.ads-test').remove();
+   
+               if ($('body').attr('resized') == 'true') {
+                   PT_Resize(true);
+               }
+               $('.mejs__container').css('height', ($('.mejs__container').width() / 1.77176216) + 'px');
+               $('video, iframe').css('height', '100%');
+             });
+         },
+       });
+   
+      if (sources.length > 1) {
+         setTimeout(function () {
+            $('#my-video').parent('.mejs__mediaelement').parent('.mejs__inner').find('.mejs__qualities-selector-list').append('<li class="mejs__qualities-selector-list-item" onclick="setAuto(this)"><input class="mejs__qualities-selector-input" type="radio" name="mep_0_qualities" value="auto" id="mep_0-qualities-auto"><label for="mep_0-qualities-auto" class="mejs__qualities-selector-label" id="quality__auto">auto</label></li>');
+            $('#my-trailer').parent('.mejs__mediaelement').parent('.mejs__inner').find('.mejs__qualities-button').remove();
+         },1000);
+      }
+   
+   
+   
+   <?php } ?>
+</script>
+<?php } ?>
+<?php if ($pt->config->player_type == 'plyr' && empty($pt->get_video->youtube)) { ?>
+<script type="text/javascript">
+   const player_<?php echo $pt->get_video->id.'_'.time(); ?> = new Plyr('#my-video_<?php echo $pt->get_video->id; ?>', {
+     <?php if (empty($pt->ad_image)) { ?>
+     autoplay:true,
+     <?php } ?>
+     quality:{ default: 4096, options: [<?php if (!empty($pt->video_4096)) { ?> 4096 ,<?php } ?><?php if (!empty($pt->video_2048)) { ?> 2048 ,<?php } ?><?php if (!empty($pt->video_1080)) { ?> 1080 ,<?php } ?><?php if (!empty($pt->video_720)) { ?> 720 ,<?php } ?><?php if (!empty($pt->video_480)) { ?> 480 ,<?php } ?><?php if (!empty($pt->video_360)) { ?> 360 ,<?php } ?><?php if (!empty($pt->video_240)) { ?> 240 <?php } ?>] }
+   });
+   setTimeout(function () {
+     var media = document.querySelector("video");
+     media.addEventListener('ended', function (e) {
+        setTimeout(function () {
+        <?php if (!empty($pt->vast_url)) { ?>
+           var media2 = document.querySelector("video");
+           media2.addEventListener('ended', function (e) {
+              if ($('#autoplay').is(":checked")) {
+                 var url = $('#next-video').find('.pt_video_side_vids').find('a').attr('href');
+                 if (url) {
+                    window.location.href = url;
+                 }
+              }
+              else{
+                //pass
+              }
+           }, false);
+        <?php }else{ ?>
+           if ($('#autoplay').is(":checked")) {
+              var url = $('#next-video').find('.pt_video_side_vids').find('a').attr('href');
+              if (url) {
+                 window.location.href = url;
+              }
+           }
+           else{
+             //pass
+           }
+        <?php } ?>
+     },500);
+   
+      }, false);
+   },1000);
+   
+</script>
+<?php } ?>
+<?php if($pt->config->player_type == 'cloudinary' && empty($pt->get_video->youtube)){ echo PT_LoadPage('watch/cloudinary_player');} ?>
+<?php if (!empty($pt->get_video->facebook)) { ?>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+   var js, fjs = d.getElementsByTagName(s)[0];
+   if (d.getElementById(id)) return;
+   js = d.createElement(s); js.id = id;
+   js.src = 'https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v3.1&appId={{CONFIG facebook_app_ID}}&autoLogAppEvents=1';
+   fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<?php } ?>
+<script>
+   <?php if (!empty($pt->get_video->vimeo)) {?>
+   var $window = $(window);
+   var $videoWrap = $('.pt_vdo_plyr');
+   var $video = $('.embed-responsive');
+   var videoHeight = $videoWrap.outerHeight();
+   
+   $window.on('scroll',  function() {
+     var windowScrollTop = $window.scrollTop();
+     var videoBottom = videoHeight + $videoWrap.offset().top;
+   
+     if (windowScrollTop > videoBottom) {
+       $videoWrap.height(videoHeight);
+       $video.addClass('stuck');
+     } else {
+       $videoWrap.height('auto');
+       $video.removeClass('stuck');
+     }
+   });
+   <?php } else if (!empty($pt->get_video->daily)) { ?>
+   var $window = $(window);
+   var $videoWrap = $('.pt_vdo_plyr');
+   var $video = $('.embed-responsive');
+   var videoHeight = $videoWrap.outerHeight();
+   
+   $window.on('scroll',  function() {
+     var windowScrollTop = $window.scrollTop();
+     var videoBottom = videoHeight + $videoWrap.offset().top;
+   
+     if (windowScrollTop > videoBottom) {
+       $videoWrap.height(videoHeight);
+       $video.addClass('stuck');
+     } else {
+       $videoWrap.height('auto');
+       $video.removeClass('stuck');
+     }
+   });
+   <?php } else { ?>
+   <?php } ?>
+   
+   <?php if ($pt->converted !== true): ?>
+   setInterval(function () {
+     $.get('{{LINK aj/check-video-status}}', {id: $('#video-id').val()}, function(data) {
+       if (data.status == 200) {
+         location.reload();
+       }
+     });
+   }, 5000);
+   <?php endif; ?>
+   jQuery(window).ready(function($) {
+       var width = $('.video-player').width().toString();
+       var width = width.substring(0, width.lastIndexOf("."))
+       $('.fb-video').attr('data-width', width);
+       //$( 'iframe' ).attr( 'src', function ( i, val ) { return val; });
+       $("#load-related-videos").click(function(event) {
+         let id = 0;
+         if ($("div[data-sidebar-video]").length > 0) {
+           id = $("div[data-sidebar-video]").last().attr('data-sidebar-video');
+         }
+   
+         $("#load-related-videos").find('i.spin').removeClass('hidden');
+   
+         $.ajax({
+           url: '{{LINK aj/load-related-videos}}',
+           type: 'GET',
+           dataType: 'json',
+           data: {id: id,video_id:'{{ID}}'},
+         })
+         .done(function(data) {
+           if (data.status == 200) {
+             $(".related-videos").append(data.html);
+           }
+           else{
+             $("#load-related-videos").find('span').text('{{LANG no_more_videos}}');
+           }
+           $("#load-related-videos").find('i.spin').addClass('hidden');
+   
+         });
+       });
+   });
+   
+   $('.ad-link').on('click', function(event) {
+     $('.ad-link').remove();
+     $('video')[0].play();
+   });
+   
+   <?php if (!empty($pt->ad_image)) { ?>
+   var counter = {{AD_SKIP_NUM}};
+   var interval = setInterval(function() {
+       counter--;
+       $('.timer span').text(counter);
+       if (counter == 0) {
+           $('.ad-link').remove();
+           if(typeof(myFluidPlayer) != 'undefined'){
+            myFluidPlayer.play();
+           }
+           else{
+            $('video')[0].play();
+           }
+   
+           clearInterval(interval);
+       }
+   }, 1000);
+   <?php } ?>
+   $('.autoplay-video').on('change', function(event) {
+     event.preventDefault();
+     checked = 1;
+     if($(this).is(":checked")) {
+       checked = 2;
+     }
+     $.post('{{LINK aj/set-cookies}}', {name: 'autoplay', value: checked});
+   });
+   $('.ads-test').on('click', function(event) {
+     $(this).remove();
+   });
+   
+   
+   $(function () {
+       $('.rad-transaction').click(function(event) {
+         $(this).off("click").removeClass('rad-transaction');
+         $.get('{{LINK aj/ads/rad-transaction}}', function(data){ /* pass */ });
+       });
+   
+       if ($('[data-litsitem-id]').length > 4) {
+         var listItemtopPos = $("div[data-litsitem-id=<?php echo $pt->get_id; ?>]").offset();
+         $('.play-list-cont').scrollTop((listItemtopPos.top - 170));
+       }
+   
+   
+      $('#share-video').on('click', function(event) {
+         event.preventDefault();
+         $('.share-video').toggleClass('hidden');
+         if (!$('.embed-placement').hasClass('hidden')) {
+             $('.embed-placement').toggleClass('hidden');
+         }
+         if (!$('.download-placement').hasClass('hidden')) {
+             $('.download-placement').toggleClass('hidden');
+         }
+      });
+      $('#embed-video').on('click', function(event) {
+         event.preventDefault();
+         $('.embed-placement').toggleClass('hidden');
+         if (!$('.share-video').hasClass('hidden')) {
+             $('.share-video').toggleClass('hidden');
+         }
+         if (!$('.download-placement').hasClass('hidden')) {
+             $('.download-placement').toggleClass('hidden');
+         }
+      });
+      $('#download-video').on('click', function(event) {
+         event.preventDefault();
+         $('.download-placement').toggleClass('hidden');
+         if (!$('.embed-placement').hasClass('hidden')) {
+             $('.embed-placement').toggleClass('hidden');
+         }
+         if (!$('.share-video').hasClass('hidden')) {
+             $('.share-video').toggleClass('hidden');
+         }
+      });
+   
+      $('#save-button').on('click', function(event) {
+         event.preventDefault();
+         var logged = $('#main-container').attr('data-logged');
+         if (!logged) {
+            window.location.href = "{{LINK login?to=<?php echo $pt->actual_link;?>}}";
+            return false;
+         }
+         var video_id = $('#video-id').val();
+         if ($(this).attr('saved')) {
+            $(this).html('<i class="fa fa-floppy-o fa-fw"></i> {{LANG save}}');
+            $(this).removeAttr('saved');
+         } else {
+            $(this).html('<i class="fa fa-check fa-fw"></i> {{LANG saved}}');
+            $(this).attr('saved', 'true');
+         }
+         $.post('{{LINK aj/save-video}}', {video_id: video_id});
+      });
+      $('.desc').on('click', function(event) {
+         event.preventDefault();
+         if ($(this).hasClass('expended')) {
+           $('.watch-video-description').css({
+              'max-height': '100px',
+              'height': '100px',
+              'overflow': 'hidden'
+           });
+           $(this).removeClass('expended');
+           $(this).text("{{LANG show_more}}");
+         } else {
+           $('.watch-video-description').css({
+              'max-height': '4000px',
+              'height': 'auto',
+              'overflow': 'auto'
+           });
+           $(this).addClass('expended');
+           $(this).text("{{LANG show_less}}");
+         }
+      });
+   
+      <?php if (!empty($pt->get_video->youtube)) { ?>
+      setTimeout(function () {
+        $('iframe').css({ width: '100%', height: '100%'});
+      }, 2000);
+      <?php } ?>
+   
+      // $('.expend-player').on('click', function(event) {
+      //   event.preventDefault();
+      //   var resize = 0;
+      //   if ($('.player-video').hasClass('col-md-12')) {
+      //     resize = 0;
+      //   } else {
+      //     resize = 1;
+      //   }
+      //   $.post('{{LINK aj/set-cookies}}', {name: 'resize', value:resize});
+      //   PT_Resize();
+      //  });
+   
+       // $('video').mediaelementplayer({
+       //   pluginPath: 'https://cdnjs.com/libraries/mediaelement-plugins/',
+       //   shimScriptAccess: 'always',
+       //   autoplay: true,
+       //   features: ['playpause', 'current', 'progress', 'duration', 'speed', 'skipback', 'jumpforward', 'tracks', 'markers', 'volume', 'chromecast', 'contextmenu', 'flash' <?php echo ($pt->config->ffmpeg_system == 'on' && empty($pt->get_video->youtube)) ? ", 'quality'" : ''?> {{ADS}} {{VAT}}, 'fullscreen'],
+       //   vastAdTagUrl: '{{VAST_URL}}',
+       //   vastAdsType: '{{VAST_TYPE}}',
+       //   jumpForwardInterval: 20,
+       //   adsPrerollMediaUrl: [{{AD_MEDIA}}],
+       //   adsPrerollAdUrl: [{{AD_LINK}}],
+       //   adsPrerollAdEnableSkip: {{AD_SKIP}},
+       //   adsPrerollAdSkipSeconds: {{AD_SKIP_NUM}},
+       //   success: function (media) {
+       //       media.addEventListener('ended', function (e) {
+   
+       //         if ($('#autoplay').is(":checked")) {
+       //            var url = $('#next-video').find('.video-title').find('a').attr('href');
+       //            if (url) {
+       //               window.location.href = url;
+       //            }
+       //         }
+       //         else{
+       //           /* pass */
+       //         }
+       //       }, false);
+   
+       //       media.addEventListener('playing', function (e) {
+       //         if (pt_elexists('.ads-overlay-info')) {
+       //           $('.ads-overlay-info').remove();
+       //         }
+   
+       //         $('.ads-test').remove();
+   
+       //         if ($('body').attr('resized') == 'true') {
+       //             PT_Resize(true);
+       //         }
+       //         $('.mejs__container').css('height', ($('.mejs__container').width() / 1.77176216) + 'px');
+       //         $('video, iframe').css('height', '100%');
+       //       });
+       //   },
+       // });
+   
+       // $('.expend-player').on('click', function(event) {
+       //  event.preventDefault();
+       //  var resize = 0;
+       //  if ($('.player-video').hasClass('col-md-12')) {
+       //    resize = 0;
+       //  } else {
+       //    resize = 1;
+       //  }
+       //  $.post('{{LINK aj/set-cookies}}', {name: 'resize', value:resize});
+       //  PT_Resize();
+       // });
+      <?php
+      if (!empty($_SESSION['resize']) && $pt->config->resize_video == 'on' && (empty($pt->get_video->daily) && empty($pt->get_video->vimeo))) {
+       ?>
+         // PT_Resize(true);
+         // if ($('.player-video').hasClass('col-md-12')) {
+         //   $('#background').css('height', '87%');
+         // }
+       <?php
+      }
+      ?>
+      // $(window).resize(function(event) {
+      //   if ($('body').attr('resized') == 'true') {
+      //      PT_Resize(true);
+      //   }
+      // });
+   
+   });
+   
+   
+   // if (document.addEventListener)
+   // {
+   //     document.addEventListener('webkitfullscreenchange', exitHandler, false);
+   //     document.addEventListener('mozfullscreenchange', exitHandler, false);
+   //     document.addEventListener('fullscreenchange', exitHandler, false);
+   //     document.addEventListener('MSFullscreenChange', exitHandler, false);
+   // }
+   
+   // function exitHandler()
+   // {
+   //     if (document.webkitIsFullScreen || document.mozFullScreen || document.msFullscreenElement !== null)
+   //     {
+   //         setTimeout(function () {
+   //          PT_Resize(false);
+   //         }, 100);
+   //     }
+   // }
+   // function PT_Resize(type) {
+   //   if ($('.player-video').hasClass('col-md-12') && type != true) {
+   //       $('.player-video').addClass('col-md-12');
+   //       $('.player-video').removeClass('col-md-12');
+   //       $('.player-video').css('margin-bottom', '0');
+   //       $('.player-video').css('margin-top', '0');
+   //       $('.mejs__container, video, iframe').css('width', '100%');
+   //       $('.mejs__container').css('height', ($('.mejs__container').width() / 1.77176216) + 'px');
+   //       $('video, iframe').css('height', '100%');
+   //       $('.second-header-layout').removeClass('hidden');
+   //       $('.header-layout').css('background', '#fff');
+   //       $('.header-layout').css('border-bottom', '1px solid #f1f1f1');
+   //       $('#search-bar').css('border', '1px solid #f5f5f5');
+   //       $('#search-bar').css('color', '#444');
+   //       $('.hide-resize').removeClass('hidden');
+   //       $('.logo-img').find('img').attr('src', '{{CONFIG theme_url}}/img/logo.png');
+   //       $('.top-header a').css('color', '#444');
+   //       $('#background').addClass('hidden');
+   //       $('body').attr('resized', 'false');
+   //    } else {
+   //       var pixels = ($(window).height() / 100) * 88;
+   //       $('.player-video').removeClass('col-md-12');
+   //       $('.player-video').addClass('col-md-12');
+   //       $('.second-header-layout').addClass('hidden');
+   //       $('.player-video').css('margin-bottom', '10px');
+   //       $('.player-video').css('margin-top', '48px');
+   //       $('.mejs__container, video, iframe').css('width', '100%');
+   //       $('.mejs__container').css('height', pixels + 'px');
+   //       $('video, iframe').css('height', '100%');
+   //       $('.header-layout').css('background', 'rgb(32,32,32)');
+   //       $('.header-layout').css('border-bottom', 'none');
+   //       $('#search-bar').css('border', '1px solid #555');
+   //       $('#search-bar').css('color', '#fff');
+   //       $('.hide-resize').addClass('hidden');
+   //       $('.logo-img').find('img').attr('src', '{{CONFIG theme_url}}/img/logo-light.png');
+   //       $('.top-header a').css('color', '#fff');
+   //       $('#background').removeClass('hidden');
+   //       $('#background').css('height', '88%');
+   //       $('body').attr('resized', 'true');
+   //    }
+   // }
+   
+   
+</script>
+<style>
+   /*.mejs__fullscreen .mejs__container {
+   max-height: 100% !important;
+   }
+   .mejs__container {
+   max-height: 555px !important;
+   }
+   .mejs__fullscreen video {
+   max-height: 100% !important;
+   }
+   .vjs-fullscreen video {
+   max-height: 100% !important;
+   }
+   .fluid_video_wrapper.fluid_player_layout_default:-webkit-full-screen video{max-height: 100% !important;}
+   video {
+   max-height: 555px !important;
+   }*/
+   .mejs__offscreen {
+   clip: initial !important;
+   clip-path: inherit !important;
+   -webkit-clip-path: inherit !important;
+   opacity: 0;
+   }
+   @media (min-width: 1800px) {
+   video {
+   max-height: 670px !important;
+   }
+   .mejs__fullscreen video{
+   max-height: unset !important;
+   }
+   .fluid_video_wrapper.fluid_player_layout_default:-webkit-full-screen video{
+   max-height: unset !important;
+   }
+   .vjs-fullscreen video{
+   max-height: unset !important;
+   }
+   }
+</style>
+<?php
+   if (empty($_SESSION['finger'])) {
+   ?>
+<script>
+   var fingerprintReport = function () {
+      Fingerprint2.get(function(components) {
+        var murmur = Fingerprint2.x64hash128(components.map(function (pair) { return pair.value }).join(), 31)
+        $.post('{{LINK aj/views}}?hash=' + $('.main_session').val()+'&type_=set', {finger: murmur}, function(data, textStatus, xhr) {
+   
+         <?php
+      if ($pt->continent_hide == false) {
+       if (($pt->video_approved == true  && (($pt->get_video->sell_video > 0 && $pt->is_paid > 0) || $pt->get_video->sell_video == 0) && ($pt->get_video->age == false) && $pt->video_type == 'public') || $pt->get_video->is_owner || PT_IsAdmin()) {
+         if ($pt->converted == true) {
+         ?>
+   
+            $.post('{{LINK aj/views}}?hash=' + $('.main_session').val()+'&type_=add', {video_id:{{ID}}}, function(data, textStatus, xhr) {
+            if (data.status == 200) {
+               $('#video-views-count').html(data.count);
+            }
+           });
+         <?php } } } ?>
+   
+   
+        });
+      })
+   }
+   fingerprintReport();
+</script>
+<?php }else{ ?>
+<?php
+   if ($pt->continent_hide == false) {
+    if (($pt->video_approved == true  && (($pt->get_video->sell_video > 0 && $pt->is_paid > 0) || $pt->get_video->sell_video == 0) && ($pt->get_video->age == false) && $pt->video_type == 'public') || $pt->get_video->is_owner || PT_IsAdmin()) {
+      if ($pt->converted == true) {
+      ?>
+<script>
+   $.post('{{LINK aj/views}}?hash=' + $('.main_session').val()+'&type_=add', {video_id:{{ID}}}, function(data, textStatus, xhr) {
+   if (data.status == 200) {
+      $('#video-views-count').html(data.count);
+   }
+   });
+</script>
+<?php } } } ?>
+<?php } ?>
+<?php if (!empty($pt->get_video->owner->google_tracking_code)) { ?>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo($pt->get_video->owner->google_tracking_code) ?>"></script>
+<script>
+   window.dataLayer = window.dataLayer || [];
+   function gtag(){dataLayer.push(arguments);}
+   gtag('js', new Date());
+   
+   gtag('config', '<?php echo($pt->get_video->owner->google_tracking_code) ?>');
+</script>
+<?php } ?>

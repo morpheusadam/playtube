@@ -1,0 +1,81 @@
+<div class="messages-sidebar box_light_black_small">
+    <div class="svg_message">
+        <svg width="129" height="129" viewBox="0 0 129 129" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M112.75 0.25H16.75C7.75 0.25 0.75 7.25 0.75 16V87.75C0.75 96.5 7.75 103.5 16.75 103.5H40.75V124.5C40.75 127 43.5 128.25 45.5 126.75L76.75 103.5H112.75C121.5 103.5 128.75 96.25 128.75 87.75V16C128.75 7.25 121.75 0.25 112.75 0.25ZM81 28C85.25 28 88.75 31.75 88.75 36C88.75 40.5 85 44 80.75 44C76.25 44 73 40.5 73 36C73 31.75 76.5 28 81 28ZM49 28C53.25 28 56.75 31.75 56.75 36C56.75 40.5 53.25 44 49 44C44.5 44 41 40.5 41 36C41 31.75 44.5 28 49 28ZM91.5 68C84.75 75.75 75.25 80.25 65 80.25C54.5 80.25 45 75.75 38.25 68C36.25 65.5 36.5 61.75 39 59.5C41.5 57.5 45.25 57.75 47.5 60.25C51.75 65.25 58 68 65 68C71.75 68 78 65.25 82.25 60.25C84.5 57.75 88.25 57.25 90.75 59.5C93.25 61.75 93.5 65.5 91.5 68Z" fill="currentColor"/>
+        </svg>
+    </div>
+    <div class="search-box">
+		<div class="search-box-inner">
+            <svg class="feather feather-search" id="search-icon" data-name="Group 50" xmlns="http://www.w3.org/2000/svg" width="15.839" height="15.839" viewBox="0 0 15.839 15.839">
+              <g id="vuesax_bold_search-normal" data-name="vuesax/bold/search-normal" style="mix-blend-mode: normal;isolation: isolate">
+                <rect id="vuesax_bold_search-normal-2" data-name="vuesax/bold/search-normal" width="15.681" height="15.681" fill="none" style="mix-blend-mode: normal;isolation: isolate"/>
+                <g id="vuesax_bold_search-normal-3" data-name="vuesax/bold/search-normal" transform="translate(1.32 1.32)" style="mix-blend-mode: normal;isolation: isolate">
+                  <g id="search-normal" style="mix-blend-mode: normal;isolation: isolate">
+                    <path id="Vector" d="M11.893,5.946A5.946,5.946,0,1,1,5.946,0,5.946,5.946,0,0,1,11.893,5.946Z" fill="currentColor" style="mix-blend-mode: normal;isolation: isolate"/>
+                    <path id="Vector-2" data-name="Vector" d="M2.635.627A1.382,1.382,0,0,0,1.334,0,1.333,1.333,0,0,0,.226.521,1.339,1.339,0,0,0,.081,1.736c.284.858.779,1.049,1.049,1.082a.758.758,0,0,0,.125.007A1.431,1.431,0,0,0,2.43,2.046,1.359,1.359,0,0,0,2.635.627Z" transform="translate(10.558 10.559)" fill="currentColor" style="mix-blend-mode: normal;isolation: isolate"/>
+                    <path id="Vector-3" data-name="Vector" transform="translate(14.519 14.519) rotate(-180)" fill="none" opacity="0" style="mix-blend-mode: normal;isolation: isolate"/>
+                  </g>
+                </g>
+              </g>
+              <path id="Vector-4" data-name="Vector" d="M8.3,4.152A4.152,4.152,0,1,1,4.152,0,4.152,4.152,0,0,1,8.3,4.152Z" transform="translate(3.114 3.114)" fill="#2c2c2c" style="mix-blend-mode: normal;isolation: isolate"/>
+            </svg>
+            <span class="line_search">
+            </span>
+			<input type="text" name="search" placeholder="{{LANG search}}" id="search-list">
+		</div>
+<?php /* ?>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<button type="button" class="btn" onclick="MarkAllAsRead(this);">
+			<svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24"><path fill="currentColor" d="M14,10H2V12H14V10M14,6H2V8H14V6M2,16H10V14H2V16M21.5,11.5L23,13L16,20L11.5,15.5L13,14L16,17L21.5,11.5Z"></path></svg>
+		</button>
+<?php */ ?>
+    </div>
+    <ul class="list-group" onscroll="LoadMoreUserChat()">
+        {{USERS}}
+    </ul>
+</div>
+<script type="text/javascript">
+    function MarkAllAsRead(self) {
+        $(self).html('<svg width="25px" height="25px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><rect x="0" y="0" width="25" height="25" fill="none" class="bk"></rect><circle cx="50" cy="50" r="40" stroke="#676d76" fill="none" stroke-width="6" stroke-linecap="round"><animate attributeName="stroke-dashoffset" dur="1.5s" repeatCount="indefinite" from="0" to="502"></animate><animate attributeName="stroke-dasharray" dur="1.5s" repeatCount="indefinite" values="150.6 100.4;1 250;150.6 100.4"></animate></circle></svg>');
+        $.post('{{LINK aj/messages/mark_read}}', function (data, textStatus, xhr) {
+            if (data.status == 200) {
+                setTimeout(function () {
+                    $('.user-list').find('.countunseen').html('');
+                    $("#new-messages").html("");
+                    $(self).html('<svg width="25px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve"> <circle style="fill:#25AE88;" cx="25" cy="25" r="25"/> <polyline style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" points=" 38,15 22,33 12,25 "/> </svg>');
+                    setTimeout(function () {
+                        $(self).html('<svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24"><path fill="currentColor" d="M14,10H2V12H14V10M14,6H2V8H14V6M2,16H10V14H2V16M21.5,11.5L23,13L16,20L11.5,15.5L13,14L16,17L21.5,11.5Z"></path></svg>');
+                    },500);
+                },1000);
+            }
+        });
+    }
+	var sent = 0;
+    function LoadMoreUserChat() {
+        if (sent === 0) {
+            clearTimeout(window.UpdateChatU);
+            sent = 1;
+            let time = $('.user-list').last().attr('data-time');
+            $.post('{{LINK aj/messages/load_user_chat}}', {
+                time: time
+            }, function (data, textStatus, xhr) {
+                if (data.status == 200) {
+                    $('.list-group').append(data.html);
+                    setTimeout(function () {
+                        sent = 0;
+                        window.UpdateChatU = setTimeout(function () {
+                            if (sent === 0) {
+                                fetchMessages();
+                            }
+                        },5000);
+                    },500);
+                }
+                else{
+                    window.UpdateChatU = setTimeout(function () {
+                        fetchMessages();
+                    },5000);
+                }
+            });
+        }
+    }
+</script>

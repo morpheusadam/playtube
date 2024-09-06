@@ -1,0 +1,82 @@
+<form class="form-horizontal user-setting-panel pt_forms pt_shadow" id="general-settings" method="POST">
+	<div class="yp_sett_header">
+		<h4>{{LANG monetization}} {{LANG settings}}</h4>
+	</div>
+	<div class="setting-general-alert"></div>
+	<div class="row">
+		<div class="form-group">
+			<label class="col-md-2" for="monetization">{{LANG monetization}}</label>
+			<div class="col-md-6 sett_mon_switch">
+				<input type="checkbox" <?php echo ($pt->settings->video_mon == '1') ? 'checked': '';?> data-toggle="toggle" data-onstyle="success" data-style="ios" data-height="35" data-on="{{LANG enabled}}" data-off="{{LANG disabled}}" id="toggle-video-monetization">
+			</div>
+		</div>
+		<div class="clear"></div>
+        <div class="col-lg-12">
+        <div class="alert alert-info">
+          {{LANG earn_mon}}
+        </div>
+        <hr>
+    </div>
+
+        <?php if ($pt->config->payed_subscribers == 'on') { ?>
+         <!-- Text input-->
+        <div class="form-group col-lg-12">
+            <label class="col-md-12" for="subscriber_price">{{LANG subscriber_price}}</label>
+            <div class="col-md-12">
+                <input id="subscriber_price" name="subscriber_price" type="text" placeholder="" class="form-control input-md" value="{{USER subscriber_price}}">
+            </div>
+        </div>
+        <?php } ?>
+	</div>
+	<input type="hidden" name="hash_id" value="<?php echo PT_CreateSession()?>">
+	<input type="hidden" name="user_id" value="{{USER id}}">
+	<input type="hidden" name="cf" value="{{CUSTOM_DATA}}">
+	<!-- Button (Double) -->
+    <?php if ($pt->config->payed_subscribers == 'on') { ?>
+	<div class="last-sett-btn modal-footer" style="margin: 0px -30px -10px -30px;">
+		<button id="submit" name="submit" class="btn btn-main setting-panel-mdbtn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> {{LANG save}}</button>
+	</div>
+    <?php } ?>
+</form>
+<script>
+    jQuery(document).ready(function($) {
+	$('#toggle-video-monetization').bootstrapToggle();
+        //$("#withdrawal-requests").DataTable();
+
+        $("#toggle-video-monetization").change(function(event) {
+            let hash_id = $('.main_session').val();
+            let url     = "{{LINK aj/user/video-monetization}}?hash=" + hash_id;
+            $.post(url,{user_id:'<?php echo($pt->settings->id);?>'}, function(data, textStatus, xhr) { /* pass */});
+        });
+<?php if ($pt->config->payed_subscribers == 'on') { ?>
+        var form = $('form#general-settings');
+
+        form.ajaxForm({
+            url: '{{LINK aj/user/change_price}}?hash=' + $('.main_session').val(),
+            beforeSend: function() {
+                form.find('button').text("{{LANG please_wait}}");
+                // FL_progressIconLoader(form.find('button'));
+            },
+            success: function(data) {
+                scrollToTop();
+                if (data.status == 200) {
+                    $('.setting-general-alert').html('<div class="alert alert-success">' + data.message + '</div>');
+                    $('.alert-success').fadeIn('fast', function() {
+                        $(this).delay(2500).slideUp(500, function() {
+                            $(this).remove();
+                        });
+                    });
+                } else if (data.errors) {
+                    var errors = data.errors.join("<br>");
+                    $('.setting-general-alert').html('<div class="alert alert-danger">' + errors + '</div>');
+                    $('.alert-danger').fadeIn(300);
+                }
+                form.find('button').html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> {{LANG save}}');
+                // FL_progressIconLoader(form.find('button'));
+            }
+        });
+        <?php } ?>
+
+    });
+
+</script>

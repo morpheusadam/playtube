@@ -1,0 +1,20 @@
+<div class="content">
+	<div class="col-md-12">
+		<div class="upload-head">
+			<h4 class="page_head"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z" /></svg> {{LANG saved_videos}}</h4>
+			<hr>
+		</div>
+		<div class="subscriptions-list">
+			<div class="author-list">
+				{{SAVED_LIST}}
+			</div>
+			<?php if (count($pt->videos) > 5) { ?>
+				<div class="watch-video-show-more desc load-more" data-type="saved_videos">
+					{{LANG show_more}}
+				</div>
+			<?php } ?>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+</div>

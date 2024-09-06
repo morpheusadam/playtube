@@ -1,0 +1,57 @@
+<div class="modal fade" id="SelectProModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h4 class="modal-title">Select Pro Package</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body pt-0">
+				<p>Please choose for which package you want this feature to be enabled</p>
+                <div id="SelectProModalAlert"></div>
+                <form class="SelectProModalForm" method="POST">
+					<div class="row mx-n2">
+						<?php foreach ($pt->pro_packages as $key => $value) { ?>
+							<div class="col-sm-6 px-2">
+								<label class="plan_name_prnt">
+									<input type="hidden" name="pro_<?php echo $value['id']; ?>" value="0">
+									<input type="checkbox" name="pro_<?php echo $value['id']; ?>" id="pro_<?php echo $value['id']; ?>-enabled" value="1" <?php echo ($value[$pt->feature_type] == 1) ? 'checked': '';?>>
+									<div class="plan_name" style="
+										<?php if ($value['id'] == 1) { ?>
+											color:<?php echo !empty($value['color']) ? $value['color'] : '#4c7737' ?>
+										<?php }elseif ($value['id'] == 2) { ?>
+											color:<?php echo !empty($value['color']) ? $value['color'] : '#ffbb42' ?>
+										<?php }elseif ($value['id'] == 3) { ?>
+											color:<?php echo !empty($value['color']) ? $value['color'] : '#e13c4c' ?>
+										<?php }elseif ($value['id'] == 4) { ?>
+											color:<?php echo !empty($value['color']) ? $value['color'] : '#3f4bb8' ?>
+										<?php } ?>
+									"
+									>
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"></path></svg>
+										<div class="icon">
+											<?php if (!empty($value['image']) || !empty($value['night_image'])) { ?>
+												<img src="<?php echo(!empty($value['image']) ? $value['image'] : $value['night_image']) ?>" class="pro_packages_icon_inline">
+											<?php }elseif ($value['id'] == 1) { ?>
+												<span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star" style="background: linear-gradient( -43deg, #9135fa 27%, #bc37e0 66%, #b723de 82%, #b10edb 100%);"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg></span>
+											<?php } ?>
+										</div>
+										<div class="name">
+											<?php echo $value['name'] ?>
+										</div>
+									</div>
+								</label>
+							</div>
+						<?php } ?>
+					</div>
+                    <input type="hidden" name="feature_type" value="<?php echo $pt->feature_type;?>">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" onclick="Wo_SubmitSelectProForm(this);" class="btn btn-primary waves-effect" id="Select_pro_btn">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

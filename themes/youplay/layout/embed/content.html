@@ -1,0 +1,312 @@
+<style type="text/css">
+   <?php
+      if (!empty($_GET['color'])) {
+         $re = '/^#([0-9a-f]{3}){1,2}$/i';
+         preg_match($re, '#'.$_GET['color'], $matches, PREG_OFFSET_CAPTURE, 0);
+         if (!empty($matches) && !empty($matches[0]) && !empty($matches[0][0])) {
+            $matches[0][0] = PT_Secure($matches[0][0]);
+            $matches[0][0] = filter_var ( $matches[0][0], FILTER_UNSAFE_RAW);
+            echo ".plyr--full-ui.plyr--video .plyr__control--overlaid{background-color: ".$matches[0][0]." !important;}";
+            echo ".plyr__volume input[type=range] {color: ".$matches[0][0]." !important;}";
+            echo ".plyr__progress input[type=range] {color: ".$matches[0][0]." !important;}";
+            echo ".plyr--video .plyr__control:hover {color: ".$matches[0][0]." !important;background-color:#fff !important;}";
+            echo ".mejs__time-current{background-color: ".$matches[0][0]." !important;}";
+            echo ".mejs__overlay-play:hover .mejs__overlay-button {background-color: ".$matches[0][0]." !important;}";
+         }
+      }
+       ?>
+</style>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex">
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="{{CONFIG theme_url}}/js/Fingerprintjs2/fingerprint2.js"></script>
+    <link rel="stylesheet" href="{{CONFIG theme_url}}/player/css/mediaelementplayer.min.css?version={{CONFIG version}}" />
+    <script src="{{CONFIG theme_url}}/player/js/mediaelement-and-player.min.js?version={{CONFIG version}}"></script>
+    <script src="{{CONFIG theme_url}}/player/plugins/quality/quality.min.js?version={{CONFIG version}}"></script>
+    <link rel="stylesheet" href="{{CONFIG theme_url}}/player/plugins/quality/quality.min.css?version={{CONFIG version}}" />
+    <?php if (!empty($pt->get_video->twitch)) {  ?>
+    <script src= "https://player.twitch.tv/js/embed/v1.js"></script>
+  <?php }  ?>
+  <?php if (!empty($pt->config->google)) { echo htmlspecialchars_decode($pt->config->google); } ?>
+  <?php if (!empty($pt->config->google_vignette)) { echo htmlspecialchars_decode($pt->config->google_vignette); } ?>
+  <script src="{{CONFIG theme_url}}/js/plyr.polyfilled.js"></script>
+  <link rel="stylesheet" href="{{CONFIG theme_url}}/player/css/plyr.css" />
+  <title>{{TITLE}}</title>
+</head>
+<body>
+  <div class="video-player embed-video-player {{USR_AD_TRANS}}" style="overflow: hidden;">
+        <?php if (!empty($pt->config->watermark)) { ?>
+        <div class="watermark">
+          <a href="{{CONFIG site_url}}" target="_blank"><img src="{{CONFIG watermark}}" alt='watermark logo'></a>
+        </div>
+        <?php } ?>
+        <?php if (!empty($pt->get_video->vimeo)) {?>
+            <iframe src="http://player.vimeo.com/video/{{VIDEO_ID}}?api=1;title=0&amp;byline=0&amp;portrait=0&amp;autoplay=1" width="100%" height="<?php echo $pt->height;?>" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+         <?php } else if (!empty($pt->get_video->daily)) { ?>
+            <iframe frameborder="0" width="100%" height="<?php echo $pt->height;?>" src="//www.dailymotion.com/embed/video/{{VIDEO_ID}}?PARAMS" allowfullscreen></iframe>
+        <?php }  else if (!empty($pt->get_video->youtube) && $pt->config->youtube_player == 'on') { ?>
+            <iframe width="100%" height="<?php echo $pt->height;?>" src="https://www.youtube.com/embed/<?php echo($pt->get_video->youtube); ?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+         <?php }  else if (!empty($pt->get_video->twitch)) {
+                  if ($pt->get_video->twitch_type != 'streams') {
+                     if ($pt->get_video->twitch_type == 'videos') {
+                        $link = 'https://player.twitch.tv/?video='.$pt->get_video->twitch;
+                     }
+                     else{
+                        $link = 'https://clips.twitch.tv/embed?clip='.$pt->get_video->twitch;
+                     }
+               ?>
+               <div class="pt_vdo_plyr"><div class="embed-responsive embed-responsive-16by9"><iframe width="100%" src="<?php echo($link) ?>&autoplay=false" allowfullscreen></iframe></div></div>
+               <?php }else{ ?>
+                  <div class="pt_vdo_plyr"><div class="embed-responsive embed-responsive-16by9"><div id="twitch_player__"></div></div></div>
+                  <script type="text/javascript">
+                    var options = {
+                      width: '100%',
+                      channel: "<?php echo($pt->get_video->twitch) ?>",
+                    };
+                    var player = new Twitch.Player("twitch_player__", options);
+                  </script>
+               <?php } ?>
+            <?php } else { ?>
+            <video  id="my-video" style="width:100%; height:100%;position: relative;" poster="{{THUMBNAIL}}" playsinline>
+               <?php if (!empty($pt->video_4096)) { ?>
+                     <source src="{{VIDEO_LOCATION_4096}}" type="{{VIDEO_TYPE}}" data-quality="4K" title='4K' label='4K' res='4096'>
+                     <?php } ?>
+                     <?php if (!empty($pt->video_2048)) { ?>
+                     <source src="{{VIDEO_LOCATION_2048}}" type="{{VIDEO_TYPE}}" data-quality="2K" title='2K' label='2K' res='2048'>
+                     <?php } ?>
+                     <?php if (!empty($pt->video_1080)) { ?>
+                     <source src="{{VIDEO_LOCATION_1080}}" type="{{VIDEO_TYPE}}" data-quality="1080p" title='1080p' label='1080p' res='1080'>
+                     <?php } ?>
+                     <?php if (!empty($pt->video_720)) { ?>
+                     <source src="{{VIDEO_LOCATION_720}}" type="{{VIDEO_TYPE}}" data-quality="720p" title='720p' label='720p' res='720'>
+                     <?php } ?>
+                     <?php if (!empty($pt->video_480)) { ?>
+                     <source src="{{VIDEO_LOCATION_480}}" type="{{VIDEO_TYPE}}" data-quality="480p" title='480p' label='480p' res='480'>
+                     <?php } ?>
+                     <?php if (!empty($pt->video_360)) { ?>
+                     <source src="{{VIDEO_LOCATION_360}}" type="{{VIDEO_TYPE}}" data-quality="360p" title='360p' label='360p' res='360'>
+                     <?php } ?>
+                     <?php if (!empty($pt->video_240)) { ?>
+                     <source src="{{VIDEO_LOCATION_240}}" type="{{VIDEO_TYPE}}" data-quality="240p" title='240p' label='240p' res='240'>
+                     <?php } ?>
+                     <?php if (!empty($pt->get_video->youtube) || (!empty($pt->get_video->video_location) && empty($pt->video_360) && $pt->config->ffmpeg_system == "off")) { ?>
+                     <source src="{{VIDEO_LOCATION}}" type="{{VIDEO_TYPE}}" data-quality="360p" title='360p' label='360p' res='360'>
+                     <?php } ?> Your browser does not support HTML5 video.
+               <!-- //src="http://www.youtube.com/watch?v=nOEw9iiopwI" type="video/youtube" -->
+            </video>
+         <?php } ?>
+         <?php if (!empty($pt->ad_image)) {
+          ?>
+            <a href="{{AD_P_LINK}}" class="ad-link" target="_blank">
+               <div class="ad-image">
+                  <div class="ads-test"><i class="fa fa-bullhorn"></i> Advertisement will close in <span class="timer">(<span>{{AD_SKIP_NUM}}</span>)</span></div>
+                  <img src="{{AD_IMAGE}}" alt="Ads">
+               </div>
+            </a>
+            <?php } ?>
+    </div>
+    <input type="hidden" class="main_session" value="<?php echo PT_CreateMainSession();?>">
+</body>
+</html>
+<style>
+body {
+  margin: 0;
+  padding: 0;
+}
+video {
+  width: 100%;
+  height: 100%;
+
+}
+.watermark {
+  position: absolute;
+  z-index: 10;
+  left: 20px;
+  top: 20px;
+  transition: all 0.5s;
+  display: none;
+}
+.ad-image { width: 100%; height: 100%; background-color: #fcfcfc; text-align: center; z-index: 9; line-height: 100%; position: absolute; overflow: hidden; top: 0; }
+.ad-image img { text-align: center; max-width: 100%; margin-top: 5%; vertical-align: middle; }
+.ads-test { color: #ffcc7f; width: 100%; padding: 10px; background-color: rgba(0, 0, 0, 0.5); }
+.embed-video-player{position: relative;}
+.mejs__container
+{width: 100% !important; height: 100% !important;}
+</style>
+<script>
+
+   $('video').mediaelementplayer({
+      pluginPath: 'https://cdnjs.com/libraries/mediaelement-plugins/',
+      shimScriptAccess: 'always',
+      autoplay: false,
+      features: ['playpause', 'current', 'progress', 'duration', 'speed', 'skipback', 'jumpforward', 'tracks', 'markers', 'volume', 'chromecast', 'contextmenu', 'flash' <?php echo ($pt->config->ffmpeg_system == 'on' && empty($pt->get_video->youtube)) ? ", 'quality'" : ''?> {{ADS}} {{VAT}}, 'fullscreen'],
+      vastAdTagUrl: '{{VAST_URL}}',
+      vastAdsType: '{{VAST_TYPE}}',
+      jumpForwardInterval: 20,
+      adsPrerollMediaUrl: [{{AD_MEDIA}}],
+      adsPrerollAdUrl: [{{AD_LINK}}],
+      adsPrerollAdEnableSkip: {{AD_SKIP}},
+      adsPrerollAdSkipSeconds: {{AD_SKIP_NUM}},
+      success: function (media) {
+          media.addEventListener('ended', function (e) {
+            $('#adContainer').slideUp();
+
+            src = $('video').attr('src');
+            sources = $('video').find('source');
+            for (var i = sources.length - 1; i >= 0; i--) {
+               if ($(sources[i]).attr('src') == src) {
+                  if ($('#autoplay').is(":checked")) {
+                     var url = $('#next-video').find('a').attr('href');
+                     if (url) {
+                        window.location.href = url;
+                     }
+                  }
+                  else{
+                    /* pass */
+                  }
+               }
+            }
+          }, false);
+
+          media.addEventListener('playing', function (e) {
+            if (pt_elexists('.ads-overlay-info')) {
+              $('.ads-overlay-info').remove();
+            }
+
+            $('.ads-test').remove();
+
+            if ($('body').attr('resized') == 'true') {
+                PT_Resize(true);
+            }
+            $('.mejs__container').css('height', ($('.mejs__container').width() / 1.77176216) + 'px');
+            $('video, iframe').css('height', '100%');
+          });
+          <?php if (!empty($pt->get_video->youtube)) { ?>
+            //    $(document).on('click', '.mejs__container', function(event) {
+
+            //    $('.mejs__layer').css('display', 'flex');
+            //    $('.mejs__overlay-play').css('display', 'none');
+            //    media.play();
+            // });
+         <?php } ?>
+      },
+    });
+
+
+$(".video-player").hover(
+    function(e){
+      $('.watermark').css('display', 'block');
+     },
+    function(e){
+      setTimeout(function () {
+        if ($('.video-player:hover').length == 0) {
+          $('.watermark').css('display', 'none');
+        }
+      }, 1000);
+     }
+);
+// $('video, audio').mediaelementplayer({
+//   // Do not forget to put a final slash (/)
+//   pluginPath: 'https://cdnjs.com/libraries/mediaelement/',
+//   // this will allow the CDN to use Flash without restrictions
+//   // (by default, this is set as `sameDomain`)
+//   shimScriptAccess: 'always',
+
+//   features: ['playpause','progress','current','duration','tracks','volume'<?php echo ($pt->autoplay == 1) ? ",'fullscreen'" : ""?>],
+
+//   success: function (media) {
+//      var isYoutube = ~media.rendererName.indexOf('youtube');
+//   }
+//   // more configuration
+// });
+
+
+function pt_elexists(el){
+  return ($(el).length > 0);
+}
+var played = false;
+
+if ('{{VAST_TYPE}}' == 'vast' && played == false) {
+  $('.mejs__ads-skip-button').click(function(event) {
+    $('video').attr('src', '{{VIDEO_LOCATION}}');
+    played = true;
+  });
+}
+
+
+
+$('.ad-link').on('click', function(event) {
+  $('.ad-link').remove();
+  $('video')[0].play();
+});
+
+<?php if (!empty($pt->ad_image)) { ?>
+var counter = {{AD_SKIP_NUM}};
+var interval = setInterval(function() {
+    counter--;
+    $('.timer span').text(counter);
+    if (counter == 0) {
+        $('.ad-link').remove();
+         $('video')[0].play();
+
+        clearInterval(interval);
+    }
+}, 1000);
+<?php } ?>
+$('.rad-transaction').click(function(event) {
+      $(this).off("click").removeClass('rad-transaction');
+      $.get('{{LINK aj/ads/rad-transaction}}', function(data){ /* pass */ });
+    });
+
+
+
+
+
+</script>
+
+<?php
+if (empty($_SESSION['finger'])) {
+?>
+<script>
+   var fingerprintReport = function () {
+      Fingerprint2.get(function(components) {
+        var murmur = Fingerprint2.x64hash128(components.map(function (pair) { return pair.value }).join(), 31)
+        $.post('{{LINK aj/views}}?hash=' + $('.main_session').val()+'&type_=set', {finger: murmur}, function(data, textStatus, xhr) {
+
+         <?php
+         if ($pt->continent_hide == false) {
+          if (($pt->video_approved == true  && (($pt->get_video->sell_video > 0 && $pt->is_paid > 0) || $pt->get_video->sell_video == 0) && ($pt->get_video->age == false) && $pt->video_type == 'public') || $pt->get_video->is_owner || PT_IsAdmin()) {
+            if ($pt->converted == true) {
+            ?>
+
+            $.post('{{LINK aj/views}}?hash=' + $('.main_session').val()+'&type_=add', {video_id:{{ID}}}, function(data, textStatus, xhr) {
+            if (data.status == 200) {
+               $('#video-views-count').html(data.count);
+            }
+           });
+         <?php } } } ?>
+
+
+        });
+      })
+   }
+   fingerprintReport();
+</script>
+<?php }else{ ?>
+<?php
+if ($pt->continent_hide == false) {
+ if (($pt->video_approved == true  && (($pt->get_video->sell_video > 0 && $pt->is_paid > 0) || $pt->get_video->sell_video == 0) && ($pt->get_video->age == false) && $pt->video_type == 'public') || $pt->get_video->is_owner || PT_IsAdmin()) {
+   if ($pt->converted == true) {
+   ?>
+<script>
+
+   $.post('{{LINK aj/views}}?hash=' + $('.main_session').val()+'&type_=add', {video_id:{{ID}}}, function(data, textStatus, xhr) {
+   if (data.status == 200) {
+      $('#video-views-count').html(data.count);
+   }
+  });
+</script>
+<?php } } } ?>
+<?php } ?>

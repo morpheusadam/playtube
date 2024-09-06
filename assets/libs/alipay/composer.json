@@ -1,0 +1,5 @@
+{
+    "require": {
+        "mantoufan/alipay-global-sdk-php": "^0.0.3"
+    }
+}

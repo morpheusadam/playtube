@@ -1,0 +1,71 @@
+<form class="form-horizontal user-setting-panel pt_forms pt_shadow" id="privacy-settings" method="POST">
+    <div class="yp_sett_header">
+        <h4>{{LANG balance_}} {{LANG settings}}</h4>
+    </div>
+    <div class="setting-privacy-alert"></div>
+
+    <div class="form-group">
+        <label class="col-md-12" for="show_subscriptions_count">{{LANG show_subscriptions_count}}</label>
+        <div class="col-md-12">
+            <select id="show_subscriptions_count" name="show_subscriptions_count" class="form-control">
+                <option value="yes" <?php echo ($pt->settings->privacy->show_subscriptions_count == 'yes') ? 'selected': '';?>>{{LANG yes}}</option>
+                <option value="no" <?php echo ($pt->settings->privacy->show_subscriptions_count == 'no') ? 'selected': '';?>>{{LANG no}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-12" for="who_can_message_me">{{LANG who_can_message_me}}</label>
+        <div class="col-md-12">
+            <select id="who_can_message_me" name="who_can_message_me" class="form-control">
+                <option value="all" <?php echo ($pt->settings->privacy->who_can_message_me == 'all') ? 'selected': '';?>>{{LANG all}}</option>
+                <option value="subscribers" <?php echo ($pt->settings->privacy->who_can_message_me == 'subscribers') ? 'selected': '';?>>{{LANG subscribers}}</option>
+                <option value="no_one" <?php echo ($pt->settings->privacy->who_can_message_me == 'no_one') ? 'selected': '';?>>{{LANG no_one}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-12" for="who_can_watch_my_videos">{{LANG who_can_watch_my_videos}}</label>
+        <div class="col-md-12">
+            <select id="who_can_watch_my_videos" name="who_can_watch_my_videos" class="form-control">
+                <option value="all" <?php echo ($pt->settings->privacy->who_can_watch_my_videos == 'all') ? 'selected': '';?>>{{LANG all}}</option>
+                <option value="subscribers" <?php echo ($pt->settings->privacy->who_can_watch_my_videos == 'subscribers') ? 'selected': '';?>>{{LANG subscribers}}</option>
+                <option value="only_me" <?php echo ($pt->settings->privacy->who_can_watch_my_videos == 'only_me') ? 'selected': '';?>>{{LANG only_me}}</option>
+            </select>
+            <div class="alert alert-info mt-15">Please note changing the privacy of this option will reset all your videos privacy to the option you choose.</div>
+        </div>
+    </div>
+	<input type="hidden" name="hash_id" value="<?php echo PT_CreateSession()?>">
+	<input type="hidden" name="user_id" value="{{USER id}}">
+	<!-- Button (Double) -->
+	<div class="last-sett-btn modal-footer" style="margin: 0px -30px -10px -30px;">
+		<button id="submit" name="submit" class="btn btn-main setting-panel-mdbtn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> {{LANG save}}</button>
+	</div>
+</form>
+
+<script>
+    $(function() {
+        var form = $('form#privacy-settings');
+        form.ajaxForm({
+            url: '{{LINK aj/user/privacy}}?hash=' + $('.main_session').val(),
+            beforeSend: function() {
+                form.find('button').text("{{LANG please_wait}}");
+            },
+            success: function(data) {
+                scrollToTop();
+                if (data.status == 200) {
+                    $('.setting-privacy-alert').html('<div class="alert alert-success">' + data.message + '</div>');
+                    $('.alert-success').fadeIn('fast', function() {
+                        $(this).delay(2500).slideUp(500, function() {
+                            $(this).remove();
+                        });
+                    });
+                } else if (data.errors) {
+                    var errors = data.errors.join("<br>");
+                    $('.setting-privacy-alert').html('<div class="alert alert-danger">' + errors + '</div>');
+                    $('.alert-danger').fadeIn(300);
+                }
+                form.find('button').html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> {{LANG save}}');
+            }
+        });
+    });
+</script>

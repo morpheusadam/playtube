@@ -1,0 +1,41 @@
+<div class="content pt_shadow">
+	<div class="col-md-12">
+		<div class="upload-head">
+			<h4 class="page_head" style="display: block !important;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M17,10.5V7A1,1 0 0,0 16,6H4A1,1 0 0,0 3,7V17A1,1 0 0,0 4,18H16A1,1 0 0,0 17,17V13.5L21,17.5V6.5L17,10.5Z" /></svg> {{LANG manage_my_videos}}
+				<div class="dropdown pull-right" id="video_dropdown">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu dropdown-toggle"  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+				  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+				  	<div class="dropdown-item">
+				  		<a href="{{LINK dashboard}}" data-load="?link1=dashboard" class="dropdown-item">
+							<svg preserveAspectRatio="xMidYMid meet" focusable="false" class="style-scope iron-icon feather"  width="24" height="24" viewBox="0 0 24 24" ><g class="style-scope iron-icon"><path fill="#fff" d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" class="style-scope iron-icon"></path></g></svg> {{LANG dashboard}}
+						</a>
+				  	</div>
+				  	<div class="dropdown-item">
+				  		<a href="{{LINK video_studio}}" data-load="?link1=video_studio" class="dropdown-item">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M17,10.5V7A1,1 0 0,0 16,6H4A1,1 0 0,0 3,7V17A1,1 0 0,0 4,18H16A1,1 0 0,0 17,17V13.5L21,17.5V6.5L17,10.5Z" /></svg> {{LANG videos}}
+						</a>
+				  	</div>
+				  	<div class="dropdown-item">
+				  		<a href="{{LINK comments}}" data-load="?link1=comments" class="dropdown-item">
+							<svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" class="style-scope iron-icon feather"  width="24" height="24" ><g class="style-scope iron-icon"><path fill="#fff" d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z" class="style-scope iron-icon"></path></g></svg> {{LANG comments}}
+						</a>
+				  	</div>
+				  </div>
+				</div>
+			</h4>
+			<hr>
+		</div>
+		<div class="subscriptions-list">
+			<div class="author-list row manage_vids">
+				{{VIDEOS}}
+			</div>
+			<?php if (count($pt->videos) > 0) { ?>
+				<div class="watch-video-show-more desc load-more" data-type="my_videos">
+					{{LANG show_more}}
+				</div>
+			<?php } ?>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+</div>

@@ -1,0 +1,68 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "2d9c0282540599f432589b8973fc7c67",
+    "packages": [
+        {
+            "name": "braintree/braintree_php",
+            "version": "6.11.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/braintree/braintree_php.git",
+                "reference": "2cd8fe23b4e3bc96f84ec6b95d95330aec5757ec"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/braintree/braintree_php/zipball/2cd8fe23b4e3bc96f84ec6b95d95330aec5757ec",
+                "reference": "2cd8fe23b4e3bc96f84ec6b95d95330aec5757ec",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-dom": "*",
+                "ext-hash": "*",
+                "ext-openssl": "*",
+                "ext-xmlwriter": "*",
+                "php": ">=7.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.0",
+                "squizlabs/php_codesniffer": "^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Braintree\\": "lib/Braintree"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Braintree",
+                    "homepage": "https://www.braintreepayments.com"
+                }
+            ],
+            "description": "Braintree PHP Client Library",
+            "support": {
+                "issues": "https://github.com/braintree/braintree_php/issues",
+                "source": "https://github.com/braintree/braintree_php/tree/6.11.1"
+            },
+            "time": "2023-01-18T16:12:07+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.2.0"
+}

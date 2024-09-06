@@ -1,0 +1,115 @@
+<div class="container-home">
+	<div class="row">
+		{{apps_header}}
+		
+		<div class="col-md-8">
+			<h3 class="recent-articles heading_all_sections_top">
+				<span>
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15"><path d="M3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3ZM16.4645 15.5355L20 12L16.4645 8.46447L15.0503 9.87868L17.1716 12L15.0503 14.1213L16.4645 15.5355ZM6.82843 12L8.94975 9.87868L7.53553 8.46447L4 12L7.53553 15.5355L8.94975 14.1213L6.82843 12ZM11.2443 17L14.884 7H12.7557L9.11597 17H11.2443Z" fill="currentColor"></path></svg>
+					<span>{{LANG developers}}</span>
+				</span>
+			</h3>
+            <div class="upload_video_bg_color">
+                <div class="setting-well">
+                    <p>Our API allows you to retrieve informations from our website via GET request and supports the following query parameters: </p>
+					<div class="table-responsive">
+						<table class="table table-bordered developer_get_req">
+							<thead>
+								<tr>
+									<th><span>Name</span></th>
+									<th><span>Meaning</span></th>
+									<th><span>Values</span></th>
+									<th><span>Description</span></th>
+									<th><span>Required</span></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><b>type</b></td>
+									<td>Query type.</td>
+									<td>get_channel_info using fetch you can get user data</td>
+									<td>This parameter specify the type of the query.</td>
+									<td><svg id="Layer_1" enable-background="new 0 0 512 512" height="20" viewBox="0 0 512 512" width="20" xmlns="http://www.w3.org/2000/svg"><g clip-rule="evenodd" fill-rule="evenodd"><path d="m256 0c-141.2 0-256 114.8-256 256s114.8 256 256 256 256-114.8 256-256-114.8-256-256-256z" fill="#4bae4f"/><path d="m379.8 169.7c6.2 6.2 6.2 16.4 0 22.6l-150 150c-3.1 3.1-7.2 4.7-11.3 4.7s-8.2-1.6-11.3-4.7l-75-75c-6.2-6.2-6.2-16.4 0-22.6s16.4-6.2 22.6 0l63.7 63.7 138.7-138.7c6.2-6.3 16.4-6.3 22.6 0z" fill="#fff"/></g></svg></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+                    <br>
+                    <div style="font-size:18px;">How to start?</div>
+                    <hr>
+                    <ol style="list-style: initial;">
+                        <li>Create a <a href="{{LINK create-app}}" class="main">development application</a>.<br><br></li>
+                        <li>Once you have created the app, you'll get APP_ID, and APP_SECRET. <br>Example: <br><br> <img style="width: 100%;" src="{{CONFIG theme_url}}/img/dev-app.png" alt=""><br><br></li>
+                        <li>To start the Oauth process, use the link {{CONFIG site_url}}/oauth?app_id={YOUR_APP_ID}<br><br></li>
+                        <li>Once the end user clicks this link, he/she will be redirected to the authorization page.<br><br></li>
+                        <li>Once the end user authorization the app, he/she will be redirected to your domain name with a GET parameter "code", example: http://yourdomain/?code=XXX<br><br></li>
+                        <li>
+                            In your code, to retrieve the authorized user info, you need to generate an access code, please use the code below:<br><br>
+                            <ol style="list-style: initial;">
+                                <li>
+                                    PHP:
+                                    <code>
+                                        <?php
+                                            $code = '<?php
+$app_id = \'YOUR_APP_ID\'; // your application app id
+$app_secret = \'YOUR_APP_SECRET\'; your application app secret
+$code = $_GET[\'code\']; // the GET parameter you got in the callback: http://yourdomain/?code=XXX
+
+$get = file_get_contents("{{CONFIG site_url}}/authorize?app_id={$app_id}&app_secret={$app_secret}&code={$code}");
+
+$json = json_decode($get, true);
+if (!empty($json[\'access_token\'])) {
+    $access_token = $json[\'access_token\']; // your access token
+}
+?>';
+                                        echo '
+                                        <pre>' . htmlspecialchars($code) . '</pre>
+                                        ';
+                                        ?>
+                                    </code>
+                                </li>
+                            </ol>
+                        </li>
+                        <li>
+                            Once you got the access code, simple call the data you would like to retrieve, Example: <br><br>
+                            <ol style="list-style: initial;">
+                                <li>PHP:
+                                    <code>
+                                    <?php
+                                        $code = 'if (!empty($json[\'access_token\'])) {
+   $access_token = $json[\'access_token\']; // your access token
+   $get = file_get_contents("{{CONFIG site_url}}/api/v1.0?type=get_channel_info?access_token={$access_token}");
+}
+';
+                                        echo '<pre>' . htmlspecialchars($code) . '</pre>';
+
+                                        ?>
+                                    </code>
+                                </li>
+                                <li>
+                                    Respond:
+                                    <pre>
+<b>Json</b>output
+
+{
+    "api_status": "200",
+    "api_version": "1.0",
+    "data":{
+        "id": ,
+        "username": "",
+        "email": "",
+        "first_name": "",
+        "last_name": "",
+        "gender": "",
+    }
+}
+</pre>
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,1615 @@
+<script>
+function PT_PlaylistSubscribe(user_id, type,playlist) {
+  if (!user_id || !type || !playlist) { return false; }
+  if (!$('#main-container').attr('data-logged') && $('#main-url').val()) {
+      window.location.href = PT_Ajax_Requests_File() + 'login?to=' + $('#main-url').val();
+      return false;
+  }
+  var subscribe_button = $('.subscribe-id-playlist-' + user_id);
+  if (type == 'subscribe') {
+    subscribe_button.removeClass('plist-btn-subscribe').addClass('plist-btn-subscribed');
+    subscribe_button.html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M17.75 21.16L15 18.16L16.16 17L17.75 18.59L21.34 15L22.5 16.41L17.75 21.16M3 20V19L5 17V11C5 7.9 7.03 5.18 10 4.29V4C10 2.9 10.9 2 12 2C13.11 2 14 2.9 14 4V4.29C16.97 5.18 19 7.9 19 11V12.08L18 12C14.69 12 12 14.69 12 18C12 18.7 12.12 19.37 12.34 20H3M12 23C10.9 23 10 22.11 10 21H12.8C13.04 21.41 13.33 21.79 13.65 22.13C13.29 22.66 12.69 23 12 23Z" /></svg>');
+    subscribe_button.attr('onclick', 'PT_PlaylistSubscribe(' + user_id + ', "subscribed","'+playlist+'")');
+  subscribe_button.attr('title', '{{LANG subscribed_to_playlist}}');
+    $.post('{{LINK aj/playlist_subscribe}}', {user_id: user_id,playlist:playlist});
+  } else {
+    var html = "<small>{{LANG unsubscribe_from_channel}}</small>";
+    swal({
+      title: "",
+      type: "",
+      html:html,
+      showCancelButton: true,
+      cancelButtonText: "{{LANG no}}",
+      customClass: 'sweetalert-lg pt_add_to_list_vid',
+      confirmButtonText:'{{LANG yes}}'
+    }).then(function(){
+        subscribe_button.removeClass('plist-btn-subscribed').addClass('plist-btn-subscribe');
+        subscribe_button.html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M21,19V20H3V19L5,17V11C5,7.9 7.03,5.17 10,4.29C10,4.19 10,4.1 10,4A2,2 0 0,1 12,2A2,2 0 0,1 14,4C14,4.1 14,4.19 14,4.29C16.97,5.17 19,7.9 19,11V17L21,19M14,21A2,2 0 0,1 12,23A2,2 0 0,1 10,21M19.75,3.19L18.33,4.61C20.04,6.3 21,8.6 21,11H23C23,8.07 21.84,5.25 19.75,3.19M1,11H3C3,8.6 3.96,6.3 5.67,4.61L4.25,3.19C2.16,5.25 1,8.07 1,11Z" /></svg>');
+        subscribe_button.attr('onclick', 'PT_PlaylistSubscribe(' + user_id + ', "subscribe","'+playlist+'")');
+    subscribe_button.attr('title', '{{LANG subscribe_to_playlist}}');
+        $.post('{{LINK aj/playlist_subscribe}}', {user_id: user_id,playlist:playlist});
+
+      },function(){
+    });
+    
+  }
+  
+}
+
+function PT_Subscribe(user_id, type) {
+  if (!user_id || !type) { return false; }
+  if (!$('#main-container').attr('data-logged') && $('#main-url').val()) {
+      window.location.href = PT_Ajax_Requests_File() + 'login?to=' + $('#main-url').val();
+      return false;
+  }
+  var subscribe_button = $('.subscribe-id-' + user_id);
+  if (type == 'subscribe') {
+    subscribe_button.removeClass('btn-subscribe').addClass('btn-subscribed');
+    subscribe_button.html('{{LANG subscribed}}');
+    subscribe_button.attr('onclick', 'PT_Subscribe(' + user_id + ', "subscribed")');
+    $.post('{{LINK aj/subscribe}}', {user_id: user_id});
+  } else {
+    var html = "<small>{{LANG unsubscribe_from_channel}}</small>";
+    swal({
+      title: "",
+      type: "",
+      html:html,
+      showCancelButton: true,
+      cancelButtonText: "{{LANG no}}",
+      customClass: 'sweetalert-lg pt_add_to_list_vid',
+      confirmButtonText:'{{LANG yes}}'
+    }).then(function(){
+        subscribe_button.removeClass('btn-subscribed').addClass('btn-subscribe');
+        subscribe_button.html('{{LANG subscribe}}');
+        subscribe_button.attr('onclick', 'PT_Subscribe(' + user_id + ', "subscribe")');
+        $.post('{{LINK aj/subscribe}}', {user_id: user_id});
+
+      },function(){
+    });
+    
+  }
+  
+}
+
+function PT_Reply(comm_id, name,reply_id) {
+  if (!comm_id) { return false;}
+  var logged = $('#main-container').attr('data-logged');
+  var name   = (name) ? "@"+name+": " : '';
+  if(!logged){
+    window.location.href = "{{LINK login?to=<?php echo $pt->actual_link;?>}}";
+    return false;
+  }
+  else{
+    var reply_form = $('#comm-reply-' + comm_id);
+
+    reply_form.removeClass('hidden').find('input').val(name).focus().scrollTo();
+
+    if (reply_id) {
+      reply_form.attr('data-reply-id',reply_id); 
+    }
+    
+  }
+}
+
+$(function () {
+  $(document).on('click','.load-more' , function(event) {
+    event.preventDefault();
+    var $type = $(this).attr('data-type');
+    var type_org = $type;
+    var keyword = '';
+    if ($(this).attr('data-keyword')) {
+      keyword = $(this).attr('data-keyword');
+    }
+    var last_id = $('.video-wrapper:last').attr('data-id');
+    if ($(this).attr('data-category')) {
+      var $category_id = $(this).attr('data-category');
+      sub_category = $(this).attr('data-sub-category-id');
+      $type = 'category?c_id=' + $category_id + '&sub_category='+sub_category;
+    }
+    views = 0;
+    if ($('.video-wrapper:last').attr('data-views')) {
+      var views = $('.video-wrapper:last').attr('data-views');
+      $type = $type + '?views=' + views;
+    }
+    tr_id = 0;
+    if ($('.video-wrapper:last').attr('data-tr')) {
+      var tr_id = $('.video-wrapper:last').attr('data-tr');
+      $type = $type + '?tr_id=' + tr_id;
+    }
+    user_id = 0;
+    if ($('#profile-id').val()) {
+      var user_id = $('#profile-id').val();
+    }
+    
+    data1 = {};
+    if ($type == 'top') {
+      for (var i = 0; i < $('.video-wrapper').length; i++) {
+        if ($($('.video-wrapper')[i]).attr('data-views') == views) {
+          data1[i] = $($('.video-wrapper')[i]).attr('data-views');
+        }
+      }
+    }
+    else{
+      if (views) {
+        var asdf = $('div[data-views=' + views + ']').each(function(index, el) {
+          data1[index] = $(this).attr('data-id')
+        });
+      }
+    }
+    date = '';
+    category = '';
+    if ($(this).attr('data-type') == 'search') {
+      date = $(this).attr('data-by-date');
+      category = $(this).attr('data-by-category');
+    }
+    if ($(this).attr('data-type') == 'video_comment') {
+      $type = 'video_comment';
+      last_id = $('.comment_info:last').attr('data-comment-id');
+    }
+
+    video_studio_ids = [];
+    video_studio_type = '';
+
+    if ($(this).attr('data-type') == 'video_studio') {
+      for (var i = 0; i < $('.video-wrapper').length; i++) {
+          video_studio_ids.push($($('.video-wrapper')[i]).attr('data-id'));
+      }
+      video_studio_type = $(this).attr('sort-type');
+    }
+    paid_sort = '';
+    if ($(this).attr('data-type') == 'paid_videos') {
+      paid_sort = $(this).attr('data-video-type');
+    }
+
+    var channels_ids = [];
+    var sort_type = '';
+    var sort_by = '';
+
+    if ($(this).attr('data-type') == 'popular_channels') {
+      channels_ids = [];
+      last_id = $('.channels_list:last').attr('data-channel-views');
+      for (var i = 0; i < $('.channels_list').length; i++) {
+        if ($($('.channels_list')[i]).attr('data-channel-views') == last_id) {
+          channels_ids.push($($('.channels_list')[i]).attr('data-channel-id'));
+        }
+      }
+      sort_by = $(this).attr('data-sort-by');
+      sort_type = $(this).attr('data-sort-type');
+    }
+
+    $('.load-more').text("{{LANG please_wait}}");
+    $.post('{{LINK aj/load-more/' + $type + '}}', {last_id: last_id, ids: data1, keyword:keyword, user_id: user_id,date:date,category:category,video_studio_ids:video_studio_ids,video_studio_type:video_studio_type,channels_ids:channels_ids,sort_type:sort_type,sort_by:sort_by,paid_sort:paid_sort}, function(data, textStatus, xhr) {
+       if (data.status == 200) {
+          if ($type == 'subscriptions' || $type == 'history' || $type == 'saved_videos' || $type == 'liked_videos' || $type == 'my_videos' || $type == 'video_studio' || $type == 'search' || $type == 'popular_channels') {
+            if ($('#video_studio_ids').length > 0) {
+              $('#video_studio_ids').attr('value',data.video_ids_);
+              $('#video_studio_ids').attr('data_by_id',data.by_ids);
+            }
+             $('.author-list').append(data.videos);
+          } else {
+            if ($type == 'video_comment') {
+              $('#comments_container').append(data.comments);
+            }else{
+              if (type_org == 'profile_videos') {
+                $('.pt_timeline_vids').append(data.videos);
+              } else {
+                $('.videos-latest-list').append(data.videos);
+              }
+            }
+          }
+          $('.load-more').text("{{LANG show_more}}");
+       } else {
+          if ($type == 'video_comment') {
+            $('.load-more').text("{{LANG no_more_comments}}");
+          }else if($type == 'popular_channels'){
+            $('.load-more').text("{{LANG no_more_channels_to_show}}");
+          }else{
+            $('.load-more').text("{{LANG no_more_videos_to_show}}");
+          }
+       }
+       scrolled = 0;
+    });
+  });
+});
+
+
+function PT_LoadPost(category, self){
+  if (!self) { return false;}
+
+  var last_id = ($('.article-wrapper').length > 0) ? $('.article-wrapper:last').attr('data-id') : 0;
+  if (last_id && last_id > 0) {
+    $.post('{{LINK aj/load-more/articles}}', {last_id: last_id,cat:category}, function(data, textStatus, xhr) {
+       if (data.status == 200) {
+          $('.articles-container').append(data.posts);
+          $(self).text("{{LANG show_more}}");
+       }
+
+       else {
+          $(self).text("{{LANG no_more_articles}}");
+       }
+    });
+  }
+}
+
+function PT_DeleteVideo(id, type) {
+  if (!id) {
+    return false;
+  }
+  if (!confirm("{{LANG delete_video_confirmation}}")) {
+    return false;
+  }
+  if (type == 'edit-page') {
+    $('.btn-delete').attr('disabled', true);
+    $('.btn-delete').val("{{LANG please_wait}}");
+  } else if (type == 'manage-page') {
+    $('#video-' + id).slideUp('200', function () {
+      $(this).remove();
+    });
+  }
+  $.post('{{LINK aj/delete-video}}', {id: id}, function(data, textStatus, xhr) {
+    if (data.status == 200) {
+      if (type == 'edit-page') {
+        window.location.href = '{{LINK video_studio}}';
+      } 
+    }
+  });
+}
+
+function PT_DeleteActivity(id) {
+  if (!id) {
+    return false;
+  }
+  if (!confirm("{{LANG delete_activity_confirmation}}")) {
+    return false;
+  }
+
+  $('#activity-' + id).slideUp('200', function () {
+    $(this).remove();
+  });
+
+  $.post('{{LINK aj/delete-activity}}', {id: id}, function(data, textStatus, xhr) {
+  });
+}
+
+function PT_DeleteHistory(id) {
+  if (!id) {
+    return false;
+  }
+  $('#video-' + id).fadeOut('200', function () {
+    $(this).remove();
+  });
+  $.post('{{LINK aj/delete-history}}', {id: id});
+  Snackbar.show({text: '<div><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMjAnIGhlaWdodD0nMjAnIHZpZXdCb3g9JzAgMCAyMCAyMCcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJz4KCTxnPgoJCTxwYXRoIGQ9J00tMi0yaDI0djI0SC0yeicgZmlsbD0nbm9uZScvPgoJCTxwYXRoIGQ9J00xMCAwQzQuNDggMCAwIDQuNDggMCAxMHM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTUuNTIgMCAxMCAwek04IDE1bC01LTUgMS40MS0xLjQxTDggMTIuMTdsNy41OS03LjU5TDE3IDZsLTkgOXonIGZpbGw9JyMyNkJDNEUnLz4KCTwvZz4KPC9zdmc+Cg=="/> {{LANG removed_history}}</div>'});
+}
+
+function PT_DeleteSaved(id) {
+  if (!id) {
+    return false;
+  }
+  $('#video-' + id).slideUp('200', function () {
+    $(this).remove();
+  });
+  $.post('{{LINK aj/delete-saved}}', {id: id});
+}
+
+function PT_AddToList(video_id){
+  if (!video_id) {
+    return false;
+  }
+
+  var name = '';
+  var desc = '';
+  var id   = video_id;
+
+  $.ajax({
+    url: '{{LINK aj/lists}}',
+    type: 'GET',
+    dataType: 'json',
+    data: {type: 'list',a:'add',id:id},
+  })
+  .done(function(data) {
+    if (data.status == 200) {
+      swal({
+        title: "",
+        type: "",
+        html:data.html,
+        showCancelButton: true,
+        cancelButtonText: "{{LANG close}}",
+        customClass: 'sweetalert-lg pt_add_to_list_vid',
+        confirmButtonText:'{{LANG create_new}}'
+      }).then(function(){
+          PT_NewList();
+        },function(){
+      });
+    }
+    else{
+      swal(
+        'Error!',
+        'Something went wrong.Please try again later!',
+        'error'
+      );
+    }
+  })
+  .fail(function() {
+    console.log("error");
+  })
+  .always(function() {
+    console.log("complete");
+  });
+}
+
+function PT_ReportVideo(video_id,self){
+  if (!video_id || !self) { return false;}
+
+    var message = "";
+    self = $(self);
+    if (self.attr('data-rep') == 1) {
+      swal({
+        title: '{{LANG report_zs_video}}',
+        html: $('<form>').add($('<p>',{
+          text:"{{LANG write_vr_summary}}",
+          class:'report-message-label'
+        })).add($('<textarea>',{
+          id:'report-message',
+          rows: 4,
+          placeholder:'{{LANG message}}'
+        })),
+        showCancelButton: true,
+        confirmButtonText: '{{LANG submit}}',
+        cancelButtonText: '{{LANG cancel}}',
+        customClass:'report-video-popup',
+        animation: false,
+        preConfirm: function(name){
+          return new Promise(function(resolve,reject){
+              message = $('#report-message').val();
+              if (message.length < 1) {
+                swal.showValidationError(
+                  '{{LANG please_check_details}}'
+                );
+                reject();
+              }
+              else{
+                resolve();
+              }
+          });
+        },
+        allowOutsideClick: false
+      }).then(function(){
+        $.ajax({
+          url: '{{LINK aj/report/video/report}}',
+          type: 'POST',
+          dataType: 'json',
+          data: {id: video_id,text:message},
+        })
+        .done(function(data) {
+          if (data.status == 200) {
+            swal({
+              title: '{{LANG thank_u}}',
+              html: '{{LANG we_received_ur_rep}}'
+            });
+            self.find('span').text('{{LANG cancel_report}}');
+            self.attr('data-rep', '0');
+            self.addClass('active');
+          }
+          else if(data.status == 304){
+            self.find('span').text('{{LANG report}}');
+            self.attr('data-rep', '1');
+            self.removeClass('active');
+            notif({
+              msg: "{{LANG report_canceled}}",
+              type: "default",
+              fade:0,
+              timeout:1500
+            });
+          }
+        });
+      });
+    }
+    else{
+      $.ajax({
+        url: '{{LINK aj/report/video/cancel}}',
+        type: 'POST',
+        dataType: 'json',
+        data: {id: video_id},
+      })
+      .done(function(data) {
+        if(data.status == 304){
+          self.find('span').text('{{LANG report}}');
+          self.attr('data-rep', '1');
+          self.removeClass('active');
+          notif({
+            msg: "{{LANG report_canceled}}",
+            type: "default",
+            fade:0,
+            timeout:1500
+          });
+        }
+      });
+    }  
+}
+
+function PT_ReportCopyVideo(video_id,self){
+  if (!video_id || !self) { return false;}
+  var text1 = "{{LANG confirm_1_text}}";
+  var text2 = "{{LANG confirm_2_text}}";
+  var error = "{{LANG confirm_check_text}}";
+  swal({
+        title: '{{LANG create_notice}}',
+        html: $('<form>').add($('<p>',{
+          text:"{{LANG describe_notice}}",
+          class:'report-message-label'
+        })).add($('<textarea>',{
+          id:'report-message-copy',
+          rows: 4,
+          placeholder:'{{LANG message}}'
+        })).add($('<div class="custom-control custom-radio checkbox checkbox-primary"><input type="checkbox" id="confirm_1" name="confirm_1" class="custom-control-input"><label class="custom-control-label" for="confirm_1">'+text1+'</label></div><div class="custom-control custom-radio checkbox checkbox-primary"><input type="checkbox" id="confirm_2" name="confirm_2" class="custom-control-input"><label class="custom-control-label" for="confirm_2">'+text2+'</label></div>')),
+        showCancelButton: true,
+        confirmButtonText: '{{LANG submit}}',
+        cancelButtonText: '{{LANG cancel}}',
+        customClass:'report-video-popup pt_rep_copy_vid',
+        animation: false,
+        preConfirm: function(name){
+          return new Promise(function(resolve,reject){
+              message = $('#report-message-copy').val();
+              if (message.length < 1) {
+                swal.showValidationError(
+                  '{{LANG please_check_details}}'
+                );
+                reject();
+              }
+              else{
+                if ($('#confirm_1').is(':not(:checked)')) {
+                  swal.showValidationError(
+                    error
+                  );
+                  reject();
+                }
+                else{
+                  if ($('#confirm_2').is(':not(:checked)')) {
+                    swal.showValidationError(
+                      error
+                    );
+                    reject();
+                  }
+                  else{
+                    resolve();
+                  }
+                }
+              }
+          });
+        },
+        allowOutsideClick: false
+      }).then(function(){
+        $.ajax({
+          url: '{{LINK aj/main/copy_report}}?hash=' + $('.main_session').val(),
+          type: 'POST',
+          dataType: 'json',
+          data: {id: video_id,text:message},
+        })
+        .done(function(data) {
+          if (data.status == 200) {
+            swal({
+              title: '{{LANG thank_u}}',
+              html: '{{LANG we_received_ur_rep}}'
+            });
+          }
+          else if(data.status == 304){
+            self.find('span').text('{{LANG report}}');
+            self.attr('data-rep', '1');
+            self.removeClass('active');
+            notif({
+              msg: "{{LANG report_canceled}}",
+              type: "default",
+              fade:0,
+              timeout:1500
+            });
+          }
+        });
+      });
+
+}
+function PT_PLVToggle(id,self){
+  if (!id || !self) {
+    return false;
+  }
+  var self = $(self);
+  var list = self.attr('id');
+  $.ajax({
+    url: '{{LINK aj/lists}}',
+    type: 'GET',
+    dataType: 'json',
+    data: {type: 'list',a:'tg',id:id,list:list},
+  })
+  .done(function(data) {
+    if (data.status == 200 && data.code == 1) {
+      self.find('button').html('<i class="fa fa-check-square-o"></i>');
+      notif({
+        msg: "{{LANG added_to}} " + data.name,
+        type: "default",
+        fade:0,
+        timeout:1500
+      });
+    }
+
+    else if(data.status == 200 && data.code == 0){
+      self.find('button').html('<i class="fa fa-square-o"></i>');
+      notif({
+        msg: "{{LANG removed_from}} " + data.name,
+        type: "default",
+        fade:0,
+        timeout:1500
+      });
+    }
+
+    else{
+      swal(
+        'Error!',
+        'Something went wrong.Please try again later!',
+        'error'
+      );
+    }
+  })
+  .fail(function() {
+    console.log("error");
+  })  
+}
+
+function PT_WLToggle(id,self){
+  if (!id || !self) {
+    return false;
+  }
+  var self = $(self);
+  $.ajax({
+    url: '{{LINK aj/lists}}',
+    type: 'GET',
+    dataType: 'json',
+    data: {type: 'list',a:'wl-tg',id:id},
+  })
+  .done(function(data) {
+    if (data.status == 200 && data.code == 1) {
+      self.find('.pt-plist-tgl_btn').html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="green" d="M17,7H7A5,5 0 0,0 2,12A5,5 0 0,0 7,17H17A5,5 0 0,0 22,12A5,5 0 0,0 17,7M17,15A3,3 0 0,1 14,12A3,3 0 0,1 17,9A3,3 0 0,1 20,12A3,3 0 0,1 17,15Z" /></svg>');
+      notif({
+        msg: "{{LANG added_to}} \"{{LANG watch_later}}\"",
+        type: "default",
+        fade:0,
+        timeout:1500
+      });
+    }
+
+    else if(data.status == 200 && data.code == 0){
+      self.find('.pt-plist-tgl_btn').html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7,10A2,2 0 0,1 9,12A2,2 0 0,1 7,14A2,2 0 0,1 5,12A2,2 0 0,1 7,10M17,7A5,5 0 0,1 22,12A5,5 0 0,1 17,17H7A5,5 0 0,1 2,12A5,5 0 0,1 7,7H17M7,9A3,3 0 0,0 4,12A3,3 0 0,0 7,15H17A3,3 0 0,0 20,12A3,3 0 0,0 17,9H7Z" /></svg>');
+      notif({
+        msg: "{{LANG removed_from}} \"{{LANG watch_later}}\"",
+        type: "default",
+        fade:0,
+        timeout:1500
+      });
+    }
+
+    else{
+      swal(
+        'Error!',
+        'Something went wrong.Please try again later!',
+        'error'
+      );
+    }
+  })
+  .fail(function() {
+    console.log("error");
+  })  
+}
+
+function PT_NewList(){
+  swal({
+    title: '',
+    type: "",
+    html:'<form class="form pt_forms create-new-list"><div class="create-new-list-head"><p>{{LANG create_new_pl}}</p></div><div class="sa-create-list-alert"></div><div class="form-group"><input type="text" class="form-control" placeholder="{{LANG pl_name}} 0 / 30"></div><div class="form-group"><select class="form-control"><option value="1" selected="selected">{{LANG privacy}}</option><option value="1">{{LANG public}}</option><option value="0">{{LANG private}}</option></select></div><div class="form-group"><textarea name="" id="" rows="3" class="form-control optional-field" placeholder="{{LANG description}}.."></textarea></div></form>',
+    showCancelButton: true,
+    allowOutsideClick:false,
+    confirmButtonText:'{{LANG create}}',
+    cancelButtonText:'{{LANG cancel}}',
+  customClass: 'pt_add_to_list_vid',
+    preConfirm: function (email) {
+    return new Promise(function (resolve, reject) {
+        name     = $(".create-new-list").find('input').val();
+        desc     = $(".create-new-list").find('textarea').val();
+        privacy  = $(".create-new-list").find('select').val();
+        setTimeout(function() {
+          if (name == '') {
+            reject('{{LANG pl_name_required}}');
+          }
+          else if(privacy < 0 || privacy > 1){
+            reject('{{LANG please_check_details}}');
+          }
+          else {
+            resolve();
+          }
+        }, 100)
+      })
+    }
+  }).then(function(){
+    if (!name){ return;}
+    $.ajax({
+      url: '{{LINK aj/lists?type=list&a=new}}',
+      type: 'POST',
+      dataType: 'json',
+      data: {name:name,desc:desc,pr:privacy},
+    })
+    .done(function(data) {
+      if (data.status == 200) {
+        swal({
+          title:name,
+          text:"{{LANG pl_сreated}}",
+          type:'success'
+        });
+
+        PT_Delay(function(){
+          swal.close();
+        },2000);
+      }
+      else if(data.status == 200){
+        swal(
+          'Error!',
+          'Something went wrong.Please try again later!',
+          'error'
+        );
+      }
+    })
+    .fail(function() {
+      swal.close();
+      console.log("error");
+    })
+  },
+  function(){
+    //Error
+  })
+}
+
+function PT_EditList(id){
+  if (!id) {
+    return false;
+  }
+  $.ajax({
+    url: '{{LINK aj/lists}}',
+    type: 'GET',
+    dataType: 'json',
+    data: {type: 'list',a:'edit',id:id},
+  })
+  .done(function(data) {
+    if (data.status == 200) {
+      swal({
+        title: '',
+        type: "",
+        html:data.html,
+        showCancelButton: true,
+        allowOutsideClick:false,
+        confirmButtonText:'<i class="fa fa-floppy-o"></i> {{LANG save}}',
+        cancelButtonText:'{{LANG cancel}}',
+        preConfirm: function (email) {
+        return new Promise(function (resolve, reject) {
+            name     = $(".edit-list-form").find('input').val();
+            desc     = $(".edit-list-form").find('textarea').val();
+            privacy  = $(".edit-list-form").find('select').val();
+            setTimeout(function() {
+              if (name == '') {
+                reject('{{LANG pl_name_required.}}');
+              }
+              else if(privacy < 0 || privacy > 1){
+                reject('{{LANG please_check_details}}');
+              }
+              else {
+                resolve();
+              }
+            }, 100)
+          })
+        }
+      }).then(function(){
+        if (!name){ return;}
+        $.ajax({
+          url: '{{LINK aj/lists?type=list&a=update}}',
+          type: 'POST',
+          dataType: 'json',
+          data: {name:name,desc:desc,pr:privacy,id:id},
+        })
+        .done(function(data) {
+          if (data.status == 200) {
+            swal({
+              title:name,
+              text:"{{LANG pl_saved}}",
+              type:'success'
+            });
+
+            PT_Delay(function(){
+              swal.close();
+            },2000);
+          }
+          else if(data.status == 200){
+            swal(
+              'Error!',
+              'Something went wrong.Please try again later!',
+              'error'
+            );
+          }
+        })
+        .fail(function() {
+          swal.close();
+          console.log("error");
+        })
+      },
+      function(){
+        //Error
+      })
+    }
+  })
+  .fail(function() {
+    console.log("error");
+  })
+}
+
+function PT_DeleteList(id){
+  if (!id) { return false;}
+  swal({
+    title: '{{LANG confirmation}}',
+    text: "{{LANG confirm_delist}}",
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: '{{LANG yes_del}}'
+  }).then(function(){
+    $.ajax({
+      url: '{{LINK aj/lists}}',
+      type: 'GET',
+      dataType: 'json',
+      data: {type: 'list',a:'delist',id:id},
+    })
+    .done(function(data) {
+      if (data.status == 200) {
+        $("[data-playlist='"+id+"']").slideUp(function(){
+          $(this).remove();
+        });
+        
+        swal({
+          title:"{{LANG deleted}}",
+          text:data.name +  " {{LANG was_deleted}}",
+          type:"success"
+        });
+      }
+      else{
+        swal(
+          'Error!',
+          'Something went wrong.Please try again later!',
+          'error'
+        );
+      }
+    })
+    .fail(function() {
+      console.log("error");
+    })
+    
+  })
+}
+
+function PT_DelFromList(list_id,video_id){
+  if (!list_id || !video_id) {
+    return false;
+  }
+
+  $.ajax({
+    url: '{{LINK aj/lists}}',
+    type: 'GET',
+    dataType: 'json',
+    data: {type: 'list',a:'delvid',video_id:video_id,list_id:list_id},
+  })
+  .done(function(data) {
+    if (data.status == 200) {
+      $("[data-video-id='"+video_id+"']").slideUp(function(){
+        $(this).remove();
+      })
+    }
+    else{
+      swal(
+        'Error!',
+        'Something went wrong.Please try again later!',
+        'error'
+      );
+    }
+  })
+  .fail(function() {
+    swal(
+      'Error!',
+      'Something went wrong.Please try again later!',
+      'error'
+    );
+  })
+}
+
+function PT_RemoveFromWL(video_id){
+  if (!video_id) {
+    return false;
+  }
+
+  $.ajax({
+    url: '{{LINK aj/lists}}',
+    type: 'GET',
+    dataType: 'json',
+    data: {type: 'list',a:'delwl',video_id:video_id},
+  })
+  .done(function(data) {
+    if (data.status == 200) {
+      $("[data-video-id='"+video_id+"']").slideUp(function(){
+        $(this).remove();
+      })
+    }
+    else{
+      swal(
+        'Error!',
+        'Something went wrong.Please try again later!',
+        'error'
+      );
+    }
+  })
+  .fail(function() {
+    swal(
+      'Error!',
+      'Something went wrong.Please try again later!',
+      'error'
+    );
+  })
+}
+
+function PT_RVReply(text,comm_id,event,video_id){
+  
+  if (!text || !comm_id || !event || !video_id) {
+    return false;
+  }
+  else if(event.keyCode == 13 && event.shiftKey == 0){
+    var reply_id = 0;
+    if($("#comm-reply-"+comm_id).attr('data-reply-id')){
+      reply_id = $("#comm-reply-"+comm_id).attr('data-reply-id');
+    }
+
+    $.ajax({
+      url: "{{LINK aj/add-reply/video}}",
+      type: 'POST',
+      dataType: 'json',
+      data: {text:text,id:comm_id,video_id:video_id,reply:reply_id},
+    })
+    .done(function(data) {
+      if (data.status == 200) {
+        $("#pt-comment-replies-cont-" + comm_id).append(data.html)
+        $("#comm-reply-"+comm_id).find('input').val('').blur();
+
+      }
+      $("#comment-reply-loading-renderer-"+comm_id).addClass('hidden');
+    })
+    .fail(function() {
+      alert('Sorry, something went wrong: Please try again later ...');
+    })
+  }
+}
+
+function PT_RPReply(text,comm_id,event,post_id){
+  
+  if (!text || !comm_id || !event || !post_id) {
+    return false;
+  }
+  else if(event.keyCode == 13 && event.shiftKey == 0){
+    var reply_id = 0;
+    if($("#comm-reply-"+comm_id).attr('data-reply-id')){
+      reply_id = $("#comm-reply-"+comm_id).attr('data-reply-id');
+    }
+
+    $.ajax({
+      url: "{{LINK aj/add-reply/article}}",
+      type: 'POST',
+      dataType: 'json',
+      data: {text:text,id:comm_id,post_id:post_id,reply:reply_id},
+    })
+    .done(function(data) {
+      if (data.status == 200) {
+        $("#pt-comment-replies-cont-" + comm_id).append(data.html)
+        $("#comm-reply-"+comm_id).find('input').val('').blur();
+      }
+      $("#comment-reply-loading-renderer-"+comm_id).addClass('hidden');
+    })
+    .fail(function() {
+      alert('Sorry, something went wrong: Please try again later ...');
+    })
+  }
+}
+function PT_RAReply(text,comm_id,event,post_id){
+  
+  if (!text || !comm_id || !event || !post_id) {
+    return false;
+  }
+  else if(event.keyCode == 13 && event.shiftKey == 0){
+    var reply_id = 0;
+    if($("#comm-reply-"+comm_id).attr('data-reply-id')){
+      reply_id = $("#comm-reply-"+comm_id).attr('data-reply-id');
+    }
+
+    $.ajax({
+      url: "{{LINK aj/add-reply/activity}}",
+      type: 'POST',
+      dataType: 'json',
+      data: {text:text,id:comm_id,post_id:post_id,reply:reply_id},
+    })
+    .done(function(data) {
+      if (data.status == 200) {
+        $("#pt-comment-replies-cont-" + comm_id).append(data.html)
+        $("#comm-reply-"+comm_id).find('input').val('').blur();
+      }
+      $("#comment-reply-loading-renderer-"+comm_id).addClass('hidden');
+    })
+    .fail(function() {
+      alert('Sorry, something went wrong: Please try again later ...');
+    })
+  }
+}
+function PT_DeleteReply(id) {
+  if (!id) { return false; }
+  if (!confirm('{{LANG delete_confirmation}}')) { return false; }
+  $('#reply-' + id).slideUp('fast');
+  $.post('{{LINK aj/delete-reply}}', {id: id});
+}
+
+function PT_LikeComments(self,type,comment_id){
+  if (!self || (type != 'up' && type != 'down') || !comment_id){
+    return false;
+  }
+
+  else if (!$('#main-container').attr('data-logged') && $('#main-url').val()) {
+    window.location.href = PT_Ajax_Requests_File() + 'login?to=' + $('#main-url').val();
+    return false;
+  }
+
+  var self = $(self);
+  $.ajax({
+    url: '{{LINK aj/comment-like-system/}}' + type,
+    type: 'POST',
+    dataType: 'json',
+    data: {id:comment_id}
+  })
+  .done(function(data) {
+    if (data.status == 200 && type == 'up' && data.type == 'added_like'){
+      self.find('span').text((data.up));
+      $('[data-comment-dislikes="'+comment_id+'"]').find('span').text((data.down));
+      self.find('svg.feather').addClass('active');
+      self.siblings().find('svg.feather').removeClass('active');
+      
+    }
+
+    else if (data.status == 200 && type == 'up' && data.type == 'deleted_like'){
+      self.find('span').text((data.up));
+      $('[data-comment-dislikes="'+comment_id+'"]').find('span').text((data.down));
+      self.find('svg.feather').removeClass('active');
+      self.siblings().find('svg.feather').removeClass('active');
+    }
+
+    else if (data.status == 200 && type == 'down' && data.type == 'added_dislike'){
+      self.find('span').text((data.down));
+      self.find('svg.feather').addClass('active');
+      $('[data-comment-likes="'+comment_id+'"]').find('span').text((data.up));
+      self.siblings().find('svg.feather').removeClass('active');
+    }
+
+    else if (data.status == 200 && type == 'down' && data.type == 'deleted_dislike'){
+      self.find('span').text((data.down));
+      self.find('svg.feather').removeClass('active');
+      $('[data-comment-likes="'+comment_id+'"]').find('span').text((data.up));
+      self.siblings().find('svg.feather').removeClass('active');
+    }
+
+    else{
+      swal(
+         'Error!',
+         'Something went wrong.Please try again later!',
+         'error'
+       );
+    }
+  })
+  .fail(function() {
+    console.log("error");
+  })
+}
+
+function PT_LikeReplies(self,type,reply_id){
+  if (!self || (type != 'up' && type != 'down') || !reply_id){
+    return false;
+  }
+
+  else if (!$('#main-container').attr('data-logged') && $('#main-url').val()) {
+    window.location.href = PT_Ajax_Requests_File() + 'login?to=' + $('#main-url').val();
+    return false;
+  }
+
+  var self = $(self);
+  $.ajax({
+    url: '{{LINK aj/reply-like-system/}}' + type,
+    type: 'POST',
+    dataType: 'json',
+    data: {id:reply_id}
+  })
+  .done(function(data) {
+    if (data.status == 200 && type == 'up' && data.type == 'added_like'){
+      self.find('span').text((data.up));
+      $('[data-reply-dislikes="'+reply_id+'"]').find('span').text((data.down));
+      self.find('svg.feather').addClass('active');
+      self.siblings().find('svg.feather').removeClass('active');
+      
+    }
+
+    else if (data.status == 200 && type == 'up' && data.type == 'deleted_like'){
+      self.find('span').text((data.up));
+      $('[data-reply-dislikes="'+reply_id+'"]').find('span').text((data.down));
+      self.find('svg.feather').removeClass('active');
+      self.siblings().find('svg.feather').removeClass('active');
+    }
+
+    else if (data.status == 200 && type == 'down' && data.type == 'added_dislike'){
+      self.find('span').text((data.down));
+      self.find('svg.feather').addClass('active');
+      $('[data-reply-likes="'+reply_id+'"]').find('span').text((data.up));
+      self.siblings().find('svg.feather').removeClass('active');
+    }
+
+    else if (data.status == 200 && type == 'down' && data.type == 'deleted_dislike'){
+      self.find('span').text((data.down));
+      self.find('svg.feather').removeClass('active');
+      $('[data-reply-likes="'+reply_id+'"]').find('span').text((data.up));
+      self.siblings().find('svg.feather').removeClass('active');
+    }
+
+    else{
+      swal(
+         'Error!',
+         'Something went wrong.Please try again later!',
+         'error'
+       );
+    }
+  })
+  .fail(function() {
+    console.log("error");
+  })
+}
+
+function pt_hide_announcement(id){
+  if (!id) { return false; }
+  $("#announcement-"+id).slideUp('fast',function(){
+    $(this).remove();
+    $.post('{{LINK aj/main/hide-announcement}}', {id: id}, function(data, textStatus, xhr) { /* pass */ });
+  })  
+}
+
+function pay_to_see(video_id,price,type = 'buy') {
+  PayUsingWallet(type,'show',video_id,price);
+  return false;
+  
+  $('.p_t_show_btn_').attr('disabled', 'true');
+  
+  if (type == 'rent') {
+    $('.p_t_show_btn_rent').text("{{LANG please_wait}}");
+    $('.p_t_show_btn_rent').text("{{LANG rent}} <?php echo(!empty($pt->config->currency_symbol_array[$pt->config->payment_currency]) ? $pt->config->currency_symbol_array[$pt->config->payment_currency] : '$') ?>"+price);
+    PT_ShowMethods('rent',video_id,price);
+  }
+  else{
+    $('.p_t_show_btn_buy').text("{{LANG please_wait}}");
+    $('.p_t_show_btn_buy').text("{{LANG pay}} <?php echo(!empty($pt->config->currency_symbol_array[$pt->config->payment_currency]) ? $pt->config->currency_symbol_array[$pt->config->payment_currency] : '$') ?>"+price);
+    PT_ShowMethods('pay',video_id,price);
+  }
+  
+  $('.p_t_show_btn_').removeAttr('disabled');
+}
+
+function PT_ShowMethods(type,video_id = 0,price = 0,user_id = 0) {
+  $.post('{{LINK aj/wallet/get_modal}}',{type:type,video_id:video_id,price:price,user_id:user_id}, function(data, textStatus, xhr) {
+    if (data.status == 200) {
+      $('.payment_method').html(data.html);
+      $('#pay-go-pro').modal({
+             show: true
+            });
+    }
+    if (type == 'subscribe') {
+      $('.subscribe-id-'+user_id).find('span').text("{{LANG subscribe}}");
+      $('.subscribe-id-'+user_id).removeAttr('disabled');
+    }
+  });
+}
+
+
+  function PT_PurchasePkg(pkg,self,video_id,price,user_id = 0){
+    if (!pkg || !self) {
+      return false;
+    }
+
+    $(self).text("{{LANG please_wait}}").attr('disabled', 'true');
+    if (pkg == 'wallet') {
+        amount = $("#wallet_amount").val();
+
+      $.ajax({
+        url: '{{LINK aj/wallet/replenish}}',
+        type: 'POST',
+        dataType: 'json',
+        data: {amount:amount},
+      })
+      .done(function(data) {
+        if (data.status == 200) {
+          window.location.href = data.url;
+        }
+        else{
+          swal({
+            title:"{{LANG error}}",
+            text:"{{LANG error_msg}}",
+            type:"error"
+          });
+        }
+      })
+      .fail(function() {
+        swal({
+          title:"{{LANG error}}",
+          text:"{{LANG error_msg}}",
+          type:"error"
+        });
+      });
+    }
+  }
+  function pay_using_iyzipay(pkg,self,video_id,price,user_id = 0) {
+    $('.btn-iyzipay').attr('disabled','true');
+    $('.btn-iyzipay').find('span').text("{{LANG please_wait}}");
+    pay_type = '';
+    if (pkg == 'pro') {
+      path = '/go_pro/iyzipay';
+    }
+    else if (pkg == 'wallet') {
+      path = '/wallet/iyzipay';
+      price = $("#wallet_amount").val();
+    }
+    else if (pkg == 'pay') {
+      path = '/go_pro/iyzipay_pay_to_see';
+    }
+    else if (pkg == 'rent') {
+      path = '/go_pro/iyzipay_pay_to_see';
+      pay_type = 'rent';
+    }
+    else if (pkg == 'subscribe') {
+      path = '/go_pro/subscribe';
+    }
+
+    $.post('{{LINK aj}}'+path, {video_id:video_id,amount:price,user_id:user_id,pay_type:pay_type,type:'iyzipay'}, function(data) {
+      if (data.status == 200) {
+        $('#iyzipay_content').html('');
+        $('#iyzipay_content').html(data.html);
+      } else {
+        $('.btn-iyzipay').attr('disabled', false).html("Iyzipay App not set yet.");
+      }
+      $('.btn-iyzipay').removeAttr('disabled');
+      $('.btn-iyzipay').find('span').text("{{LANG iyzipay}}");
+    });
+  }
+  function pay_using_paysera(pkg,self,video_id,price,user_id = 0) {
+    $('.btn-paysera').attr('disabled','true');
+    $('.btn-paysera').find('span').text("{{LANG please_wait}}");
+    pay_type = '';
+    if (pkg == 'pro') {
+      path = '/go_pro/paysera';
+    }
+    else if (pkg == 'wallet') {
+      path = '/wallet/paysera';
+      price = $("#wallet_amount").val();
+    }
+    else if (pkg == 'pay') {
+      path = '/go_pro/paysera_pay_to_see';
+    }
+    else if (pkg == 'rent') {
+      path = '/go_pro/paysera_pay_to_see';
+      pay_type = 'rent';
+    }
+    else if (pkg == 'subscribe') {
+      path = '/go_pro/subscribe';
+    }
+
+    $.post('{{LINK aj}}'+path, {video_id:video_id,amount:price * 100,user_id:user_id,pay_type:pay_type,type:'paysera'}, function(data) {
+      if (data.status == 200) {
+        window.location.href = data.url;
+      } else {
+        $('.btn-paysera').attr('disabled', false).html("Paysera App not set yet.");
+      }
+      $('.btn-paysera').removeAttr('disabled');
+      $('.btn-paysera').find('span').text("{{LANG paysera}}");
+    });
+  }
+  function pay_using_razorpay(pkg,self,video_id,price,user_id = 0) {
+    $('#razorpay_type').val(pkg);
+    $('#razorpay_video_id').val(video_id);
+    $('#razorpay_price').val(price);
+    $('#razorpay_user_id').val(user_id);
+    $("#razorpay_alert").html('');
+    $('#pay-go-pro').modal('hide');
+    $('#razorpay_modal_box').modal({
+          show: true
+      });
+  }
+  function SignatureRazorpay() {
+    $('#razorpay_button').html("{{LANG please_wait}}");
+    $('#razorpay_button').attr('disabled','true');
+
+      var merchant_order_id = "<?php echo(round(111111,9999999)) ?>";
+      var card_holder_name_id = $('#razorpay_name').val();
+      var email = $('#razorpay_email').val();
+      var phone = $('#razorpay_phone').val();
+      var currency_code_id = "INR";
+
+      if (!email || !phone || !card_holder_name_id) {
+        $('#razorpay_alert').html("<div class='alert alert-danger'>{{LANG please_check_details}}</div>");
+        $('#razorpay_button').html("{{LANG pay}}");
+        $('#razorpay_button').removeAttr('disabled');
+        setTimeout(function () {
+          $('#razorpay_alert').html("");
+        },3000);
+      return false;
+      }
+
+      video_id = $('#razorpay_video_id').val();
+      amount = $('#razorpay_price').val();
+      user_id = $('#razorpay_user_id').val();
+      pay_type = '';
+      pkg = $('#razorpay_type').val();
+      if (pkg == 'pro') {
+        path = '/go_pro/razorpay';
+      }
+      else if (pkg == 'wallet') {
+        path = '/wallet/razorpay';
+        amount = $("#wallet_amount").val();
+      }
+      else if (pkg == 'pay') {
+        path = '/go_pro/razorpay_pay_to_see';
+      }
+      else if (pkg == 'rent') {
+        path = '/go_pro/razorpay_pay_to_see';
+        pay_type = 'rent';
+      }
+      else if (pkg == 'subscribe') {
+        path = '/go_pro/subscribe_razorpay';
+      }
+      var merchant_total = Number(amount) * 100;
+      
+      var razorpay_options = {
+          key: "<?php echo $pt->config->razorpay_key_id; ?>",
+          amount: merchant_total,
+          name: "<?php echo $pt->config->name; ?>",
+          description: "",
+          image: '{{CONFIG theme_url}}/img/logo-light.png?cache=<?php echo($pt->config->logo_cache) ?>',
+          netbanking: true,
+          currency: currency_code_id,
+          prefill: {
+              name: card_holder_name_id,
+              email: email,
+              contact: phone
+          },
+          notes: {
+              soolegal_order_id: merchant_order_id,
+          },
+          handler: function (transaction) {
+            $.post('{{LINK aj}}'+path, {payment_id: transaction.razorpay_payment_id, order_id: merchant_order_id, card_holder_name_id: card_holder_name_id,  merchant_amount: merchant_total, currency: currency_code_id,video_id:video_id,user_id:user_id,pay_type:pay_type,type:'razorpay',name:name,phone:phone}, function(data) {
+              if (data.status == 200) {
+                window.location = data.url;
+              } else {
+                $('#razorpay_alert').html("<div class='alert alert-danger'>"+data.message+"</div>");
+                setTimeout(function () {
+                  $('#razorpay_alert').html("");
+                },3000);
+              }
+              $('#razorpay_button').html("{{LANG pay}}");
+              $('#razorpay_button').removeAttr('disabled');
+            });
+          },
+          "modal": {
+              "ondismiss": function () {
+                  // code here
+              }
+          }
+      };
+      // obj        
+      var objrzpv1 = new Razorpay(razorpay_options);
+      objrzpv1.open();
+  }
+  function pay_using_cashfree(pkg,self,video_id,price,user_id = 0) {
+    $('#cashfree_type').val(pkg);
+    $('#cashfree_video_id').val(video_id);
+    $('#cashfree_price').val(price);
+    $('#cashfree_user_id').val(user_id);
+    $("#cashfree_alert").html('');
+    $('#pay-go-pro').modal('hide');
+    $('#cashfree_modal_box').modal({
+          show: true
+      });
+  }
+  function InitializeCashfree() {
+    $('#cashfree_button').html("{{LANG please_wait}}");
+    $('#cashfree_button').attr('disabled','true');
+    name = $('#cashfree_name').val();
+    phone = $('#cashfree_phone').val();
+    email = $('#cashfree_email').val();
+    video_id = $('#cashfree_video_id').val();
+    amount = $('#cashfree_price').val();
+    user_id = $('#cashfree_user_id').val();
+    cashfree_card_number = $('#cashfree_card_number').val();
+    cashfree_card_expiry_mm = $('#cashfree_card_expiry_mm').val();
+    cashfree_card_expiry_yy = $('#cashfree_card_expiry_yy').val();
+    cashfree_card_cvv = $('#cashfree_card_cvv').val();
+    pay_type = '';
+    pkg = $('#cashfree_type').val();
+    if (pkg == 'pro') {
+      path = '/go_pro/cashfree';
+    }
+    else if (pkg == 'wallet') {
+      path = '/wallet/cashfree';
+      amount = $("#wallet_amount").val();
+    }
+    else if (pkg == 'pay') {
+      path = '/go_pro/cashfree_pay_to_see';
+    }
+    else if (pkg == 'rent') {
+      path = '/go_pro/cashfree_pay_to_see';
+      pay_type = 'rent';
+    }
+    else if (pkg == 'subscribe') {
+      path = '/go_pro/subscribe';
+    }
+    $.post('{{LINK aj}}'+path, {email:email,video_id:video_id,amount:amount,user_id:user_id,pay_type:pay_type,type:'cashfree',name:name,phone:phone,cashfree_card_number:cashfree_card_number,cashfree_card_expiry_mm:cashfree_card_expiry_mm,cashfree_card_expiry_yy:cashfree_card_expiry_yy,cashfree_card_cvv:cashfree_card_cvv}, function(data) {
+      if (data.status == 200) {
+        window.location.href = data.url;
+      } else {
+        $('#cashfree_alert').html("<div class='alert alert-danger'>"+data.message+"</div>");
+        setTimeout(function () {
+          $('#cashfree_alert').html("");
+        },3000);
+      }
+      $('#cashfree_button').html("{{LANG pay}}");
+      $('#cashfree_button').removeAttr('disabled');
+    });
+  }
+  function pay_using_paystack(pkg,self,video_id,price,user_id = 0) {
+    $('#paystack_type').val(pkg);
+    $('#paystack_video_id').val(video_id);
+    $('#paystack_price').val(price);
+    $('#paystack_user_id').val(user_id);
+    $("#paystack_wallet_alert").html('');
+    $('#pay-go-pro').modal('hide');
+    $('#paystack_wallet_modal').modal({
+          show: true
+      });
+  }
+  function InitializeWalletPaystack() {
+    $('#paystack_btn').html("{{LANG please_wait}}");
+      $('#paystack_btn').attr('disabled','true');
+    email = $('#paystack_wallet_email').val();
+    video_id = $('#paystack_video_id').val();
+    amount = $('#paystack_price').val();
+    user_id = $('#paystack_user_id').val();
+    pay_type = '';
+    pkg = $('#paystack_type').val();
+    if (pkg == 'pro') {
+      path = '/go_pro/paystack';
+    }
+    else if (pkg == 'wallet') {
+      path = '/wallet/paystack';
+      amount = $("#wallet_amount").val();
+    }
+    else if (pkg == 'pay') {
+      path = '/go_pro/paystack_pay_to_see';
+    }
+    else if (pkg == 'rent') {
+      path = '/go_pro/paystack_pay_to_see';
+      pay_type = 'rent';
+    }
+    else if (pkg == 'subscribe') {
+      path = '/go_pro/subscribe';
+    }
+    $.post('{{LINK aj}}'+path, {email:email,video_id:video_id,amount:amount,user_id:user_id,pay_type:pay_type,type:'paystack'}, function(data) {
+      if (data.status == 200) {
+        window.location.href = data.url;
+      } else {
+        $('#paystack_wallet_alert').html("<div class='alert alert-danger'>"+data.message+"</div>");
+        setTimeout(function () {
+          $('#paystack_wallet_alert').html("");
+        },3000);
+      }
+      $('#paystack_btn').html("{{LANG pay}}");
+        $('#paystack_btn').removeAttr('disabled');
+    });
+  }
+
+  function PT_OpenCheckOut(pkg,self,video_id = 0,price = 0,user_id = 0){
+    if (!pkg || !self) {
+      return false;
+    }
+    if (video_id) {
+      $('#checkout_video_'+video_id).val(video_id);
+    }
+    if (price) {
+      $('#checkout_price_'+video_id).val(price);
+    }
+    $('#checkout_user_id').val(user_id);
+
+    $(self).text("{{LANG please_wait}}").attr('disabled', 'true');
+
+    $("#2checkout_alert").html('');
+    $('#pay-go-pro').modal('hide');
+      $('#2checkout_modal').modal({
+            show: true
+        });
+      if (pkg == 'rent') {
+        $('.checkout_pay_type').val('rent');
+      }
+      else{
+        $('.checkout_pay_type').val('');
+      }
+  }
+
+
+  function PT_PaySubscribe(user_id,self,type = '',price=0) {
+    if (!user_id || !self) { return false; }
+    var text = $(self).find('span').text();
+    if (type == 'subscribe') {
+      PayUsingWallet(type,'show',user_id,price);
+      return;
+      $(self).find('span').text("{{LANG please_wait}}");
+      $(self).attr('disabled', 'true');
+      PT_ShowMethods('subscribe',0,0,user_id);
+    }
+    else{
+      var html = "<small>{{LANG unsubscribe_from_channel}}</small>";
+      swal({
+        title: "",
+        type: "",
+        html:html,
+        showCancelButton: true,
+        cancelButtonText: "{{LANG no}}",
+        customClass: 'sweetalert-lg pt_add_to_list_vid',
+        confirmButtonText:'{{LANG yes}}'
+      }).then(function(){
+          $(self).removeClass('btn-subscribed').addClass('btn-subscribe');
+          $(self).find('span').text("{{LANG subscribe}}");
+          $(self).find('svg').remove();
+          $(self).prepend('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>');
+          $(self).attr('onclick', 'PT_PaySubscribe(' + user_id + ',this,"subscribe")');
+          $.post('{{LINK aj/subscribe}}', {user_id: user_id});
+
+        },function(){
+      });
+    }
+    $(self).removeAttr('disabled');
+    $(self).find('span').text(text);
+  }
+  <?php if (IS_LOGGED) { ?>
+
+  function PayUsingWallet(type,type2 = 'hide',id=0,price=0) {
+    if (type2 == 'show') {
+      $('.pay_modal_wallet_text').html('');
+      $('.pay_modal_wallet_alert').html('');
+      $('#pay_modal_wallet_btn').attr('onclick', "PayUsingWallet('"+type+"','hide','"+id+"','"+price+"')");
+      if (type == 'subscribe') {
+        $('.pay_modal_wallet_text').html("{{LANG pay_to_subscribe}}");
+        $.get('{{LINK aj/wallet/wallet_update}}?id=' + id, function (data) {
+          let wallet = data.wallet;
+          price = data.price;
+          $('#pay_modal_wallet_btn').attr('onclick', "PayUsingWallet('"+type+"','hide','"+id+"','"+price+"')");
+          if (parseInt(wallet) < parseInt(price) ) {
+            $('.pay_modal_wallet_alert').html(`<div class="wallet_empty_state"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" xml:space="preserve"> <path style="fill:#455A64;" d="M394.667,73.532H117.333C52.561,73.603,0.071,126.093,0,190.865v21.333 c0,5.891,4.776,10.667,10.667,10.667h490.667c5.891,0,10.667-4.776,10.667-10.667v-21.333 C511.929,126.093,459.439,73.603,394.667,73.532z"></path> <path style="fill:#4CAF50;" d="M436.203,143.42L391.04,53.095C372.599,16.21,327.75,1.259,290.865,19.699 c-0.669,0.334-1.332,0.679-1.991,1.033L69.611,138.791c-5.184,2.798-7.118,9.269-4.32,14.453c1.86,3.447,5.46,5.596,9.376,5.6h352 c5.891,0,10.667-4.776,10.666-10.667c0-1.659-0.387-3.295-1.13-4.778V143.42z"></path> <path style="fill:#607D8B;" d="M74.667,137.532h362.667c41.237,0,74.667,33.429,74.667,74.667v213.333 c0,41.237-33.429,74.667-74.667,74.667H74.667C33.429,500.199,0,466.769,0,425.532V212.199C0,170.961,33.429,137.532,74.667,137.532 z"></path> <path style="fill:#455A64;" d="M501.333,244.199H416c-41.237,0.022-74.649,33.468-74.628,74.706 c0.022,41.207,33.421,74.606,74.628,74.628h85.333c5.891,0,10.667-4.776,10.667-10.667v-128 C512,248.974,507.224,244.199,501.333,244.199z"></path> <circle style="fill:#90A4AE;" cx="416" cy="318.865" r="32"></circle></svg>{{LANG please_top_up_wallet}}<a href="<?php echo PT_Link('wallet');?>" onclick="SetPageCookie(\''+type+'\',\''+id+'\')" class="btn btn-main">{{LANG wallet}}</a></div>`);
+            $('#pay_modal_wallet_btn').html("{{LANG pay}} {{CONFIG main_payment_currency}}"+price).attr('disabled',true);
+            $('.pay_modal_wallet_text').html("");
+            $('#pay_modal_wallet').modal({
+                    show: true
+                });
+          }
+          else{
+            $('#pay_modal_wallet_btn').html("{{LANG pay}} {{CONFIG main_payment_currency}}"+price).removeAttr('disabled');
+            $('#pay_modal_wallet').modal({
+                    show: true
+                });
+          }
+        });
+      }
+      else{
+        if (type == 'pro') {
+          $('.pay_modal_wallet_text').html("{{LANG pay_to_upgrade}}");
+        }
+        if (type == 'buy') {
+          $('.pay_modal_wallet_text').html("{{LANG pay_to_video}}");
+        }
+        if (type == 'rent') {
+          $('.pay_modal_wallet_text').html("{{LANG pay_to_rent_video}}");
+        }
+        if (parseInt({{ME wallet_or}}) < parseInt(price) ) {
+          $('.pay_modal_wallet_alert').html(`<div class="wallet_empty_state"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" xml:space="preserve"> <path style="fill:#455A64;" d="M394.667,73.532H117.333C52.561,73.603,0.071,126.093,0,190.865v21.333 c0,5.891,4.776,10.667,10.667,10.667h490.667c5.891,0,10.667-4.776,10.667-10.667v-21.333 C511.929,126.093,459.439,73.603,394.667,73.532z"></path> <path style="fill:#4CAF50;" d="M436.203,143.42L391.04,53.095C372.599,16.21,327.75,1.259,290.865,19.699 c-0.669,0.334-1.332,0.679-1.991,1.033L69.611,138.791c-5.184,2.798-7.118,9.269-4.32,14.453c1.86,3.447,5.46,5.596,9.376,5.6h352 c5.891,0,10.667-4.776,10.666-10.667c0-1.659-0.387-3.295-1.13-4.778V143.42z"></path> <path style="fill:#607D8B;" d="M74.667,137.532h362.667c41.237,0,74.667,33.429,74.667,74.667v213.333 c0,41.237-33.429,74.667-74.667,74.667H74.667C33.429,500.199,0,466.769,0,425.532V212.199C0,170.961,33.429,137.532,74.667,137.532 z"></path> <path style="fill:#455A64;" d="M501.333,244.199H416c-41.237,0.022-74.649,33.468-74.628,74.706 c0.022,41.207,33.421,74.606,74.628,74.628h85.333c5.891,0,10.667-4.776,10.667-10.667v-128 C512,248.974,507.224,244.199,501.333,244.199z"></path> <circle style="fill:#90A4AE;" cx="416" cy="318.865" r="32"></circle></svg>{{LANG please_top_up_wallet}}<a href="<?php echo PT_Link('wallet');?>" onclick="SetPageCookie(\''+type+'\',\''+id+'\')" class="btn btn-main">{{LANG wallet}}</a></div>`);
+          $('#pay_modal_wallet_btn').html("{{LANG pay}} {{CONFIG main_payment_currency}}"+price).attr('disabled',true);
+          $('.pay_modal_wallet_text').html("");
+          $('#pay_modal_wallet').modal({
+                  show: true
+              });
+        }
+        else{
+          $('#pay_modal_wallet_btn').html("{{LANG pay}} {{CONFIG main_payment_currency}}"+price).removeAttr('disabled');
+          $('#pay_modal_wallet').modal({
+                  show: true
+              });
+        }
+      }
+    }
+    else{
+      link = '';
+      if (type == 'pro') {
+        link = '?pay_type=' + type + '&id=' + id + '&price=' + price;;
+      }
+      if (type == 'buy') {
+        link = '?pay_type=' + type + '&id=' + id + '&price=' + price;
+      }
+      if (type == 'rent') {
+        link = '?pay_type=' + type + '&id=' + id + '&price=' + price;
+      }
+      if (type == 'subscribe') {
+        link = '?pay_type=' + type + '&id=' + id + '&price=' + price;
+      }
+      $.get('{{LINK aj/wallet/wallet_pay}}'+link, function (data) {
+        $('#pay_modal_wallet_btn').html("{{LANG pay}} {{CONFIG main_payment_currency}}"+price);
+        $('#pay_modal_wallet_btn').removeAttr('disabled');
+        if (data.status == 200) {
+          $('.pay_modal_wallet_alert').html("<div class='alert alert-success bg-success'><i class='fa fa-check'></i> {{LANG payment_successfully_done}}</div>");
+          setTimeout( function (){
+            location.href = data.url;
+          } ,3000);
+        }
+        else{
+          $('.pay_modal_wallet_alert').html("<div class='alert alert-danger'>"+data.message+"</div>");
+        }
+      });
+
+    }
+  }
+  function SetPageCookie(type,id){
+    $.get('{{LINK aj/wallet/set}}?page_type=' + type + '&id=' + id, function (data) {
+        location.href = '{{LINK wallet}}';
+    });
+  }
+<?php } ?>
+
+<?php if ($pt->config->fluttewave_payment == 'yes') { ?>
+    function open_flutterwave() {
+      $('#pay-go-pro').modal('hide');
+      $('#wallet_payment_modal').modal('hide');
+      $('#fluttewave_modal').modal({
+          show: true
+      });
+    }
+    function SignatureFluttewave() {
+      $('#fluttewave_btn').attr('disabled', true).text("{{LANG please_wait}}");
+      amount = $('#wallet_amount').val();
+      email = $('#fluttewave_email').val();
+      $.post('{{LINK aj/wallet/fluttewave}}', {amount:amount,email:email}, function(data) {
+        $('#fluttewave_btn').html("{{LANG pay}}");
+        $('#fluttewave_btn').removeAttr('disabled');
+        if (data.status == 200) {
+          window.location.href = data.url;
+        } else {
+          $('#fluttewave_alert').html("<div class='alert alert-danger'>"+data.message+"</div>");
+          setTimeout(function () {
+            $('#fluttewave_alert').html("");
+          },3000);
+        }
+      });
+    }
+<?php } ?>
+
+function notifyUser(user_id,self) {
+  $.post('{{LINK aj/user/notify}}', {user_id:user_id}, function(data) {
+    if (data.status == 200) {
+      $(self).replaceWith(data.html);
+    } else {
+      Snackbar.show({text: '<div>'+ data.message +'</div>'});
+    }
+  });
+}
+
+</script>

@@ -1,0 +1,32 @@
+<tr data-ads-list="{{ID}}">
+	<td width="15%">
+		<div>
+			<input type="checkbox" {{ACTIVE}} class="tgl tgl-ios" id="ad_switch_{{ID}}" onclick="PT_ToggleAdsStatus('{{ID}}');">
+			<label class="tgl-btn" for="ad_switch_{{ID}}"></label>
+		</div>
+	</td>
+	<td width="15%">
+		<i class="material-icons ad-category">{{TYPE}}</i>
+	</td>
+	<td width="25%">{{NAME}}</td>
+	<td width="15%">
+		<span class="results">
+			<strong>{{RESULTS}}</strong>
+		</span>
+		<span class="results">{{PR_METHOD}}</span>
+	</td>
+	<td width="15%">
+		<span class="spends">{{CURRENCY}}{{SPENT}}</span>
+	</td>
+	<td width="15%">
+		<span class="action" onclick="PT_DeleteAd('{{ID}}');">
+			<i class="material-icons">delete</i>
+		</span>
+		<span class="action">
+			<a href="{{LINK ads/edit/{{ID}}}}" data-load="?link1=edit_ads&id={{ID}}"><i class="material-icons">mode_edit</i></a>
+		</span>
+		<span class="action">
+			<a href="{{LINK ads/analytics/{{ID}}}}" data-load="?link1=ads_analytics&id={{ID}}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></a>
+		</span>
+	</td>
+</tr>

@@ -1,0 +1,258 @@
+<div class="pt_vew_actv_pst">
+	<div class="pt_actv_hdr">
+		<div class="avatar">
+			<a href="{{USER url}}"><img src="{{USER avatar}}" alt="{{USER name}}"></a>
+		</div>
+		<div>
+			<h4><a href="{{USER url}}">{{USER name}}</a></h4>
+			<time class="published">{{TIME}}</time>
+		</div>
+	</div>
+	<p>{{DESC}}</p>
+	<div class="pt_actv_thmb">
+		<div class="avatar"><img src="{{IMAGE}}"></div>
+	</div>
+	<div class="pt_act_likds">
+		<span onclick="PT_LikePost(this,'up');" data-post-likes="{{LIKES}}">
+			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="feather feather-thumbs-up {{LIKED}}"><path d="M12.545 2.51996L6.98969 8.86892C6.50029 9.42824 6.25559 9.7079 6.12779 10.048C6 10.3881 6 10.7597 6 11.5029V16C6 17.8856 6 18.8284 6.58579 19.4142C7.17157 20 8.11438 20 10 20H14.9448C16.4142 20 17.1488 20 17.6864 19.5894C18.224 19.1788 18.4173 18.47 18.8039 17.0525L19.6221 14.0525C20.2549 11.7322 20.5713 10.572 19.9709 9.78601C19.3706 9 18.168 9 15.763 9H13L15.0904 4.12239C15.521 3.11767 14.784 2 13.6909 2C13.2518 2 12.8342 2.18953 12.545 2.51996Z" fill="currentColor" fill-opacity="0.16"/><path fill-rule="evenodd" clip-rule="evenodd" d="M13.1095 3.01384C13.2562 2.84617 13.4681 2.75 13.6909 2.75C14.2456 2.75 14.6195 3.31713 14.401 3.82695L12.3106 8.70456C12.2113 8.93628 12.2351 9.2024 12.3739 9.41287C12.5127 9.62334 12.7479 9.75 13 9.75H15.763C16.9893 9.75 17.8262 9.75189 18.4359 9.84046C19.0266 9.92628 19.2468 10.0735 19.3749 10.2413C19.503 10.409 19.5871 10.6602 19.5145 11.2526C19.4395 11.8641 19.2212 12.672 18.8985 13.8551L18.0803 16.8551C17.8823 17.5813 17.7497 18.0625 17.6063 18.4177C17.4703 18.7544 17.3537 18.8997 17.2312 18.9934C17.1086 19.087 16.9377 19.1613 16.5771 19.2039C16.1966 19.2488 15.6975 19.25 14.9448 19.25H10C9.03599 19.25 8.38843 19.2484 7.90539 19.1835C7.44393 19.1214 7.24643 19.0142 7.11612 18.8839C6.9858 18.7536 6.87858 18.5561 6.81654 18.0946C6.75159 17.6116 6.75 16.964 6.75 16V11.5029C6.75 10.7047 6.7611 10.4949 6.82987 10.3118C6.89865 10.1288 7.02847 9.96355 7.55413 9.3628L13.1095 3.01384ZM13.6909 1.25C13.0356 1.25 12.4121 1.53289 11.9806 2.02608L6.42526 8.37504L6.35306 8.45746C5.93398 8.93556 5.6025 9.31373 5.42572 9.78422C5.24894 10.2547 5.24938 10.7576 5.24994 11.3934L5.25 11.5029V16L5.25 16.052C5.24997 16.9505 5.24994 17.6997 5.32991 18.2945C5.41432 18.9223 5.59999 19.4891 6.05546 19.9445C6.51093 20.4 7.07773 20.5857 7.70552 20.6701C8.3003 20.7501 9.04952 20.75 9.948 20.75H10H14.9448H14.9882C15.6859 20.75 16.2742 20.75 16.753 20.6935C17.2615 20.6334 17.7267 20.5024 18.1416 20.1854C18.5566 19.8685 18.8054 19.4541 18.9972 18.9794C19.1777 18.5324 19.3325 17.9648 19.516 17.2917L19.5274 17.2498L20.3456 14.2498L20.3613 14.1922C20.6644 13.0811 20.9135 12.1677 21.0033 11.4351C21.097 10.671 21.0392 9.94904 20.5669 9.33077C20.0947 8.71249 19.4134 8.46673 18.6515 8.35604C17.9212 8.24994 16.9744 8.24997 15.8227 8.25L15.763 8.25H14.1374L15.7798 4.41783C16.4225 2.91821 15.3224 1.25 13.6909 1.25ZM3.75 10C3.75 9.58579 3.41421 9.25 3 9.25C2.58579 9.25 2.25 9.58579 2.25 10V20C2.25 20.4142 2.58579 20.75 3 20.75C3.41421 20.75 3.75 20.4142 3.75 20L3.75 10Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M6.98969 8.86892L12.545 2.51996C12.8342 2.18953 13.2518 2 13.6909 2C14.784 2 15.521 3.11767 15.0904 4.12239L13 9H15.763C18.168 9 19.3706 9 19.9709 9.78601C20.5713 10.572 20.2549 11.7322 19.6221 14.0525L18.8039 17.0525C18.4173 18.47 18.224 19.1788 17.6864 19.5894C17.1488 20 16.4142 20 14.9448 20H10C8.11438 20 7.17157 20 6.58579 19.4142C6 18.8284 6 17.8856 6 16V11.5029C6 10.7597 6 10.3881 6.12779 10.048C6.25559 9.7079 6.50029 9.42824 6.98969 8.86892ZM3.75 10C3.75 9.58579 3.41421 9.25 3 9.25C2.58579 9.25 2.25 9.58579 2.25 10V20C2.25 20.4142 2.58579 20.75 3 20.75C3.41421 20.75 3.75 20.4142 3.75 20L3.75 10Z" class="active_path" fill="currentColor"/></svg> <span>{{LIKES}}</span>
+		</span>
+		<span onclick="PT_LikePost(this,'down');" data-post-dislikes="{{DIS_LIKES}}">
+			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="feather feather-thumbs-down {{DIS_LIKED}}"><path d="M4.37795 9.94753L5.19613 6.94753C5.58274 5.52996 5.77604 4.82117 6.3136 4.41059C6.85117 4 7.58584 4 9.05518 4H14C15.8856 4 16.8284 4 17.4142 4.58579C18 5.17157 18 6.11438 18 8V13.3431C18 14.1606 18 14.5694 17.8478 14.9369C17.6955 15.3045 17.4065 15.5935 16.8284 16.1716L11.4111 21.5889C11.1479 21.8521 10.7909 22 10.4186 22C9.34092 22 8.66528 20.8358 9.19997 19.9001L12 15H8.237C5.83196 15 4.62944 15 4.02909 14.214C3.42873 13.428 3.74514 12.2678 4.37795 9.94753Z" fill="currentColor" fill-opacity="0.16"/><path fill-rule="evenodd" clip-rule="evenodd" d="M14 4.75C14.964 4.75 15.6116 4.7516 16.0946 4.81654C16.5561 4.87858 16.7536 4.9858 16.8839 5.11612C17.0142 5.24644 17.1214 5.44393 17.1835 5.90539C17.2484 6.38843 17.25 7.03599 17.25 8L17.25 13.3431C17.25 14.2218 17.2367 14.4523 17.1549 14.6499C17.073 14.8476 16.9194 15.0199 16.2981 15.6412L10.8808 21.0586C10.7582 21.1811 10.592 21.25 10.4186 21.25C9.9168 21.25 9.60219 20.7079 9.85117 20.2722L12.6512 15.3721C12.7838 15.14 12.7829 14.8548 12.6487 14.6236C12.5145 14.3923 12.2674 14.25 12 14.25L8.23701 14.25C7.01068 14.25 6.17382 14.2481 5.56413 14.1595C4.97342 14.0737 4.75325 13.9265 4.62513 13.7587C4.49701 13.591 4.41289 13.3398 4.48552 12.7474C4.56049 12.1359 4.77886 11.328 5.10153 10.1449L5.91971 7.14487C6.11775 6.41873 6.25026 5.93747 6.3937 5.58229C6.52968 5.2456 6.64627 5.10026 6.76886 5.00662C6.89146 4.91298 7.06235 4.83874 7.42296 4.79615C7.80337 4.75122 8.30253 4.75 9.0552 4.75L14 4.75ZM17.9446 4.05546C17.4891 3.59999 16.9223 3.41432 16.2945 3.32991C15.6997 3.24995 14.9505 3.24997 14.052 3.25L14 3.25L9.0552 3.25L9.01175 3.25C8.31412 3.24998 7.72576 3.24996 7.24701 3.3065C6.73856 3.36656 6.27334 3.49761 5.85837 3.81456C5.4434 4.13151 5.19456 4.54585 5.00284 5.02059C4.82232 5.46759 4.66754 6.03522 4.484 6.70827L4.484 6.70828L4.47257 6.7502L3.65439 9.7502L3.63868 9.80779C3.33562 10.9189 3.08647 11.8323 2.99667 12.5649C2.90298 13.329 2.96083 14.051 3.43307 14.6692C3.90531 15.2875 4.58657 15.5333 5.34847 15.644C6.07879 15.7501 7.02559 15.75 8.17725 15.75L8.17733 15.75L8.23701 15.75L10.7076 15.75L8.5488 19.5279C7.7284 20.9636 8.76506 22.75 10.4186 22.75C10.9898 22.75 11.5376 22.5231 11.9414 22.1192L17.3588 16.7019L17.4443 16.6165C17.9387 16.123 18.3301 15.7324 18.5407 15.224C18.7513 14.7155 18.7508 14.1626 18.7501 13.464L18.75 13.3431L18.75 8L18.75 7.94801L18.75 7.94798C18.75 7.04951 18.7501 6.3003 18.6701 5.70552C18.5857 5.07773 18.4 4.51093 17.9446 4.05546ZM20.25 14C20.25 14.4142 20.5858 14.75 21 14.75C21.4142 14.75 21.75 14.4142 21.75 14L21.75 4C21.75 3.58579 21.4142 3.25 21 3.25C20.5858 3.25 20.25 3.58579 20.25 4L20.25 14Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M20.25 14C20.25 14.4142 20.5858 14.75 21 14.75C21.4142 14.75 21.75 14.4142 21.75 14L21.75 4C21.75 3.58579 21.4142 3.25 21 3.25C20.5858 3.25 20.25 3.58579 20.25 4L20.25 14ZM5.19615 6.94753L4.37796 9.94754C3.74516 12.2678 3.42875 13.428 4.0291 14.214C4.62946 15 5.83198 15 8.23702 15L12 15L9.19999 19.9001C8.6653 20.8358 9.34094 22 10.4186 22C10.7909 22 11.1479 21.8521 11.4111 21.5889L16.8284 16.1716C17.4065 15.5935 17.6955 15.3045 17.8478 14.9369C18 14.5694 18 14.1606 18 13.3431L18 8C18 6.11438 18 5.17158 17.4142 4.58579C16.8284 4 15.8856 4 14 4L9.0552 4C7.58585 4 6.85118 4 6.31362 4.41059C5.77606 4.82118 5.58276 5.52996 5.19615 6.94753Z" class="active_path" fill="currentColor"/></svg> <span>{{DIS_LIKES}}</span>
+        </span>
+	</div>
+    <div class="clear"></div>
+	<div class="comments-content content">
+		<div class="comments_header">{{COMMENTS_COUNT}} {{LANG comments}}</div>
+		<form class="form submit-article-commet">
+			<div class="w100 pt_blogcomm_combo">
+				<?php if (IS_LOGGED): ?>
+					<img class="avatar" src="{{ME avatar}}" alt="{{ME name}} avatar" />
+				<?php endif; ?>
+				<textarea name="text" class="form-control" placeholder="{{LANG write_your_comment}}"></textarea>
+				<button class="btn pull-right" type="submit" title="{{LANG publish}}">
+					<svg xmlns="http://www.w3.org/2000/svg" class="btn btn-main" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"></path></svg>
+				</button>
+			</div>
+		</form>
+		<div class="user-comments width-100" id="post-comments" style="
+    margin-top: 20px;
+">
+			{{COMMENTS}}
+		</div>
+		<?php if ($pt->count_cmt > 0): ?>
+			<div class="watch-video-show-more load-comments">{{LANG show_more}}</div>
+		<?php endif; ?>
+	</div>
+</div>
+
+<script>
+  jQuery(window).ready(function($) {
+      $.fn.scrollTo = function (speed) {
+        if (typeof(speed) === 'undefined')
+            speed = 500;
+
+        $('html, body').animate({
+            scrollTop: ($(this).offset().top - 100)
+        }, speed);
+
+        return $(this);
+      };
+
+      <?php if (!empty($_GET['cl']) && is_numeric($_GET['cl'])): ?>
+        if ($('#comment-<?php echo($_GET['cl']); ?>').length) {
+          var comment = $('#comment-<?php echo($_GET['cl']); ?>');
+          comment.scrollTo().find('p').addClass('active');
+          PT_Delay(function(){
+            comment.find('p').removeClass('active')
+          },2000);
+        }
+      <?php elseif(!empty($_GET['rl']) && is_numeric($_GET['rl'])): ?>
+        if ($('#reply-<?php echo($_GET['rl']); ?>').length) {
+          var reply  = $('#reply-<?php echo($_GET['rl']); ?>');
+          reply.scrollTo().find('p').addClass('active');
+          PT_Delay(function(){
+            reply.find('p').removeClass('active');
+          },2000);
+        }
+      <?php endif; ?>
+  });
+
+  jQuery(document).ready(function($) {
+      $('.share-post-btn').click(function(event) {
+        $.ajax({
+          url: '{{LINK aj/main/share}}',
+          type: 'POST',
+          dataType: 'json',
+          data: {post_id: '{{ID}}'},
+        })
+        .done(function(data) {
+          if (data.status == 200) {
+            $('#post-shares').text(data.shared);
+          }
+        })
+        .fail(function() {
+          console.log("error");
+        })
+      });
+
+      $(".load-comments").click(function(event) {
+        var self    = $(this);
+        var last_id = ($(".article-comments").length > 0) ? $(".article-comments:last").attr('data-id') : 0;
+        $.ajax({
+          url: '{{LINK aj/load-more-comments}}',
+          type: 'POST',
+          dataType: 'json',
+          data: {last_id: last_id,activity_id:'{{ID}}'},
+        })
+        .done(function(data) {
+          if (data.status == 200) {
+            $('#post-comments').append(data.comments);
+          }
+          else{
+            self.text(data.message);
+          }
+        })
+        .fail(function() {
+          console.log("error");
+        })
+      });
+
+      var post = '{{ID}}';
+      var form = $(".submit-article-commet");
+      var hash = $('.main_session').val();
+      $(".submit-article-commet").ajaxForm({
+          url: '{{LINK aj/add-comment}}',
+          type:'POST',
+          data:{activity_id:'{{ID}}',hash:hash},
+          beforeSend: function() {
+            var query = form.find('textarea').val();
+
+            if (!query){
+               form.find('textarea').addClass('danger-field-border');
+               return false;
+            }
+
+            else if(query.length > 600){
+               form.find('textarea').addClass('danger-field-border');
+               return false;
+            }
+
+            else if (!$('#main-container').attr('data-logged') && $('#main-url').val()) {
+              window.location.href = PT_Ajax_Requests_File() + 'login?to=' + $('#main-url').val();
+              return false;
+            }
+          },
+          success: function(data) {
+            if (data.status == 200) {
+               if ($('.user-comments').find('.no-comments-found').length > 0) {
+                  $('.user-comments').html(data.comment);
+               }
+
+               else{
+                  $('.user-comments').prepend(data.comment);
+               }               
+               
+               form.find('textarea').val('');
+               form.find('textarea').removeClass('danger-field-border');
+            } 
+            else {
+               swal(
+                 'Error!',
+                 'Something went wrong.Please try again later!',
+                 'error'
+               );
+            }
+          }
+      });
+  });
+
+  function PT_DeleteComment(id) {
+      if (!$('#main-container').attr('data-logged') && $('#main-url').val()) {
+        window.location.href = PT_Ajax_Requests_File() + 'login?to=' + $('#main-url').val();
+        return false;
+      }
+
+      swal({
+        title: "{{LANG confirmation}}",
+        text: "{{LANG delete_confirmation}}",
+        type: "warning",
+        confirmButtonText:"{{LANG yes_del}}",
+        cancelButtonText:"{{LANG cancel}}",
+        showCancelButton:true,
+      })
+      .then(function(willDelete){
+         if (willDelete) {
+            if (!id) { return false; }
+
+            $('#comment-' + id).slideUp('fast');
+            $.post('{{LINK aj/delete-comment}}', {id: id});
+         }
+         else {
+            swal.close();
+         }
+      },
+      function(){
+         //pass
+      });      
+  }
+
+  function PT_LikePost(self,type){
+    if (!self || (type != 'up' && type != 'down')){
+      return false;
+    }
+
+    else if (!$('#main-container').attr('data-logged') && $('#main-url').val()) {
+      window.location.href = PT_Ajax_Requests_File() + 'login?to=' + $('#main-url').val();
+      return false;
+    }
+
+    var self = $(self);
+    $.ajax({
+      url: '{{LINK aj/like-system/}}' + type,
+      type: 'POST',
+      dataType: 'json',
+      data: {activity_id: '{{ID}}'}
+    })
+    .done(function(data) {
+      if (data.status == 200 && type == 'up' && data.code == 1){
+        self.find('span').text((data.up));
+        $('[data-post-dislikes]').find('span').text((data.down));
+        self.find('svg.feather').addClass('active');
+        self.siblings().find('svg.feather').removeClass('active');
+        
+      }
+
+      else if (data.status == 200 && type == 'up' && data.code == 0){
+        self.find('span').text((data.up));
+        $('[data-post-dislikes]').find('span').text((data.down));
+        self.find('svg.feather').removeClass('active');
+        self.siblings().find('svg.feather').removeClass('active');
+      }
+
+      else if (data.status == 200 && type == 'down' && data.code == 1){
+        self.find('span').text((data.down));
+        self.find('svg.feather').addClass('active');
+        $('[data-post-likes]').find('span').text((data.up));
+        self.siblings().find('svg.feather').removeClass('active');
+      }
+
+      else if (data.status == 200 && type == 'down' && data.code == 0){
+        self.find('span').text((data.down));
+        self.find('svg.feather').removeClass('active');
+        $('[data-post-likes]').find('span').text((data.up));
+        self.siblings().find('i').removeClass('active');
+      }
+
+      else{
+        swal(
+           'Error!',
+           'Something went wrong.Please try again later!',
+           'error'
+         );
+      }
+    })
+    .fail(function() {
+      console.log("error");
+    })
+  }
+</script>

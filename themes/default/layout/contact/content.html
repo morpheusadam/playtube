@@ -1,0 +1,73 @@
+<div class="container-home">
+	<h3 class="recent-articles heading_all_sections_top">
+		<span>
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                  <g id="Group_291" data-name="Group 291" transform="translate(1092 2420)">
+                                    <path id="Headphone_1" data-name="Headphone 1" d="M10.4,3.895A8.961,8.961,0,0,1,20.862,14.04l-.008.054a2.75,2.75,0,0,0-2.6,2.746v2a2.75,2.75,0,0,0,5.5,0v-2a2.749,2.749,0,0,0-1.43-2.413l.025-.165a10.461,10.461,0,1,0-20.69,0l.025.165A2.749,2.749,0,0,0,.25,16.841v2a2.75,2.75,0,0,0,5.5,0v-2a2.75,2.75,0,0,0-2.6-2.746l-.008-.054A8.961,8.961,0,0,1,10.4,3.895Z" transform="translate(-1092.25 -2420.25)" fill="currentColor"></path>
+                                    <rect id="Rectangle_316" data-name="Rectangle 316" width="24" height="24" transform="translate(-1092 -2420)" fill="none"></rect>
+                                  </g>
+                                </svg>
+			<span>{{LANG contact_us}}</span>
+		</span>
+	</h3>
+	<div class="upload_video_bg_color step_2_form page-margin termsofuse custom_static_pages">
+		<form class="contact-us-form" method="POST">
+			<div class="contact-us-alert"></div>
+				<div class="list-">
+					<!-- Text input-->
+					<div class="form-group">
+						<label for="first_name">{{LANG first_name}}</label>  
+						<input id="first_name" name="first_name" type="text" class="form-control input-md">
+					</div>
+					<!-- Text input-->
+					<div class="form-group">
+						<label for="last_name">{{LANG last_name}}</label>  
+						<input id="last_name" name="last_name" type="text" class="form-control input-md">
+					</div>
+					<div class="form-group">
+						<label for="email">{{LANG email}}</label>  
+						<input name="email" id="email" type="text" class="form-control input-md">
+					</div>
+					<div class="form-group">
+						<label for="message">{{LANG message}}</label>  
+						<textarea name="message" id="message" rows="5" class="form-control input-md"></textarea>
+					</div>
+					<div>
+						<button type="submit" name="send" id="send" tabindex="4" class="btn btn-main upload_custom_new">{{LANG submit}}</button>
+					</div>
+				</div>
+			<div class="clear"></div>
+		</form>
+	</div>
+</div>
+
+<!-- .page-margin -->
+<script>
+	$(function() {
+		var form = $('form.contact-us-form');
+		form.ajaxForm({
+			url: '{{LINK aj/contact_us}}?hash=' + $('.main_session').val(),
+			dataTyep:'json',
+			beforeSend: function() {
+				form.find('button').text("{{LANG please_wait}}");
+			},
+			success: function(data) {
+				if (data.status == 200) {
+					$('.contact-us-alert').html($('<div>',{
+						class: "alert alert-success",
+						html: data.message
+					}));
+
+					$('.alert-success').fadeIn(300);
+				} 
+				else {
+					$('.contact-us-alert').html($('<div>',{
+						class: "alert alert-danger",
+						html: data.message
+					}));
+				}
+				form.find('button').html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> {{LANG submit}}');
+			}
+		});
+	});
+</script>

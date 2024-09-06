@@ -1,0 +1,129 @@
+<div class="row">
+	<div class="col-md-1"></div>
+	<div class="col-md-10">
+		<div class="content pt_shadow">
+			<div class="col-md-12">
+				<div class="upload-head">
+					<h4 class="edit-video-title"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM11 11H7V13H11V17H13V13H17V11H13V7H11V11Z"></path></svg> {{LANG create_app}}</h4>
+					<hr>
+				</div>
+				<div class="pt_forms_large_btns" id="upload-form">
+					<form action="" class="form-horizontal pt_forms user-app-form" method="POST">
+						<div class="user-app-alert"></div>
+						<div class="pp_mat_input">
+							<input id="app_name" name="app_name" type="text" placeholder=" ">
+							<label for="app_name">{{LANG name}}</label>
+						</div>
+						<div class="pp_mat_input">
+							<input id="app_website_url" name="app_website_url" type="text" placeholder=" ">
+							<label for="app_website_url">{{LANG domain}}</label>
+						</div>
+						<div class="pp_mat_input">
+							<input id="app_callback_url" name="app_callback_url" type="text" placeholder=" ">
+							<label for="app_callback_url">{{LANG redirect_uri}}</label>
+						</div>
+						<div class="pp_mat_input">
+							<textarea name="app_description" id="app_description" cols="30" rows="5"></textarea>
+							<label for="app_description">{{LANG descritpion}}</label>
+						</div>
+						<div class="pp_mat_input">
+							<div class="article_image_renderer" id="image-renderer" onclick="document.getElementById('app-media').click(); return false">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M21 15v3h3v2h-3v3h-2v-3h-3v-2h3v-3h2zm.008-12c.548 0 .992.445.992.993v9.349A5.99 5.99 0 0 0 20 13V5H4l.001 14 9.292-9.293a.999.999 0 0 1 1.32-.084l.093.085 3.546 3.55a6.003 6.003 0 0 0-3.91 7.743L2.992 21A.993.993 0 0 1 2 20.007V3.993A1 1 0 0 1 2.992 3h18.016zM8 7a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></svg> {{LANG browse_to_upload}} {{LANG thumbnail}}
+							</div>
+							<input id="app-media" name="app_avatar" type="file" class="hidden" accept="image/*">
+						</div>
+						<div class="progress hidden">
+							<span class="percent">0%</span>
+							<div class="progress_bar_parent">
+								<div class="bar upload-progress-bar progress-bar active"></div> 
+							</div>
+							<div class="clear"></div>
+							<div class="text-center pt_prcs_vdo"></div>
+						</div>
+						<div class="text-center">
+							<button type="submit" id="submit-btn" class="btn btn-main setting-panel-mdbtn"><svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-check-circle'><path d='M22 11.08V12a10 10 0 1 1-5.93-9.14'></path><polyline points='22 4 12 14.01 9 11.01'></polyline></svg> {{LANG publish}}</button>
+						</div>
+					</form>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<div class="col-md-1"></div>
+</div>
+<script>
+
+    var _Delay = (function(){
+        var timer = 0;
+        return function(callback, ms){
+            clearTimeout (timer);
+            timer = setTimeout(callback, ms);
+        };
+    })();
+
+    function scrollToTop() {
+        verticalOffset = typeof (verticalOffset) != 'undefined' ? verticalOffset : 0;
+        element = $('html');
+        offset = element.offset();
+        offsetTop = offset.top;
+        $('html, body').animate({
+            scrollTop: offsetTop
+        }, 300, 'linear');
+    }
+
+  var bar         = $('.bar');
+  var percent     = $('.percent');
+
+	jQuery(document).ready(function($) {
+		$("#app-media").on('change', function() {
+			$("#image-renderer").html("<img src='" + window.URL.createObjectURL(this.files[0]) + "' alt='Picture'>");
+	  });
+
+    $('.user-app-form').ajaxForm({
+      url: '{{LINK aj/developers/create}}?hash=' + $('.main_session').val(),
+      dataType:"json",
+      beforeSend: function() {
+        if ($("#app-media").val()) {
+          $(".user-app-alert").html($('.progress').clone(true).addClass('progress-clone').removeClass('hidden'));
+          bar     = $('.progress-clone').find('.bar');
+          percent = $('.progress-clone').find('.percent');
+        }
+
+        $('#submit-btn').attr('disabled', true).text("{{LANG please_wait}}");
+        
+      },
+      uploadProgress: function(event, position, total, percentComplete) {
+          if(percentComplete > 50) {
+            percent.addClass('white');
+          }
+          var percentVal = percentComplete + '%';
+          bar.width(percentVal);
+          percent.html(percentVal);
+
+          if (percentComplete == 100) {
+            $(".user-app-alert").empty();
+          }
+      },
+      success: function(data) {
+        scrollToTop();
+        $('#submit-btn').removeAttr('disabled').text('{{LANG publish}}');
+        if (data.status == 200){
+          $(".user-app-alert").html('<div class="alert alert-success bg-success"><i class="fa fa-check"></i> '+
+            data.message
+            +'</div>');
+            _Delay(function(){
+            window.location.href = data.url;
+          },2000);
+          
+        }
+        else {
+          $('#submit-btn').removeAttr('disabled').text('{{LANG publish}}');
+          $(".user-app-alert").html('<div class="alert alert-danger bg-danger"><i class="fa fa-info-circle"></i> '+
+            data.message
+            +'</div>');
+        }
+      }
+    });
+	});
+</script>

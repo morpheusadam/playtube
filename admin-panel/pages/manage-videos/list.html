@@ -1,0 +1,23 @@
+<tr id="list-{{ID}}" data-id="{{ID}}" data_selected="{{ID}}">
+  <td><input type="checkbox" id="check-video-{{ID}}" class="delete-checkbox filled-in"><label for="check-video-{{ID}}"></label></td>
+  <td>{{ID}}</td>
+  <td><a href="{{URL}}" target="_blank"> {{VIDEO_ID}}</a></td>
+  <td>{{TITLE}}</td>
+  <td>{{CATEGORY}}</td>
+  <td>{{SOURCE}}</td>
+  <td>{{PRIVACY}}</td>
+  <td><a href="{{USER url}}"><figure class="avatar avatar-sm mr-2">
+            <img src="{{USER avatar}}" class="rounded-circle" alt="avatar">
+        </figure> {{USER name}}</a></td>
+  <td>
+    <?php if ($pt->showApprove) { ?>
+    <?php if ($pt->video_approve == 0) { ?>
+    <button class="btn bg-success admn_table_btn approve-content" data-id="{{ID}}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" /></svg> Approve</button>
+    <?php } else { ?>
+    <button class="btn bg-danger admn_table_btn disapprove-content" data-id="{{ID}}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg> Disapprove</button>
+    <?php }} ?>
+  	<a class="btn bg-success admn_table_btn" href="{{LINK edit-video/{{ID}}}}" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" /></svg> Edit</a>
+	<button class="btn bg-info admn_table_btn fake-content" data-id="{{ID}}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" /></svg> Fake views</button>
+  	<button class="btn bg-danger admn_table_btn" data-id="{{ID}}" onclick="DeleteVideo({{ID}},'hide')"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" /></svg> Delete</button>
+  </td>
+</tr>

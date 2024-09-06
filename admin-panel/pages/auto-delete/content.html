@@ -1,0 +1,113 @@
+<div class="container-fluid">
+    <div>
+        <h3>Auto Delete Videos</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Admin Panel</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Tools</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Auto Delete Videos</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Auto Delete Videos</h6>
+                  <div class="alert alert-danger">It's recommended to create a backup before applying any actions.</div>
+                  <div class="clearfix"></div>
+                  <div>
+                    <select class="form-control show-tick" id="select_type">
+                      <option value="keyword">Delete By Keyword</option>
+                      <option value="category">Delete By Category</option>
+                    </select>
+                  </div>
+                  <br>
+                  <div class="form-group form-float" id="keyword_section">
+                      <div class="form-line">
+                        <label for="selected_keyword">Keyword</label>
+                        <input type="text" class="form-control" name="selected_keyword" id="selected_keyword">
+                      </div>
+                  </div>
+                  <div id="category_section" style="display: none;">
+                    <label for="selected_category">Select category</label>
+                    <select class="form-control show-tick" id="selected_category" name="selected_category">
+                       <?php 
+                        foreach($pt->categories as $key => $category) { 
+                            $selected = ($key == $category_filter) ? 'selected' : '';
+                        ?>
+                        <option value="<?php echo $key?>" <?php echo $selected?>><?php echo $category?></option>
+                        <?php } ?>
+                    </select>
+                    <div class="clearfix"></div>
+                    
+                  </div>
+                    <label for="selected_time">Select time</label>
+                    <select class="form-control show-tick" id="selected_time" name="selected_time">
+                      <option value="all">All</option>
+                      <option value="today">Today</option>
+                      <option value="this_week">This Week</option>
+                      <option value="this_month">This Month</option>
+                      <option value="this_year">This Year</option>
+                    </select>
+                  <input type="hidden" id="selected_type" value="keyword">
+                   
+                  <div class="clearfix"></div><br>
+                  <div class="alert alert-info">This process might take some time, you can check for your site changes after few minutes.</div>
+                  <button type="submit" class="btn btn-danger waves-effect waves-light m-t-20" id="delete-btn">Delete Data</button>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    </div>
+    <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal1Label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModal1Label">Auto Delete Videos</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete? this action can\'t be undo
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+$(document).on('change', '#select_type', function(event) {
+  if ($(this).val() == 'keyword') {
+    $('#keyword_section').slideDown('400');
+    $('#category_section').slideUp('400');
+    $('#selected_type').val('keyword');
+  }
+  else{
+    $('#keyword_section').slideUp('400');
+    $('#category_section').slideDown('400');
+    $('#selected_type').val('category');
+  }
+});
+function AutoDelete() {
+  $.get('{{LINK aj/ap/auto_delete}}', {selected_type:$('#selected_type').val(),selected_keyword:$('#selected_keyword').val(),selected_category:$('#selected_category').val(),selected_time:$('#selected_time').val()}, function(data, textStatus, xhr) {
+    $('#delete-btn').text('Data is being deleted, check your site after few mins.');
+    setTimeout(function () {
+      $('#delete-btn').text('Delete Data');
+    }, 4000);
+  });
+}
+$(document).on('click', '#delete-btn', function(event) {
+	event.preventDefault();
+  $('#DeleteModal').find('.btn-primary').attr('onclick', "AutoDelete()");
+  $('#DeleteModal').modal('show');
+});
+</script>

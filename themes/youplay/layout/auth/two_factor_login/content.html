@@ -1,0 +1,27 @@
+<div class="login_page">
+	<div class="login-page">
+		<div class="login-form">
+			<h4>{{MESSAGE}}</h4>
+			<form action="{{LINK two_factor_submit}}" method="POST">
+				<div class="errors form-group">{{ERROR}}</div>
+				<div class="pp_mat_input">
+					<input type="text" name="code" id="code" placeholder="{{LANG confirm_code}}" required value="">
+					<label for="code">{{LANG confirm_code}}</label>
+				</div>
+				<div class="login_signup_combo">
+					<input type="submit" class="btn btn-main button" value="{{LANG submit}}">
+				</div>
+			</form>
+		</div>    
+	</div>
+</div>
+<script>
+$(function() {
+	$('[type = submit]').on('click', function () {
+		if ($('#code').val()) {
+			$(this).val("{{LANG please_wait}}");
+		}
+	});
+});
+</script>
+<style>body {background: linear-gradient(to bottom right, #0095D8 0%, #87ddff 100%);}</style>

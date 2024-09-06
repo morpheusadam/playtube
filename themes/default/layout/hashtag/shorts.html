@@ -1,0 +1,49 @@
+<?php if (!empty($data['SHORTS_LIST'])) { ?>
+<div class="padding_box_light_black box_light_black pt_shadow pt_vid_lst_page">
+		<div class="videos-latest-list row">
+      	{{SHORTS_LIST}}
+		</div>
+		<?php if ($pt->total_shorts_pages > 1) { ?>
+			<hr>
+			<div class="text-center">
+				<div class="showing_pages">
+		        	<?php echo "Showing $pt->page_number out of " . $pt->total_shorts_pages; ?>
+		        </div>
+				<nav class="showing_nav">
+					<a href="{{LINK hashtag/{{TYPE}}?page_id=1}}" data-load="?link1=hashtag&id={{TYPE}}&page_id=1" class="btn" title='First Page'>
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+					</a>
+					<ul class="pagination">
+						<?php if ($pt->page_number > 1) {  ?>
+							<li>
+								<a href="{{LINK hashtag/{{TYPE}}?page_id=<?php echo($pt->page_number - 1) ?>}}" data-load="?link1=hashtag&id={{TYPE}}&page_id=<?php echo($pt->page_number - 1) ?>" title='Previous Page'>
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" /></svg>
+								</a>
+							</li>
+						<?php  } ?>
+						<?php 
+							$nums = 0;
+							$nums_pages = ($pt->page_number > 3) ? ($pt->page_number - 3) : $pt->page_number;
+							for ($i=$nums_pages; $i <= $pt->total_shorts_pages; $i++) { 
+								if ($nums < 4) {
+						?>
+							<li class="<?php echo ($pt->page_number == $i) ? 'active' : ''; ?>"><a href="{{LINK hashtag/{{TYPE}}?page_id=<?php echo($i); ?>}}" data-load="?link1=hashtag&id={{TYPE}}&page_id=<?php echo($i) ?>"><?php echo $i ?></a></li>
+						<?php } $nums++; } ?>
+						<?php if ($pt->total_shorts_pages > $pt->page_number) { ?>
+							<li>
+								<a href="{{LINK hashtag/{{TYPE}}?page_id=<?php echo ($pt->page_number + 1); ?>}}" data-load="?link1=hashtag&id={{TYPE}}&page_id=<?php echo($pt->page_number + 1) ?>" title="Next Page">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" /></svg>
+								</a>
+							</li>
+						<?php } ?>
+					</ul>
+					<a href="{{LINK hashtag/{{TYPE}}?page_id=<?php echo ($pt->total_shorts_pages); ?>}}&last_page=1" data-load="?link1=hashtag&id={{TYPE}}&page_id=<?php echo($pt->total_shorts_pages) ?>&last_page=1" class="btn" title='Last Page'>
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" /></svg>
+					</a>
+				</nav>
+			</div>
+		        
+        <?php } ?>
+		<div class="clear"></div>
+</div>
+<?php } ?>

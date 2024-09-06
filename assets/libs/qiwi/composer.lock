@@ -1,0 +1,62 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "00423443c6c317b540adb8a2e113778d",
+    "packages": [
+        {
+            "name": "qiwi/bill-payments-php-sdk",
+            "version": "0.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/QIWI-API/bill-payments-php-sdk.git",
+                "reference": "b9deaea7c916dc7282779f01b821a3082504529d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/QIWI-API/bill-payments-php-sdk/zipball/b9deaea7c916dc7282779f01b821a3082504529d",
+                "reference": "b9deaea7c916dc7282779f01b821a3082504529d",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "php-mock/php-mock-phpunit": "^1.1",
+                "phpdocumentor/phpdocumentor": "2.8.*",
+                "phpunit/phpunit": "5.7.27",
+                "squizlabs/php_codesniffer": "3.5.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Qiwi\\Api\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Universal payments API SDK",
+            "homepage": "https://github.com/QIWI-API/bill-payments-php-sdk",
+            "support": {
+                "issues": "https://github.com/QIWI-API/bill-payments-php-sdk/issues",
+                "source": "https://github.com/QIWI-API/bill-payments-php-sdk/tree/0.2.2"
+            },
+            "time": "2021-08-12T16:19:06+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.2.0"
+}

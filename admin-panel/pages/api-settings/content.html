@@ -1,0 +1,87 @@
+<div class="container-fluid">
+    <div>
+        <h3>Manage API Access Keys</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Admin Panel</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Mobile & API Settings</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Manage API Access Keys</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- Vertical Layout -->
+    <div class="row">
+        <div class="col-lg-6 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Manage API Access Keys</h6>
+                    <div class="alert alert-info">Use these keys to setup your application(s).</div>
+                    <!-- <a href="https://docs.playtubescript.com/api" target="_blank">PlayTube API Docs</a> -->
+                    <div class="clearfix"></div>
+                    <div class="email-settings-alert"></div>
+                    <form class="api-settings" method="POST">
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Site Server Key</label>
+                                <input type="text" id="server_key" name="server_key" class="form-control" value="{{CONFIG server_key}}">
+                                <small class="admin-info">Use this key to connect to API, mostly used for Mobile Applications.</small>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary m-t-15 waves-effect" id="reset-api-key">RESET KEYS</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <!-- #END# Vertical Layout -->
+    <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal1Label" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModal1Label">Confirmation</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  Are you sure you want to reset the api secret key? all of your (windows, phone) applications will stop working on all your users devices.
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">RESET KEYS</button>
+              </div>
+          </div>
+      </div>
+  </div>
+<script>
+    function ResetKey() {
+        $("#reset-api-key").text('Please wait..');
+            $.get('{{LINK aj/ap/reset_apps_key}}',function (data) {
+                if (data.status == 200) {
+                    $('#server_key').val(data.app_key);
+                }
+
+                else{
+                    swal({
+                        title:"Error",
+                        text:"Erorr found while reseting, please try again later.",
+                        type:"error"
+                    })
+                }
+                $("#reset-api-key").text('RESET KEYS');
+            });
+    }
+    jQuery(document).ready(function($) {
+
+        $("#reset-api-key").click(function(event) {
+            $('#DeleteModal').find('.btn-primary').attr('onclick', "ResetKey()");
+            $('#DeleteModal').modal('show');
+
+        });
+    });
+</script>

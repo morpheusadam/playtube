@@ -1,0 +1,163 @@
+<div class="container-fluid">
+    <div>
+        <h3>Manage Languages</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Admin Panel</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Languages</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Manage Languages</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- Vertical Layout -->
+    <div class="row">
+        <div class="col-lg-6 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Manage & Edit Languages</h6>
+                    <div class="langs-settings-alert"></div>
+                   <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th width="70"><input type="checkbox" id="check-all" class="filled-in check-all" ><label for="check-all"></label></th>
+                                    <th style="text-align: center;">Language Name</th>
+                                    <th style="text-align: center;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                    $langs = pt_db_langs();
+                                    if (count($langs) > 0) {
+                                        foreach ($langs as $key => $lang) {
+                                            $pt->status = $pt->langs_status[$lang];
+                                            echo PT_LoadAdminPage('manage-languages/list',array(
+                                                'LANG_NAME' => ucfirst($lang),
+                                                'LANG'      => $lang
+                                            ));
+                                        }
+                                    }  
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3">
+                            <span>&nbsp;</span>
+                            <button type="button" class="btn btn-info waves-effect delete-selected d-block" disabled>Delete Selected<span></span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <!-- #END# Vertical Layout -->
+    <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal1Label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModal1Label">Delete language?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this language?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="SelectedDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal1Label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModal1Label">Delete language?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure that you want to remove the selected language(s)?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="DeleteSelected()" data-dismiss="modal">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+    $('.check-all').on('click', function(event) {
+        $('input:checkbox').not(this).prop('checked', this.checked);
+    });
+    $('.delete-checkbox, .check-all').change(function(event) {
+        $('.delete-selected').attr('disabled', false);
+        $('.delete-selected').find('span').text(' (' + $('.delete-checkbox:checked').length + ')');
+    });
+    $('.submit-selected').on('click', function(event) {
+        event.preventDefault();
+        $('#SelectedStatusModal').modal('show');
+    });
+
+    $('.delete-selected').on('click', function(event) {
+        event.preventDefault();
+        $('#SelectedDeleteModal').modal('show');
+    });
+    function DeleteSelected() {
+        data = new Array();
+        $('td input:checked').parents('tr').each(function () {
+            data.push($(this).attr('data_selected'));
+        });
+        $('.delete-selected').attr('disabled', true);
+        $('.delete-selected').text('Please wait..');
+        $.post("{{LINK aj/ap/remove_multi_lang}}", {ids: data}, function () {
+            $.each( data, function( index, value ){
+                $('#' + value).remove();
+            });
+            $('.delete-selected').text('Delete Selected');
+        });
+    }
+function pt_delete_lang(id,self,type = 'show') {
+  if (id == '') {
+    return false;
+  }
+  if (type == 'hide') {
+    $('#DeleteModal').find('.btn-primary').attr('onclick', "pt_delete_lang('"+id+"',this)");
+    $('#DeleteModal').modal('show');
+    return false;
+  }
+  $('#' + id).fadeOut(300, function () {
+      $(this).remove();
+  });
+  $.get('{{LINK aj/ap/delete_lang}}', {id:id});
+}
+function update_lang_status(self,name) {
+    value = 1;
+    if ($(self).attr('data-type') == 'disable') {
+        value = 0;
+    }
+    $.post('{{LINK aj/ap/update_lang_status}}', {name:name,value:value}, function(data, textStatus, xhr) {
+        if ($(self).attr('data-type') == 'disable') {
+            $(self).attr('data-type','enable');
+            $(self).html('Enable');
+        }
+        else{
+            $(self).attr('data-type','disable');
+            $(self).html('Disable');
+        }
+        $('.langs-settings-alert').html('<div class="alert alert-success"><i class="fa fa-check"></i> Language status updated.</div>');
+        setTimeout(function () {
+            $('.langs-settings-alert').empty();
+        }, 2000);
+    });
+}
+</script>

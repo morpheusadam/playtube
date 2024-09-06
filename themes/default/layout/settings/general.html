@@ -1,0 +1,187 @@
+<form class="form-horizontal user-setting-panel pt_forms pt_shadow" id="general-settings" method="POST">
+	<div class="setting-general-alert"></div>
+	<div class="row">
+        <!-- Text input-->
+        <div class="form-group col-lg-6">
+            <label class="col-md-12" for="username">{{LANG username}}</label>
+            <div class="col-md-12">
+                <input id="username" name="username" type="text" placeholder="" class="form-control input-md" value="{{USER username}}">
+            </div>
+        </div>
+        <!-- Text input-->
+        <div class="form-group col-lg-6">
+            <label class="col-md-12" for="email">{{LANG email_address}}</label>
+            <div class="col-md-12">
+                <input id="email" name="email" type="text" placeholder="" class="form-control input-md" value="{{USER email}}">
+                <?php if ($pt->config->validation == 'on' && !empty($pt->settings->new_email)) { ?>
+                    <small class="unverify_color"><?php echo $pt->settings->new_email; ?>({{LANG unverified}})</small>
+                <?php } ?>
+            </div>
+        </div>
+        <!-- Select Basic -->
+        <div class="form-group col-lg-6">
+            <label class="col-md-12" for="gender">{{LANG gender}}</label>
+            <div class="col-md-12">
+                <select id="gender" name="gender" class="form-control">
+                    <option value="male" <?php echo ($pt->settings->gender == 'male') ? 'selected': '';?>>{{LANG male}}</option>
+                    <option value="female" <?php echo ($pt->settings->gender == 'female') ? 'selected': '';?>>{{LANG female}}</option>
+                </select>
+            </div>
+        </div>
+        <!-- Select Basic -->
+        <div class="form-group col-lg-6">
+            <label class="col-md-12" for="country">{{LANG country}}</label>
+            <div class="col-md-12">
+                <select id="country" name="country" class="form-control">
+                    {{COUNTRIES_LAYOUT}}
+                </select>
+            </div>
+        </div>
+        <!-- Select Basic -->
+        <div class="form-group col-lg-6">
+            <label class="col-md-12" for="age">Age</label>
+            <div class="col-md-12">
+                <select id="age" name="age" class="form-control">
+                    <option value="0">Not selected</option>
+                    <?php
+                    for ($i=1; $i < 100; $i++) { 
+                        ?>
+                        <option value="<?php echo $i;?>" <?php echo ($pt->settings->age == $i) ? 'selected': '';?>><?php echo $i;?></option>
+                        <?php
+                    }
+                    ?>
+                </select>
+            </div>
+        </div>
+        <?php if ($pt->config->donate_system == 'on' && canUseFeature($pt->settings->id,'who_can_donate')) { ?>
+         <!-- Text input-->
+        <div class="form-group col-lg-6">
+            <label class="col-md-12" for="donation_paypal_email">{{LANG donation_paypal_email}}</label>
+            <div class="col-md-12">
+                <input id="donation_paypal_email" name="donation_paypal_email" type="text" placeholder="" class="form-control input-md" value="{{USER donation_paypal_email}}">
+            </div>
+        </div>
+        <?php } ?>
+		<div class="form-group col-lg-6">
+			<label class="col-md-12" for="newsletters">{{LANG newsletters}}</label>
+			<div class="col-md-12">
+				<div class="pt_vdo_cstm_radio">
+					<input type="radio" name="newsletters" id="newsletters-0" value="2" <?php echo ($pt->settings->newsletters == 1) ? 'checked': ''?>>
+					<label for="newsletters-0">{{LANG active}}</label>
+				</div>
+				<div class="pt_vdo_cstm_radio">
+					<input type="radio" name="newsletters" id="newsletters-1" value="1" <?php echo ($pt->settings->newsletters == 0) ? 'checked': ''?>>
+					<label for="newsletters-1">{{LANG inactive}}</label>
+				</div>
+			</div>
+		</div>
+        
+        <div class="clear"></div>
+        <?php if ($pt->is_admin == true) { ?>
+            {{ADMIN_LAYOUT}}
+        <?php } ?>
+        <hr>
+        {{CUSTOM_FIELDS}}
+	</div>
+	<input type="hidden" name="hash_id" value="<?php echo PT_CreateSession()?>">
+	<input type="hidden" name="user_id" value="{{USER id}}">
+	<input type="hidden" name="cf" value="{{CUSTOM_DATA}}">
+	<!-- Button (Double) -->
+	<div class="last-sett-btn modal-footer" style="margin: 0px -30px -10px -30px;">
+		<button id="submit" name="submit" class="btn btn-main setting-panel-mdbtn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> {{LANG save}}</button>
+	</div>
+</form>
+
+<script>
+    $(function() {
+        
+        var form = $('form#general-settings');
+
+        form.ajaxForm({
+            url: '{{LINK aj/user/general}}?hash=' + $('.main_session').val(),
+            beforeSend: function() {
+                $('.last-sett-btn').find('button').text("{{LANG please_wait}}");
+                // FL_progressIconLoader(form.find('button'));
+            },
+            success: function(data) {
+                scrollToTop();
+                if (data.status == 200) {
+                    $('.setting-general-alert').html('<div class="alert alert-success">' + data.message + '</div>');
+                    $('.alert-success').fadeIn('fast', function() {
+                        $(this).delay(2500).slideUp(500, function() {
+                            $(this).remove();
+                        });
+                    });
+
+                    if (data.show_modal == true) {
+                        var text = "{{LANG confirm_code}}";
+                        var error = "{{LANG confirm_check_text}}";
+                        swal({
+                            title: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shield"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> {{LANG two_factor}}',
+                            html: $('<form>').add($('<p>',{
+                              text:"{{LANG confirmation_message_email_sent}}",
+                              class:'report-message-label'
+                            })).add($('<div class="pt_forms"><div class="form-group"><input type="text" name="code" id="v_code" placeholder="'+text+'" required value=""></div></div>')),
+                            showCancelButton: true,
+                            confirmButtonText: '{{LANG submit}}',
+                            cancelButtonText: '{{LANG cancel}}',
+                            customClass:'report-video-popup',
+                            animation: false,
+                            preConfirm: function(name){
+                              return new Promise(function(resolve,reject){
+                                  message = $('#v_code').val();
+                                  if (message.length < 1) {
+                                    swal.showValidationError(
+                                      '{{LANG please_check_details}}'
+                                    );
+                                    reject();
+                                  }
+                                  else{
+                                    var code = $('#v_code').val();
+                                    $.ajax({
+                                      url: '{{LINK aj/user/verify_email}}?hash=' + $('.main_session').val(),
+                                      type: 'POST',
+                                      dataType: 'json',
+                                      data: {code: code,user_id:{{USER id}}},
+                                    })
+                                    .done(function(data) {
+                                      if (data.status == 200) {
+                                        swal({
+                                          title: '{{LANG thank_u}}',
+                                          html: '{{LANG new_email_verified}}'
+                                        });
+                                        setTimeout(function (argument) {
+                                            location.reload();
+                                        },2000);
+                                      }
+                                      else{
+                                        swal.showValidationError(
+                                          data.message
+                                        );
+                                        reject();
+                                      }
+                                    });
+                                  }
+                              });
+                            },
+                            allowOutsideClick: false
+                          }).then(function(){});
+
+                    }
+
+
+
+                } else if (data.errors) {
+                    var errors = data.errors.join("<br>");
+                    $('.setting-general-alert').html('<div class="alert alert-danger">' + errors + '</div>');
+                    $('.alert-danger').fadeIn(300);
+                }
+                $('.last-sett-btn').find('button').html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> {{LANG save}}');
+                // FL_progressIconLoader(form.find('button'));
+            }
+        });
+    });
+
+
+
+</script>

@@ -1,0 +1,19 @@
+{
+    "name": "gimucco/tiktok-loginkit",
+    "description": "TikTok Login Kit for Web in PHP",
+    "type": "library",
+    "license": "GPL-3.0-only",
+    "authors": [
+        {
+            "name": "Andrea Olivato",
+            "email": "andrea@olivato.me"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "gimucco\\TikTokLoginKit\\": "src/"
+        }
+    }
+}

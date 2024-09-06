@@ -1,0 +1,253 @@
+<?php 
+
+$langs = pt_db_langs();
+
+if (empty($_GET['id']) || !in_array($_GET['id'], $langs)) {
+    header("Location: " . PT_Link('admin-cp'));
+    exit();
+}
+$lang_name = PT_Secure($_GET['id']);
+$pt->page_number = isset($_GET['page-id']) ? $_GET['page-id'] : 1;
+$filter_keyword = (!empty($_GET['query'])) ? PT_Secure($_GET['query']) : '';
+$db->pageLimit = 50;
+if (!empty($filter_keyword)) {
+    $sql   = " (lang_key LIKE '%$filter_keyword%' OR ".$lang_name." LIKE '%$filter_keyword%') ";
+    $db->where($sql);
+} 
+$langs    = $db->objectbuilder()->paginate(T_LANGS, $pt->page_number,array('lang_key',PT_Secure($_GET['id'])));
+if ($db->totalPages != 0) {
+    if (($pt->page_number > $db->totalPages) && !empty($_GET['page-id'])) {
+        header("Location: " . PT_LoadAdminLinkSettings('manage-languages'));
+        exit();
+    }
+}
+$iso = $db->where('lang_name',$lang_name)->getValue(T_LANG_ISO,'iso');
+
+?>
+
+<div class="container-fluid">
+    <div>
+        <h3>Manage & Edit Languages</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Admin Panel</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Languages</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Manage & Edit Languages</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- Vertical Layout -->
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Edit Language ISO</h6>
+                    <form class="iso-settings" method="POST">
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Language ISO <small></small></label>
+                                <input type="text" id="iso" name="iso" class="form-control" value="<?php echo($iso); ?>">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Manage & Edit Languages</h6>
+                    <div class="row">
+                       <div class="col-md-6" style="margin-bottom:0;">
+                            <form method="get" action="<?php echo PT_LoadAdminLinkSettings("edit-lang"); ?>">
+                              <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <label class="form-label search-form">Search for Keyword</label>
+                                            <input type="text" name="query" id="query" class="form-control" value="<?php echo(!empty($_GET['query']) ? $_GET['query'] : '') ?>">
+                                            <input type="hidden" name="id" value="<?php echo($lang_name) ?>">
+                                            <input type="hidden" name="page-id" value="1">
+                                            
+                                        </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-1">
+                                    <label>&nbsp;</label>
+                                <div></div>
+                                     <button class="btn btn-info">Search</button>
+                                  </div>
+                              </div>
+
+                              <div class="clearfix"></div>
+                           </form>
+                       </div>
+                   </div>
+                   <div class="clearfix"></div>
+                   <div class="table-responsive1">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                	<th>ID</th>
+                                    <th>Key Name</th>
+                                    <th>Value</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+					            if (count($langs) > 0) {
+					            	$count = 1;
+					                foreach ($langs as $key => $value) {
+
+					                    echo PT_LoadAdminPage('edit-lang/list',array(
+                                            "LANG_ID" => ($count++),
+                                            "LANG_KEY" => $value->lang_key,
+                                            "LANG_VALUE" => $value->{PT_Secure($_GET['id'])}
+                                        ));
+					                }
+					            }  
+					            ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pull-left">
+                        <?php echo "Showing $pt->page_number out of " . $db->totalPages; ?>
+                    </div>
+                    <div class="pull-right">
+                        <nav>
+                            <ul class="pagination">
+                                <li>
+                                    <a href="<?php echo PT_LoadAdminLinkSettings("edit-lang?id=".$lang_name."&page-id=1"); ?>" class="waves-effect" title='First Page'>
+                                        <i class="material-icons">first_page</i>
+                                    </a>
+                                </li>
+                                <?php if ($pt->page_number > 1) {  ?>
+                                <li>
+                                    <a href="<?php echo PT_LoadAdminLinkSettings("edit-lang?id=".$lang_name."&page-id=" . ($pt->page_number - 1)); ?>" class="waves-effect" title='Previous Page'>
+                                        <i class="material-icons">chevron_left</i>
+                                    </a>
+                                </li>
+                                <?php  } ?>
+                                <?php 
+                                $nums = 0;
+                                $nums_pages = ($pt->page_number > 4) ? ($pt->page_number - 4) : $pt->page_number;
+                                for ($i=$nums_pages; $i <= $db->totalPages; $i++) { 
+                                    if ($nums < 20) {
+                                    ?>
+                                    <li class="<?php echo ($pt->page_number == $i) ? 'active' : ''; ?>"><a href="<?php echo PT_LoadAdminLinkSettings("edit-lang?id=".$lang_name."&page-id=" . ($i)); ?>" class="waves-effect"><?php echo $i ?></a></li>
+                                    <?php
+                                    }
+                                    $nums++;
+                                }
+                                ?>
+                                <?php if ($db->totalPages > $pt->page_number) { ?>
+                                <li>
+                                    <a href="<?php echo PT_LoadAdminLinkSettings("edit-lang?id=".$lang_name."&page-id=" . ($pt->page_number + 1)); ?>" class="waves-effect" title="Next Page">
+                                        <i class="material-icons">chevron_right</i>
+                                    </a>
+                                </li>
+                                <?php } ?>
+                                <li>
+                                    <a href="<?php echo PT_LoadAdminLinkSettings("edit-lang?id=".$lang_name."&page-id=" . ($db->totalPages)); ?>&last_page=1" class="waves-effect" title='Last Page'>
+                                        <i class="material-icons">last_page</i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <!-- #END# Vertical Layout -->
+<script>
+$('.btn-lang').on('click', function(event) {
+	$('.modal-body form .data').html('<div class="preloader pl-size-xl"><div class="spinner-layer pl-teal"><div class="circle-clipper left"><div class="circle"></div></div><div class="circle-clipper right"><div class="circle"></div></div></div></div>');
+	var lang_id = $(this).attr('data-id');
+	$.get("{{LINK aj/ap/get_lang_key}}",{id: lang_id, lang_name: '<?php echo $_GET['id']; ?>'}, function(data, textStatus, xhr) {
+		$('.modal-title').html('Edit key: ' + lang_id);
+		$('#id_of_key').val(lang_id);
+		$('.modal-body form .data').html(data.html);
+	});
+});
+$(function () {
+    var setTimeOutColor = setTimeout(function (){});
+    $('.iso-settings input[type=text]').on('input', delay(function() {
+        clearTimeout(setTimeOutColor);
+        var thisElement = $(this);
+        var configName = thisElement.attr('name');
+        var hash_id = $('input[name=hash_id]').val();
+        var objData = {};
+        objData[configName] = this.value;
+        objData['hash_id'] = hash_id;
+        objData['lang_name'] = "<?php echo($lang_name); ?>";
+        thisElement.addClass('warning');
+        $.post("{{LINK aj/ap/update_iso}}", objData, function (data) {
+            if (data.status == 200) {
+                thisElement.removeClass('warning');
+                thisElement.addClass('success');
+            } else {
+                thisElement.addClass('error');
+            }
+            var setTimeOutColor = setTimeout(function () {
+                thisElement.removeClass('success');
+                thisElement.removeClass('warning');
+                thisElement.removeClass('error');
+            }, 2000);
+            //thisElement.focus();
+        });
+    }, 500));
+
+	//$('table').DataTable();
+	var form_lang_settings = $('form.edit-key-settings');
+    form_lang_settings.ajaxForm({
+        url: '{{LINK aj/ap/update_lang_key}}',
+        beforeSend: function() {
+            $('.btn-save').text('PLEASE WAIT..');
+        },
+        success: function(data) {
+            if (data.status == 200) {
+            	$('.btn-save').text('SAVE CHANGES');
+            	var value_to_use = form_lang_settings.find('textarea').first().val();
+            	var id_of_key = $('#id_of_key').val();
+            	$('#edit_' + id_of_key).text(value_to_use);
+            	$('#edit-lang-modal').modal('hide');
+            }
+        }
+    });
+});
+
+function Wo_SubmitLangForm() {
+	$('.edit-key-settings').submit();
+}
+</script>
+<div class="modal fade" id="edit-lang-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h4 class="modal-title" id="defaultModalLabel"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="edit-lang-settings-alert"></div>
+                <form class="edit-key-settings" method="POST">
+                	<div class="data  text-center"></div>
+                	<input type="hidden" name="id_of_key" id="id_of_key" value="">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="Wo_SubmitLangForm();">SAVE CHANGES</button>
+            </div>
+        </div>
+    </div>
+</div>

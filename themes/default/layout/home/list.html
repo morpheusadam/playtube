@@ -1,0 +1,30 @@
+
+<div class="col-md-3 col-sm-6 col-xs-6 keep-padding" data-id="{{ID}}">
+	<div class="video-list">
+		<div class="video-list-image">
+			<?php if (!empty($pt->video) && $pt->video->live_time >= (time() - 10)) { ?>
+				<div class="wow_liv_counter"><span>{{LANG live}}</span></div>
+			<?php } ?>
+			<a href="{{URL}}" data-load="{{ajax_url}}">
+				<img src="{{THUMBNAIL}}" alt="{{TITLE}}">
+			</a>
+		</div>
+		<div class="center_abs">
+			<div class="custom_height_fixed_blur">
+				<a href="{{URL}}" data-load="{{ajax_url}}">
+				<div class="video_channel_details">
+					<div class="image_channel">
+						<img src="{{USER avatar}}">
+					</div>
+					<div class="channel_details">
+						<span class="video_channel_title" title="{{TITLE}}">{{TITLE}}</span>
+						<span class="video_channel_name">{{USER name_v}}</span>
+						<span class="video_channel_stats">{{VIEWS}} {{LANG views}} • {{TIME}}</span>
+					</div>
+				</div>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- pt_vid_fixed_height -->

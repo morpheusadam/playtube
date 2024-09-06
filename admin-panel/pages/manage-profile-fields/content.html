@@ -1,0 +1,248 @@
+<?php 
+
+    $page = (!empty($_GET['page-id'])) ? $_GET['page-id'] : 1;
+    $filter_keyword = (!empty($_GET['query'])) ? PT_Secure($_GET['query']) : '';
+    $db->pageLimit  = 50;
+    $type           = 'all';
+    $link = "";
+
+    if (!empty($filter_keyword)) {
+        $link .= "&query=".$filter_keyword;
+        $sql    = " (name LIKE '%$filter_keyword%' OR description LIKE '%$filter_keyword%') ";
+        $db->where($sql);
+    } 
+
+$link .= "&type=".$type;
+if (!empty($this_start) && !empty($this_end)) {
+    $db->where('time',$this_start,'>=')->where('time',$this_end,'<=');
+}
+$sort_link = $link;
+$sort_array = array('DESC_i' => array('id' , 'DESC'),
+                    'ASC_i'  => array('id' , 'ASC'),
+                    'DESC_n' => array('name' , 'DESC'),
+                    'ASC_n'  => array('name' , 'ASC'),
+                    'DESC_t' => array('type' , 'DESC'),
+                    'ASC_t'  => array('type' , 'ASC'),
+                    'DESC_l' => array('length' , 'DESC'),
+                    'ASC_l'  => array('length' , 'ASC'),
+                    'DESC_p' => array('placement' , 'DESC'),
+                    'ASC_p'  => array('placement' , 'ASC'));
+if (!empty($_GET['sort']) && in_array($_GET['sort'], array_keys($sort_array))) {
+    $db->orderBy($sort_array[$_GET['sort']][0],$sort_array[$_GET['sort']][1]);
+    $link .= "&sort=".PT_Secure($_GET['sort']);
+}
+else{
+    $_GET['sort'] = 'DESC_i';
+    $db->orderBy('id', 'DESC');
+}
+
+    $fields = $db->objectbuilder()->paginate(T_FIELDS, $page);
+
+    if (($page > $db->totalPages) && !empty($_GET['page-id'])) {
+        header("Location: " . PT_LoadAdminLinkSettings('manage-profile-fields'));
+        exit();
+    }
+?>
+
+<div class="container-fluid">
+    <div>
+        <h3>Manage Custom Profile Fields</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Admin Panel</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Users</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Manage Custom Profile Fields</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Manage & Edit Custom Profile Fields</h6>
+                    <div class="row">
+                        <div class="col-md-6" style="margin-bottom:0;">
+                            <a href="<?php echo PT_LoadAdminLinkSettings('add-new-profile-field'); ?>" class="btn btn-warning waves-effect waves-light m-t-20">Create New Custom Field</a>
+                        </div>
+                   </div>
+                    <div class="clearfix"></div>
+                    <br>
+                   <div class="table-responsive1">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                   <th width="60"><input type="checkbox" id="check-all" class="filled-in check-all" ><label for="check-all"></label></th>
+                                   <th width="100">ID 
+                                        <?php if (!empty($_GET['sort']) && $_GET['sort'] == 'DESC_i') { ?>
+                                            <svg onclick="location.href = '<?php echo(PT_LoadAdminLinkSettings('manage-profile-fields?page-id=1').$sort_link."&sort=ASC_i") ?>'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#000000" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up cursor-p"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+                                        <?php }else{ ?>
+                                            <svg onclick="location.href = '<?php echo(PT_LoadAdminLinkSettings('manage-profile-fields?page-id=1').$sort_link."&sort=DESC_i") ?>'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#000000" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-down cursor-p"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                                        <?php } ?></th>
+					               <th>Field name 
+                                        <?php if (!empty($_GET['sort']) && $_GET['sort'] == 'DESC_n') { ?>
+                                            <svg onclick="location.href = '<?php echo(PT_LoadAdminLinkSettings('manage-profile-fields?page-id=1').$sort_link."&sort=ASC_n") ?>'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#000000" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up cursor-p"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+                                        <?php }else{ ?>
+                                            <svg onclick="location.href = '<?php echo(PT_LoadAdminLinkSettings('manage-profile-fields?page-id=1').$sort_link."&sort=DESC_n") ?>'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#000000" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-down cursor-p"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                                        <?php } ?></th>
+					               <th>Type 
+                                        <?php if (!empty($_GET['sort']) && $_GET['sort'] == 'DESC_t') { ?>
+                                            <svg onclick="location.href = '<?php echo(PT_LoadAdminLinkSettings('manage-profile-fields?page-id=1').$sort_link."&sort=ASC_t") ?>'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#000000" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up cursor-p"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+                                        <?php }else{ ?>
+                                            <svg onclick="location.href = '<?php echo(PT_LoadAdminLinkSettings('manage-profile-fields?page-id=1').$sort_link."&sort=DESC_t") ?>'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#000000" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-down cursor-p"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                                        <?php } ?></th>
+					               <th>Length 
+                                        <?php if (!empty($_GET['sort']) && $_GET['sort'] == 'DESC_l') { ?>
+                                            <svg onclick="location.href = '<?php echo(PT_LoadAdminLinkSettings('manage-profile-fields?page-id=1').$sort_link."&sort=ASC_l") ?>'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#000000" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up cursor-p"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+                                        <?php }else{ ?>
+                                            <svg onclick="location.href = '<?php echo(PT_LoadAdminLinkSettings('manage-profile-fields?page-id=1').$sort_link."&sort=DESC_l") ?>'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#000000" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-down cursor-p"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                                        <?php } ?></th>
+					               <th>Placement 
+                                        <?php if (!empty($_GET['sort']) && $_GET['sort'] == 'DESC_p') { ?>
+                                            <svg onclick="location.href = '<?php echo(PT_LoadAdminLinkSettings('manage-profile-fields?page-id=1').$sort_link."&sort=ASC_p") ?>'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#000000" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up cursor-p"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+                                        <?php }else{ ?>
+                                            <svg onclick="location.href = '<?php echo(PT_LoadAdminLinkSettings('manage-profile-fields?page-id=1').$sort_link."&sort=DESC_p") ?>'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#000000" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-down cursor-p"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                                        <?php } ?></th>
+					               <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php 
+                                    foreach ($fields as $field) {
+                                        $field_id = $field->id;
+                                        if ($field->type == 'select') {
+                                          $type   = 'Select box';
+                                        } else if ($field->type == 'textarea') {
+                                          $type   = 'Text area';
+                                        } else if ($field->type == 'textbox') {
+                                          $type   = 'Text box';
+                                        } else{
+                                            $type = 'Unknown';
+                                        }  
+
+                                        echo  PT_LoadAdminPage("manage-profile-fields/list",array(
+                                            'FIELD_ID'     => $field->id,
+                                            'FIELD_NAME'   => $field->name,
+                                            'FIELD_TYPE'   => $type,
+                                            'FIELD_LEN'    => $field->length,
+                                            'FIELD_PLACE'  => $field->placement,
+                                            'EDIT'         => PT_Link("admin-cp/edit-profile-field?id=$field_id"),
+                                        ));
+                                    }
+				                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3">
+                            <span>&nbsp;</span>
+                            <button type="button" class="btn btn-info waves-effect delete-selected d-block" disabled>Delete Selected<span></span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- #END# Vertical Layout -->
+    <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal1Label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModal1Label">Delete Field?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this field?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="SelectedDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal1Label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModal1Label">Delete Field?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure that you want to remove the selected field(s)?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="DeleteSelected()" data-dismiss="modal">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+
+$('.check-all').on('click', function(event) {
+    $('input:checkbox').not(this).prop('checked', this.checked);
+});
+$('.delete-checkbox, .check-all').change(function(event) {
+    $('.delete-selected').attr('disabled', false);
+    $('.delete-selected').find('span').text(' (' + $('.delete-checkbox:checked').length + ')');
+});
+$('.submit-selected').on('click', function(event) {
+    event.preventDefault();
+    $('#SelectedStatusModal').modal('show');
+});
+
+$('.delete-selected').on('click', function(event) {
+    event.preventDefault();
+    $('#SelectedDeleteModal').modal('show');
+});
+function DeleteSelected() {
+    data = new Array();
+    $('td input:checked').parents('tr').each(function () {
+        data.push($(this).attr('data_selected'));
+    });
+    $('.delete-selected').attr('disabled', true);
+    $('.delete-selected').text('Please wait..');
+    $.post("{{LINK aj/ap/remove_multi_fields}}", {ids: data}, function () {
+        $.each( data, function( index, value ){
+            $("[data-prfield-id='"+value+"']").slideUp(function(){
+                $(this).remove();
+            });
+        });
+        $('.delete-selected').text('Delete Selected');
+    });
+}
+
+function PT_DeleteField(id,type = 'show') {
+    if (!id) { return false;}
+    if (type == 'hide') {
+        $('#DeleteModal').find('.btn-primary').attr('onclick', "PT_DeleteField('"+id+"')");
+        $('#DeleteModal').modal('show');
+        return false;
+    }
+    $("[data-prfield-id='"+id+"']").slideUp(function(){
+        $(this).remove();
+    });
+    $.ajax({
+        url: '{{LINK aj/ap/delfield}}',
+        type: 'GET',
+        dataType: 'json',
+        data: {id:id},
+    })
+    .done(function(data) {
+        //pass Deen
+    })
+    .fail(function() {
+        console.log("error");
+    });
+}
+</script>

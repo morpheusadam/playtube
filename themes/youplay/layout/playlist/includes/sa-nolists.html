@@ -1,0 +1,20 @@
+<div class="add-topl-cont">
+	<h4 class="text-center">{{LANG add_to}}</h4>
+	<div class="playlist-item">
+		<span class="list-name">
+			<i class="fa fa-fw fa-lock secure-color"></i> {{LANG watch_later}}
+		</span>
+		<span class="pull-right" onclick="PT_WLToggle('<?php echo $pt->video_id; ?>',this);">
+			<?php if ($pt->wlater_exists): ?>
+				<button class="btn btn-sm btn-default">
+					<i class="fa fa-check-square-o"></i>
+				</button> 
+			<?php else: ?>
+				<button class="btn btn-sm  btn-default">
+					<i class="fa fa-square-o"></i> 
+				</button> 
+			<?php endif;?>	
+		</span>
+	</div>
+</div>
+

@@ -1,0 +1,41 @@
+<div class="container-home">
+	<h3 class="recent-articles heading_all_sections_top">
+		<span>
+			<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 24 24"><path fill="currentColor" d="M12,5.5A3.5,3.5 0 0,1 15.5,9A3.5,3.5 0 0,1 12,12.5A3.5,3.5 0 0,1 8.5,9A3.5,3.5 0 0,1 12,5.5M5,8C5.56,8 6.08,8.15 6.53,8.42C6.38,9.85 6.8,11.27 7.66,12.38C7.16,13.34 6.16,14 5,14A3,3 0 0,1 2,11A3,3 0 0,1 5,8M19,8A3,3 0 0,1 22,11A3,3 0 0,1 19,14C17.84,14 16.84,13.34 16.34,12.38C17.2,11.27 17.62,9.85 17.47,8.42C17.92,8.15 18.44,8 19,8M5.5,18.25C5.5,16.18 8.41,14.5 12,14.5C15.59,14.5 18.5,16.18 18.5,18.25V20H5.5V18.25M0,20V18.5C0,17.11 1.89,15.94 4.45,15.6C3.86,16.28 3.5,17.22 3.5,18.25V20H0M24,20H20.5V18.25C20.5,17.22 20.14,16.28 19.55,15.6C22.11,15.94 24,17.11 24,18.5V20Z"></path></svg>
+			<span>{{LANG affiliates}}</span>
+		</span>
+	</h3>
+	
+	<div class="upload_video_bg_color">
+		<div class="main_aff_page">
+			<?php
+				if($pt->config->amount_ref > 0 && $pt->config->affiliate_type->affiliate_new_user == 1){
+					$earn_users = str_replace('{amount}', $pt->config->amount_ref, $lang_array['earn_users']);
+					echo "<p><span style='color: #3698fd;'><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'><path d='M10 19.748V16.4C10 15.1174 10.9948 14.1076 12.4667 13.5321C11.5431 13.188 10.5435 13 9.5 13C7.61013 13 5.86432 13.6168 4.45286 14.66C5.33199 17.1544 7.41273 19.082 10 19.748ZM18.8794 16.0859C18.4862 15.5526 17.1708 15 15.5 15C13.4939 15 12 15.7967 12 16.4V20C14.9255 20 17.4843 18.4296 18.8794 16.0859ZM9.55 11.5C10.7926 11.5 11.8 10.4926 11.8 9.25C11.8 8.00736 10.7926 7 9.55 7C8.30736 7 7.3 8.00736 7.3 9.25C7.3 10.4926 8.30736 11.5 9.55 11.5ZM15.5 12.5C16.6046 12.5 17.5 11.6046 17.5 10.5C17.5 9.39543 16.6046 8.5 15.5 8.5C14.3954 8.5 13.5 9.39543 13.5 10.5C13.5 11.6046 14.3954 12.5 15.5 12.5ZM12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22Z' fill='currentColor'></path></svg></span> ".str_replace('$', $pt->config->currency_symbol_array[$pt->config->payment_currency], $earn_users)."</p>";
+				}
+				if($pt->config->amount_percent_ref > 0 && $pt->config->affiliate_type->affiliate_pro == 1){
+					$earn_users_pro = str_replace('{amount}', $pt->config->amount_percent_ref, $lang_array['earn_users_pro']);
+					echo "<p><span style='color: #1bc3bb;'><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 16.769' width='24' height='24'><path d='M18.5,6.472c0,7.377-1.065,10.974-7.378,12.776a.423.423,0,0,1-.242,0C4.566,17.444,3.5,13.885,3.5,6.586a.441.441,0,0,1,.321-.424A17.835,17.835,0,0,0,10.7,2.628a.387.387,0,0,1,.313-.127.443.443,0,0,1,.311.131c.821.833,4.289,2.559,6.871,3.42A.445.445,0,0,1,18.5,6.472Z' transform='translate(-3.5 -2.498)' fill='currentColor'></path></svg></span> ".str_replace('$', '%', $earn_users_pro)."</p>";
+				}
+				if($pt->config->amount_percent_subscribe > 0 && $pt->config->affiliate_type->affiliate_subscribe == 1){
+					$earn_users_pro = str_replace('{amount}', '%'.$pt->config->amount_percent_subscribe, $lang_array['earn_users_subscribe']);
+					echo "<p><span style='color: #faa500;'><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 11.842' width='24' height='24'><path d='M13.947,4.5H6.053A3.558,3.558,0,0,0,2.5,8.053h15A3.558,3.558,0,0,0,13.947,4.5ZM2.5,9.632v3.158a3.558,3.558,0,0,0,3.553,3.553h7.895A3.558,3.558,0,0,0,17.5,12.789V9.632Zm5.921,3.947H6.053a.789.789,0,1,1,0-1.579H8.421a.789.789,0,0,1,0,1.579Z' transform='translate(-2.5 -4.5)' fill='currentColor'></path></svg></span> ".$earn_users_pro."</p>";
+				}
+				if($pt->config->amount_percent_buy_rent > 0 && $pt->config->affiliate_type->affiliate_buy_rent == 1){
+					$earn_users_pro = str_replace('{amount}', '%'.$pt->config->amount_percent_buy_rent, $lang_array['earn_users_buy_rent']);
+					echo "<p><span style='color: #b37feb;'><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 10' width='24' height='24'><path d='M13.019,8.962v3.077A3.466,3.466,0,0,1,9.558,15.5H5.712A3.466,3.466,0,0,1,2.25,12.038V8.962A3.466,3.466,0,0,1,5.712,5.5H9.558A3.466,3.466,0,0,1,13.019,8.962Zm3.538-1.739a1.3,1.3,0,0,0-1.335.065l-.877.585a.386.386,0,0,0-.172.32v4.615a.384.384,0,0,0,.172.32l.876.584a1.306,1.306,0,0,0,2.029-1.088V8.377A1.305,1.305,0,0,0,16.557,7.222Z' transform='translate(-2.25 -5.5)' fill='currentColor'></path></svg></span> ".$earn_users_pro."</p>";
+				}
+				
+			?>
+			<?php 
+				$link = PT_Link('login?red='.PT_Link('settings/my_affiliates/'));
+				$link_load = '';
+				if (IS_LOGGED) {
+					$link = PT_Link('settings/my_affiliates/'.$pt->user->username);
+					$link_load = '?link1=settings&page=my_affiliates&user='.$pt->user->username;
+				} 
+			?>
+			<a href="<?php echo $link; ?>" <?php if(IS_LOGGED){ ?>data-load="<?php echo $link_load; ?>"<?php } ?> class="btn btn-main btn-lg">{{LANG join_now}}</a>
+		</div>
+	</div>
+</div>

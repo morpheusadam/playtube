@@ -1,0 +1,49 @@
+<div class="container-home">
+
+<h3 class="recent-articles heading_all_sections_top">
+	<span>
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                     <path fill-rule="evenodd" fill="currentColor" d="M12 3.75006C7.44365 3.75006 3.75 7.44371 3.75 12.0001C3.75 16.5564 7.44365 20.2501 12 20.2501C16.5563 20.2501 20.25 16.5564 20.25 12.0001C20.25 7.44371 16.5563 3.75006 12 3.75006ZM2.25 12.0001C2.25 6.61528 6.61522 2.25006 12 2.25006C17.3848 2.25006 21.75 6.61528 21.75 12.0001C21.75 17.3848 17.3848 21.7501 12 21.7501C6.61522 21.7501 2.25 17.3848 2.25 12.0001ZM8.24993 9.74353C8.24993 8.36646 9.36627 7.25012 10.7433 7.25012H11.25V6.50012C11.25 6.08591 11.5858 5.75012 12 5.75012C12.4142 5.75012 12.75 6.08591 12.75 6.50012V7.25012H12.9999C14.5187 7.25012 15.7499 8.48133 15.7499 10.0001C15.7499 10.4143 15.4141 10.7501 14.9999 10.7501C14.5857 10.7501 14.2499 10.4143 14.2499 10.0001C14.2499 9.30976 13.6903 8.75012 12.9999 8.75012H12.75V11.4596L14.045 11.8912C15.0632 12.2306 15.7499 13.1835 15.7499 14.2567C15.7499 15.6338 14.6336 16.7501 13.2565 16.7501H12.75V17.5001C12.75 17.9143 12.4142 18.2501 12 18.2501C11.5858 18.2501 11.25 17.9143 11.25 17.5001V16.7501H10.9999C9.48115 16.7501 8.24993 15.5189 8.24993 14.0001C8.24993 13.5859 8.58572 13.2501 8.99993 13.2501C9.41415 13.2501 9.74993 13.5859 9.74993 14.0001C9.74993 14.6905 10.3096 15.2501 10.9999 15.2501H11.25V12.5407L9.95486 12.109C8.93669 11.7696 8.24993 10.8168 8.24993 9.74353ZM11.25 10.9596V8.75012H10.7433C10.1947 8.75012 9.74993 9.19488 9.74993 9.74353C9.74993 10.1711 10.0235 10.5508 10.4292 10.686L11.25 10.9596ZM12.75 13.0407V15.2501H13.2565C13.8052 15.2501 14.2499 14.8053 14.2499 14.2567C14.2499 13.8291 13.9763 13.4495 13.5707 13.3143L12.75 13.0407Z"></path>
+                                  </svg>
+		<span>{{LANG purchased}}</span>
+	</span>
+	
+	<div class="right_section_top">
+	    <div class="width_right_section ">
+			<div class="tp_vid_fltr_tabs">
+				<ul class="list-unstyled">
+					<li <?php echo empty($_GET['type']) || $_GET['type'] == 'videos' ? 'class="selected"' : ''; ?>>
+						<a href="{{LINK paid-videos?type=videos}}" data-load="?link1=paid-videos&type=videos">{{LANG videos}}</a>
+					</li>
+					<?php if ($pt->config->movies_videos == 'on') { ?>
+					<li <?php echo !empty($_GET['type']) && $_GET['type'] == 'movies' ? 'class="selected"' : ''; ?>>
+						<a href="{{LINK paid-videos?type=movies}}" data-load="?link1=paid-videos&type=movies">{{LANG movies}}</a>
+					</li>
+					<li <?php echo !empty($_GET['type']) && $_GET['type'] == 'rented_movies' ? 'class="selected"' : ''; ?>>
+						<a href="{{LINK paid-videos?type=rented_movies}}" data-load="?link1=paid-videos&type=rented_movies">{{LANG rented_movies}}</a>
+					</li>
+					<?php } ?>
+					<li <?php echo !empty($_GET['type']) && $_GET['type'] == 'rented_videos' ? 'class="selected"' : ''; ?>>
+						<a href="{{LINK paid-videos?type=rented_videos}}" data-load="?link1=paid-videos&type=rented_videos">{{LANG rented_videos}}</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</h3>
+
+<div class="box_light_black">
+	<div class="col-md-12">
+      	<div class="videos-latest-list row">
+      		{{PAID_LIST}}
+      	</div>
+      	<?php if (count($pt->videos) > 0) { ?>
+            <div class="watch-video-show-more desc load-more" data-type="paid_videos" data-video-type="<?php echo($_GET['type']) ?>">
+                {{LANG show_more}}
+            </div>
+      	<?php } ?>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+</div>
+</div>

@@ -1,0 +1,126 @@
+<div class="container-fluid">
+    <div>
+        <h3>Mass Notifications</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Admin Panel</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Tools</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Mass Notifications</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- Vertical Layout -->
+    <div class="row">
+        <div class="col-lg-6 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Send Site Notifications To Users</h6>
+                    <div id="alert"></div>
+                    <form class="mass-settings" method="POST">
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                              <label class="form-label">URL <small>Link used when user clicks on the notification</small></label>
+                                <input type="text" id="url" name="url" class="form-control">
+                                
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                              <label class="form-label">Notification Text</label>
+                                <textarea name="description" id="description" class="form-control" cols="30" rows="5"></textarea>
+                                
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                              <label class="form-label" id="mailing-selected-users">Just Send To Those Users (If empty, notification will be sent to all users)<span></span></label>
+                                <input type="text" class="form-control" id="username" onkeydown="PT_GetNotifiedUsers(this.value)" autocomplete="off">
+                                
+                            </div>
+                        </div>
+                        <div class="notifications-users-list"></div>
+                        <input type="hidden" name="hash_id" value="">
+                        <input type="reset" class="hidden">
+                        <input type="text" name="notifc-users" class="hidden" id="notifc-users">
+                        <input type="reset" id="reset-notif-form" class="hidden">
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Send Notifications</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+        	<div class="notif-selected-users card hidden"></div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <!-- #END# Vertical Layout -->
+<script>
+jQuery(document).ready(function($) {
+
+      $('.mass-settings').ajaxForm({
+         url:'{{LINK aj/ap/mass_notifications}}',
+         type:"POST",
+         dataType:'json',
+         beforeSend: function() {
+           $('.mass-settings').find('button').text('Please wait..');
+         },
+         success: function(data) {
+           if (data['status'] == 200) {
+             $("#alert").html('<div class="alert alert-success">'+ data['message'] +'</div>');
+             $(".notifications-users-list").empty();
+             $(".notif-selected-users").empty();
+             $(".notif-selected-users").addClass('hidden');
+           } else if (data['status'] == 304) {
+             $("#alert").html('<div class="alert alert-danger">'+ data['message'] +'</div>');
+           } 
+           $('.mass-settings').find('button').text('Send Notifications');
+      }});
+   });
+
+  var notified_user_ids = [];
+
+   function PT_GetNotifiedUsers(self){
+
+      if (!self || $("#sendforall").is(':checked')) {
+         $(".notifications-users-list").empty();
+         return false;
+      }
+      $.ajax({
+         url:'{{LINK aj/ap/get_users}}',
+         type: 'POST',
+         data: {name: $('#username').val()},
+      })
+      .done(function(data) {
+         if (data.status == 200) {
+            $(".notifications-users-list").html(data.html);
+         }
+         else{
+            $(".notifications-users-list").empty();
+         }
+      })
+      .fail(function() {
+         console.log("error");
+      })  
+   }
+
+   function PT_AddNotifiedUser(user_id,self){
+      if (user_id && self && !PT_IsNotifiedUserExists(user_id)) {
+         notified_user_ids.push(user_id);
+         $(".notif-selected-users").append('<p id="'+user_id+'">'+$(self).find('span').text()+'</p>').removeClass('hidden');
+         $("#notifc-users").val(notified_user_ids.join());
+         $(self).remove();
+      }
+   }
+
+   function PT_IsNotifiedUserExists(user_id){
+      if (!user_id) {
+         return false;
+      }
+      return $(".notif-selected-users").find('p[id="'+user_id+'"]').length > 0;
+
+}
+</script>

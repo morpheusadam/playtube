@@ -1,0 +1,102 @@
+<tr id="list-{{AD_ID}}" data_selected="{{AD_ID}}">
+     <td><input type="checkbox" id="check-data-{{AD_ID}}" class="delete-checkbox filled-in"><label for="check-data-{{AD_ID}}"></label></td>
+     <td>
+          {{AD_ID}}
+     </td>
+     <td>
+          <a href="{{AD_URL}}">
+               {{AD_WEBSITE}}        
+          </a>
+     </td>
+     <td>
+		<a href="{{AD_URL}}">
+               {{AD_TITLE}}       
+          </a>
+	</td>
+	<td>
+		<a href="{{SETTINGS_LINK}}">
+               {{USER_NAME}}        
+          </a>
+	</td>
+     <td>
+          {{CURRENCY}}{{WALLET}}  
+     </td>
+     <td>
+          {{CURRENCY}}{{SPENT}}  
+     </td>
+	<td>
+		<time>
+               {{DATE}}        
+          </time>
+	</td>
+	<td>
+		<?php if ($pt->user_ad->placement == 1): ?>
+               Video Player
+          <?php else: ?>
+               SideBar
+          <?php endif; ?>
+	</td>
+	<td>
+		<?php if ($pt->user_ad->type == 1): ?>
+               {{RESULTS}} Clicks
+          <?php else: ?>
+               {{RESULTS}} Views
+          <?php endif; ?>
+	</td>
+	<td>
+		<button onclick="PT_ManageVRequests({{AD_ID}},this);" type="button" class="btn bg-info admn_table_btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" /></svg> View</button>
+		<button class="btn bg-danger admn_table_btn" data-id="{{AD_ID}}" onclick="DeleteUserAd('{{AD_ID}}','hide')"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" /></svg> Delete</button>
+	</td>
+</tr>
+<tr id="view_info_{{AD_ID}}" style="display: none;">
+     <td colspan="6">
+          <div class="row">
+             <div class="col-md-8">
+                 <div class="card">
+                     <div class="card-body">
+                         <div class="row">
+                              <?php if ($pt->user_ad->category == 'image') { ?>
+                             <div class="col-md-6">
+                              <a href="<?php echo(PT_GetMedia($pt->user_ad->media)) ?>" class="image-popup-gallery-item-{{AD_ID}}">
+                                       <div class="image-hover">
+                                           <img src="<?php echo(PT_GetMedia($pt->user_ad->media)) ?>" class="rounded" alt="image" style="width: 100%;min-height: 200px;max-height: 200px;">
+                                           <div class="image-hover-body rounded">
+                                               <div>
+                                                   <h4 class="mb-2">Image</h4>
+                                               </div>
+                                           </div>
+                                       </div>
+                                   </a>
+                             </div>
+                             <?php }else{ ?>
+                             <div class="col-md-12">
+                                   <video src="<?php echo(PT_GetMedia($pt->user_ad->media)) ?>" style="width: 100%;" controls></video>
+                             </div>
+                             <?php } ?>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </td>
+</tr>
+<?php if ($pt->user_ad->category == 'image') { ?>
+<script type="text/javascript">
+     $(document).ready(function() {
+          $('.image-popup-gallery-item-{{AD_ID}}').magnificPopup({
+             type: 'image',
+             gallery: {
+                 enabled: true
+             },
+             zoom: {
+                 enabled: true,
+                 duration: 300,
+                 easing: 'ease-in-out',
+                 opener: function(openerElement) {
+                     return openerElement.is('img') ? openerElement : openerElement.find('img');
+                 }
+             }
+         });
+     });
+</script>
+<?php } ?>

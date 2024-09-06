@@ -1,0 +1,10 @@
+<div class="content">
+	<div class="upload-head buy-pro">
+		<h4 class="empty_state"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-info"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="8"></line></svg>  <br> <?php if ($pt->config->upload_system_type == '1' && $pt->config->max_upload_free_users == 1) { ?>
+				{{LANG upgrade_account}} <br> <br><a href="{{LINK go_pro}}" data-load="?link1=go_pro">{{LANG go_pro}}</a>
+			<?php }else{ ?>
+				{{LANG _reached_max_limit}} (<?php echo pt_size_format($pt->max_upload_users_); ?>)<br> <br> {{LANG delete_some_videos}}
+			<?php } ?></h4>
+	</div>
+	<div class="clear"></div>
+</div>

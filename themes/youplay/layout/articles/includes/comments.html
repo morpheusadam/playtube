@@ -1,0 +1,46 @@
+<div class="main-comment article-comments" data-id="{{ID}}" id="comment-{{ID}}">
+	<div class="main-comment-data-sp">
+		<div class="user-avatar pull-left">
+			<img src="{{USER avatar}}" alt="{{USER name}}">
+		</div>
+		<?php if ($pt->is_comment_owner == true) { ?>
+		<div class="pull-right delete-comment" onclick="PT_DeleteComment({{ID}});">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+		</div>
+		<?php } ?>
+		<div class="user-name">
+			<a href="{{USER url}}" data-load="?link1=timeline&id={{USER username}}">{{USER name}}</a> 
+			<?php if ($pt->is_verified == true): ?>
+				<i class="fa fa-check-circle fa-fw verified"></i>
+			<?php endif; ?>
+			<small>{{TIME}}</small>
+		</div>
+		<div class="user-comment">
+			{{TEXT}}
+			<div class="width-100 div-vote-comment">
+				<span class="div-vote-comment-btn">
+					<span onclick="PT_LikeComments(this,'up','{{ID}}');" data-comment-likes="{{ID}}">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up {{LIKED}}"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> <span>{{LIKES}}</span>
+					</span>
+					<span onclick="PT_LikeComments(this,'down','{{ID}}');" data-comment-dislikes="{{ID}}">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down {{DIS_LIKED}}"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path></svg> <span>{{DIS_LIKES}}</span>
+					</span>
+				</span>
+				<span class="pointer comms-reply" onclick="PT_Reply('{{ID}}');">
+					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M3.75 12C3.75 7.44365 7.44365 3.75 12 3.75C16.5564 3.75 20.25 7.44365 20.25 12C20.25 16.5563 16.5564 20.25 12 20.25H4.38671C4.44208 20.1609 4.49371 20.0757 4.54156 19.9941C4.76667 19.6101 4.93921 19.254 5.02614 18.8789C5.08857 18.6096 5.10413 18.4986 5.11816 18.2225C5.13874 17.8173 5.03609 17.3357 4.88542 16.7855C4.73048 16.2197 4.49527 15.4841 4.19182 14.5351L4.18591 14.5166C3.92871 13.7122 3.75 12.8456 3.75 12ZM2.25 21C2.25 20.8424 2.29861 20.6962 2.38165 20.5755C2.77429 19.9865 3.05123 19.5703 3.24752 19.2355C3.44396 18.9004 3.52846 18.6974 3.56488 18.5402C3.59038 18.4302 3.59934 18.3841 3.60482 18.345C3.6103 18.3059 3.61436 18.2592 3.62009 18.1464C3.62723 18.0059 3.58952 17.7325 3.43869 17.1817C3.29313 16.6501 3.06774 15.9447 2.75717 14.9735C2.46937 14.0734 2.25 13.0472 2.25 12C2.25 6.61522 6.61522 2.25 12 2.25C17.3848 2.25 21.75 6.61522 21.75 12C21.75 17.3848 17.3848 21.75 12 21.75H3C2.58579 21.75 2.25 21.4142 2.25 21ZM8 13C8.55228 13 9 12.5523 9 12C9 11.4477 8.55228 11 8 11C7.44772 11 7 11.4477 7 12C7 12.5523 7.44772 13 8 13ZM13 12C13 12.5523 12.5523 13 12 13C11.4477 13 11 12.5523 11 12C11 11.4477 11.4477 11 12 11C12.5523 11 13 11.4477 13 12ZM16 13C16.5523 13 17 12.5523 17 12C17 11.4477 16.5523 11 16 11C15.4477 11 15 11.4477 15 12C15 12.5523 15.4477 13 16 13Z"/> </svg> {{LANG reply}}
+				</span>
+			</div>
+		</div>
+	</div>
+	<div style="width: 100%;overflow: hidden;">
+		<div class="pt-comment-replies user-comment" style="width: 100%;padding: 0 0 0 60px;">
+			<div class="pt-comment-item-replies-list" id="pt-comment-replies-cont-{{ID}}">
+				{{COMM_REPLIES}}
+			</div>
+			<div class="pt-comment-item-reply-form hidden" id="comm-reply-{{ID}}">
+				<input type="text" class="form-control" placeholder="{{LANG write_a_reply}}" onkeydown="PT_RPReply(this.value,'{{ID}}',event,'{{POST_ID}}');">
+			</div>      
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>

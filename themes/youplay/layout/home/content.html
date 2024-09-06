@@ -1,0 +1,383 @@
+<div class="pt_sec_nav_cats">
+	<div class="container-fluid">
+		<div class="swiper pt_sec_nav_slide_prnt">
+			<div <?php if ($pt->language_type == 'rtl') { ?>dir="rtl"<?php } ?> class="swiper-wrapper pt_sec_nav_slide">
+				<div class="swiper-slide"><a class="active" href="{{LINK }}" data-load="?link1=home">{{LANG all}}</a></div>
+				<?php foreach($pt->categories as $key => $category) {
+						if (1) { ?>
+					<div class="swiper-slide"><a class="" href="{{LINK videos/category/<?php echo $key?>}}" data-load="?link1=videos&page=category&id=<?php echo $key?>"><?php echo $category?></a></div>
+				<?php } }?>
+			</div>
+			<button class="swiper-button-next"></button>
+			<button class="swiper-button-prev"></button>
+		</div>
+	</div>
+</div>
+
+<div class="pt_feat_vid">
+	<div class="pt_feat_vid_innr">
+		<img src="{{THUMBNAIL}}">
+	</div>
+	<div class="pt_feat_vid_content">
+		<div class="container-home">
+			<div class="row">
+				<div class="col-lg-4">
+					<div class="home-page-categories">
+						<div class="title">
+							<h4><div style="background:#D84E82"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="19" height="19"><path fill="currentColor" d="M12 16a8 8 0 118-8 8.009 8.009 0 01-8 8zm0 2a9.938 9.938 0 01-6-2.019V21.5a2.5 2.5 0 004.062 1.952l1.626-1.3a.5.5 0 01.624 0l1.626 1.3A2.5 2.5 0 0018 21.5v-5.519A9.94 9.94 0 0112 18z"/></svg></div> {{LANG featured_video}}</h4>
+						</div>
+					</div>
+					<div class="pt_feat_vid_details">
+						<h1><a href="{{URL}}" data-load="?link1=watch&id={{VIDEO_ID_}}">{{TITLE}}</a></h1>
+						<p>{{TIME}}<span class="bold">·</span>{{CATEGORY}}<span class="bold">·</span>{{DURATION}}</p>
+						<a class="btn btn-main" href="{{URL}}" data-load="?link1=watch&id={{VIDEO_ID_}}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.43727 4.31806C9.45382 4.3287 9.47042 4.33937 9.48708 4.35008L17.7886 9.68675L17.8359 9.71716C18.3845 10.0698 18.8657 10.3791 19.2025 10.6736C19.5588 10.9852 19.9007 11.4052 19.9007 12C19.9007 12.5948 19.5588 13.0148 19.2025 13.3264C18.8657 13.6209 18.3845 13.9302 17.8359 14.2828L17.7886 14.3132L9.48708 19.6499L9.43728 19.6819C8.79999 20.0917 8.25128 20.4445 7.79529 20.6505C7.32513 20.8629 6.73881 21.0195 6.16142 20.7043C5.58404 20.3891 5.39875 19.8112 5.32319 19.3008C5.24991 18.8059 5.24995 18.1535 5.25 17.3959L5.25 17.3367V6.66332C5.25 6.64352 5.25 6.62378 5.25 6.60411C5.24995 5.84646 5.24991 5.19413 5.32319 4.69916C5.39875 4.1888 5.58404 3.61089 6.16142 3.29566C6.73881 2.98044 7.32513 3.13709 7.79529 3.34951C8.25128 3.55553 8.79998 3.90831 9.43727 4.31806ZM6.85489 4.61985C6.85442 4.61922 6.85822 4.61792 6.86767 4.61784C6.86008 4.62044 6.85536 4.62048 6.85489 4.61985ZM6.88369 4.61862C6.9243 4.62242 7.01255 4.64186 7.1777 4.71647C7.52004 4.87114 7.97457 5.16097 8.67595 5.61185L16.9774 10.9485C17.5876 11.3408 17.9723 11.5904 18.2151 11.8028C18.33 11.9033 18.3772 11.9656 18.3953 11.9961C18.3961 11.9975 18.3969 11.9988 18.3975 12C18.3969 12.0012 18.3961 12.0025 18.3953 12.0039C18.3772 12.0343 18.33 12.0967 18.2151 12.1972C17.9723 12.4096 17.5876 12.6592 16.9774 13.0515L8.67595 18.3881C7.97457 18.839 7.52004 19.1288 7.1777 19.2835C7.01255 19.3581 6.9243 19.3776 6.88369 19.3814C6.86493 19.3451 6.83356 19.2604 6.80701 19.0811C6.752 18.7095 6.75 18.1705 6.75 17.3367V6.66332C6.75 5.82952 6.752 5.29045 6.80701 4.91884C6.83356 4.73958 6.86493 4.65483 6.88369 4.61862ZM6.85489 19.3801C6.85536 19.3795 6.86008 19.3795 6.86767 19.3821C6.85822 19.3821 6.85442 19.3808 6.85489 19.3801ZM6.8917 19.3953C6.89799 19.4002 6.90058 19.4042 6.9003 19.4049C6.90002 19.4057 6.89688 19.4032 6.8917 19.3953ZM6.8917 4.60472C6.89688 4.59681 6.90002 4.59432 6.9003 4.59506C6.90058 4.59579 6.89799 4.59975 6.8917 4.60472Z" fill="currentColor"/></svg> {{LANG vid_play}}</a>
+					</div>
+				</div>
+				<div class="col-lg-3 col-lg-offset-5">
+					<div class="video-title">
+						<input type="hidden" value="{{ID}}" id="video-id">
+						<div class="publisher-element">
+							<div class="publisher-avatar pull-left">
+								<a href="{{USER url}}" data-load="?link1=timeline&id={{USER username}}"><img src="{{USER avatar}}" alt="{{USER name}}"></a>
+							</div>
+							<div class="publisher-name">
+								<a href="{{USER url}}" data-load="?link1=timeline&id={{USER username}}">{{USER name_v}}</a>
+								<div class="publisher-subscribe-button">{{SUBSCIBE_BUTTON}}</div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<hr>
+						<div class="video-big-title">
+							<a href="{{URL}}" data-load="?link1=watch&id={{VIDEO_ID_}}">{{TITLE}}</a>
+							<p>{{DESC}}</p>
+						</div>
+						<div class="clear"></div>
+						<div class="video-big-share">
+							<span class="btn pointer" data-toggle="modal" data-target="#share_box"><svg width="19" height="19" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M19.333 14.667a4.66 4.66 0 00-3.839 2.024l-6.509-2.939a4.574 4.574 0 00.005-3.488l6.5-2.954a4.66 4.66 0 10-.827-2.643 4.633 4.633 0 00.08.786l-6.91 3.14a4.668 4.668 0 10-.015 6.827l6.928 3.128a4.736 4.736 0 00-.079.785 4.667 4.667 0 104.666-4.666zm0-12.667a2.667 2.667 0 11-2.666 2.667A2.669 2.669 0 0119.333 2zM4.667 14.667A2.667 2.667 0 117.333 12a2.67 2.67 0 01-2.666 2.667zM19.333 22A2.667 2.667 0 1122 19.333 2.669 2.669 0 0119.333 22z"/></svg> {{LANG share}}</span>
+							<span><a onclick="window.open('https://www.facebook.com/sharer/sharer.php?u={{URL}}', 'newwindow', 'width=700,height=550'); return false;" href="https://www.facebook.com/sharer/sharer.php?u={{URL}}"><i class="fa fa-facebook"></i></a></span>
+							<span><a onclick="window.open('https://twitter.com/intent/tweet?url={{URL}}', 'newwindow', 'width=700,height=550'); return false;" href="https://twitter.com/intent/tweet?url={{URL}}"><i class="fa fa-twitter"></i></a></span>
+							<span><a onclick="window.open('https://www.linkedin.com/shareArticle?mini=true&url={{URL}}&title={{TITLE}}', 'newwindow', 'width=700,height=550'); return false;" href="https://www.linkedin.com/shareArticle?mini=true&url={{URL}}&title={{TITLE}}"><i class="fa fa-linkedin"></i></a></span>
+							<span><a onclick="window.open('https://pinterest.com/pin/create/button/?url={{URL}}&media={{THUMBNAIL}}', 'newwindow', 'width=700,height=550'); return false;" href="https://pinterest.com/pin/create/button/?url={{URL}}&media={{THUMBNAIL}}"><i class="fa fa-pinterest"></i></a></span>
+						</div>
+					</div>
+					<span class="headtoppoint"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade matdialog" id="share_box" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">{{LANG share}}</h4>
+			</div>
+			<div class="modal-body">
+				<div class="yp_copy_link">
+					<input id="copyLinkH" readonly="" tabindex="1" type="text" value="{{CONFIG site_url}}/v/{{SHORT_ID}}">
+					<button class="btn" onclick="copyLinkfnH();"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z" /></svg></button>
+				</div>
+				<div class="share-video">
+
+					<div><a href="#" class="fa fa-facebook" onclick="OpenShareWindow('https://www.facebook.com/sharer/sharer.php?u={{ENCODED_URL}}')"></a></div>
+					<div><a href="#" class="fa fa-twitter" onclick="OpenShareWindow('https://twitter.com/intent/tweet?url={{ENCODED_URL}}')"></a></div>
+					<div><a href="#" class="fa fa-google" onclick="OpenShareWindow('https://plus.google.com/share?url={{ENCODED_URL}}')"></a></div>
+					<div><a href="#" class="fa fa-linkedin" onclick="OpenShareWindow('https://www.linkedin.com/shareArticle?mini=true&url={{ENCODED_URL}}&title={{TITLE}}')"></a></div>
+					<div><a href="#" class="fa fa-pinterest" onclick="OpenShareWindow('https://pinterest.com/pin/create/button/?url={{ENCODED_URL}}&media={{THUMBNAIL}}')"></a></div>
+					<!--<div><a href="#" class="fa fa-tumblr" onclick="OpenShareWindow('http://www.tumblr.com/share/link?url={{ENCODED_URL}}')"></a></div>-->
+					<div><a href="#" class="fa fa-reddit" onclick="OpenShareWindow('http://www.reddit.com/submit?url={{ENCODED_URL}}')"></a></div>
+					<?php if (!empty($pt->config->wowonder_domain_uri) && $pt->config->wowonder_img) {?>
+						<div><a href="#" class="share-third" onclick="OpenShareWindow('{{CONFIG wowonder_domain_uri}}/sharer?url={{ENCODED_URL}}')"><img src="{{CONFIG wowonder_img}}" alt="share to "></a></div>
+					<?php } ?>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="matbtn btn btn-default" data-dismiss="modal">{{LANG close}}</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container-home">
+	<div class="video-player-page pt_home_top_m">
+		<div class="hide_trend">
+			<div class="content pt_shadow yp_trans">
+				<div class="home-page-categories">
+					<div class="title white">
+						<h4>
+							<div style="background:#2196F3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div> {{LANG trending}}
+							<span class="view_more_link"><a href="{{LINK videos/trending}}" data-load="?link1=videos&page=trending">{{LANG explore_more}} <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"></path></svg></a></span>
+						</h4>
+					</div>
+					<div class="videos">
+						<div class="row pt_four_videos_trend cus_slider">{{TRENDING_LIST}}</div>
+					</div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<hr class="dark_hr">
+		</div>
+		<?php if ($pt->config->shorts_system == 'on') { ?>
+			<div class="hide_top">
+				<div class="content pt_shadow yp_trans">
+					<div class="home-page-categories">
+						<div class="title short-title">
+							<h4>
+								<div style="background:blueviolet"><svg version="1.1" class="feather" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 168.071 168.071" xml:space="preserve"> <g> <g> <path opacity="0.5" style="fill: currentColor;" d="M154.932,91.819L42.473,27.483c-2.219-1.26-4.93-1.26-7.121-0.027 c-2.219,1.233-3.588,3.533-3.615,6.026L31.08,161.059c0,0,0,0,0,0.027c0,2.465,1.369,4.766,3.533,6.026 c1.123,0.63,2.355,0.959,3.615,0.959c1.205,0,2.438-0.301,3.533-0.931l113.116-63.214c2.219-1.26,3.588-3.533,3.588-6.053 c0,0,0,0,0-0.027C158.465,95.38,157.123,93.079,154.932,91.819z"></path> <g id="XMLID_15_"> <g> <path style="fill:currentColor;" d="M79.952,44.888L79.952,44.888c3.273-3.273,2.539-8.762-1.479-11.06l-7.288-4.171 c-2.75-1.572-6.212-1.109-8.452,1.128l0,0c-3.273,3.273-2.539,8.762,1.479,11.06l7.291,4.169 C74.25,47.589,77.712,47.126,79.952,44.888z"></path> <path style="fill:currentColor;" d="M133.459,65.285L99.103,45.631c-2.75-1.572-6.209-1.109-8.449,1.128l0,0 c-3.273,3.273-2.539,8.759,1.479,11.057l23.497,13.44L23.931,122.5l0.52-103.393l19.172,10.964 c2.722,1.558,6.152,1.098,8.367-1.12l0.104-0.104c3.24-3.24,2.514-8.674-1.463-10.95L21,0.948 c-2.219-1.26-4.93-1.26-7.121-0.027c-2.219,1.233-3.588,3.533-3.615,6.026L9.607,134.524c0,0,0,0,0,0.027 c0,2.465,1.369,4.766,3.533,6.026c1.123,0.63,2.355,0.959,3.615,0.959c1.205,0,2.438-0.301,3.533-0.931l113.116-63.214 c2.219-1.26,3.588-3.533,3.588-6.053c0,0,0,0,0-0.027C136.992,68.845,135.65,66.545,133.459,65.285z"></path> </g> </g> </g> </g></svg></div> {{LANG shorts}}
+								<span class="view_more_link"><a href="{{LINK shorts}}" data-load="?link1=shorts&id=">{{LANG explore_more}} <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"></path></svg></a></span>
+							</h4>
+						</div>
+						<div class="videos">
+							<div class="row pt_four_videos_top cus_story_slider">{{SHORTS_HTML}}</div>
+						</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<hr class="dark_hr">
+			</div>
+		<?php } ?>
+
+	<div class="hide_top">
+		<div class="content pt_shadow yp_trans">
+			<div class="home-page-categories">
+				<div class="title top-title">
+					<h4>
+						<div style="background:#673ab7"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bar-chart"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></div> {{LANG top_videos}}
+						<span class="view_more_link"><a href="{{LINK videos/top}}" data-load="?link1=videos&page=top">{{LANG explore_more}} <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"></path></svg></a></span>
+					</h4>
+				</div>
+				<div class="videos">
+					<div class="row pt_four_videos_top cus_slider">{{TOP_LIST}}</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<hr class="dark_hr">
+	</div>
+	<?php if ($pt->config->live_video == 1 && $pt->have_live) { ?>
+	<div class="hide_top">
+		<div class="content pt_shadow yp_trans">
+			<div class="home-page-categories">
+				<div class="title">
+					<h4>
+						<div style="background:#673ab7"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bar-chart"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></div> {{LANG live_videos}}
+						<span class="view_more_link"><a href="{{LINK videos/live}}" data-load="?link1=videos&page=live">{{LANG explore_more}} <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"></path></svg></a></span>
+					</h4>
+				</div>
+				<div class="videos">
+					<div class="row pt_four_videos_top cus_slider">{{LIVE_LIST}}</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<hr class="dark_hr">
+	</div>
+	<?php } ?>
+	<?php if ($pt->config->show_articles == 'on') { ?>
+	<div class="hide_top">
+		<div class="content pt_shadow yp_trans">
+			<div class="home-page-categories">
+				<div class="title">
+					<h4>
+						<div style="background:#673ab7"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bar-chart"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></div> {{LANG articles}}
+						<span class="view_more_link"><a href="{{LINK articles}}" data-load="?link1=articles">{{LANG explore_more}} <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"></path></svg></a></span>
+					</h4>
+				</div>
+				<div class="articles-content pt_homep_articls">
+					<div class="row">{{HTML_POSTS}}</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<hr class="dark_hr">
+	</div>
+	<?php } ?>
+
+    {{SUBSC_HTML}}
+
+	<div class="content pt_shadow yp_trans">
+		<div class="home-page-categories">
+			<div class="title">
+				<h4>
+					<div style="background:#e91e63"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-video"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg></div> {{LANG latest_videos}}
+					<span class="view_more_link"><a href="{{LINK videos/latest}}" data-load="?link1=videos&page=latest">{{LANG explore_more}} <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"></path></svg></a></span>
+				</h4>
+			</div>
+			<div class="videos">
+				<div class="row cus_slider">{{LATEST_LIST}}</div>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+
+	<hr class="dark_hr">
+
+    {{HOME_PAGE_VIDEOS}}
+</div>
+</div>
+
+<script>
+function copyLinkfnH() {
+  var copyText = document.getElementById("copyLinkH");
+  copyText.select();
+  document.execCommand("copy");
+};
+var swiper = new Swiper('.pt_sec_nav_slide_prnt', {
+	loop: false,
+	slidesPerView: "auto",
+
+	// Navigation arrows
+	navigation: {
+	    nextEl: '.swiper-button-next',
+	    prevEl: '.swiper-button-prev',
+	},
+});
+
+$(document).ready(function() {
+if( !$.trim( $('.pt_four_videos_trend').html() ).length ) {
+	$('.hide_trend').html("");
+	<?php if ($pt->config->shorts_system == 'on') { ?>
+		$('.short-title').addClass("white");
+	<?php } else { ?>
+		$('.top-title').addClass("white");
+	<?php } ?>
+};
+});
+
+$(document).ready(function() {
+if( !$.trim( $('.pt_four_videos_top').html() ).length ) {
+	$('.hide_top').html("");
+};
+});
+
+$(document).ready(function(){
+  $('.cus_slider').slick({
+  infinite: false,
+  slidesToShow: 5,
+  <?php if ($pt->language_type == 'rtl') { ?>rtl: true,<?php } ?>
+  slidesToScroll: 2,
+  responsive: [
+	{
+      breakpoint: 1360,
+      settings: {
+        slidesToShow: 4
+      }
+    },
+	{
+      breakpoint: 1251,
+      settings: {
+        slidesToShow: 5
+      }
+    },
+	{
+      breakpoint: 1127,
+      settings: {
+        slidesToShow: 4
+      }
+    },
+    {
+      breakpoint: 992,
+      settings: {
+        slidesToShow: 4
+      }
+    },
+	{
+      breakpoint: 910,
+      settings: {
+        slidesToShow: 3
+      }
+    },
+    {
+      breakpoint: 705,
+      settings: {
+        slidesToShow: 2
+      }
+    },
+	{
+      breakpoint: 530,
+      settings: {
+        arrows: false,
+		slidesToShow: 2,
+		waitForAnimate: false,
+      }
+    },
+    {
+      breakpoint: 485,
+      settings: {
+        arrows: false,
+		slidesToShow: 1,
+		slidesToScroll: 1,
+		waitForAnimate: false,
+      }
+    }
+  ]
+  });
+});
+
+<?php if ($pt->config->shorts_system == 'on') { ?>
+$(document).ready(function(){
+  $('.cus_story_slider').slick({
+  infinite: false,
+  slidesToShow: 6,
+  <?php if ($pt->language_type == 'rtl') { ?>rtl: true,<?php } ?>
+  slidesToScroll: 2,
+  responsive: [
+	{
+      breakpoint: 1360,
+      settings: {
+        slidesToShow: 4
+      }
+    },
+	{
+      breakpoint: 1251,
+      settings: {
+        slidesToShow: 5
+      }
+    },
+	{
+      breakpoint: 1127,
+      settings: {
+        slidesToShow: 4
+      }
+    },
+    {
+      breakpoint: 992,
+      settings: {
+        slidesToShow: 4
+      }
+    },
+	{
+      breakpoint: 910,
+      settings: {
+        slidesToShow: 3
+      }
+    },
+    {
+      breakpoint: 705,
+      settings: {
+        slidesToShow: 2
+      }
+    },
+	{
+      breakpoint: 530,
+      settings: {
+        arrows: false,
+		slidesToShow: 2,
+		waitForAnimate: false,
+      }
+    },
+    {
+      breakpoint: 485,
+      settings: {
+        arrows: false,
+		slidesToShow: 2,
+		slidesToScroll: 1,
+		waitForAnimate: false,
+      }
+    }
+  ]
+  });
+});
+<?php } ?>
+</script>

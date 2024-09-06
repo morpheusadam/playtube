@@ -1,0 +1,107 @@
+<tr id="list-{{ID}}" data_selected="{{ID}}">
+	<td><input type="checkbox" id="check-data-{{ID}}" class="delete-checkbox filled-in"><label for="check-data-{{ID}}"></label></td>
+	<td>
+		<span>
+			{{ID}}
+		</span>
+	</td>
+	<td>
+		<span>
+			{{USERNAME}}
+		</span>
+		<span class="pointer toggle-verification-request" onclick="ToggleVerfRequest('{{ID}}',this)">
+        	<i class="fa fa-caret-down" aria-hidden="true"></i>
+      	</span>
+	</td>
+	<td>
+		<address>
+        {{EMAIL}}
+		</address>
+	</td>
+	<td>
+		<strong>
+			{{AMOUNT}}: {{CURRENCY}}
+		</strong>
+	</td>
+	<td>
+		<time>
+			{{DATE}}
+		</time>
+	</td>
+	<td class="request-status">
+		<?php if ($pt->wal_requests->status == 0): ?>
+			<span class="badge badge-warning">
+				Pending
+			</span>
+		<?php elseif ($pt->wal_requests->status == 1):?>
+			<span class="badge badge-success">
+				Paid
+			</span>
+		<?php elseif ($pt->wal_requests->status == 2):?>
+			<span class="badge badge-danger">
+				Declined
+			</span>
+		<?php endif; ?>
+		
+	</td>
+	<td>
+      <button onclick="PT_ManageWRequests({{ID}},1);" type="button" class="btn bg-success admn_table_btn">Paid</button>
+      <button onclick="PT_ManageWRequests({{ID}},2);" type="button" class="btn bg-info admn_table_btn">Decline</button>
+      <button onclick="PT_ManageWRequests({{ID}},3,'hide');" type="button" class="btn bg-danger admn_table_btn">Delete</button>
+   	</td>
+</tr>
+<tr id="review-verif-request-info-{{ID}}" style="display: none;">
+   <td colspan="4">
+      <div class="row">
+           <div class="col-md-8">
+               <div class="card">
+                   <div class="card-body">
+                       <div class="row">
+                           <div class="col-md-6">
+                            <?php if ($pt->wal_requests->type == 'bank') { ?>
+                                <p>
+                                   <span class="badge bg-success-bright">Method Type</span>
+                                </p>
+                                <p>Bank</p>
+                                <p>
+                                   <span class="badge bg-success-bright text-success">IBAN</span>
+                               </p>
+                               <p><?php echo $pt->wal_requests->iban; ?></p>
+                               <p>
+                                   <span class="badge bg-info-bright text-info">Country</span>
+                               </p>
+                               <p><?php echo $pt->wal_requests->country; ?></p>
+                               <p>
+                                   <span class="badge bg-info-bright text-info">Full Name</span>
+                               </p>
+                               <p><?php echo $pt->wal_requests->full_name; ?></p>
+                               <p>
+                                   <span class="badge bg-info-bright text-info">Swift Code</span>
+                               </p>
+                               <p><?php echo $pt->wal_requests->swift_code; ?></p>
+                               <p>
+                                   <span class="badge bg-info-bright text-info">Address</span>
+                               </p>
+                               <p><?php echo $pt->wal_requests->address; ?></p>
+                            <?php }else{ ?>
+                                <p>
+                                   <span class="badge bg-success-bright">Method Type</span>
+                                </p>
+                                <?php if ($pt->wal_requests->type == 'custom') { ?>
+                                    <p><?php echo($pt->config->custom_name) ?></p>
+                                <?php }else{ ?>
+                                    <p><?php echo(ucfirst($pt->wal_requests->type)) ?></p>
+                                <?php } ?>
+                                <p>
+                                   <span class="badge bg-success-bright text-success">Information</span>
+                                </p>
+                                <p><?php echo $pt->wal_requests->transfer_info; ?></p>
+                            <?php } ?>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+      </div>
+   </td>
+</tr>

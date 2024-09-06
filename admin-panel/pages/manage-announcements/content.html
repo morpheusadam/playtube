@@ -1,0 +1,230 @@
+<div class="container-fluid">
+    <div>
+        <h3>Announcements</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Admin Panel</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Tools</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Announcements</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- Vertical Layout -->
+    <div class="row">
+        <div class="col-lg-4 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                	<h6 class="card-title">Manage Announcements</h6>
+                    <div class="announcement-alert"></div>
+                    <form class="add-announcement" method="POST">
+                    	<div class="form-group form-float">
+                            <div class="form-line">
+                                <textarea name="text" id="text" class="form-control" cols="23" rows="10"></textarea>
+                                <!-- <label class="form-label">Create New Announcement (HTML Allowed)</label> -->
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Create</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+		<div class="col-lg-4 col-md-6">
+			<div class="card">
+				<div class="card-body">
+					<h6 class="card-title">Active Announcements</h6>
+					<div class="active-announcements announcements">
+			            <?php 
+			              	$active_announcement_list = $db->where('active','1')->orderBy('id', 'DESC')->get(T_ANNOUNCEMENTS);
+			              	$table                    = T_ANNOUNCEMENT_VIEWS;
+
+						    foreach ($active_announcement_list as $announcement) {				        
+						        $announcement->time   = PT_Time_Elapsed_String($announcement->time);
+						        $announcement->views  = $db->where('announcement_id',$announcement->id)->getValue($table,"count(*)");
+
+						        echo  PT_LoadAdminPage("manage-announcements/active",array(
+						            'ANN_ID'    => $announcement->id,
+						            'ANN_VIEWS' => $announcement->views,
+						            'ANN_TEXT'  => PT_Decode($announcement->text),
+						            'ANN_TIME'  => $announcement->time,
+						        ));
+						    }
+						?>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-4 col-md-6">
+			<div class="card">
+				<div class="card-body">
+					<h6 class="card-title">Inactive Announcements</h6>
+					<div class="inactive-announcements announcements">
+						<?php 
+							$inactive_announcement_list = $db->where('active','0')->orderBy('id', 'DESC')->get(T_ANNOUNCEMENTS);
+
+							foreach ($inactive_announcement_list as $announcement) {
+								
+								$announcement->time     = PT_Time_Elapsed_String($announcement->time);
+								$announcement->views    = $db->where('announcement_id',$announcement->id)->getValue($table,"count(*)");
+
+								echo  PT_LoadAdminPage("manage-announcements/inactive",array(
+									'ANN_ID'    => $announcement->id,
+									'ANN_VIEWS' => $announcement->views,
+									'ANN_TEXT'  => PT_Decode($announcement->text),
+									'ANN_TIME'  => $announcement->time,
+								));
+							}
+						  ?>
+					</div>
+				</div>
+			</div>
+		</div>
+        <div class="clearfix"></div>
+    </div>
+    <!-- #END# Vertical Layout -->
+<script>
+
+	jQuery(document).ready(function($) {
+		tinymce.init({
+            selector: '#text',
+            relative_urls: false,
+            remove_script_host: false,
+            height:500,
+            toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link | preview fullpage | forecolor backcolor emoticons',
+            plugins: [
+                'advlist autolink link  lists charmap  preview hr anchor spellchecker',
+                'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+                'save table contextmenu directionality emoticons template paste textcolor'
+            ]
+        });
+		var form = $('form.add-announcement');
+		form.ajaxForm({
+		    url: '{{LINK aj/ap/add_announcement}}',
+		    type:"POST",
+		    dataType:"json",
+		    beforeSubmit: function(arr,form) {
+		    	if (tinymce.activeEditor.getContent().length < 10) {
+		    		$('.announcement-alert').html('<div class="alert alert-danger">Please check your details!</div>');
+		    		return false;
+		    	}
+
+		    	arr[0].value = tinymce.activeEditor.getContent()
+
+
+		      	form.find('button').attr('disabled', 'true');
+		    },
+		    success: function(data) {
+
+		      if (data.status == 200) {
+		      	$('.active-announcements').prepend(data.html);
+		      	form.find('textarea').val('');
+		      	form.find('textarea').text('');
+		      	$('.announcement-alert').empty();
+		      }
+
+		      form.find('button').removeAttr('disabled');
+		    }
+		});
+	});
+
+	function PT_ToggleAnnouncement(id){
+		if (!id) {
+			return false;
+		}
+
+		var announcement = $("div[data-announcement='"+id+"']");
+		if (announcement.attr('data-status') == 'active') {
+			announcement.appendTo('.inactive-announcements').attr('data-status','inactive').removeClass('alert-white').addClass('alert-danger');
+		}
+
+		else if(announcement.attr('data-status') == 'inactive'){
+			announcement.appendTo('.active-announcements').attr('data-status','active').removeClass('alert-danger').addClass('alert-white');
+		}
+
+		$.post('{{LINK aj/ap/toggle-announcement}}', {id:id}, function(data, textStatus, xhr) { /* pass */ });
+	}
+
+	function PT_DeleteAnnouncement(id){
+		if (!id) {
+			return false;
+		}
+
+		$.ajax({
+			url: '{{LINK aj/ap/delete-announcement}}',
+			type: 'POST',
+			dataType: 'json',
+			data: {id:id},
+		}).done(function(data) {
+			if (data.status == 200) {
+				$("div[data-announcement='"+id+"']").slideUp('fast',function(){
+					$(this).remove();
+				})
+			}
+		});
+	}
+
+</script>
+
+<style>
+	.alert-white{
+		border: 1px solid #f7931a !important;
+		color: #666;
+		background: #fff;
+		overflow: hidden;
+	}
+
+	.alert-white span{
+		float: right;
+	}
+
+	.announcements p {
+		color: #333;
+	}
+
+	.hide-an {
+		color: #555;
+		margin-left: 5px;
+		cursor: pointer;
+	}
+
+	.announcements-list p{
+		width: auto;
+		margin-bottom: 5px;
+	}
+
+	.announcements-list small{
+		padding: 5px 0;
+		font-size: 11px;
+		color: #9197a3;
+	}
+
+	.announcements-list span i{
+		vertical-align: middle;
+		font-size: 20px;
+		visibility: hidden;
+		color: #747474;
+		cursor: pointer;
+	}
+
+	.announcements-list span i:hover{
+		color: #333;	
+	}
+
+	.announcements-list:hover span i{
+		visibility: visible;
+	}
+
+	.inactive-announcement span{
+		float: right;
+		padding: 2px;
+		cursor: pointer;
+	}
+
+	.alert-danger.announcements-list *{
+		color: #fff !important;
+	}
+
+</style>

@@ -1,0 +1,126 @@
+<div class="row">
+	<div class="col-md-2"></div>
+	<div class="col-md-8">
+		<form action="" class="form-horizontal user-setting-panel create-post-form pt_shadow pt_forms" id="create_post_form" method="POST">
+			<div class="pt_page_headr">
+				<h4 class="page_head"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill-rule="evenodd" fill="currentColor" d="M20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20M5,13V15H16V13H5M5,9V11H19V9H5Z"></path></svg> {{LANG create_new_post}}</h4>
+			</div>
+
+			<div class="progress hidden">
+				<span class="percent">0%</span>
+				<div class="progress_bar_parent">
+					<div class="bar upload-progress-bar progress-bar active"></div> 
+				</div>
+				<div class="clear"></div>
+				<div class="text-center pt_prcs_vdo"></div>
+			</div>
+			<div class="row">
+				<div class="col-md-8">
+					<div class="form-group">
+						<label for="text">{{LANG write_message}}</label>  
+						<div>
+							<textarea name="text" id="text" cols="30" rows="8" class="form-control"></textarea>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label for="image">{{LANG image}}</label>  
+						<div>
+							<div class="upload-product-image pull-left" onclick="document.getElementById('image').click(); return false">
+								<div class="upload-image-content">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z" /></svg>
+								</div>
+							</div>
+							<input id="image" name="image" type="file" class="hidden" accept="image/*">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="last-sett-btn">
+				<button type="submit" id="submit-btn" class="btn btn-main setting-panel-mdbtn">{{LANG publish}}</button>
+			</div>
+		</form>
+	</div>
+	<div class="col-md-2"></div>
+</div>
+
+<script>
+$(document).ready(function() {
+	$("#image").on('change', function() {
+	//Get count of selected files
+	var product_countFiles = $(this)[0].files.length;
+	var product_imgPath = $(this)[0].value;
+	var extn = product_imgPath.substring(product_imgPath.lastIndexOf('.') + 1).toLowerCase();
+	var product_image_holder = $(".upload-image-content");
+	product_image_holder.empty();
+	if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+		if (typeof(FileReader) != "undefined") {
+		//loop for each file selected for uploaded.
+		for (var i = 0; i < product_countFiles; i++) 
+		{
+			var product_reader = new FileReader();
+			product_reader.onload = function(e) {
+				$("<img />", {
+                    "src": e.target.result,
+                    "class": "thumb-image"
+                  }).appendTo(product_image_holder);
+                }
+                product_image_holder.show();
+                product_reader.readAsDataURL($(this)[0].files[i]);
+              }
+            } else {
+              product_image_holder.html("<p>This browser does not support FileReader.</p>");
+            }
+         }
+	});
+});
+
+$(function () {
+	var bar         = $('.bar');
+    var percent     = $('.percent');
+    var prcsvdo      = $('.pt_prcs_vdo');
+
+	$('#create_post_form').ajaxForm({
+	    url: '{{LINK aj/post/create}}?hash=' + $('.main_session').val(),
+	    beforeSend: function() {
+	    	$('#submit-btn').attr('disabled', true);
+	    	$('#submit-btn').val("{{LANG please_wait}}");
+	    	$('.progress').removeClass('hidden');
+            var percentVal = '0%';
+            bar.width(percentVal);
+            percent.html(percentVal);
+	    },
+        uploadProgress: function(event, position, total, percentComplete) {
+             if(percentComplete > 50) {
+                percent.addClass('white');
+             }
+            var percentVal = percentComplete + '%';
+            bar.width(percentVal);
+            percent.html(percentVal);
+
+            if (percentComplete == 100) {
+               prcsvdo.html('<svg width="30" height="10" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg" fill="#000"><circle cx="15" cy="15" r="15"><animate attributeName="r" from="15" to="15" begin="0s" dur="0.8s" values="15;9;15" calcMode="linear" repeatCount="indefinite" /><animate attributeName="fill-opacity" from="1" to="1" begin="0s" dur="0.8s" values="1;.5;1" calcMode="linear" repeatCount="indefinite" /></circle><circle cx="60" cy="15" r="9" fill-opacity="0.3"><animate attributeName="r" from="9" to="9" begin="0s" dur="0.8s" values="9;15;9" calcMode="linear" repeatCount="indefinite" /><animate attributeName="fill-opacity" from="0.5" to="0.5" begin="0s" dur="0.8s" values=".5;1;.5" calcMode="linear" repeatCount="indefinite" /></circle><circle cx="105" cy="15" r="15"><animate attributeName="r" from="15" to="15" begin="0s" dur="0.8s" values="15;9;15" calcMode="linear" repeatCount="indefinite" /><animate attributeName="fill-opacity" from="1" to="1" begin="0s" dur="0.8s" values="1;.5;1" calcMode="linear" repeatCount="indefinite" /></circle></svg> {{LANG porcessing_image}}');
+               $('.progress').find('.bar').removeClass('upload-progress-bar');
+            }
+        },
+	    success: function(data) {
+	    	percentVal = '0%';
+            bar.width(percentVal);
+            $('.progress').addClass('hidden');
+	    	if (data.status == 200) {
+	    		Snackbar.show({text: "<div>{{LANG post_created}}</div>"});
+	    		setTimeout(function () {
+	    			window.location.href = data.link;
+	    		},3000)
+	    	} 
+	        else {
+	    		$('#submit-btn').attr('disabled', false);
+	    	    $('#submit-btn').val("{{LANG publish}}");
+				Snackbar.show({text: "<div>"+ data.message +"</div>"});
+	    	}
+	    }
+	});
+});
+
+</script>

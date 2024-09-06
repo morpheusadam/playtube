@@ -1,0 +1,140 @@
+<div class="row">
+	<div class="col-md-1"></div>
+	<div class="col-md-10">
+		<div class="content pt_shadow">
+			<div class="col-md-12">
+				<div class="upload-head">
+					<h4 class="edit-video-title"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M9.243 19H21v2H3v-4.243l9.9-9.9 4.242 4.244L9.242 19zm5.07-13.556l2.122-2.122a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414l-2.122 2.121-4.242-4.242z"/></svg> {{LANG create_new_article}}</h4>
+					<hr>
+				</div>
+				<div class="pt_forms_large_btns" id="upload-form">
+					<form action="" class="form-horizontal pt_forms" id="create_article_form" method="POST">
+						<div class="pp_mat_input">
+							<input id="title" name="title" type="text" placeholder=" ">
+							<label for="title">{{LANG title}}</label>
+						</div>
+						<div class="pp_mat_input">
+							<textarea name="description" id="description" cols="30" rows="5"></textarea>
+							<label for="description">{{LANG descritpion}}</label>
+						</div>
+						<div class="pp_mat_input">
+							<textarea name="text" id="text"></textarea>
+							<label for="text" style="z-index: 1;">{{LANG the_article}}</label>  
+						</div>
+						<div class="pp_mat_input">
+							<select class="selectpicker show-menu-arrow" name="category" id="category">
+								<option value="" disabled>{{LANG category}}</option>
+								<?php foreach($pt->categories as $key => $category) {?>
+									<option value="<?php echo $key?>"><?php echo $category?></option>
+								<?php } ?>
+							</select>
+						</div>
+						<div class="pp_mat_input">
+							<input id="mySingleFieldTags" name="tags" type="text" placeholder=" ">
+							<label for="tags">{{LANG tags}}</label>
+						</div>
+						<div class="pp_mat_input">
+							<div class="article_image_renderer" id="image-renderer" onclick="document.getElementById('thumbnail').click(); return false">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M21 15v3h3v2h-3v3h-2v-3h-3v-2h3v-3h2zm.008-12c.548 0 .992.445.992.993v9.349A5.99 5.99 0 0 0 20 13V5H4l.001 14 9.292-9.293a.999.999 0 0 1 1.32-.084l.093.085 3.546 3.55a6.003 6.003 0 0 0-3.91 7.743L2.992 21A.993.993 0 0 1 2 20.007V3.993A1 1 0 0 1 2.992 3h18.016zM8 7a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></svg> {{LANG browse_to_upload}} {{LANG thumbnail}}
+							</div>
+							<input id="thumbnail" name="image" type="file" class="hidden" accept="image/*">
+						</div>
+						<div class="progress hidden">
+							<span class="percent">0%</span>
+							<div class="progress_bar_parent">
+								<div class="bar upload-progress-bar progress-bar active"></div> 
+							</div>
+							<div class="clear"></div>
+							<div class="text-center pt_prcs_vdo"></div>
+						</div>
+						<div class="text-center">
+							<button type="submit" id="submit-btn" class="btn btn-main setting-panel-mdbtn"><svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-check-circle'><path d='M22 11.08V12a10 10 0 1 1-5.93-9.14'></path><polyline points='22 4 12 14.01 9 11.01'></polyline></svg> {{LANG publish}}</button>
+						</div>
+					</form>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<div class="col-md-1"></div>
+</div>
+
+<script src="{{CONFIG theme_url}}/js/tinymce/js/tinymce/tinymce.min.js"></script>
+<script>
+	tinymce.init({
+          selector: '#text',  // change this value according to your HTML
+          auto_focus: 'element1',
+          relative_urls: false,
+          remove_script_host: false,
+          height:500,
+		  <?php if ($pt->mode == 'night' || $pt->config->night_mode == 'night'): ?>
+			skin: "oxide-dark",
+			content_css: "dark",
+			<?php endif; ?>
+          toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image  uploadImages |  preview media fullpage | forecolor backcolor emoticons',
+          plugins: [
+              'advlist autolink link image  lists charmap  preview hr anchor pagebreak spellchecker',
+              'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+              'save table contextmenu directionality emoticons template paste textcolor'
+          ]
+        });
+$('.selectpicker').selectpicker({});
+
+$(document).ready(function() {
+	$("#thumbnail").on('change', function() {
+		$("#image-renderer").html("<img src='" + window.URL.createObjectURL(this.files[0]) + "' alt='Picture'>");
+	});
+});
+
+$(function () {
+	var bar         = $('.bar');
+    var percent     = $('.percent');
+    var prcsvdo      = $('.pt_prcs_vdo');
+	$("#mySingleFieldTags").tagit({
+		allowSpaces: true
+	});
+
+	$('#create_article_form').ajaxForm({
+	    url: '{{LINK aj/articles/new-article}}?hash=' + $('.main_session').val(),
+	    beforeSend: function() {
+	    	$('#submit-btn').attr('disabled', true);
+	    	$('#submit-btn').val("{{LANG please_wait}}");
+	    	$('.progress').removeClass('hidden');
+            var percentVal = '0%';
+            bar.width(percentVal);
+            percent.html(percentVal);
+	    },
+        uploadProgress: function(event, position, total, percentComplete) {
+             if(percentComplete > 50) {
+                percent.addClass('white');
+             }
+            var percentVal = percentComplete + '%';
+            bar.width(percentVal);
+            percent.html(percentVal);
+
+            if (percentComplete == 100) {
+               prcsvdo.html('<svg width="30" height="10" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg" fill="#000"><circle cx="15" cy="15" r="15"><animate attributeName="r" from="15" to="15" begin="0s" dur="0.8s" values="15;9;15" calcMode="linear" repeatCount="indefinite" /><animate attributeName="fill-opacity" from="1" to="1" begin="0s" dur="0.8s" values="1;.5;1" calcMode="linear" repeatCount="indefinite" /></circle><circle cx="60" cy="15" r="9" fill-opacity="0.3"><animate attributeName="r" from="9" to="9" begin="0s" dur="0.8s" values="9;15;9" calcMode="linear" repeatCount="indefinite" /><animate attributeName="fill-opacity" from="0.5" to="0.5" begin="0s" dur="0.8s" values=".5;1;.5" calcMode="linear" repeatCount="indefinite" /></circle><circle cx="105" cy="15" r="15"><animate attributeName="r" from="15" to="15" begin="0s" dur="0.8s" values="15;9;15" calcMode="linear" repeatCount="indefinite" /><animate attributeName="fill-opacity" from="1" to="1" begin="0s" dur="0.8s" values="1;.5;1" calcMode="linear" repeatCount="indefinite" /></circle></svg> {{LANG porcessing_image}}');
+               $('.progress').find('.bar').removeClass('upload-progress-bar');
+            }
+        },
+	    success: function(data) {
+	    	percentVal = '0%';
+            bar.width(percentVal);
+            $('.progress').addClass('hidden');
+	    	if (data.status == 200) {
+	    		Snackbar.show({text: "<div>{{LANG reviewed_article}}</div>"});
+	    		setTimeout(function () {
+	    			window.location.href = data.link;
+	    		},3000)
+	    	} 
+	        else {
+	    		$('#submit-btn').attr('disabled', false);
+	    	    $('#submit-btn').val("{{LANG publish}}");
+				Snackbar.show({text: "<div>"+ data.message +"</div>"});
+	    	}
+	    }
+	});
+});
+
+</script>

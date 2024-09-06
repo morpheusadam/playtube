@@ -1,0 +1,43 @@
+[
+    {
+        "name": "authorizenet/authorizenet",
+        "version": "2.0.2",
+        "version_normalized": "2.0.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/AuthorizeNet/sdk-php.git",
+            "reference": "a3e76f96f674d16e892f87c58bedb99dada4b067"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/AuthorizeNet/sdk-php/zipball/a3e76f96f674d16e892f87c58bedb99dada4b067",
+            "reference": "a3e76f96f674d16e892f87c58bedb99dada4b067",
+            "shasum": ""
+        },
+        "require": {
+            "ext-curl": "*",
+            "ext-json": "*",
+            "php": ">=5.6"
+        },
+        "time": "2021-03-31T18:22:14+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "lib"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "proprietary"
+        ],
+        "description": "Official PHP SDK for Authorize.Net",
+        "homepage": "http://developer.authorize.net",
+        "keywords": [
+            "authorize.net",
+            "authorizenet",
+            "ecommerce",
+            "payment"
+        ]
+    }
+]

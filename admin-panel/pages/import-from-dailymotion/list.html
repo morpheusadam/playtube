@@ -1,0 +1,22 @@
+<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 youtube-video" data-id="{{ID}}">
+    <div class="card">
+		<a class="admn-import-vdo-img" href="https://www.youtube.com/watch?v={{ID}}" target="_blank"><img src="{{THUMB}}" alt=""></a>
+        <div class="card-body">
+            <div class="admn-import-vdo-form">
+				<label>Title</label>
+				<input type="text" name="title" id="title" value="{{TITLE}}" class="form-control">
+			</div>
+			<div class="admn-import-vdo-form">
+				<label class="form-label search-form">Description</label>
+				<textarea name="description" id="description" cols="30" rows="3" class="form-control">{{DESC}}</textarea>
+			</div>
+            <input type="hidden" name="duration" value="{{DURATION}}" id="duration">
+            <input type="hidden" name="tags" value="{{TAGS}}" id="tags">
+            <input type="hidden" name="thumb" value="{{THUMB}}" id="thumb">
+			<div class="custom-control custom-checkbox import-checkbox-input">
+				<input type="checkbox" class="custom-control-input import-checkbox-input" id="check-video-{{ID}}" checked>
+				<label class="custom-control-label" for="check-video-{{ID}}">Import Video</label>
+			</div>
+        </div>
+    </div>
+</div>

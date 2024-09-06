@@ -1,0 +1,174 @@
+<style>
+.fixed-action-btn {display: none;}
+</style>
+
+<div class="page-margin pt_shadow">
+    <div class="row">
+        <div class="col-sm-4 mobilerightpane no-padding-right0">
+            {{SIDEBAR}}
+        </div>
+        <div class="col-sm-8 mobileleftpane no-padding-left0">
+			<ul class="pt_msg_main">
+				<div class="content pt_msg_header">
+					<h3 class="pull-left"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left mobilemsgclose"><polyline points="15 18 9 12 15 6"></polyline></svg> <?php echo (!empty($pt->chat_user->name)) ? "<a href='" . $pt->chat_user->url . "'>" . $pt->chat_user->name . "</a>" : "<a class='user-link'></a>";?></h3>
+					<?php echo (!empty($pt->chat_user->name)) ? '<div class="pull-right" id="delete-conversation" onclick="DeleteConversation()">{{LANG clear_chat}} <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></div>' : '';?>
+					<div class="clear"></div>
+					<div class="msg_grad_bg"></div>
+				</div>
+				<button id="load-more-messages" title="Load more messages"><i class="fa fa-angle-up"></i></button>
+				<div class="pt_msg_joint">
+					<div class="user-messages user-setting-panel pt_msg_area">
+						{{HTML}}
+					</div>
+					<div class="user-send-message">
+						<form action="#" method="POST" id="new-message-form" <?php if (empty($_GET['id'])) { ?> style="visibility: hidden;" <?php } ?>>
+							<textarea name="new-message" id="new-message" cols="30" rows="2" placeholder="{{LANG write_message}}"></textarea>
+							<button type="submit" id="send-button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
+							<input type="hidden" id="user-id" name="id" value="<?php echo $pt->chat_id; ?>">
+							<input type="hidden" id="user-avatar" value="<?php echo ($pt->chat_user->avatar) ? $pt->chat_user->avatar : "";?>">
+						</form>
+					</div>
+				</div>
+			</ul>
+        </div>
+        <div class="clear"></div>
+	</div>
+</div>
+<br>
+<script>
+$('.mobilemsgclose').on('click',function (){
+	$('.mobileleftpane').fadeOut(100);
+	$('.mobilerightpane').fadeIn(100);
+});
+var messagesInterval = <?php echo (!empty($pt->extra_config->ajax_message_update_interval)) ? $pt->extra_config->ajax_message_update_interval : 3000 ?>;
+
+$(function() {
+    window.UpdateChatU = setTimeout(function () {
+        fetchMessages();
+    }, messagesInterval);
+});
+
+function fetchMessages() {
+    clearTimeout(window.UpdateChatU);
+    $.post('{{LINK aj/messages/fetch}}', {id: $('#user-id').val(), last_id: $('.message:last').attr('data-id')}, function(data, textStatus, xhr) {
+        if (data.status == 200) {
+            if (data.message.length > 0) {
+                $('.messages').append(data.message);
+                 $('.user-messages').scrollTop($('.user-messages')[0].scrollHeight);
+            }
+            if ($('#search-list').val() == 0) {
+                $('.messages-sidebar .list-group').html(data.users);
+            }
+        }
+        window.UpdateChatU = setTimeout(function () {
+            fetchMessages();
+        }, messagesInterval);
+    });
+}
+$(document).on('click', '.messages-sidebar ul li', function(event) {
+    clearTimeout(window.UpdateChatU);
+    /* Act on the event */
+});
+$(document).on('click', '#load-more-messages', function(event) {
+  event.preventDefault();
+  $('#load-more-messages i').removeClass('fa-angle-up');
+  $('#load-more-messages i').addClass('fa-spinner fa-spin');
+  $.post('{{LINK aj/messages/fetch}}', {id: $('#user-id').val(), first_id: $('.message:first').attr('data-id')}, function(data, textStatus, xhr) {
+        $('#load-more-messages i').removeClass('fa-spinner fa-spin');
+        $('#load-more-messages i').addClass('fa-angle-up');
+        if (data.status == 200) {
+            if (data.message.length > 0) {
+                $('.messages').prepend(data.message);
+            } else {
+                $('#load-more-messages').animate({
+                    top: "-50",
+                }, 200, function() {
+                    $('#load-more-messages').hide();
+                    $('#load-more-messages').css('top', '60px');
+                });
+            }
+            $('.user-messages').scrollTop(0);
+        }
+        $('#load-more-messages i').removeClass('fa-spinner fa-spin');
+        $('#load-more-messages i').addClass('fa-angle-up');
+    });
+});
+
+function DeleteConversation() {
+    if (!confirm("{{LANG are_you_sure_you_want_delete_chat}}")) {
+        return false;
+    }
+    $(this).find('i').toggleClass('fa-trash fa-spinner fa-spin');
+    $.post('{{LINK aj/messages/delete_chat}}', {id: $('#user-id').val()}, function(data, textStatus, xhr) {
+        $('#delete-conversation').find('i').removeClass('fa-spinner fa-spin');
+        $('#delete-conversation').find('i').addClass('fa-trash');
+        $('.messages').empty();
+        location.href = "{{CONFIG site_url}}/messages";
+    });
+}
+
+$(function() {
+        
+        $('.user-messages').scrollTop($('.user-messages')[0].scrollHeight);
+        var $id = makeid();
+    	var form = $('form#new-message-form');
+
+        $('#search-list').on('keyup', function(event) {
+            $('#search-icon').toggleClass('fa-search fa-spinner fa-spin');
+            $.post('{{LINK aj/messages/search}}', {keyword: $(this).val()}, function(data, textStatus, xhr) {
+                $('#search-icon').toggleClass('fa-spinner fa-spin fa-search ');
+                if (data.status == 200) {
+                    $('.messages-sidebar .list-group').html(data.users);
+                }
+            });
+        });
+
+    	$('#new-message').on('keyup', function(event) {
+    		if (event.keyCode == 13 && !event.shiftKey) {
+                $id = makeid();
+                if ($(this).val().length > 1) {
+                    form.submit();
+                } else {
+                    $('#new-message').val('');
+                }
+    		}
+    	});
+
+        form.ajaxForm({
+            url: '{{LINK aj/messages/new}}?hash=' + $('.main_session').val(),
+            data: {message_id: $('#message_id').val()},
+            beforeSubmit: function(formData, jqForm, options) {
+                if ($('.messages').length == 0) {
+                    $('.user-messages').html('<div class="messages"></div>');
+                }
+                if ($('#new-message').val().length >= 1) {
+                    $id = makeid();
+                    formData.push({ name: 'message_id', value: $id });
+                    $('.messages').append('<div class="data_message" data-id="' + $id + '"><div class="message to-user pull-right" data-id=""><div class="user-message">' + nl2br(escapeHTML($('#new-message').val())) + '</div><div class="clear"></div></div><div class="clear"></div></div>');
+                    $('#new-message').val('');
+                    $('.user-messages').scrollTop($('.user-messages')[0].scrollHeight);
+                } else {
+                    $('#new-message').val('');
+                } 
+            },
+            success: function(data,rew,rr) {
+                if (data.status == 400) {
+                    $('.data_message[data-id="' + $id + '"]').remove();
+                    swal({
+                       title: '{{LANG error}}',
+                       text: data.message,
+                       type: 'error',
+                       confirmButtonColor: '#3085d6',
+                       cancelButtonColor: '#d33',
+                       confirmButtonText: 'OK',
+                       buttonsStyling: true,
+                       confirmButtonClass: 'btn btn-success',
+                    });
+                }
+                else{
+                    $('.data_message[data-id="' + data.message_id + '"]').html(data.message);
+                }
+            }
+        });
+    });
+</script>

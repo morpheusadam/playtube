@@ -1,0 +1,14 @@
+<div class="pt_page_headr">
+	<h4 class="page_head"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7,5H21V7H7V5M7,13V11H21V13H7M4,4.5A1.5,1.5 0 0,1 5.5,6A1.5,1.5 0 0,1 4,7.5A1.5,1.5 0 0,1 2.5,6A1.5,1.5 0 0,1 4,4.5M4,10.5A1.5,1.5 0 0,1 5.5,12A1.5,1.5 0 0,1 4,13.5A1.5,1.5 0 0,1 2.5,12A1.5,1.5 0 0,1 4,10.5M7,19V17H21V19H7M4,16.5A1.5,1.5 0 0,1 5.5,18A1.5,1.5 0 0,1 4,19.5A1.5,1.5 0 0,1 2.5,18A1.5,1.5 0 0,1 4,16.5Z" /></svg> {{LANG subscriptions}}</h4>
+</div>
+
+<div class="subscriptions-list">
+	<div class="author-list row pt_history pt_subscription">
+		{{SUBSCRIPTION_LIST}}
+	</div>
+
+	<?php if (is_array($pt->videos)) { if (count($pt->videos) > 5) { ?>
+		<div class="watch-video-show-more desc load-more" data-type="subscriptions">{{LANG show_more}}</div>
+	<?php }}?>
+</div>
+<div class="clear"></div>

@@ -1,0 +1,34 @@
+<tr data-card-list="{{ID}}">
+	<td width="15%">
+		{{ID}}
+	</td>
+	<td width="15%">
+		{{TYPE}}
+	</td>
+	<td width="25%">
+		<?php if (!empty($pt->card->ref_video)) { 
+			$ref_video = PT_GetVideoByID($pt->card->ref_video, 0, 1,2);
+			if (!empty($ref_video)) {
+		?>
+			<a href="<?php echo($ref_video->url) ?>" data-load="?link1=watch&id=<?php echo(PT_Slug($ref_video->title, $ref_video->video_id)) ?>"><?php echo $ref_video->title; ?></a>
+		<?php } } ?>
+	</td>
+	<td width="15%">
+		<?php if ($pt->card->part == 'top_left') { ?>
+			{{LANG top_left}}
+		<?php }elseif ($pt->card->part == 'top_right') { ?>
+			{{LANG top_right}}
+		<?php }elseif ($pt->card->part == 'bottom_left') { ?>
+			{{LANG bottom_left}}
+		<?php }elseif ($pt->card->part == 'bottom_right') { ?>
+			{{LANG bottom_right}}
+		<?php }elseif ($pt->card->part == 'center') { ?>
+			{{LANG center}}
+		<?php } ?>
+	</td>
+	<td width="15%">
+		<span class="action pointer" onclick="DeleteCard('{{ID}}');">
+			<i class="material-icons">delete</i>
+		</span>
+	</td>
+</tr>

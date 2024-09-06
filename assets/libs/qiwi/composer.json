@@ -1,0 +1,5 @@
+{
+    "require": {
+        "qiwi/bill-payments-php-sdk": "^0.2.2"
+    }
+}

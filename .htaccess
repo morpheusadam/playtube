@@ -1,0 +1,124 @@
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^$ index.php?link1=home [NC,QSA]
+RewriteRule ^reset-password/([^\/]+)(\/|)$ index.php?link1=reset-password&code=$1 [NC,QSA]
+RewriteRule ^confirm/(.*)/(.*)$ index.php?link1=confirm&code=$1&email=$2 [NC,QSA]
+RewriteRule ^finish/(.*)/(.*)$ index.php?link1=finish&code=$1&email=$2 [NC,QSA]
+RewriteRule ^two_factor_login/$ index.php?link1=two_factor_login [NC,QSA]
+RewriteRule ^two_factor_submit/$ index.php?link1=two_factor_submit [NC,QSA]
+
+RewriteRule ^v/(.*)$ index.php?v=$1 [NC,QSA]
+
+RewriteRule ^api/v(([0-9])([.][0-9]+))(\/|)$ api.php?v=$1 [QSA]
+
+
+RewriteRule ^admin-cp$ admincp.php [NC,QSA]
+RewriteRule ^admin-cp/(.*)$ admincp.php?page=$1 [NC,QSA]
+RewriteRule ^admin-cdn/(.*)$ admin-panel/$1 [L]
+
+
+RewriteRule ^videos/category/(.*)/rss(\/|)$ index.php?link1=videos&page=category&id=$1&feed=rss [NC,QSA]
+RewriteRule ^videos/category/(.*)/(.*)$ index.php?link1=videos&page=category&id=$1&sub_id=$2 [NC,QSA]
+RewriteRule ^videos/category/(.*)$ index.php?link1=videos&page=category&id=$1 [NC,QSA]
+RewriteRule ^videos/(.*)/rss(\/|)$ index.php?link1=videos&page=$1&feed=rss [NC,QSA]
+RewriteRule ^videos/(.*)$ index.php?link1=videos&page=$1 [NC,QSA]
+RewriteRule ^articles(\/|)$ index.php?link1=articles [NC,QSA]
+RewriteRule ^articles/category/(.*)(\/|)$ index.php?link1=articles&category_id=$1 [NC,QSA]
+RewriteRule ^articles/read/(.*)(\/|)$ index.php?link1=read&id=$1 [NC,QSA]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^aj/([^/.]+)/?$ ajax.php?type=$1&first=$2 [L,QSA]
+RewriteRule ^aj/([^/.]+)/([^/.]+)/?$ ajax.php?type=$1&first=$2 [L,QSA]
+RewriteRule ^aj/([^/.]+)/([^/.]+)/([^/.]+)/?$ ajax.php?type=$1&first=$2&second=$3 [L,QSA]
+RewriteRule ^edit-video/(.*)?$ index.php?link1=edit-video&id=$1 [L,QSA]
+RewriteRule ^watch/([^\/]+)(\/|)?$ index.php?link1=watch&id=$1 [L,QSA]
+RewriteRule ^watch/([^\/]+)/list/([^\/]+)(\/|)?$ index.php?link1=watch&id=$1&list=$2 [L,QSA]
+RewriteRule ^embed/(.*)?$ index.php?link1=embed&id=$1 [L,QSA]
+RewriteRule ^resend/(.*)/(.*)?$ index.php?link1=resend&id=$1&u_id=$2 [L,QSA]
+RewriteRule ^redirect/(.*)?$ index.php?link1=redirect&id=$1 [L,QSA]
+RewriteRule ^settings/(.*)/(.*)$ index.php?link1=settings&page=$1&user=$2 [NC,QSA]
+RewriteRule ^settings/(.*)$ index.php?link1=settings&page=$1 [NC,QSA]
+RewriteRule ^terms/([^\/]+)(\/|)$  index.php?link1=terms&type=$1 [QSA]
+RewriteRule ^go_pro(\/|)$  index.php?link1=go_pro [QSA]
+RewriteRule ^ads(\/|)$  index.php?link1=ads [QSA]
+RewriteRule ^ads/create(\/|)$  index.php?link1=create_ads [QSA]
+RewriteRule ^ads/edit/(\d+)(\/|)$  index.php?link1=edit_ads&id=$1 [QSA]
+RewriteRule ^ads/analytics/(\d+)(\/|)$  index.php?link1=ads_analytics&id=$1 [QSA]
+RewriteRule ^contact-us(\/|)$  index.php?link1=contact [QSA]
+RewriteRule ^@([^\/]+)(\/|)$  index.php?link1=timeline&id=$1 [QSA]
+RewriteRule ^messages/(.*)$ index.php?link1=messages&id=$1 [NC,QSA]
+RewriteRule ^view_analytics/(.*)$ index.php?link1=view_analytics&id=$1 [NC,QSA]
+RewriteRule ^video_studio/(.*)$ index.php?link1=video_studio [NC,QSA]
+RewriteRule ^comments/$ index.php?link1=comments [NC,QSA]
+RewriteRule ^dashboard/$ index.php?link1=dashboard [NC,QSA]
+RewriteRule ^popular_channels/$ index.php?link1=popular_channels [NC,QSA]
+RewriteRule ^create_article/$ index.php?link1=create_article [NC,QSA]
+RewriteRule ^my_articles/$ index.php?link1=my_articles [NC,QSA]
+RewriteRule ^edit_articles/(.*)?$ index.php?link1=edit_articles&id=$1 [NC,QSA]
+RewriteRule ^age_block/$ index.php?link1=age_block [NC,QSA]
+RewriteRule ^site-pages/(.*)$ index.php?link1=site-pages&page_name=$1 [NC,QSA]
+RewriteRule ^post/(.*)(\/|)$ index.php?link1=post&id=$1 [NC,QSA]
+RewriteRule ^edit_activity/(.*)(\/|)$ index.php?link1=edit_activity&id=$1 [NC,QSA]
+RewriteRule ^video_text/(.*)?$ index.php?link1=video_text&id=$1 [L,QSA]
+RewriteRule ^shorts$ index.php?link1=shorts&id=$1 [NC,QSA]
+RewriteRule ^shorts/(.*)?$ index.php?link1=shorts&id=$1 [L,QSA]
+RewriteRule ^wallet/$ index.php?link1=wallet [NC,QSA]
+RewriteRule ^upgraded/$ index.php?link1=upgraded [NC,QSA]
+RewriteRule ^developers/$ index.php?link1=developers [NC,QSA]
+RewriteRule ^my_apps/$ index.php?link1=my_apps [NC,QSA]
+RewriteRule ^create-app/$ index.php?link1=create-app [NC,QSA]
+RewriteRule ^app/(.*)?$ index.php?link1=app&id=$1 [L,QSA]
+RewriteRule ^hashtag/(.*)?$ index.php?link1=hashtag&id=$1 [L,QSA]
+
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^\/]+)(\/|)$  index.php?link1=$1 [QSA]
+
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html
+  AddOutputFilterByType DEFLATE text/css
+  AddOutputFilterByType DEFLATE text/javascript
+  AddOutputFilterByType DEFLATE text/xml
+  AddOutputFilterByType DEFLATE text/plain
+  AddOutputFilterByType DEFLATE image/x-icon
+  AddOutputFilterByType DEFLATE image/svg+xml
+  AddOutputFilterByType DEFLATE application/rss+xml
+  AddOutputFilterByType DEFLATE application/javascript
+  AddOutputFilterByType DEFLATE application/x-javascript
+  AddOutputFilterByType DEFLATE application/xml
+  AddOutputFilterByType DEFLATE application/xhtml+xml
+  AddOutputFilterByType DEFLATE application/x-font
+  AddOutputFilterByType DEFLATE application/x-font-truetype
+  AddOutputFilterByType DEFLATE application/x-font-ttf
+  AddOutputFilterByType DEFLATE application/x-font-otf
+  AddOutputFilterByType DEFLATE application/x-font-opentype
+  AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+  AddOutputFilterByType DEFLATE font/ttf
+  AddOutputFilterByType DEFLATE font/otf
+  AddOutputFilterByType DEFLATE font/opentype
+  BrowserMatch ^Mozilla/4 gzip-only-text/html
+  BrowserMatch ^Mozilla/4\.0[678] no-gzip
+  BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+</IfModule>
+<IfModule mod_security.c>
+  SecFilterScanPOST Off
+</IfModule>
+## EXPIRES CACHING ##
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType image/jpg "access plus 1 year"
+ExpiresByType image/jpeg "access plus 1 year"
+ExpiresByType image/gif "access plus 1 year"
+ExpiresByType image/png "access plus 1 year"
+ExpiresByType text/css "access plus 1 month"
+ExpiresByType application/pdf "access plus 1 month"
+ExpiresByType text/x-javascript "access plus 1 month"
+ExpiresByType application/x-shockwave-flash "access plus 1 month"
+ExpiresByType image/x-icon "access plus 1 year"
+ExpiresDefault "access plus 190 days"
+</IfModule>
+## EXPIRES CACHING ##

@@ -1,0 +1,134 @@
+<div class="container-home">
+	<h3 class="recent-articles heading_all_sections_top">
+		<span>
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM11 11H7V13H11V17H13V13H17V11H13V7H11V11Z" fill="currentColor"></path></svg>
+			<span>{{LANG create_app}}</span>
+		</span>
+	</h3>
+	
+
+			<div class="upload_video_bg_color">
+				<div class="progress hidden">
+		            <span class="percent">0%</span>
+		            <div class="progress_bar_parent">
+		                <div class="bar upload-progress-bar progress-bar active"></div> 
+		            </div>
+		            <div class="clear"></div>
+		            <div class="text-center pt_prcs_vdo"></div>
+		        </div>
+				<form action="" class="step_2_form user-app-form" method="POST">
+					<div class="user-app-alert"></div>
+					<div class="form-group">
+						<label for="app_name">{{LANG name}}</label>  
+							<input id="app_name" name="app_name" type="text" placeholder="" class="form-control input-md">
+					</div>
+					<div class="form-group">
+						<label for="app_website_url">{{LANG domain}}</label>  
+							<input id="app_website_url" name="app_website_url" type="text" placeholder="" class="form-control input-md">
+					</div>
+					<div class="form-group">
+						<label for="app_callback_url">{{LANG redirect_uri}}</label>  
+							<input id="app_callback_url" name="app_callback_url" type="text" placeholder="" class="form-control input-md">
+					</div>
+					<div class="form-group">
+						<label for="app_description">{{LANG descritpion}}</label>  
+							<textarea name="app_description" id="app_description" cols="30" rows="5" class="form-control"></textarea>
+					</div>
+					<div class="">
+						<div><label for="app-media">{{LANG thumbnail}}</label> <span class="help-block">jpg, png, gif</span> </div>
+						
+						<div class="media_custom_css mt-15" onclick="document.getElementById('app-media').click(); return false">
+							<img src="{{CONFIG theme_url}}/img/upload_image.png">
+							<span>{{LANG select_media}}</span>
+						</div>
+						
+						<div class="blog" id="productimage-holder"></div>
+						
+							<input id="app-media" name="app_avatar" type="file" class="hidden" accept="image/*">
+
+					</div>
+					<div class="">
+						<button type="submit" id="submit-btn" class="btn btn-main upload_custom_new">{{LANG publish}}</button>
+					</div>
+				</form>
+			</div>
+			<div class="clear"></div>
+
+
+</div>
+<div class="col-md-2"></div>
+<script>
+
+    var _Delay = (function(){
+        var timer = 0;
+        return function(callback, ms){
+            clearTimeout (timer);
+            timer = setTimeout(callback, ms);
+        };
+    })();
+
+    function scrollToTop() {
+        verticalOffset = typeof (verticalOffset) != 'undefined' ? verticalOffset : 0;
+        element = $('html');
+        offset = element.offset();
+        offsetTop = offset.top;
+        $('html, body').animate({
+            scrollTop: offsetTop
+        }, 300, 'linear');
+    }
+
+  var bar         = $('.bar');
+  var percent     = $('.percent');
+
+	jQuery(document).ready(function($) {
+		$("#app-media").on('change', function() {
+			$("#productimage-holder").html("<img src='" + window.URL.createObjectURL(this.files[0]) + "' alt='Picture' class='thumb-image'>");
+	  });
+
+    $('.user-app-form').ajaxForm({
+      url: '{{LINK aj/developers/create}}?hash=' + $('.main_session').val(),
+      dataType:"json",
+      beforeSend: function() {
+        if ($("#app-media").val()) {
+          $(".user-app-alert").html($('.progress').clone(true).addClass('progress-clone').removeClass('hidden'));
+          bar     = $('.progress-clone').find('.bar');
+          percent = $('.progress-clone').find('.percent');
+        }
+
+        $('#submit-btn').attr('disabled', true).text("{{LANG please_wait}}");
+        
+      },
+      uploadProgress: function(event, position, total, percentComplete) {
+          if(percentComplete > 50) {
+            percent.addClass('white');
+          }
+          var percentVal = percentComplete + '%';
+          bar.width(percentVal);
+          percent.html(percentVal);
+
+          if (percentComplete == 100) {
+            $(".user-app-alert").empty();
+          }
+      },
+      success: function(data) {
+        scrollToTop();
+        $('#submit-btn').removeAttr('disabled').text('{{LANG publish}}');
+        if (data.status == 200){
+          $(".user-app-alert").html('<div class="alert alert-success bg-success"><i class="fa fa-check"></i> '+
+            data.message
+            +'</div>');
+            _Delay(function(){
+            window.location.href = data.url;
+          },2000);
+          
+        }
+        else {
+          $('#submit-btn').removeAttr('disabled').text('{{LANG publish}}');
+          $(".user-app-alert").html('<div class="alert alert-danger bg-danger"><i class="fa fa-info-circle"></i> '+
+            data.message
+            +'</div>');
+        }
+      }
+    });
+	});
+</script>

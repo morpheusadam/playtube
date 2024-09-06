@@ -1,0 +1,52 @@
+<form class="form-horizontal user-setting-panel pt_forms pt_shadow" id="delete-settings" method="POST">
+	<div class="yp_sett_header">
+		<h4>{{LANG delete_account}}</h4>
+	</div>
+	<div class="setting-delete-alert"></div>
+	<!-- password input-->
+	<div class="form-group">
+		<label class="col-md-12" for="current_password">{{LANG current_password}}</label>
+		<div class="col-md-12">
+			<input id="current_password" name="current_password" type="password" placeholder="" class="form-control input-md">
+		</div>
+	</div>
+	<input type="hidden" name="hash_id" value="<?php echo PT_CreateSession()?>">
+	<input type="hidden" name="user_id" value="{{USER id}}">
+    <hr>  
+	<!-- Button (Double) -->
+	<div class="col-md-12">
+		<button id="submit" name="submit" class="btn btn-main setting-panel-mdbtn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> {{LANG delete}}</button>
+	</div>
+    <div class="clear"></div>
+</form>
+
+<script>
+    $(function() {
+        var form = $('form#delete-settings');
+        form.ajaxForm({
+            url: '{{LINK aj/user/delete}}?hash=' + $('.main_session').val(),
+            beforeSend: function() {
+                form.find('button').text("{{LANG please_wait}}");
+                // FL_progressIconLoader(form.find('button'));
+            },
+            success: function(data) {
+                scrollToTop();
+                if (data.status == 200) {
+                    $('.setting-delete-alert').html('<div class="alert alert-success">' + data.message + '</div>');
+                    $('.alert-success').fadeIn('fast', function() {
+                        $(this).delay(2500).slideUp(500, function() {
+                            $(this).remove();
+                        });
+                    });
+                    window.location.href = data.url;
+                } else if (data.errors) {
+                    var errors = data.errors.join("<br>");
+                    $('.setting-delete-alert').html('<div class="alert alert-danger">' + errors + '</div>');
+                    $('.alert-danger').fadeIn(300);
+                }
+                form.find('button').html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> {{LANG delete}}');
+                // FL_progressIconLoader(form.find('button'));
+            }
+        });
+    });
+</script>

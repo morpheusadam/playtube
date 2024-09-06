@@ -1,0 +1,17 @@
+<div class="video-wrapper side-barlist-wrapper" data-litsitem-id="{{ID}}" data-video-id="{{VID_ID}}" title="{{TITLE}}"> 
+   <div class="vid-number-cont">
+     <span>{{VID_NUMBER}}</span>
+   </div>
+   <div class="video-thumb pull-left">  
+      <a href="{{URL}}" data-load="?link1=watch&id={{VIDEO_ID_}}&list={{LIST_ID}}"><img src="{{THUMBNAIL}}" alt="{{TITLE}}"></a>
+   </div>
+   <div class="video-title">
+      <a href="{{URL}}" data-load="?link1=watch&id={{VIDEO_ID_}}&list={{LIST_ID}}">{{TITLE}}</a>
+   </div>
+   <?php if ($pt->list_owner): ?>
+      <span class="pull-right ptrm-vid-renderer" onclick="PT_DelFromList('{{LIST_ID}}','{{VID_ID}}');">
+         <i class="fa fa-times"></i>
+      </span>
+   <?php endif; ?>
+   <div class="clear"></div>
+</div>

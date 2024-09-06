@@ -1,0 +1,158 @@
+<?php 
+
+$paypal_live    = ($pt->config->paypal_mode == 'live') ? 'checked' :'';
+$paypal_sb      = ($pt->config->paypal_mode == 'sandbox') ? 'checked' :'';
+
+$paypal_cur_usd = ($pt->config->payment_currency == 'USD') ? 'checked' :'';
+$paypal_cur_eur = ($pt->config->payment_currency == 'EUR') ? 'checked' :'';
+
+
+
+?>
+
+<div class="container-fluid">
+    <div class="block-header">
+        <h2>Settings > Payment Settings</h2>
+    </div>
+    <!-- Vertical Layout -->
+    <div class="row">
+        <div class="col-lg-8 col-md-8 ">
+            <div class="card">
+                <div class="header">
+                    <h2 class="pull-left">Payment System Settings</h2>
+                    <button class="btn btn-danger pull-right" onclick="PT_RemoveSubscriptions('expired',this);">Cancel Expired Subscriptions</button>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="body">
+                    <div class="alert alert-success payment-settings-alert"></div>
+                    <form class="payment-settings" method="POST">
+                        <label for="go_pro">Pro system</label>
+                        <div class="form-group">
+                            <input type="radio" name="go_pro" id="go_pro-enabled" value="on" <?php echo ($pt->config->go_pro == 'on') ? 'checked': '';?>>
+                            <label for="go_pro-enabled">Enabled</label>
+                            <input type="radio" name="go_pro" id="go_pro-disabled" value="off" <?php echo ($pt->config->go_pro == 'off') ? 'checked': '';?>>
+                            <label for="go_pro-disabled" class="m-l-20">Disabled</label>
+                        </div>
+                        <label for="go_pro">Advertisement</label>
+                        <div class="form-group">
+                            <input type="radio" name="user_ads" id="user_ads-enabled" value="on" <?php echo ($pt->config->user_ads == 'on') ? 'checked': '';?>>
+                            <label for="user_ads-enabled">Enabled</label>
+                            <input type="radio" name="user_ads" id="user_ads-disabled" value="off" <?php echo ($pt->config->user_ads == 'off') ? 'checked': '';?>>
+                            <label for="user_ads-disabled" class="m-l-20">Disabled</label>
+                        </div>
+                        <label for="usr_v_mon">Video Monetization</label>
+                        <div class="form-group">
+                            <input type="radio" name="usr_v_mon" id="usr_v_mon-enabled" value="on" <?php echo ($pt->config->usr_v_mon == 'on') ? 'checked': '';?>>
+                            <label for="usr_v_mon-enabled">Enabled</label>
+                            <input type="radio" name="usr_v_mon" id="usr_v_mon-disabled" value="off" <?php echo ($pt->config->usr_v_mon == 'off') ? 'checked': '';?>>
+                            <label for="usr_v_mon-disabled" class="m-l-20">Disabled</label>
+                        </div>
+                        <label for="paypal_mode">Payment Currency</label>
+                        <div class="form-group">
+                            <input type="radio" name="payment_currency" id="payment_currency-enabled" value="USD" <?php echo  $paypal_cur_usd;?>>
+                            <label for="payment_currency-enabled">USD</label>
+                            <input type="radio" name="payment_currency" id="payment_currency-disabled" value="EUR" <?php echo $paypal_cur_eur; ?>>
+                            <label for="payment_currency-disabled" class="m-l-20">EUR</label>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="number" id="pro_pkg_price" name="pro_pkg_price" class="form-control" value="{{CONFIG pro_pkg_price}}">
+                                <label class="form-label">Pro Package Price</label>
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="number" name="ad_v_price" class="form-control" value="{{CONFIG ad_v_price}}">
+                                <label class="form-label">Cost ad by per view</label>
+                            </div>
+                           
+                        </div>
+                        <div class="form-group form-float">
+                             <div class="form-line">
+                                <input type="number" name="ad_c_price" class="form-control" value="{{CONFIG ad_c_price}}">
+                                <label class="form-label">Cost ad by per click</label>
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                             <div class="form-line">
+                                <input type="number" name="ad_c_price" class="form-control" value="{{CONFIG pub_price}}">
+                                <label class="form-label">Ads publisher price</label>
+                            </div>
+                        </div>
+                        <label for="paypal_mode">PayPal Mode</label>
+                        <div class="form-group">
+                            <input type="radio" name="paypal_mode" id="paypal_mode-enabled" value="live" <?php echo  $paypal_live;?>>
+                            <label for="paypal_mode-enabled">Live</label>
+                            <input type="radio" name="paypal_mode" id="paypal_mode-disabled" value="sandbox" <?php echo $paypal_sb; ?>>
+                            <label for="paypal_mode-disabled" class="m-l-20">SandBox</label>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line focused">
+                                <input type="text" id="paypal_id" name="paypal_id" class="form-control" value="{{CONFIG paypal_id}}">
+                                <label class="form-label">PayPal Clinet ID</label>
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line focused">
+                                <input type="text" id="paypal_secret" name="paypal_secret" class="form-control" value="{{CONFIG paypal_secret}}">
+                                <label class="form-label">PayPal Secret Key</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+    <!-- #END# Vertical Layout -->
+<script>
+
+
+function PT_RemoveSubscriptions(type,self){
+    if (!type || type != 'expired' || !self){
+        return false;
+    }
+
+    else if(type == 'expired'){
+        $(self).text("{{LANG please_wait}}").attr('disabled', 'true');
+        $.ajax({
+            url: '{{LINK aj/ap/remove_expired}}',
+            type: 'GET',
+            dataType: 'json'
+        })
+        .done(function() {
+            $('.payment-settings-alert').html('<i class="fa fa-check"></i> Expired Subscriptions was deleted successfully!');
+            setTimeout(function () {
+                $('.payment-settings-alert').empty();
+            }, 2000);
+            $(self).text('Cancel Expired Subscriptions').removeAttr('disabled');
+        })
+        .fail(function() {
+            console.log("error");
+        })
+    }
+}
+
+$(function() {
+    var form_payment_settings = $('form.payment-settings');
+
+    form_payment_settings.ajaxForm({
+        url: '{{LINK aj/ap/save-settings}}',
+        beforeSend: function() {
+            form_payment_settings.find('button').text("{{LANG please_wait}}");
+        },
+        success: function(data) {
+            if (data.status == 200) {
+            	form_payment_settings.find('button').text('Save');
+            	$('.payment-settings-alert').html('<i class="fa fa-check"></i> Settings updated successfully');
+            	setTimeout(function () {
+            		$('.payment-settings-alert').empty();
+            	}, 2000);
+            }
+        }
+    });
+});
+</script>

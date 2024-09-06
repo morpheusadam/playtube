@@ -1,0 +1,213 @@
+<style>
+.fixed-action-btn {display: none;}
+</style>
+<div class="page-margin pt_shadow">
+    <div class="row">
+        <div class="col-md-4 mobilerightpane ">
+            {{SIDEBAR}}
+        </div>
+        <div class="col-md-8 mobileleftpane no-padding-left">
+			<ul class="pt_msg_main">
+				<div class="settings-header pt_msg_header">
+					<h3 class="pull-left">
+
+                       
+
+                        <div class="chat_section">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left mobilemsgclose"><polyline points="15 18 9 12 15 6"></polyline></svg>
+							
+                             <?php if (!empty($pt->chat_user->name)){ ?>
+                            <div class="chat_left_setcion">
+                               <img src="<?php echo $pt->chat_user->avatar;?>">
+                            </div>
+                            <?php } ?>
+                            <div class="chat_right_section">
+                                <div class="text_online">
+                                <?php echo (!empty($pt->chat_user->name)) ? "<a style='color: #fff;' href='" . $pt->chat_user->url . "'>" . $pt->chat_user->name . "</a>" : "<a style='color: #fff;' class='user-link'></a>";?>
+                                <?php if (!empty($pt->chat_user->name)){ ?>
+                                <span class="chat_last_online">last seen 2 hours</span>
+                                <?php } ?>
+                                </div>
+                            </div>
+                        </div>
+
+                    </h3>
+
+					<?php echo (!empty($pt->chat_user->name)) ? '<div class="pull-right" id="delete-conversation" onclick="DeleteConversation()">
+                    
+                    <svg width="15" height="17" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4.71875 1.0625C4.875 0.71875 5.21875 0.5 5.59375 0.5H9.375C9.75 0.5 10.0938 0.71875 10.25 1.0625L10.5 1.5H13.5C14.0312 1.5 14.5 1.96875 14.5 2.5C14.5 3.0625 14.0312 3.5 13.5 3.5H1.5C0.9375 3.5 0.5 3.0625 0.5 2.5C0.5 1.96875 0.9375 1.5 1.5 1.5H4.5L4.71875 1.0625ZM12.8125 15.0938C12.7812 15.9062 12.125 16.5 11.3125 16.5H3.65625C2.84375 16.5 2.1875 15.9062 2.15625 15.0938L1.46875 4.5H13.5L12.8125 15.0938Z" fill="currentColor"/>
+                    </svg>
+                    </div>' : '';?>
+				</div>
+				<button id="load-more-messages" title="Load more messages"><i class="fa fa-angle-up"></i></button>
+				<div class="pt_msg_joint">
+					<div class="user-messages user-setting-panel pt_msg_area">
+						{{HTML}}
+					</div>
+					<div class="user-send-message">
+						<form action="#" method="POST" id="new-message-form" <?php if (empty($_GET['id'])) { ?> style="visibility: hidden;" <?php } ?>>
+							<textarea name="new-message" id="new-message" cols="30" rows="2" placeholder="{{LANG write_message}}"></textarea>
+                            <span class="line_search_send">
+                            </span>
+							<button type="submit" id="send-button">
+                                <svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12.9766 6C12.9766 6.28125 12.7891 6.5625 12.5078 6.67969L2.03125 11.2031C1.9375 11.25 1.84375 11.25 1.75 11.25C1.53906 11.25 1.32812 11.1797 1.1875 11.0156C0.976562 10.8047 0.929688 10.4531 1.07031 10.1719L2.80469 6.72656L8.47656 6.02344L2.80469 5.29688L1.07031 1.85156C0.929688 1.57031 0.976562 1.21875 1.1875 1.00781C1.39844 0.773438 1.75 0.703125 2.03125 0.820312L12.5312 5.32031C12.8125 5.4375 12.9766 5.71875 12.9766 6Z" fill="currentColor"/>
+                                </svg>
+
+                            </button>
+							<input type="hidden" id="user-id" name="id" value="<?php echo $pt->chat_id; ?>">
+							<input type="hidden" id="user-avatar" value="<?php echo ($pt->chat_user->avatar) ? $pt->chat_user->avatar : "";?>">
+						</form>
+					</div>
+				</div>
+			</ul>
+        </div>
+        <div class="clear"></div>
+	</div>
+</div>
+<br>
+<script>
+$('.mobilemsgclose').on('click',function (){
+	$('.mobileleftpane').fadeOut(100);
+	$('.mobilerightpane').fadeIn(100);
+});
+      
+var messagesInterval = <?php echo (!empty($pt->extra_config->ajax_message_update_interval)) ? $pt->extra_config->ajax_message_update_interval : 3000 ?>;
+
+// $(function() {
+//     window.UpdateChatU = setTimeout(function () {
+//         fetchMessages();
+//     }, messagesInterval);
+// });
+
+$(function() {
+    window.UpdateChatU = setTimeout(function () {
+        fetchMessages();
+    }, messagesInterval);
+});
+function fetchMessages() {
+    clearTimeout(window.UpdateChatU);
+    $.post('{{LINK aj/messages/fetch}}', {id: $('#user-id').val(), last_id: $('.message:last').attr('data-id')}, function(data, textStatus, xhr) {
+        if (data.status == 200) {
+            if (data.message.length > 0) {
+                $('.messages').append(data.message);
+                 $('.user-messages').scrollTop($('.user-messages')[0].scrollHeight);
+            }
+            if ($('#search-list').val() == 0) {
+                $('.messages-sidebar .list-group').html(data.users);
+            }
+        }
+        window.UpdateChatU = setTimeout(function () {
+            fetchMessages();
+        }, messagesInterval);
+    });
+}
+$(document).on('click', '.messages-sidebar ul li', function(event) {
+    clearTimeout(window.UpdateChatU);
+    /* Act on the event */
+});
+$(document).on('click', '#load-more-messages', function(event) {
+  event.preventDefault();
+  $('#load-more-messages i').removeClass('fa-angle-up');
+  $('#load-more-messages i').addClass('fa-spinner fa-spin');
+  $.post('{{LINK aj/messages/fetch}}', {id: $('#user-id').val(), first_id: $('.message:first').attr('data-id')}, function(data, textStatus, xhr) {
+        $('#load-more-messages i').removeClass('fa-spinner fa-spin');
+        $('#load-more-messages i').addClass('fa-angle-up');
+        if (data.status == 200) {
+            if (data.message.length > 0) {
+                $('.messages').prepend(data.message);
+            } else {
+                $('#load-more-messages').animate({
+                    top: "-50",
+                }, 200, function() {
+                    $('#load-more-messages').hide();
+                    $('#load-more-messages').css('top', '60px');
+                });
+            }
+            $('.user-messages').scrollTop(0);
+        }
+        $('#load-more-messages i').removeClass('fa-spinner fa-spin');
+        $('#load-more-messages i').addClass('fa-angle-up');
+    });
+});
+
+function DeleteConversation() {
+    if (!confirm("{{LANG are_you_sure_you_want_delete_chat}}")) {
+        return false;
+    }
+    $(this).find('i').toggleClass('fa-trash fa-spinner fa-spin');
+    $.post('{{LINK aj/messages/delete_chat}}', {id: $('#user-id').val()}, function(data, textStatus, xhr) {
+        $('#delete-conversation').find('i').removeClass('fa-spinner fa-spin');
+        $('#delete-conversation').find('i').addClass('fa-trash');
+        $('.messages').empty();
+        location.href = "{{CONFIG site_url}}/messages";
+    });
+}
+
+$(function() {
+        
+        
+        $('.user-messages').scrollTop($('.user-messages')[0].scrollHeight);
+        var $id = makeid();
+    	var form = $('form#new-message-form');
+
+        $('#search-list').on('keyup', function(event) {
+            $('#search-icon').toggleClass('fa-search fa-spinner fa-spin');
+            $.post('{{LINK aj/messages/search}}', {keyword: $(this).val()}, function(data, textStatus, xhr) {
+                $('#search-icon').toggleClass('fa-spinner fa-spin fa-search ');
+                if (data.status == 200) {
+                    $('.messages-sidebar .list-group').html(data.users);
+                }
+            });
+        });
+
+    	$('#new-message').on('keyup', function(event) {
+    		if (event.keyCode == 13 && !event.shiftKey) {
+                $id = makeid();
+                if ($(this).val().length > 1) {
+                    form.submit();
+                } else {
+                    $('#new-message').val('');
+                }
+    		}
+    	});
+
+        form.ajaxForm({
+            url: '{{LINK aj/messages/new}}?hash=' + $('.main_session').val(),
+            data: {message_id: $('#message_id').val()},
+            beforeSubmit: function(formData, jqForm, options) {
+                if ($('.messages').length == 0) {
+                    $('.user-messages').html('<div class="messages"></div>');
+                }
+                if ($('#new-message').val().length >= 1) {
+                    $id = makeid();
+                    formData.push({ name: 'message_id', value: $id });
+                    $('.messages').append('<div class="data_message" data-id="' + $id + '"><div class="message to-user pull-right" data-id=""><div class="user-message">' + nl2br(escapeHTML($('#new-message').val())) + '</div><div class="clear"></div></div><div class="clear"></div></div>');
+                    $('#new-message').val('');
+                    $('.user-messages').scrollTop($('.user-messages')[0].scrollHeight);
+                } else {
+                    $('#new-message').val('');
+                } 
+            },
+            success: function(data) {
+                if (data.status == 400) {
+                    $('.data_message[data-id="' + $id + '"]').remove();
+                    swal({
+                       title: '{{LANG error}}',
+                       text: data.message,
+                       type: 'error',
+                       confirmButtonColor: '#3085d6',
+                       cancelButtonColor: '#d33',
+                       confirmButtonText: 'OK',
+                       buttonsStyling: true,
+                       confirmButtonClass: 'btn btn-success',
+                    });
+                }
+                else{
+                    $('.data_message[data-id="' + data.message_id + '"]').html(data.message);
+                }
+            }
+        });
+    });
+</script>

@@ -1,0 +1,25 @@
+$css-prefix: emojionearea !default;
+
+$text-color: #555 !default;
+$placeholder-color: #bbb !default;
+$bg-color: #fff !default;
+$border-color: #ccc !default;
+$border-radius: 3px !default;
+$box-shadow-inset: inset 0 1px 1px rgba(0, 0, 0, .075) !default;
+$box-shadow-focused: 0 0 8px rgba(102, 175, 233, .6) !default;
+$border-color-focused: #66afe9 !default;
+$font-size: 14px !default;
+$z-index: 90 !default;
+$sprite: 'sprite.png';
+
+$picker-border-radius: 5px !default;
+$picker-bg: #fff !default;
+$picker-width: 284px;
+$picker-height: 236px;
+
+$filters-bg: #F5F7F9 !default;
+$filters-bg-hover: #F5F7F9 !default;
+$filters-bg-active: #fff !default;
+$filters-height: 40px;
+
+$inline-height: 34px;

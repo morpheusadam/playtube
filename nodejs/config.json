@@ -1,0 +1,16 @@
+{
+    "db_hostname": "localhost",
+    "db_username": "root",
+    "db_password": "",
+    "db_dbname": "playtube",
+    "site_url": "http:\/\/localhost\/playtube",
+    "server_ip": "localhost",
+    "server_port": 4545,
+    "amazon": false,
+    "amazon_bucket": null,
+    "nodejs_message_update_interval": 500,
+    "ajax_message_update_interval": 3000,
+    "ssl": false,
+    "ssl_privatekey_full_path": "",
+    "ssl_cert_full_path": ""
+}

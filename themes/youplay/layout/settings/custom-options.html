@@ -1,0 +1,15 @@
+<div class="form-group">
+	<label class="col-md-12" >{{NAME}}</label>  
+	<div class="col-md-12">
+		<?php 
+			$options = @explode(',', $pt->field->options);
+		?>
+		<select name="<?php echo $pt->field->fid;?>" class="form-control">
+			<?php foreach ($options as $key => $value): ?>  
+			<?php $selected = (($key + 1) == $pt->fid) ? 'selected' : ''; ?>
+			<option value="<?php echo $key + 1;?>" <?php echo $selected;?>><?php echo $value;?></option>    
+			<?php endforeach; ?>
+		</select>
+		<span class="help-block">{{DESC}}</span>
+	</div>
+</div>

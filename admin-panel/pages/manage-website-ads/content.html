@@ -1,0 +1,120 @@
+<div class="container-fluid">
+    <div>
+        <h3>Manage Website Ads</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Admin Panel</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Advertisements</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Manage Website Ads</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- Vertical Layout -->
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Manage Website Ads</h6>
+                    <div class="ads-settings-alert"></div>
+                    <form class="ads-settings" method="POST">
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Header <small>(Appears on all pages right under the nav bar)</small></label>
+                                <textarea name="header" id="header" class="form-control" cols="30" rows="5"><?php echo PT_GetAd('header', true);?></textarea>
+                                
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Footer <small>(Appears on all pages right before the footer)</small></label>
+                                <textarea name="footer" id="footer" class="form-control" cols="30" rows="5"><?php echo PT_GetAd('footer', true);?></textarea>
+                                
+                            </div>
+                        </div>
+                        <!--  <div class="form-group form-float">
+                            <div class="form-line">
+                                <textarea name="right_side" id="right_side" class="form-control" cols="30" rows="5"><?php echo PT_GetAd('right_side', true);?></textarea>
+                                <label class="form-label">Right Sidebar <small>(Appears on the right sidebar in all pages)</small></label>
+                            </div>
+                        </div>
+                         <div class="form-group form-float">
+                            <div class="form-line">
+                                <textarea name="left_side" id="left_side" class="form-control" cols="30" rows="5"><?php echo PT_GetAd('left_side', true);?></textarea>
+                                <label class="form-label">Left Sidebar <small>(Appears on the left sidebar in all pages)</small></label>
+                            </div>
+                        </div>-->
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Watch Page Sidebar <small>(Appears on watching page above the related videos section)</small></label>
+                                <textarea name="watch_side_bar" id="watch_side_bar" class="form-control" cols="30" rows="5"><?php echo PT_GetAd('watch_side_bar', true);?></textarea>
+                                
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Watch Comments <small>(Appears on watching page above the comments section)</small></label>
+                                <textarea name="watch_comments" id="watch_comments" class="form-control" cols="30" rows="5"><?php echo PT_GetAd('watch_comments', true);?></textarea>
+                                
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <!-- #END# Vertical Layout -->
+<script>
+$(function() {
+    var form_ads_settings = $('form.ads-settings');
+    form_ads_settings.ajaxForm({
+        url: '{{LINK aj/ap/update-ads}}',
+        beforeSend: function() {
+            form_ads_settings.find('.waves-effect').text('Please wait..');
+        },
+        beforeSubmit : function(arr, $form, options){
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i].name == "header") {
+                    arr[i].value = btoa(unescape(encodeURIComponent($('#header').val())));
+                }
+                if (arr[i].name == 'footer') {
+                    arr[i].value = btoa(unescape(encodeURIComponent($('#footer').val())));
+                }
+                if (arr[i].name == 'watch_side_bar') {
+                    arr[i].value = btoa(unescape(encodeURIComponent($('#watch_side_bar').val())));
+                }
+                if (arr[i].name == 'watch_comments') {
+                    arr[i].value = btoa(unescape(encodeURIComponent($('#watch_comments').val())));
+                }
+            }
+          // delete arr[0];
+          // delete arr[1];
+          // delete arr[2];
+          // delete arr[3];
+          // delete arr[4];
+          // delete arr[5];
+          // arr.push({name:'header', value:btoa(unescape(encodeURIComponent($('#header').val())))});  
+          // arr.push({name:'footer', value:btoa(unescape(encodeURIComponent($('#footer').val())))});
+          // arr.push({name:'right_side', value:btoa(unescape(encodeURIComponent($('#right_side').val())))});
+          // arr.push({name:'left_side', value:btoa(unescape(encodeURIComponent($('#left_side').val())))});
+          // arr.push({name:'watch_side_bar', value:btoa(unescape(encodeURIComponent($('#watch_side_bar').val())))});
+          // arr.push({name:'watch_comments', value:btoa(unescape(encodeURIComponent($('#watch_comments').val())))});
+        },
+        success: function(data) {
+            if (data.status == 200) {
+                form_ads_settings.find('.waves-effect').text('Save');
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+                $('.ads-settings-alert').html('<div class="alert alert-success"><i class="fa fa-check"></i> Ads updated successfully</div>');
+                setTimeout(function () {
+                    $('.ads-settings-alert').empty();
+                }, 2000);
+            }
+        }
+    });
+});
+</script>

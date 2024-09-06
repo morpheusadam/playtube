@@ -1,0 +1,90 @@
+<div class="container-fluid">
+    <div>
+        <h3>Manage Terms Pages</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Home</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Pages</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Manage Terms Pages</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- Vertical Layout -->
+    <div class="row">
+        <div class="col-lg-6 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Manage Terms Pages</h6>
+                    <div class="langs-settings-alert"></div>
+                   <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover" style="table-layout: inherit; border-top: 1px solid;">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center;">Page Name</th>
+                                    <th style="text-align: center;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="setting-postlist">
+                                   <td style="text-align: center;">Terms of Use</td>
+                                   <td style="text-align: center;">
+                                      <a class="btn bg-success admn_table_btn" href="<?php echo PT_LoadAdminLinkSettings('edit-terms-pages?type=terms_of_use_page');?>">Edit</a>
+                                      <a href="javscript:void(0)" class="delete-field btn bg-info admn_table_btn" onclick="update_terms_status(this,'terms_of_use_page')" data-type="<?php echo ($pt->terms_of_use_page == 1) ? 'disable': 'enable';?>"><?php if($pt->terms_of_use_page == 1){ ?> <?php }else{ ?> <?php } ?> <?php echo ($pt->terms_of_use_page == 1) ? 'Disable': 'Enable';?></a>
+                                   </td>
+                                </tr>
+                                <tr class="setting-postlist">
+                                   <td style="text-align: center;">Privacy Policy</td>
+                                   <td style="text-align: center;">
+                                      <a class="btn bg-success admn_table_btn" href="<?php echo PT_LoadAdminLinkSettings('edit-terms-pages?type=privacy_policy_page');?>">Edit</a>
+                                      <a href="javscript:void(0)" class="delete-field btn bg-info admn_table_btn" onclick="update_terms_status(this,'privacy_policy_page')" data-type="<?php echo ($pt->privacy_policy_page == 1) ? 'disable': 'enable';?>"><?php if($pt->privacy_policy_page == 1){ ?> <?php }else{ ?> <?php } ?> <?php echo ($pt->privacy_policy_page == 1) ? 'Disable': 'Enable';?></a>
+                                   </td>
+                                </tr>
+                                <tr class="setting-postlist">
+                                   <td style="text-align: center;">About</td>
+                                   <td style="text-align: center;">
+                                      <a class="btn bg-success admn_table_btn" href="<?php echo PT_LoadAdminLinkSettings('edit-terms-pages?type=about_page');?>">Edit</a>
+                                      <a href="javscript:void(0)" class="delete-field btn bg-info admn_table_btn" onclick="update_terms_status(this,'about_page')" data-type="<?php echo ($pt->about_page == 1) ? 'disable': 'enable';?>"><?php if($pt->about_page == 1){ ?> <?php }else{ ?> <?php } ?> <?php echo ($pt->about_page == 1) ? 'Disable': 'Enable';?></a>
+                                   </td>
+                                </tr>
+                                <tr class="setting-postlist">
+                                   <td style="text-align: center;">Refund</td>
+                                   <td style="text-align: center;">
+                                      <a class="btn bg-success admn_table_btn" href="<?php echo PT_LoadAdminLinkSettings('edit-terms-pages?type=refund_terms_page');?>">Edit</a>
+                                      <a href="javscript:void(0)" class="delete-field btn bg-info admn_table_btn" onclick="update_terms_status(this,'refund_terms_page')" data-type="<?php echo ($pt->refund_terms_page == 1) ? 'disable': 'enable';?>"><?php if($pt->refund_terms_page == 1){ ?> <?php }else{ ?> <?php } ?> <?php echo ($pt->refund_terms_page == 1) ? 'Disable': 'Enable';?></a>
+                                   </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <!-- #END# Vertical Layout -->
+<script type="text/javascript">
+    function update_terms_status(self,name) {
+        value = 1;
+        if ($(self).attr('data-type') == 'disable') {
+            value = 0;
+        }
+        $.post('{{LINK aj/ap/update_terms_status}}', {name:name,value:value}, function(data, textStatus, xhr) {
+            if ($(self).attr('data-type') == 'disable') {
+                $(self).attr('data-type','enable');
+                $(self).html('Enable');
+            }
+            else{
+                $(self).attr('data-type','disable');
+                $(self).html('Disable');
+            }
+            $('.langs-settings-alert').html('<div class="alert alert-success"><i class="fa fa-check"></i> Page status updated.</div>');
+            setTimeout(function () {
+                $('.langs-settings-alert').empty();
+            }, 2000);
+        });
+    }
+</script>

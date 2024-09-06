@@ -1,0 +1,586 @@
+<?php 
+$types = array('today','this_week','this_month','this_year');
+$type = 'today';
+
+if (!empty($_GET['type']) && in_array($_GET['type'], $types)) {
+    $type = $_GET['type'];
+}
+
+if ($type == 'today') {
+    $start = strtotime(date('M')." ".date('d').", ".date('Y')." 12:00am");
+    $end = strtotime(date('M')." ".date('d').", ".date('Y')." 11:59pm");
+
+    $array = array('00' => 0 ,'01' => 0 ,'02' => 0 ,'03' => 0 ,'04' => 0 ,'05' => 0 ,'06' => 0 ,'07' => 0 ,'08' => 0 ,'09' => 0 ,'10' => 0 ,'11' => 0 ,'12' => 0 ,'13' => 0 ,'14' => 0 ,'15' => 0 ,'16' => 0 ,'17' => 0 ,'18' => 0 ,'19' => 0 ,'20' => 0 ,'21' => 0 ,'22' => 0 ,'23' => 0);
+    $ads_array = $array;
+    $date_type = 'H';
+    $pt->cat_type = 'today';
+    $pt->chart_title = 'Today';
+    $pt->chart_text = date("l");
+}
+elseif ($type == 'this_week') {
+    
+    $time = strtotime(date('l').", ".date('M')." ".date('d').", ".date('Y'));
+    if (date('l') == 'Saturday') {
+        $start = strtotime(date('M')." ".date('d').", ".date('Y')." 12:00am");
+    }
+    else{
+        $start = strtotime('last saturday, 12:00am', $time);
+    }
+
+    if (date('l') == 'Friday') {
+        $end = strtotime(date('M')." ".date('d').", ".date('Y')." 11:59pm");
+    }
+    else{
+        $end = strtotime('next Friday, 11:59pm', $time);
+    }
+    
+    $array = array('Saturday' => 0 , 'Sunday' => 0 , 'Monday' => 0 , 'Tuesday' => 0 , 'Wednesday' => 0 , 'Thursday' => 0 , 'Friday' => 0);
+    $ads_array = $array;
+    $date_type = 'l';
+    $pt->cat_type = 'this_week';
+    $pt->chart_title = 'This Week';
+    $pt->chart_text = date('y/M/d',$start)." To ".date('y/M/d',$end);
+}
+elseif ($type == 'this_month') {
+    $start = strtotime("1 ".date('M')." ".date('Y')." 12:00am");
+    $end = strtotime(cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y'))." ".date('M')." ".date('Y')." 11:59pm");
+    if (cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y')) == 31) {
+        $array = array('01' => 0 ,'02' => 0 ,'03' => 0 ,'04' => 0 ,'05' => 0 ,'06' => 0 ,'07' => 0 ,'08' => 0 ,'09' => 0 ,'10' => 0 ,'11' => 0 ,'12' => 0 ,'13' => 0 ,'14' => 0 ,'15' => 0 ,'16' => 0 ,'17' => 0 ,'18' => 0 ,'19' => 0 ,'20' => 0 ,'21' => 0 ,'22' => 0 ,'23' => 0,'24' => 0 ,'25' => 0 ,'26' => 0 ,'27' => 0 ,'28' => 0 ,'29' => 0 ,'30' => 0 ,'31' => 0);
+    }elseif (cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y')) == 30) {
+        $array = array('01' => 0 ,'02' => 0 ,'03' => 0 ,'04' => 0 ,'05' => 0 ,'06' => 0 ,'07' => 0 ,'08' => 0 ,'09' => 0 ,'10' => 0 ,'11' => 0 ,'12' => 0 ,'13' => 0 ,'14' => 0 ,'15' => 0 ,'16' => 0 ,'17' => 0 ,'18' => 0 ,'19' => 0 ,'20' => 0 ,'21' => 0 ,'22' => 0 ,'23' => 0,'24' => 0 ,'25' => 0 ,'26' => 0 ,'27' => 0 ,'28' => 0 ,'29' => 0 ,'30' => 0);
+    }elseif (cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y')) == 29) {
+        $array = array('01' => 0 ,'02' => 0 ,'03' => 0 ,'04' => 0 ,'05' => 0 ,'06' => 0 ,'07' => 0 ,'08' => 0 ,'09' => 0 ,'10' => 0 ,'11' => 0 ,'12' => 0 ,'13' => 0 ,'14' => 0 ,'15' => 0 ,'16' => 0 ,'17' => 0 ,'18' => 0 ,'19' => 0 ,'20' => 0 ,'21' => 0 ,'22' => 0 ,'23' => 0,'24' => 0 ,'25' => 0 ,'26' => 0 ,'27' => 0 ,'28' => 0 ,'29' => 0);
+    }elseif (cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y')) == 28) {
+        $array = array('01' => 0 ,'02' => 0 ,'03' => 0 ,'04' => 0 ,'05' => 0 ,'06' => 0 ,'07' => 0 ,'08' => 0 ,'09' => 0 ,'10' => 0 ,'11' => 0 ,'12' => 0 ,'13' => 0 ,'14' => 0 ,'15' => 0 ,'16' => 0 ,'17' => 0 ,'18' => 0 ,'19' => 0 ,'20' => 0 ,'21' => 0 ,'22' => 0 ,'23' => 0,'24' => 0 ,'25' => 0 ,'26' => 0 ,'27' => 0 ,'28' => 0);
+    }
+    $ads_array = $array;
+    $pt->month_days = count($array);
+    $date_type = 'd';
+    $pt->cat_type = 'this_month';
+    $pt->chart_title = 'This Month';
+    $pt->chart_text = date("M");
+}
+elseif ($type == 'this_year') {
+    $start = strtotime("1 January ".date('Y')." 12:00am");
+    $end = strtotime("31 December ".date('Y')." 11:59pm");
+    $array = array('01' => 0 ,'02' => 0 ,'03' => 0 ,'04' => 0 ,'05' => 0 ,'06' => 0 ,'07' => 0 ,'08' => 0 ,'09' => 0 ,'10' => 0 ,'11' => 0 ,'12' => 0);
+    $ads_array = $array;
+    $date_type = 'm';
+    $pt->cat_type = 'this_year';
+    $pt->chart_title = 'This Year';
+    $pt->chart_text = date("Y");
+}
+$subscribe_array = $array;
+$day_net = 0;
+$trans        = $db->orderBy('id','DESC')->get(T_VIDEOS_TRSNS);
+$total_earn = 0;
+$commission = 0;
+$total_with_commission = 0;
+
+if (!empty($trans)) {
+    foreach ($trans as $tr) {
+        if ($tr->type != 'subscribe' && !empty($tr->video_id)) {
+            $video = PT_GetVideoByID($tr->video_id, 0, 0, 2);
+        }
+        else{
+            $video = array();
+        }
+        
+
+        $user_data   = PT_UserData($tr->paid_id);
+
+        $currency         = "";
+        $admin_currency         = "";
+        $net = 0;
+        if (in_array($tr->currency, $pt->config->currency_array)) {
+            $currency     = !empty($pt->config->currency_symbol_array[$tr->currency]) ? $pt->config->currency_symbol_array[$tr->currency] : '$';
+            $admin_currency     = $currency.$tr->admin_com;
+            $total_with_commission = $total_with_commission + $tr->amount;
+            if ($tr->admin_com > 0) {
+                $net = $tr->amount - $tr->admin_com;
+                $commission = $commission + $tr->admin_com;
+            }
+            else{
+                $net = $tr->amount;
+                $commission = $commission;
+            }
+            
+        }
+        elseif (in_array(str_replace('_PERCENT', '', $tr->currency), $pt->config->currency_array)) {
+            $main_currency = str_replace('_PERCENT', '', $tr->currency);
+            $currency     = !empty($pt->config->currency_symbol_array[$main_currency]) ? $pt->config->currency_symbol_array[$main_currency] : '$';
+            $admin_currency = $tr->admin_com."%";
+            $total_with_commission = $total_with_commission + $tr->amount;
+            if ($tr->admin_com > 0) {
+                $net = $tr->amount - ($tr->admin_com * $tr->amount)/100;
+                $commission = $commission + ($tr->admin_com * $tr->amount)/100;
+
+            }
+            else{
+                $net = $tr->amount;
+                $commission = $commission;
+            }
+            
+        }
+        // if ($tr->currency == "USD") {
+        //     $currency     = "$";
+        //     $admin_currency     = "$".$tr->admin_com;
+        //     $net = $tr->amount - $tr->admin_com;
+        //     $commission = $commission + $tr->admin_com;
+        //     $total_with_commission = $total_with_commission + $tr->amount;
+        // }
+        // else if($tr->currency == "EUR"){
+        //     $currency     = "€";
+        //     $admin_currency     = "€".$tr->admin_com;
+        //     $net = $tr->amount - $tr->admin_com;
+        //     $commission = $commission + $tr->admin_com;
+        //     $total_with_commission = $total_with_commission + $tr->amount;
+        // }
+        // elseif ($tr->currency == "EUR_PERCENT") {
+        //     $currency     = "€";
+        //     $admin_currency = $tr->admin_com."%";
+        //     $net = $tr->amount - ($tr->admin_com * $tr->amount)/100;
+        //     $commission = $commission + (($tr->admin_com * $tr->amount)/100);
+        //     $total_with_commission = $total_with_commission + $tr->amount;
+        // }
+        // elseif ($tr->currency == "USD_PERCENT") {
+        //     $currency     = "$";
+        //     $admin_currency = $tr->admin_com."%";
+        //     $net = $tr->amount - ($tr->admin_com * $tr->amount)/100;
+        //     $commission = $commission + (($tr->admin_com * $tr->amount)/100);
+        //     $total_with_commission = $total_with_commission + $tr->amount;
+        // }
+
+        if ($tr->time >= $start && $tr->time <= $end) {
+            $day = date($date_type,$tr->time);
+            if (in_array($day, array_keys($array))) {
+
+                if ($tr->type == 'subscribe') {
+                    $subscribe_array[$day] += $net;
+                }
+                elseif ($tr->type == 'ad'){
+                    $ads_array[$day] += $net;
+                }
+                else{
+                    $array[$day] += $net;
+                }
+            }
+        }
+
+        $total_earn = $total_earn + (float)$net;
+        // if (!empty($video) && !empty($user_data)) {
+        //     $info = array(
+        //         'ID' => $tr->id,
+        //         'PAID_USER' => substr($user_data->name, 0,20),
+        //         'PAID_URL' => $user_data->url,
+        //         'USER_NAME' => $user_data->username,
+        //         'VIDEO_NAME' => substr($video->title, 0,20) ,
+        //         'VIDEO_URL' => $video->url,
+        //         'VIDEO_ID_' => PT_Slug($video->title, $video->video_id),
+        //         'AMOUNT' => $tr->amount,
+        //         "CURRENCY" => $currency,
+        //         "A_CURRENCY" => $admin_currency,
+        //         "NET" => $net,
+        //         "TIME" => PT_Time_Elapsed_String($tr->time)
+        //     );
+        // }
+    }
+}
+$currency        = !empty($pt->config->currency_symbol_array[$pt->config->payment_currency]) ? $pt->config->currency_symbol_array[$pt->config->payment_currency] : '$';
+$total_earn = $total_earn;
+$pt->array = implode(', ', $array);
+
+
+// Sold Today 
+$day_start = strtotime(date('M')." ".date('d').", ".date('Y')." 12:00am");
+$day_end = strtotime(date('M')." ".date('d').", ".date('Y')." 11:59pm");
+$this_day_video_earn = $db->rawQuery("SELECT * FROM ".T_VIDEOS_TRSNS." c WHERE `time` >= ".$day_start." AND `time` <= ".$day_end);
+
+foreach ($this_day_video_earn as $tr) {
+    if (in_array($tr->currency, $pt->config->currency_array)) {
+        $day_net = $day_net + ($tr->amount - $tr->admin_com);
+    }
+    elseif (in_array(str_replace('_PERCENT', '', $tr->currency), $pt->config->currency_array)) {
+        if ($tr->admin_com > 0) {
+            $day_net = $day_net + ($tr->amount - ($tr->admin_com * $tr->amount)/100);
+        }
+        else{
+           $day_net = $day_net + $tr->amount; 
+        }
+        
+    }
+
+
+    // if ($tr->currency == "USD") {
+    //     $day_net = $day_net + ($tr->amount - $tr->admin_com);
+    // }
+    // else if($tr->currency == "EUR"){
+    //     $day_net = $day_net + ($tr->amount - $tr->admin_com);
+    // }
+    // elseif ($tr->currency == "EUR_PERCENT") {
+    //     $day_net = $day_net + ($tr->amount - ($tr->admin_com * $tr->amount)/100);
+    // }
+    // elseif ($tr->currency == "USD_PERCENT") {
+    //     $day_net = $day_net + ($tr->amount - ($tr->admin_com * $tr->amount)/100);
+    // }
+}
+$today_earn = $day_net ;
+// Sold Today 
+
+// Sold This Month 
+$month_start = strtotime("1 ".date('M')." ".date('Y')." 12:00am");
+$month_end = strtotime(cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y'))." ".date('M')." ".date('Y')." 11:59pm");
+$this_month_video_earn = $db->rawQuery("SELECT * FROM ".T_VIDEOS_TRSNS." c WHERE `time` >= ".$month_start." AND `time` <= ".$month_end);
+$month_net = 0;
+foreach ($this_month_video_earn as $tr) {
+    if (in_array($tr->currency, $pt->config->currency_array)) {
+        $month_net = $month_net + ($tr->amount - $tr->admin_com);
+    }
+    elseif (in_array(str_replace('_PERCENT', '', $tr->currency), $pt->config->currency_array)) {
+        $month_net = $month_net + ($tr->amount - ($tr->admin_com * $tr->amount)/100);
+    }
+    // if ($tr->currency == "USD") {
+    //     $month_net = $month_net + ($tr->amount - $tr->admin_com);
+    // }
+    // else if($tr->currency == "EUR"){
+    //     $month_net = $month_net + ($tr->amount - $tr->admin_com);
+    // }
+    // elseif ($tr->currency == "EUR_PERCENT") {
+    //     $month_net = $month_net + ($tr->amount - ($tr->admin_com * $tr->amount)/100);
+    // }
+    // elseif ($tr->currency == "USD_PERCENT") {
+    //     $month_net = $month_net + ($tr->amount - ($tr->admin_com * $tr->amount)/100);
+    // }
+}
+$month_earn = $month_net ;
+// Sold This Month 
+
+// Sold This Year 
+$year_start = strtotime("1 January ".date('Y')." 12:00am");
+$year_end = strtotime("31 December ".date('Y')." 11:59pm");
+$this_year_video_earn = $db->rawQuery("SELECT * FROM ".T_VIDEOS_TRSNS." c WHERE `time` >= ".$month_start." AND `time` <= ".$month_end);
+$year_net = 0;
+foreach ($this_year_video_earn as $tr) {
+    if (in_array($tr->currency, $pt->config->currency_array)) {
+        $year_net = $year_net + ($tr->amount - $tr->admin_com);
+    }
+    elseif (in_array(str_replace('_PERCENT', '', $tr->currency), $pt->config->currency_array)) {
+        $year_net = $year_net + ($tr->amount - ($tr->admin_com * $tr->amount)/100);
+    }
+
+
+    // if ($tr->currency == "USD") {
+    //     $year_net = $year_net + ($tr->amount - $tr->admin_com);
+    // }
+    // else if($tr->currency == "EUR"){
+    //     $year_net = $year_net + ($tr->amount - $tr->admin_com);
+    // }
+    // elseif ($tr->currency == "EUR_PERCENT") {
+    //     $year_net = $year_net + ($tr->amount - ($tr->admin_com * $tr->amount)/100);
+    // }
+    // elseif ($tr->currency == "USD_PERCENT") {
+    //     $year_net = $year_net + ($tr->amount - ($tr->admin_com * $tr->amount)/100);
+    // }
+}
+$year_earn = $year_net ;
+// Sold This Year 
+$pt->subscribe_array = implode(', ', $subscribe_array);
+$pt->ads_array = implode(', ', $ads_array);
+
+$total_with_commission = number_shorten($total_with_commission);
+$total_earn = number_shorten($total_earn);
+$commission = number_shorten($commission);
+$today_earn = number_shorten($today_earn);
+$month_earn = number_shorten($month_earn);
+$year_earn = number_shorten($year_earn);
+ ?>
+
+<div class="container-fluid">
+    <div>
+        <h3>Earnings</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Admin Panel</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Earnings</a>
+                </li>
+            </ol>
+        </nav>
+    </div>
+    <div class="row clearfix">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">TOTAL Earnings With Commission</h6>
+                    <div class="d-flex align-items-center mb-3">
+                        <div>
+                            <div class="avatar">
+                                <span class="avatar-title bg-primary-bright text-primary rounded-pill">
+                                    <i class="material-icons">attach_money</i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="font-weight-bold ml-1 font-size-30 ml-3"><?php echo($total_with_commission) ?></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">TOTAL Earnings Without Commission</h6>
+                    <div class="d-flex align-items-center mb-3">
+                        <div>
+                            <div class="avatar">
+                                <span class="avatar-title bg-info-bright text-info rounded-pill">
+                                    <i class="material-icons">attach_money</i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="font-weight-bold ml-1 font-size-30 ml-3"><?php echo($total_earn) ?></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">TOTAL Commission</h6>
+                    <div class="d-flex align-items-center mb-3">
+                        <div>
+                            <div class="avatar">
+                                <span class="avatar-title bg-warning-bright text-warning rounded-pill">
+                                    <i class="material-icons">attach_money</i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="font-weight-bold ml-1 font-size-30 ml-3"><?php echo($commission) ?></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">TOTAL Earnings Today</h6>
+                    <div class="d-flex align-items-center mb-3">
+                        <div>
+                            <div class="avatar">
+                                <span class="avatar-title bg-secondary-bright text-secondary rounded-pill">
+                                    <i class="material-icons">attach_money</i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="font-weight-bold ml-1 font-size-30 ml-3"><?php echo($today_earn) ?></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">TOTAL Earnings This Month</h6>
+                    <div class="d-flex align-items-center mb-3">
+                        <div>
+                            <div class="avatar">
+                                <span class="avatar-title bg-secondary-bright text-secondary rounded-pill">
+                                    <i class="material-icons">attach_money</i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="font-weight-bold ml-1 font-size-30 ml-3"><?php echo($month_earn) ?></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">TOTAL Earnings This Year</h6>
+                    <div class="d-flex align-items-center mb-3">
+                        <div>
+                            <div class="avatar">
+                                <span class="avatar-title bg-secondary-bright text-secondary rounded-pill">
+                                    <i class="material-icons">attach_money</i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="font-weight-bold ml-1 font-size-30 ml-3"><?php echo($year_earn) ?></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">USERS STATICS</h6>
+                    <div class="row clearfix">
+                        <div class="col-md-3">
+                            <br>
+                            <select id="type" name="type" class="form-control pull-right">
+                                <option value="today" <?php echo ($pt->cat_type == 'today') ? 'selected': '';?>>{{LANG today}}</option>
+                                <option value="this_week" <?php echo ($pt->cat_type == 'this_week') ? 'selected': '';?>>{{LANG this_week}}</option>
+                                <option value="this_month" <?php echo ($pt->cat_type == 'this_month') ? 'selected': '';?>>{{LANG this_month}}</option>
+                                <option value="this_year" <?php echo ($pt->cat_type == 'this_year') ? 'selected': '';?>>{{LANG this_year}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="body">
+                        <div id="chart-container"></div>
+                    </div>
+                </div>
+                    
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $("select#type").change(function(){
+        var type = $('#type').val();
+        window.location.href = "<?php echo PT_LoadAdminLinkSettings('earnings'); ?>?type="+type;
+    });
+       $(function () {
+        function users() {
+        if ($('#chart-container').length) {
+            var options = {
+                chart: {
+                    type: 'bar',
+                    fontFamily: "Inter",
+                    offsetX: -26,
+                    stacked: false,
+                    height: 265,
+                    width: '102%',
+                    toolbar: {
+                        show: false
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                series: [{
+            name: 'Videos Earnings',
+            data: [<?php echo $pt->array;?>]
+
+            },{
+            name: 'Subscribe Earnings',
+            data: [<?php echo $pt->subscribe_array;?>]
+
+            },{
+            name: 'Ads Earnings',
+            data: [<?php echo $pt->ads_array;?>]
+
+            }],
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: '50%',
+                        endingShape: 'rounded'
+                    },
+                },
+                colors: ['#6abd46', '#ce3d3d', '#f2b92b', '#6abd46'],
+                xaxis: {
+                    <?php if ($pt->cat_type == 'today') { ?>
+                categories: [
+                    '00 AM',
+                    '1 AM',
+                    '2 AM',
+                    '3 AM',
+                    '4 AM',
+                    '5 AM',
+                    '6 AM',
+                    '7 AM',
+                    '8 AM',
+                    '9 AM',
+                    '10 AM',
+                    '11 AM',
+                    '12 PM',
+                    '1 PM',
+                    '2 PM',
+                    '3 PM',
+                    '4 PM',
+                    '5 PM',
+                    '6 PM',
+                    '7 PM',
+                    '8 PM',
+                    '9 PM',
+                    '10 PM',
+                    '11 PM'
+                ]
+            <?php }elseif ($pt->cat_type == 'this_week') { ?>
+                categories: [
+                    'Saturday',
+                    'Sunday',
+                    'Monday',
+                    'Tuesday',
+                    'Wednesday',
+                    'Thursday',
+                    'Friday'
+                ]
+            <?php }elseif ($pt->cat_type == 'this_month') { ?>
+                <?php if ($pt->month_days == 31) { ?>
+                    categories: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
+                <?php }elseif ($pt->month_days == 30) { ?>
+                    categories: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]
+                <?php }elseif ($pt->month_days == 29) { ?>
+                    categories: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
+                <?php }elseif ($pt->month_days == 28) {  ?>
+                    categories: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28]
+                <?php } ?>
+            <?php }elseif ($pt->cat_type == 'this_year') { ?>
+                categories: [
+                    'Jan',
+                    'Feb',
+                    'Mar',
+                    'Apr',
+                    'May',
+                    'Jun',
+                    'Jul',
+                    'Aug',
+                    'Sep',
+                    'Oct',
+                    'Nov',
+                    'Dec'
+                ]
+            <?php } ?>,
+                },
+                tooltip: {
+                    y: {
+                        formatter: function (val) {
+                            return val
+                        }
+                    }
+                }
+            };
+
+            var chart = new ApexCharts(
+                document.querySelector("#chart-container"),
+                options
+            );
+
+            chart.render();
+        }
+    }
+
+    users();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+});
+</script>
