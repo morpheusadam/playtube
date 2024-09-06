@@ -2,6 +2,16 @@
   <img src="upload/screenshots/unnamed.png" alt="Screenshot 1">
 </p>
 
+
+
+## Languages
+<p align="center">
+  <a href="readme.md">English</a> |
+  <a href="readme-fa.md">Persian</a> |
+  <a href="readme-kurdish.md">Kurdish</a>
+</p>
+
+
 # PlayTube - The Ultimate PHP Video CMS & Video Sharing Platform
 
 PlayTube is a video sharing & streaming PHP Script. It is the best way to start your own video sharing website like YouTube! Our platform is fast, secure, and it will be regularly updated. PlayTube fully supports native mobile apps, thanks to our advanced API system!
@@ -100,8 +110,3 @@ Here are some screenshots of the platform:
   <img src="upload/screenshots/Screenshot_4.png" alt="Screenshot 4">
   <img src="upload/screenshots/Screenshot_5.png" alt="Screenshot 5">
 </p>
-
-## Languages
-- [English](readme.md)
-- [Persian](readme-fa.md)
-- [Kurdish](readme-kurdish.md)

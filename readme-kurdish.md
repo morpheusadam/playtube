@@ -2,6 +2,12 @@
   <img src="upload/screenshots/unnamed.png" alt="Screenshot 1">
 </p>
 
+## زمانەکان
+- [ئینگلیزی](readme.md)
+- [فارسی](readme-fa.md)
+- [کوردی](readme-kurdish.md)
+
+
 # PlayTube - یەکەمین پلاتفۆرمی بەشکردنی ڤیدیۆی PHP و ڤیدیۆی بەشکردن
 
 PlayTube سکریپتی بەشکردن و ڤیدیۆی ڕەشەری PHP یە. ئەو باشترین ڕێگایە بۆ دەستپێکردنی ماڵپەڕی بەشکردنی ڤیدیۆی خۆت وەک YouTube! پلاتفۆرمی ئێمە خێرا، سەلامە و بە هەردەم نوێ دەکرێتەوە. PlayTube پشتیوانی تەواوی بەرنامەی مۆبایلی نەتەوەیی دەکات، سوپاسی سیستەمی API پێشکەوتووەکەمان!
@@ -101,7 +107,3 @@ v3.1.1
   <img src="upload/screenshots/Screenshot_5.png" alt="Screenshot 5">
 </p>
 
-## زمانەکان
-- [ئینگلیزی](readme.md)
-- [فارسی](readme-fa.md)
-- [کوردی](readme-kurdish.md)

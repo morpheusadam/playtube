@@ -2,6 +2,13 @@
   <img src="upload/screenshots/unnamed.png" alt="Screenshot 1">
 </p>
 
+
+## زبان‌ها
+- [انگلیسی](readme.md)
+- [فارسی](readme-fa.md)
+- [کوردی](readme-kurdish.md)
+
+
 # PlayTube - بهترین پلتفرم اشتراک‌گذاری ویدیو با PHP
 
 PlayTube یک اسکریپت PHP برای اشتراک‌گذاری و پخش ویدیو است. این بهترین راه برای شروع وب‌سایت اشتراک‌گذاری ویدیو خودتان مانند YouTube است! پلتفرم ما سریع، امن و به‌طور منظم به‌روزرسانی می‌شود. PlayTube به‌طور کامل از اپلیکیشن‌های موبایل بومی پشتیبانی می‌کند، به لطف سیستم API پیشرفته ما!
@@ -101,7 +108,3 @@ v3.1.1
   <img src="upload/screenshots/Screenshot_5.png" alt="Screenshot 5">
 </p>
 
-## زبان‌ها
-- [انگلیسی](readme.md)
-- [فارسی](readme-fa.md)
-- [کوردی](readme-kurdish.md)
