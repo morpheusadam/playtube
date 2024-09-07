@@ -110,3 +110,10 @@ Here are some screenshots of the platform:
   <img src="upload/screenshots/Screenshot_4.png" alt="Screenshot 4">
   <img src="upload/screenshots/Screenshot_5.png" alt="Screenshot 5">
 </p>
+
+## 📞 Contact Me
+<div align="center">
+    <a href="https://www.linkedin.com/in/hesam-ahmadpour" style="color: red; font-size: 20px; text-decoration: none;">LinkedIn</a> |
+    <a href="https://t.me/morpheusadam" style="color: red; font-size: 20px; text-decoration: none;">Telegram</a>
+</div>
+
