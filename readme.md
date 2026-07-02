@@ -1,7 +1,5 @@
 <div align="center">
-
 # 🎬 PlayTube — PHP Video CMS & Video Sharing Platform
-
 ### Launch your own YouTube‑style video sharing & streaming website with a fast, secure, API‑driven PHP video CMS.
 
 <p align="center">
