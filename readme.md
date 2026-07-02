@@ -9,11 +9,11 @@
 </p>
 
 <p>
-  <img src="https://img.shields.io/github/license/morpheusadam/playtube?style=for-the-badge&color=4c1" alt="License" />
-  <img src="https://img.shields.io/github/stars/morpheusadam/playtube?style=for-the-badge&color=ffca28" alt="Stars" />
-  <img src="https://img.shields.io/github/forks/morpheusadam/playtube?style=for-the-badge&color=42a5f5" alt="Forks" />
-  <img src="https://img.shields.io/github/last-commit/morpheusadam/playtube?style=for-the-badge&color=8e44ad" alt="Last commit" />
-  <img src="https://img.shields.io/github/repo-size/morpheusadam/playtube?style=for-the-badge&color=e67e22" alt="Repo size" />
+  <img src="https://img.shields.io/github/license/morpheusadam/PlayTube?style=for-the-badge&color=4c1" alt="License" />
+  <img src="https://img.shields.io/github/stars/morpheusadam/PlayTube?style=for-the-badge&color=ffca28" alt="Stars" />
+  <img src="https://img.shields.io/github/forks/morpheusadam/PlayTube?style=for-the-badge&color=42a5f5" alt="Forks" />
+  <img src="https://img.shields.io/github/last-commit/morpheusadam/PlayTube?style=for-the-badge&color=8e44ad" alt="Last commit" />
+  <img src="https://img.shields.io/github/repo-size/morpheusadam/PlayTube?style=for-the-badge&color=e67e22" alt="Repo size" />
 </p>
 
 <p>
@@ -182,7 +182,7 @@ playtube/
 
 Contributions are welcome! Read [`CONTRIBUTING.md`](CONTRIBUTING.md) and the
 [Code of Conduct](CODE_OF_CONDUCT.md), then open an
-[issue](https://github.com/morpheusadam/playtube/issues) or submit a pull request.
+[issue](https://github.com/morpheusadam/PlayTube/issues) or submit a pull request.
 Please report security issues responsibly as described in [`SECURITY.md`](SECURITY.md).
 
 ## 📜 License
@@ -193,8 +193,8 @@ Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for details.
 
 ## ⭐ Star History
 
-<a href="https://star-history.com/#morpheusadam/playtube&Date">
-  <img src="https://api.star-history.com/svg?repos=morpheusadam/playtube&type=Date" alt="Star History Chart" width="70%" />
+<a href="https://star-history.com/#morpheusadam/PlayTube&Date">
+  <img src="https://api.star-history.com/svg?repos=morpheusadam/PlayTube&type=Date" alt="Star History Chart" width="70%" />
 </a>
 
 ---
