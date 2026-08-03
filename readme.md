@@ -1,96 +1,59 @@
-<div align="center">
-# 🎬 PlayTube — PHP Video CMS & Video Sharing Platform
-### Launch your own YouTube‑style video sharing & streaming website with a fast, secure, API‑driven PHP video CMS.
+# PlayTube
 
-<p align="center">
-  <img src="upload/screenshots/unnamed.png" alt="PlayTube — PHP Video Sharing CMS" />
-</p>
+PlayTube is a self-hosted PHP video CMS for running a YouTube-style video sharing and streaming site, aimed at content creators, agencies and media companies who want to host the platform themselves.
 
-<p>
-  <img src="https://img.shields.io/github/license/morpheusadam/PlayTube?style=for-the-badge&color=4c1" alt="License" />
-  <img src="https://img.shields.io/github/stars/morpheusadam/PlayTube?style=for-the-badge&color=ffca28" alt="Stars" />
-  <img src="https://img.shields.io/github/forks/morpheusadam/PlayTube?style=for-the-badge&color=42a5f5" alt="Forks" />
-  <img src="https://img.shields.io/github/last-commit/morpheusadam/PlayTube?style=for-the-badge&color=8e44ad" alt="Last commit" />
-  <img src="https://img.shields.io/github/repo-size/morpheusadam/PlayTube?style=for-the-badge&color=e67e22" alt="Repo size" />
-</p>
+Languages: [English](readme.md) · [فارسی (Persian)](readme-fa.md) · [Kurdî (Kurdish)](readme-kurdish.md)
 
-<p>
-  <img src="https://img.shields.io/badge/PHP-7.1%2B-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP" />
-  <img src="https://img.shields.io/badge/MySQL-MySQLi-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL" />
-  <img src="https://img.shields.io/badge/Node.js-Socket.IO-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js" />
-  <img src="https://img.shields.io/badge/JavaScript-ES6-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript" />
-  <img src="https://img.shields.io/badge/FFmpeg-Transcoding-007808?style=for-the-badge&logo=ffmpeg&logoColor=white" alt="FFmpeg" />
-  <img src="https://img.shields.io/badge/REST-API-FF6C37?style=for-the-badge&logo=postman&logoColor=white" alt="REST API" />
-</p>
+![PlayTube](upload/screenshots/unnamed.png)
 
-#### 🌐 Languages
+## Overview
 
-<a href="readme.md">English</a> ·
-<a href="readme-fa.md">فارسی (Persian)</a> ·
-<a href="readme-kurdish.md">Kurdî (Kurdish)</a>
+PlayTube ships as a ready-to-deploy PHP application with a full admin panel, a multi-theme front end, and a versioned REST API that native mobile clients can talk to. Content is stored in MySQL and media is transcoded with FFmpeg. An optional Node.js and Socket.IO service adds real-time features on top of the core PHP application.
 
-</div>
+The application covers user channels, subscriptions, comments, playlists, live streaming, Shorts, monetisation (Pro plans, paid videos, wallet, ads and affiliates), and social login. It runs behind Apache or Nginx and scales from a single-server install to a production deployment.
 
----
+Current version: v3.1.1
 
-## 📖 Overview
+## Features
 
-**PlayTube** is a complete, self‑hosted **PHP video CMS and video sharing platform** — the fastest way to build your own **YouTube‑style website** for uploading, streaming, and monetizing video. It ships as a ready‑to‑deploy PHP script with a full admin panel, a multi‑theme front end, and an advanced REST **API** that powers native **mobile apps**.
+- Video upload, FFmpeg transcoding, and adaptive streaming playback.
+- Live streaming and short-form vertical videos (Shorts).
+- User channels, subscription feeds, watch history, liked and saved videos.
+- Comments, posts and timeline, articles, hashtags, and notifications.
+- Monetisation: Pro upgrades, paid videos, wallet and transactions, ads, and an affiliate system.
+- Versioned REST API (`app_api/v1.0`) for iOS and Android clients.
+- Social login and two-factor authentication.
+- Payment gateways: Stripe, Braintree, Authorize.Net, PayFast, 2Checkout, SecurionPay, iyzico, QIWI, Alipay and others.
+- Storage backends: local disk, FTP, or Amazon S3.
+- Admin panel with dashboards, content moderation, analytics, and site configuration.
+- Two bundled front-end themes: `default` and `youplay`.
+- Optional Node.js and Socket.IO service for real-time updates.
+- Documentation in English, Persian, and Kurdish.
 
-Out of the box you get user channels, subscriptions, comments, playlists, live streaming, Shorts, monetization (Pro plans, paid videos, wallet, ads & affiliates), and social login — backed by a MySQL database and **FFmpeg** transcoding. A lightweight **Node.js + Socket.IO** service adds real‑time features on top of the core PHP application.
-
-PlayTube is built for **content creators, startups, agencies, and media companies** who want to own their platform instead of relying on third‑party hosts. It is **fast, secure, regularly updated**, and designed to scale from a single‑server install to a full production deployment behind Apache or Nginx.
-
-> 🔎 **Keywords:** PHP video CMS, video sharing platform, YouTube clone, video streaming script, self‑hosted video site, live streaming PHP, video monetization, REST API video app, FFmpeg transcoding, PlayTube.
-
----
-
-## ✨ Features
-
-- 🎥 **Video sharing & streaming** — upload, transcode (FFmpeg), and stream videos with adaptive playback.
-- 📡 **Live streaming & Shorts** — go live and publish short‑form vertical videos.
-- 👤 **Channels & subscriptions** — user channels, subscribe feeds, watch history, liked & saved videos.
-- 💬 **Engagement** — comments, posts/timeline, articles, hashtags, and notifications.
-- 💰 **Monetization** — Pro upgrades, paid videos, wallet & transactions, ads, and an affiliate system.
-- 📱 **Native mobile app support** — a full versioned REST **API** (`app_api/v1.0`) for iOS/Android clients.
-- 🔐 **Social login & 2FA** — sign in via popular providers plus two‑factor authentication.
-- 💳 **Payment gateways** — Stripe, Braintree, Authorize.Net, PayFast, 2Checkout, SecurionPay, iyzico, QIWI, Alipay and more.
-- ☁️ **Flexible storage** — local, FTP, or Amazon S3 video storage.
-- 🛠️ **Powerful admin panel** — dashboards, content moderation, analytics, and site configuration.
-- 🎨 **Multi‑theme front end** — ships with `default` and `youplay` themes.
-- ⚡ **Real‑time layer** — optional **Node.js + Socket.IO** service for live updates.
-- 🌍 **Multi‑language** — English, Persian, and Kurdish documentation included.
-
----
-
-## 🛠️ Tech Stack
+## Tech stack
 
 | Layer | Technology |
 | --- | --- |
 | Backend | PHP 7.1+ (MySQLi) |
 | Database | MySQL (`playtube.sql` schema) |
 | Media | FFmpeg, getID3 |
-| Real‑time | Node.js, Express, Socket.IO |
+| Real-time | Node.js, Express, Socket.IO |
 | Front end | JavaScript, HTML, CSS, theme engine |
 | API | Versioned REST API for mobile apps |
 | Web server | Apache (`.htaccess`) or Nginx (`nginx.conf`) |
 
----
+## Requirements
 
-## 🚀 Getting Started
-
-### Prerequisites
-
-- **PHP 7.1 or higher**
-- **MySQLi**
-- PHP extensions: **GD Library**, **mbstring**, **calendar**
-- **cURL** enabled, with `allow_url_fopen`
-- The **`shell_exec`** PHP function enabled (for FFmpeg)
+- PHP 7.1 or higher
+- MySQLi
+- PHP extensions: GD Library, mbstring, calendar
+- cURL enabled, with `allow_url_fopen`
+- The `shell_exec` PHP function enabled (required for FFmpeg)
 - A web server (Apache or Nginx) and a MySQL database
 
-### Installation
+## Installation
 
-1. Upload all script files to your web server root (via FTP) or place them in your localhost root directory.
+1. Upload all script files to your web server root via FTP, or place them in your localhost root directory.
 2. Open your browser and navigate to:
 
    ```text
@@ -98,33 +61,32 @@ PlayTube is built for **content creators, startups, agencies, and media companie
    ```
 
 3. Accept the Terms of Use and continue.
-4. Make sure your server meets the listed requirements (the installer verifies them).
+4. Confirm your server meets the requirements above. The installer verifies them for you.
 5. Fill in the installation form:
 
-   - **Purchase Code** — your Envato purchase code
-   - **SQL Host / Username / Password / Database** — your MySQL connection details
-   - **Site URL** — e.g. `https://yoursite.com`
-   - **Site Name**, **Site Title**, **Site E‑mail** (use a server email, not Gmail/Hotmail)
-   - **Admin Username** and **Admin Password**
+   - Purchase Code — your Envato purchase code
+   - SQL Host / Username / Password / Database — your MySQL connection details
+   - Site URL — for example `https://yoursite.com`
+   - Site Name, Site Title, Site E-mail (use a server email address, not Gmail or Hotmail)
+   - Admin Username and Admin Password
 
-6. Click **Install** and wait — installation can take up to ~5 minutes.
+6. Click Install and wait. Installation can take up to about five minutes.
 
-### Using Nginx?
+### Nginx
 
-Copy the contents of the bundled `nginx.conf` into your server's root `nginx.conf`
-(usually `/etc/nginx/nginx.conf`), then reload Nginx.
+Copy the contents of the bundled `nginx.conf` into your server's root `nginx.conf`, usually `/etc/nginx/nginx.conf`, then reload Nginx.
 
-### Set up the cron job
+### Cron job
 
-After installation, add this to your server's crontab so background tasks run:
+After installation, add the following to your server's crontab so background tasks run:
 
 ```bash
 */15 * * * * php -f {PATH_TO_SCRIPT}/cronjob.php > /dev/null 2>&1
 ```
 
-Replace `{PATH_TO_SCRIPT}` with the absolute path, e.g. `/home/playtube/public_html`.
+Replace `{PATH_TO_SCRIPT}` with the absolute path, for example `/home/playtube/public_html`.
 
-### Optional: real‑time Node.js service
+### Optional real-time Node.js service
 
 ```bash
 cd nodejs
@@ -132,9 +94,7 @@ npm install
 npm start
 ```
 
----
-
-## 🗂️ Project Structure
+## Project structure
 
 ```text
 playtube/
@@ -146,19 +106,17 @@ playtube/
 ├── secure_video.php      # Secure video delivery
 ├── playtube.sql          # Database schema
 ├── nginx.conf            # Nginx configuration sample
-├── admin-panel/          # Admin dashboard UI & assets
+├── admin-panel/          # Admin dashboard UI and assets
 ├── app_api/v1.0/         # Versioned REST API for mobile apps
-├── sources/              # Page/feature modules (watch, upload, live, shorts, …)
-├── assets/libs/          # Payment, storage, social & media libraries
+├── sources/              # Page and feature modules (watch, upload, live, shorts, …)
+├── assets/libs/          # Payment, storage, social and media libraries
 ├── themes/               # Front-end themes (default, youplay)
-├── nodejs/               # Node.js + Socket.IO real-time service
+├── nodejs/               # Node.js and Socket.IO real-time service
 ├── install/              # Web installer
-└── upload/               # User uploads & screenshots
+└── upload/               # User uploads and screenshots
 ```
 
----
-
-## 📸 Screenshots
+## Screenshots
 
 <p align="center">
   <img src="upload/screenshots/Screenshot_1.png" alt="PlayTube screenshot 1" width="45%" />
@@ -168,47 +126,18 @@ playtube/
   <img src="upload/screenshots/Screenshot_5.png" alt="PlayTube screenshot 5" width="45%" />
 </p>
 
----
+## Contributing
 
-## 📌 Current Version
+Read [`CONTRIBUTING.md`](CONTRIBUTING.md) and the [Code of Conduct](CODE_OF_CONDUCT.md), then open an [issue](https://github.com/morpheusadam/PlayTube/issues) or submit a pull request. Report security issues as described in [`SECURITY.md`](SECURITY.md).
 
-**v3.1.1**
+## License
 
----
+Distributed under the MIT License. See [`LICENSE`](LICENSE) for details.
 
-## 🤝 Contributing
+## Author
 
-Contributions are welcome! Read [`CONTRIBUTING.md`](CONTRIBUTING.md) and the
-[Code of Conduct](CODE_OF_CONDUCT.md), then open an
-[issue](https://github.com/morpheusadam/PlayTube/issues) or submit a pull request.
-Please report security issues responsibly as described in [`SECURITY.md`](SECURITY.md).
+Morpheus Adam — web developer, PHP, Laravel, Go.
 
-## 📜 License
-
-Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for details.
-
----
-
-## ⭐ Star History
-
-<a href="https://star-history.com/#morpheusadam/PlayTube&Date">
-  <img src="https://api.star-history.com/svg?repos=morpheusadam/PlayTube&type=Date" alt="Star History Chart" width="70%" />
-</a>
-
----
-
-<div align="center">
-
-### 👤 Author — Morpheus Adam
-
-Web developer & cheerful hacker · PHP · Laravel · Go
-
-<p>
-  <a href="https://github.com/morpheusadam"><img src="https://img.shields.io/badge/GitHub-morpheusadam-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" /></a>
-  <a href="https://sam.zeonic.me"><img src="https://img.shields.io/badge/Website-sam.zeonic.me-4c1?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Website" /></a>
-  <a href="mailto:morpheusadam95@gmail.com"><img src="https://img.shields.io/badge/Email-Contact-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" /></a>
-</p>
-
-⭐ **If PlayTube helps you launch your own video platform, please give it a star!** ⭐
-
-</div>
+- GitHub: [morpheusadam](https://github.com/morpheusadam)
+- Website: [sam.zeonic.me](https://sam.zeonic.me)
+- Email: morpheusadam95@gmail.com
